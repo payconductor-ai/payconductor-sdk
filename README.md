@@ -186,7 +186,7 @@ fetch('https://app.payconductor.ai/api/v1/orders/', {
 ### Customers
 
 - `POST /customers/` - Create a new customer
-- `GET /customers/` - List customers
+- `GET /customers/` - List customers (supports: page, pageSize, period, email, name, startDate, endDate)
 - `GET /customers/{id}` - Get customer by ID
 - `PATCH /customers/{id}` - Update customer
 - `DELETE /customers/{id}` - Delete customer
@@ -194,15 +194,176 @@ fetch('https://app.payconductor.ai/api/v1/orders/', {
 ### Orders
 
 - `POST /orders/` - Create a new payment order
-- `GET /orders/` - List orders with filters
+- `GET /orders/` - List orders (supports: period, page, pageSize, endDate, startDate, id, status)
 - `GET /orders/{id}` - Get order by ID
 - `POST /orders/{id}/refund` - Refund an order
 
 ### Withdrawals & Transfers
 
 - `POST /withdraws/` - Create a withdrawal/transfer
-- `GET /withdraws/` - List withdrawals
+- `GET /withdraws/` - List withdrawals (supports: period, page, pageSize, endDate, startDate, id)
 - `GET /withdraws/{id}` - Get withdrawal by ID
+
+## Code Examples
+
+### TypeScript
+
+```typescript
+import { Configuration, OrdersApi, CustomersApi, CardTokenizationApi, WithdrawalsAndTransfersApi } from './src/v1/typescript';
+
+const config = new Configuration({
+  username: 'your_client_id',
+  password: 'your_client_secret',
+});
+
+const ordersApi = new OrdersApi(config);
+const customersApi = new CustomersApi(config);
+const cardTokenizationApi = new CardTokenizationApi(config);
+const withdrawalsApi = new WithdrawalsAndTransfersApi(config);
+
+// Create an order
+const order = await ordersApi.postOrders({
+  amount: 100.00,
+  currency: 'BRL',
+  payment: {
+    paymentMethod: 'credit_card',
+    // ... other payment details
+  },
+  items: [
+    {
+      name: 'Product 1',
+      quantity: 1,
+      price: 100.00,
+    },
+  ],
+});
+
+// Get all orders
+const orders = await ordersApi.getOrders('seven_days', 1, 10);
+
+// Tokenize a credit card
+const tokenizedCard = await cardTokenizationApi.postCardTokenization({
+  customer: {
+    document: '12345678900',
+    documentType: 'cpf',
+    email: 'customer@example.com',
+    name: 'John Doe',
+  },
+  card: {
+    number: '4111111111111111',
+    holderName: 'John Doe',
+    cvv: '123',
+    expiration: {
+      month: 12,
+      year: 2025,
+    },
+  },
+});
+
+// Create a withdrawal
+const withdrawal = await withdrawalsApi.postWithdraws({
+  amount: 50.00,
+  currency: 'BRL',
+  payoutAccount: {
+    // ... payout account details
+  },
+});
+```
+
+### C#
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using payconductor_sdk.Api;
+using payconductor_sdk.Client;
+using payconductor_sdk.Model;
+
+var services = new ServiceCollection();
+
+services.AddPayconductorApi((sp, options) =>
+{
+    options.Username = "your_client_id";
+    options.Password = "your_client_secret";
+});
+
+var serviceProvider = services.BuildServiceProvider();
+
+// Orders API
+var ordersApi = serviceProvider.GetRequiredService<IOrdersApi>();
+var orderResponse = await ordersApi.PostOrdersAsync(new PostOrdersRequest
+{
+    Amount = 100.00m,
+    Currency = "BRL",
+    Payment = new CreditCard
+    {
+        PaymentMethod = "credit_card",
+        Card = new CreditCardCard
+        {
+            Number = "4111111111111111",
+            HolderName = "John Doe",
+            Cvv = "123",
+            Expiration = new CompleteCardDataExpiration
+            {
+                Month = 12,
+                Year = 2025
+            }
+        },
+        Installments = new CreditCardInstallments
+        {
+            Value = 1
+        }
+    },
+    Items = new List<PostOrdersRequestItemsInner>
+    {
+        new PostOrdersRequestItemsInner
+        {
+            Name = "Product 1",
+            Quantity = 1,
+            Price = 100.00m
+        }
+    }
+});
+
+// Customers API
+var customersApi = serviceProvider.GetRequiredService<ICustomersApi>();
+var customersResponse = await customersApi.GetCustomersAsync(page: 1, pageSize: 10, period: GetCustomersPeriodEnum.SevenDays);
+
+// Card Tokenization API
+var cardApi = serviceProvider.GetRequiredService<ICardTokenizationApi>();
+var cardResponse = await cardApi.PostCardTokenizationAsync(new PostCardTokenizationRequest
+{
+    Customer = new PostCardTokenizationRequestCustomer
+    {
+        Document = "12345678900",
+        DocumentType = PostCardTokenizationRequestCustomerDocumentTypeEnum.Cpf,
+        Email = "customer@example.com",
+        Name = "John Doe"
+    },
+    Card = new CompleteCardData
+    {
+        Number = "4111111111111111",
+        HolderName = "John Doe",
+        Cvv = "123",
+        Expiration = new CompleteCardDataExpiration
+        {
+            Month = 12,
+            Year = 2025
+        }
+    }
+});
+
+// Withdrawals API
+var withdrawalsApi = serviceProvider.GetRequiredService<IWithdrawalsAndTransfersApi>();
+var withdrawalResponse = await withdrawalsApi.PostWithdrawsAsync(new PostWithdrawsRequest
+{
+    Amount = 50.00m,
+    Currency = "BRL",
+    PayoutAccount = new PostWithdrawsRequestPayoutAccount
+    {
+        // ... payout account details
+    }
+});
+```
 
 ## License
 
