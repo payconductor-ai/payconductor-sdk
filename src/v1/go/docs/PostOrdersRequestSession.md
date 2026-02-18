@@ -1,0 +1,134 @@
+# PostOrdersRequestSession
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**ExpiresInMinutes** | Pointer to **float32** | Tempo em minutos para expiração da sessão do checkout | [optional] [default to 30]
+**CheckoutUrl** | Pointer to **string** | URL do checkout para que possamos redirecionar | [optional] 
+**SessionId** | Pointer to **string** | Id gerado pelo nosso serviço para identificar a sessão de checkout | [optional] 
+**ExternalSessionId** | Pointer to **string** | Id da sessão de checkout gerado pelo lado do cliente. O id deve ser único para cada sessão de carrinho | [optional] 
+
+## Methods
+
+### NewPostOrdersRequestSession
+
+`func NewPostOrdersRequestSession() *PostOrdersRequestSession`
+
+NewPostOrdersRequestSession instantiates a new PostOrdersRequestSession object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewPostOrdersRequestSessionWithDefaults
+
+`func NewPostOrdersRequestSessionWithDefaults() *PostOrdersRequestSession`
+
+NewPostOrdersRequestSessionWithDefaults instantiates a new PostOrdersRequestSession object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetExpiresInMinutes
+
+`func (o *PostOrdersRequestSession) GetExpiresInMinutes() float32`
+
+GetExpiresInMinutes returns the ExpiresInMinutes field if non-nil, zero value otherwise.
+
+### GetExpiresInMinutesOk
+
+`func (o *PostOrdersRequestSession) GetExpiresInMinutesOk() (*float32, bool)`
+
+GetExpiresInMinutesOk returns a tuple with the ExpiresInMinutes field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExpiresInMinutes
+
+`func (o *PostOrdersRequestSession) SetExpiresInMinutes(v float32)`
+
+SetExpiresInMinutes sets ExpiresInMinutes field to given value.
+
+### HasExpiresInMinutes
+
+`func (o *PostOrdersRequestSession) HasExpiresInMinutes() bool`
+
+HasExpiresInMinutes returns a boolean if a field has been set.
+
+### GetCheckoutUrl
+
+`func (o *PostOrdersRequestSession) GetCheckoutUrl() string`
+
+GetCheckoutUrl returns the CheckoutUrl field if non-nil, zero value otherwise.
+
+### GetCheckoutUrlOk
+
+`func (o *PostOrdersRequestSession) GetCheckoutUrlOk() (*string, bool)`
+
+GetCheckoutUrlOk returns a tuple with the CheckoutUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCheckoutUrl
+
+`func (o *PostOrdersRequestSession) SetCheckoutUrl(v string)`
+
+SetCheckoutUrl sets CheckoutUrl field to given value.
+
+### HasCheckoutUrl
+
+`func (o *PostOrdersRequestSession) HasCheckoutUrl() bool`
+
+HasCheckoutUrl returns a boolean if a field has been set.
+
+### GetSessionId
+
+`func (o *PostOrdersRequestSession) GetSessionId() string`
+
+GetSessionId returns the SessionId field if non-nil, zero value otherwise.
+
+### GetSessionIdOk
+
+`func (o *PostOrdersRequestSession) GetSessionIdOk() (*string, bool)`
+
+GetSessionIdOk returns a tuple with the SessionId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSessionId
+
+`func (o *PostOrdersRequestSession) SetSessionId(v string)`
+
+SetSessionId sets SessionId field to given value.
+
+### HasSessionId
+
+`func (o *PostOrdersRequestSession) HasSessionId() bool`
+
+HasSessionId returns a boolean if a field has been set.
+
+### GetExternalSessionId
+
+`func (o *PostOrdersRequestSession) GetExternalSessionId() string`
+
+GetExternalSessionId returns the ExternalSessionId field if non-nil, zero value otherwise.
+
+### GetExternalSessionIdOk
+
+`func (o *PostOrdersRequestSession) GetExternalSessionIdOk() (*string, bool)`
+
+GetExternalSessionIdOk returns a tuple with the ExternalSessionId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetExternalSessionId
+
+`func (o *PostOrdersRequestSession) SetExternalSessionId(v string)`
+
+SetExternalSessionId sets ExternalSessionId field to given value.
+
+### HasExternalSessionId
+
+`func (o *PostOrdersRequestSession) HasExternalSessionId() bool`
+
+HasExternalSessionId returns a boolean if a field has been set.
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

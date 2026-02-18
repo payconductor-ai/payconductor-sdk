@@ -1,0 +1,1166 @@
+openapi: 3.0.3
+info:
+  description: |-
+    # Introdução
+
+    Esta documentação cobre todas as funcionalidades disponíveis na API RESTful do PayConductor, incluindo autenticação, gerenciamento de recursos e exemplos de uso.
+
+    <br />
+
+    <br />
+
+    ----
+
+    <br />
+
+
+    # Autenticação
+
+    A API do PayConductor utiliza autenticação HTTP Basic para validar requisições. Você precisa fornecer suas credenciais (Client ID e Client Secret) no formato `client:secret` codificado em Base64.
+
+    <br />
+
+    ## Obtendo Credenciais
+
+    1. Acesse o painel administrativo do PayConductor
+    2. Navegue até **Configurações > API Keys**
+    3. Gere um novo par de credenciais (Client ID e Client Secret)
+    4. Guarde o Client Secret em local seguro - ele não será exibido novamente
+
+    <br />
+
+    ## Formato de Autenticação
+
+    As credenciais devem ser enviadas no header `Authorization` usando o esquema Basic:
+
+    ```
+    Authorization: Basic base64(client_id:client_secret)
+    ```
+
+    <br />
+
+    ## Exemplo em Node.js
+
+    ```javascript
+    const clientId = 'seu_client_id';
+    const clientSecret = 'seu_client_secret';
+
+    // Codifica as credenciais em Base64
+    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+    const response = await fetch('https://api.payconductor.com/api/v1/orders', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    console.log(data);
+    ```
+
+    <br />
+
+    ## Erros de Autenticação
+
+    | Código | Descrição |
+    |--------|-----------|
+    | `401`  | Credenciais inválidas ou ausentes |
+    | `403`  | Credenciais válidas, mas sem permissão para o recurso |
+    | `429`  | Muitas requisições (rate limit excedido) |
+
+    ### Exemplo de resposta de erro
+
+    ```json
+    {
+      "error": {
+        "code": "UNAUTHORIZED",
+        "message": "Invalid credentials",
+        "details": "The provided client ID or secret is incorrect"
+      }
+    }
+    ```
+  title: PayConductor API
+  version: 1.0.0
+servers:
+- url: https://app.payconductor.ai/api/v1
+security:
+- basicAuth: []
+tags:
+- description: "Gere cobranças, consulte o status dos pedidos e gerencie reembolsos."
+  name: Pedidos
+- description: Inicie e monitore saques e transferências para suas contas externas.
+  name: Saques e Transferências
+paths:
+  /orders/:
+    get:
+      description: Recupere uma lista de pedidos. Utilize os parâmetros de filtro
+        de data e paginação para refinar os resultados conforme necessário.
+      operationId: getOrders
+      parameters:
+      - explode: true
+        in: query
+        name: period
+        required: true
+        schema:
+          default: Last7Days
+          description: Período do filtro de datas
+          enum:
+          - Today
+          - Yesterday
+          - Last7Days
+          - Last30Days
+          - ThisMonth
+          - LastMonth
+          - ThisYear
+          - Custom
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: endDate
+        required: false
+        schema:
+          description: Data de término para o filtro personalizado (formato AAAA-MM-DDTHH:MM:SSZ)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: startDate
+        required: false
+        schema:
+          description: Data de início para o filtro personalizado (formato AAAA-MM-DDTHH:MM:SSZ)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: true
+        schema:
+          default: 1
+          description: Número da página
+          minimum: 1
+          multipleOf: 1
+          type: number
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          default: 20
+          description: Número de itens por página
+          maximum: 100
+          minimum: 1
+          multipleOf: 1
+          type: number
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          description: ID interno sendo do pedido ou do charge
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - Generating
+          - Pending
+          - Completed
+          - Failed
+          - Canceled
+          - Refunding
+          - Refunded
+          - InDispute
+          - Chargeback
+          type: string
+        style: form
+      summary: Listar pedidos
+      tags:
+      - Pedidos
+    post:
+      description: Crie um novo pedido para pagamento utilizando os dados fornecidos
+      operationId: postOrders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postOrders_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/postOrders_200_response"
+          description: Response for status 200
+      summary: Criar pedido
+      tags:
+      - Pedidos
+  /orders/{id}:
+    get:
+      description: Localize os dados completos de um pedido buscando pelo nosso id
+      operationId: getOrdersById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      summary: Buscar pelo ID
+      tags:
+      - Pedidos
+  /orders/{id}/refund:
+    post:
+      description: Inicie um reembolso para o pedido especificado pelo ID.
+      operationId: postOrdersByIdRefund
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      summary: Reembolsar pedido
+      tags:
+      - Pedidos
+  /withdraws/:
+    get:
+      description: "Retorna uma lista paginada de saques e transferências. Permite\
+        \ filtrar por data de criação ou buscar por ID (ID do saque, ID externo, ID\
+        \ da adquirente ou End2EndID)"
+      operationId: getWithdraws
+      parameters:
+      - explode: true
+        in: query
+        name: period
+        required: true
+        schema:
+          default: Last7Days
+          description: Período do filtro de datas
+          enum:
+          - Today
+          - Yesterday
+          - Last7Days
+          - Last30Days
+          - ThisMonth
+          - LastMonth
+          - ThisYear
+          - Custom
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: endDate
+        required: false
+        schema:
+          description: Data de término para o filtro personalizado (formato AAAA-MM-DDTHH:MM:SSZ)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: startDate
+        required: false
+        schema:
+          description: Data de início para o filtro personalizado (formato AAAA-MM-DDTHH:MM:SSZ)
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: true
+        schema:
+          default: 1
+          description: Número da página
+          minimum: 1
+          multipleOf: 1
+          type: number
+        style: form
+      - explode: true
+        in: query
+        name: pageSize
+        required: true
+        schema:
+          default: 20
+          description: Número de itens por página
+          maximum: 100
+          minimum: 1
+          multipleOf: 1
+          type: number
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          description: "ID de busca do saque (pode ser ID do saque, ID externo, ID\
+            \ da adquirente ou End2EndID)"
+          type: string
+        style: form
+      summary: Lista os saques
+      tags:
+      - Saques e Transferências
+    post:
+      description: Realiza um novo saque ou transferência para a conta de pagamento
+        informada
+      operationId: postWithdraws
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postWithdraws_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/postWithdraws_200_response"
+          description: Response for status 200
+      summary: Cria saque
+      tags:
+      - Saques e Transferências
+  /withdraws/{id}:
+    get:
+      description: Retorna os detalhes de um saque ou transferência específico usando
+        seu ID
+      operationId: getWithdrawsById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      summary: Buscar pelo ID
+      tags:
+      - Saques e Transferências
+components:
+  schemas:
+    Endere_o_do_cliente:
+      description: Schema para criação de um novo endereço
+      properties:
+        city:
+          description: Nome da cidade
+          type: string
+        country:
+          default: BR
+          description: Código do país no formato ISO 3166-1 alpha-2
+          maxLength: 2
+          minLength: 2
+          type: string
+        neighborhood:
+          description: Nome do bairro
+          type: string
+        number:
+          description: Número do endereço
+          type: string
+        state:
+          description: Código do estado no formato ISO 3166-2
+          maxLength: 2
+          minLength: 2
+          type: string
+        street:
+          description: Nome da rua
+          type: string
+        zipCode:
+          description: CEP sem formatação
+          type: string
+      required:
+      - city
+      - country
+      - neighborhood
+      - number
+      - state
+      - street
+      - zipCode
+      title: Endereço do cliente
+      type: object
+    Cliente:
+      description: Schema para criação de um novo cliente
+      properties:
+        address:
+          $ref: "#/components/schemas/Endere_o_do_cliente"
+        documentNumber:
+          description: CPF ou CNPJ do cliente sem formatação
+          pattern: "^\\d{11}$|^\\d{14}$"
+          type: string
+        documentType:
+          enum:
+          - Cpf
+          - Cnpj
+          type: string
+        email:
+          description: Email do cliente
+          format: email
+          type: string
+        name:
+          description: Nome completo do cliente
+          type: string
+        phoneNumber:
+          description: Número de telefone do cliente no formato +55 DD 9XXXXXXXX
+          pattern: "^\\+(\\d{1,2}) (\\d{2}) (\\d{8,9})$"
+          type: string
+      required:
+      - documentNumber
+      - documentType
+      - email
+      - name
+      title: Cliente
+      type: object
+    postOrders_request_fingerprints:
+      properties:
+        threatMetrixFingerprintId:
+          description: ID de fingerprint do ThreatMetrix para análise de fraude
+          type: string
+      type: object
+    postOrders_request_items_inner:
+      properties:
+        id:
+          description: ID do produto ou serviço no seu sistema
+          type: string
+        isPhysical:
+          default: false
+          description: Define se o item é um produto físico ou um serviço
+          type: boolean
+        name:
+          description: Nome do produto ou serviço
+          type: string
+        qty:
+          description: Quantidade do produto ou serviço
+          type: number
+        unitPrice:
+          description: Preço unitário
+          type: number
+      required:
+      - id
+      - isPhysical
+      - name
+      - qty
+      - unitPrice
+      type: object
+    MerchantInput:
+      description: Dados do merchant para pedido ou saque
+      properties:
+        document:
+          description: CPF ou CNPJ do merchant sem formatação
+          pattern: "^\\d{11}$|^\\d{14}$"
+          type: string
+        email:
+          description: Email do merchant
+          format: email
+          type: string
+        name:
+          description: Nome do merchant
+          maxLength: 255
+          minLength: 2
+          type: string
+      required:
+      - document
+      - email
+      - name
+      title: MerchantInput
+      type: object
+    Pix_expirationInSeconds:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 3600
+        description: Tempo de expiração do PIX em segundos
+        minimum: 3600
+        type: integer
+      default: 3600
+      description: Tempo de expiração do PIX em segundos
+      minimum: 3600
+    Pix:
+      properties:
+        paymentMethod:
+          type: string
+        expirationInSeconds:
+          $ref: "#/components/schemas/Pix_expirationInSeconds"
+      required:
+      - paymentMethod
+      title: Pix
+      type: object
+    Cart_o_tokenizado:
+      properties:
+        firstSixCardNumber:
+          description: Primeiros 6 dígitos do cartão de crédito
+          type: string
+        token:
+          description: Token do cartão de crédito gerado anteriormente
+          type: string
+      required:
+      - token
+      title: Cartão tokenizado
+      type: object
+    Dados_completos_do_cart_o_expiration:
+      properties:
+        month:
+          description: Mês de expiração do cartão
+          maximum: 12
+          minimum: 1
+          type: number
+        year:
+          description: Ano de expiração do cartão
+          maximum: 2046
+          minimum: 2025
+          type: number
+      required:
+      - month
+      - year
+      type: object
+    Dados_completos_do_cart_o:
+      properties:
+        cvv:
+          description: Código de segurança do cartão (CVV)
+          maxLength: 4
+          minLength: 3
+          type: string
+        expiration:
+          $ref: "#/components/schemas/Dados_completos_do_cart_o_expiration"
+        holderName:
+          description: Nome do titular do cartão
+          type: string
+        number:
+          description: Número do cartão de crédito
+          type: string
+      required:
+      - cvv
+      - expiration
+      - holderName
+      - number
+      title: Dados completos do cartão
+      type: object
+    Cart_o_de_cr_dito_card:
+      anyOf:
+      - $ref: "#/components/schemas/Cart_o_tokenizado"
+      - $ref: "#/components/schemas/Dados_completos_do_cart_o"
+    Cart_o_de_cr_dito_installments:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 1
+        description: Número de parcelas
+        maximum: 12
+        minimum: 1
+        type: integer
+      default: 1
+      description: Número de parcelas
+      maximum: 12
+      minimum: 1
+    Cart_o_de_cr_dito:
+      properties:
+        paymentMethod:
+          type: string
+        card:
+          $ref: "#/components/schemas/Cart_o_de_cr_dito_card"
+        installments:
+          $ref: "#/components/schemas/Cart_o_de_cr_dito_installments"
+        softDescriptor:
+          description: Texto que aparecerá na fatura do cartão (soft descriptor)
+          maxLength: 22
+          minLength: 1
+          type: string
+      required:
+      - card
+      - installments
+      - paymentMethod
+      title: Cartão de crédito
+      type: object
+    Boleto_expirationInDays:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 7
+        description: Dias até o vencimento do boleto
+        minimum: 1
+        type: integer
+      default: 7
+      description: Dias até o vencimento do boleto
+      minimum: 1
+    Boleto:
+      properties:
+        paymentMethod:
+          type: string
+        expirationInDays:
+          $ref: "#/components/schemas/Boleto_expirationInDays"
+      required:
+      - paymentMethod
+      title: Boleto
+      type: object
+    NuPay_nuPay:
+      description: Dados específicos para pagamento via NuPay
+      properties:
+        cancelUrl:
+          description: URL de cancelamento do pagamento
+          type: string
+        merchantName:
+          description: Nome do comerciante
+          type: string
+        returnUrl:
+          description: URL de retorno após a conclusão do pagamento
+          type: string
+        storeName:
+          description: Nome da loja
+          type: string
+      required:
+      - cancelUrl
+      - merchantName
+      - returnUrl
+      type: object
+    NuPay:
+      properties:
+        paymentMethod:
+          type: string
+        nuPay:
+          $ref: "#/components/schemas/NuPay_nuPay"
+      required:
+      - nuPay
+      - paymentMethod
+      title: NuPay
+      type: object
+    PicPay:
+      properties:
+        paymentMethod:
+          type: string
+      required:
+      - paymentMethod
+      title: PicPay
+      type: object
+    postOrders_request_payment:
+      anyOf:
+      - $ref: "#/components/schemas/Pix"
+      - $ref: "#/components/schemas/Cart_o_de_cr_dito"
+      - $ref: "#/components/schemas/Boleto"
+      - $ref: "#/components/schemas/NuPay"
+      - $ref: "#/components/schemas/PicPay"
+      description: "Dados de pagamento para o pedido (Pix, Cartão de Crédito, Boleto,\
+        \ NuPay, etc...)"
+    postOrders_request_session:
+      description: "Caso o externalSessionId ou sessionId sejam fornecidos e houver\
+        \ uma sessão existente, ela será atualizada com os novos dados. Caso contrá\
+        rio, uma nova sessão será criada."
+      properties:
+        expiresInMinutes:
+          default: 30
+          description: Tempo em minutos para expiração da sessão do checkout
+          minimum: 15
+          type: number
+        checkoutUrl:
+          description: URL do checkout para que possamos redirecionar
+          type: string
+        sessionId:
+          description: Id gerado pelo nosso serviço para identificar a sessão de checkout
+          type: string
+        externalSessionId:
+          description: Id da sessão de checkout gerado pelo lado do cliente. O id
+            deve ser único para cada sessão de carrinho
+          minLength: 16
+          type: string
+      type: object
+    postOrders_request:
+      additionalProperties: false
+      properties:
+        chargeAmount:
+          description: Valor total a ser cobrado no pedido em valor flutuante
+          type: number
+        clientIp:
+          description: Endereço IP do cliente
+          type: string
+        customer:
+          $ref: "#/components/schemas/Cliente"
+        discountAmount:
+          default: 0
+          description: Valor do desconto
+          type: number
+        externalId:
+          description: ID da ordem no seu sistema
+          type: string
+        fingerprints:
+          $ref: "#/components/schemas/postOrders_request_fingerprints"
+        items:
+          description: Lista de produtos ou serviços do pedido
+          items:
+            $ref: "#/components/schemas/postOrders_request_items_inner"
+          maxItems: 20
+          type: array
+        merchant:
+          $ref: "#/components/schemas/MerchantInput"
+        payment:
+          $ref: "#/components/schemas/postOrders_request_payment"
+        splitAmountTotal:
+          description: "Valor total do split a ser pago ao merchant (Sendo usado apenas\
+            \ para fins de relatório, ou seja não gera split real)"
+          minimum: 0
+          type: number
+        session:
+          $ref: "#/components/schemas/postOrders_request_session"
+        shippingFee:
+          default: 0
+          description: Valor do frete
+          type: number
+        taxFee:
+          default: 0
+          description: Taxas adicionais
+          type: number
+        metadata:
+          description: Metadados adicionais para o pedido como pares chave-valor.
+            Não deve ter espaços ou caracteres especiais nas chaves
+          type: object
+      required:
+      - chargeAmount
+      - clientIp
+      - customer
+      - discountAmount
+      - externalId
+      - payment
+      - shippingFee
+      - taxFee
+      type: object
+    postOrders_200_response_pix:
+      description: Dados do PIX
+      example:
+        qrCodeUrl: qrCodeUrl
+        copyAndPasteCode: copyAndPasteCode
+        endToEndId: endToEndId
+      properties:
+        copyAndPasteCode:
+          description: Código copia e cola do PIX
+          type: string
+        qrCodeUrl:
+          description: URL da imagem do QR Code PIX
+          type: string
+        endToEndId:
+          description: E2E ID do PIX
+          nullable: true
+          type: string
+      required:
+      - copyAndPasteCode
+      - endToEndId
+      - qrCodeUrl
+      type: object
+    postOrders_200_response_bankSlip:
+      example:
+        pdfUrl: pdfUrl
+        barCode: barCode
+        digitableLine: digitableLine
+      properties:
+        barCode:
+          description: Código de barras do boleto
+          type: string
+        digitableLine:
+          description: Linha digitável do boleto
+          type: string
+        pdfUrl:
+          description: URL do PDF do boleto
+          type: string
+      required:
+      - barCode
+      - digitableLine
+      type: object
+    postOrders_200_response_nuPay:
+      example:
+        paymentUrl: paymentUrl
+      properties:
+        paymentUrl:
+          description: URL de pagamento NuPay
+          type: string
+      required:
+      - paymentUrl
+      type: object
+    postOrders_200_response_picPay:
+      example:
+        qrCodeUrl: qrCodeUrl
+        copyAndPasteCode: copyAndPasteCode
+      properties:
+        copyAndPasteCode:
+          description: Código copia e cola do PicPay
+          type: string
+        qrCodeUrl:
+          description: URL da imagem do QR Code PicPay
+          type: string
+      required:
+      - copyAndPasteCode
+      - qrCodeUrl
+      type: object
+    postOrders_200_response_creditCard:
+      example:
+        authorizationCode: authorizationCode
+      properties:
+        authorizationCode:
+          description: Código de autorização da transação
+          type: string
+      type: object
+    postOrders_200_response_orderItems_inner:
+      example:
+        totalAmount: 5.962133916683182
+        totalNetAmount: 5.637376656633329
+        qty: 1.4658129805029452
+        name: name
+        externalId: externalId
+        unityPrice: 2.3021358869347655
+        id: id
+      properties:
+        externalId:
+          description: ID externo do item
+          nullable: true
+          type: string
+        id:
+          description: ID do item no pedido
+          type: string
+        name:
+          description: Nome do produto/serviço
+          type: string
+        qty:
+          description: Quantidade
+          type: number
+        totalAmount:
+          description: Valor total do item (quantidade × preço unitário)
+          type: number
+        totalNetAmount:
+          description: Valor líquido total do item
+          type: number
+        unityPrice:
+          description: Preço unitário
+          type: number
+      required:
+      - externalId
+      - id
+      - name
+      - qty
+      - totalAmount
+      - totalNetAmount
+      - unityPrice
+      type: object
+    postOrders_200_response_session:
+      example:
+        sessionId: sessionId
+      nullable: true
+      properties:
+        sessionId:
+          description: ID da sessão de checkout associada ao pedido
+          type: string
+      required:
+      - sessionId
+      type: object
+    postOrders_200_response:
+      additionalProperties: false
+      example:
+        amount: 0.8008281904610115
+        payedAt: payedAt
+        costFee: 6.027456183070403
+        nuPay:
+          paymentUrl: paymentUrl
+        session:
+          sessionId: sessionId
+        externalIntegrationId: externalIntegrationId
+        errorMessage: errorMessage
+        externalId: externalId
+        errorCode: errorCode
+        picPay:
+          qrCodeUrl: qrCodeUrl
+          copyAndPasteCode: copyAndPasteCode
+        orderItems:
+        - totalAmount: 5.962133916683182
+          totalNetAmount: 5.637376656633329
+          qty: 1.4658129805029452
+          name: name
+          externalId: externalId
+          unityPrice: 2.3021358869347655
+          id: id
+        - totalAmount: 5.962133916683182
+          totalNetAmount: 5.637376656633329
+          qty: 1.4658129805029452
+          name: name
+          externalId: externalId
+          unityPrice: 2.3021358869347655
+          id: id
+        externalIntegrationKey: externalIntegrationKey
+        bankSlip:
+          pdfUrl: pdfUrl
+          barCode: barCode
+          digitableLine: digitableLine
+        paymentMethod: Pix
+        id: id
+        creditCard:
+          authorizationCode: authorizationCode
+        pix:
+          qrCodeUrl: qrCodeUrl
+          copyAndPasteCode: copyAndPasteCode
+          endToEndId: endToEndId
+        status: Generating
+      properties:
+        id:
+          description: ID do pedido no sistema
+          type: string
+        externalId:
+          description: ID externo do pedido (fornecido pela sua integração)
+          nullable: true
+          type: string
+        externalIntegrationKey:
+          description: Provedor utilizada para processar o pedido
+          type: string
+        externalIntegrationId:
+          description: ID do pedido no provedor de pagamento
+          nullable: true
+          type: string
+        amount:
+          description: Valor total do pedido
+          type: number
+        costFee:
+          description: Taxa de custo aplicada ao pedido
+          type: number
+        pix:
+          $ref: "#/components/schemas/postOrders_200_response_pix"
+        bankSlip:
+          $ref: "#/components/schemas/postOrders_200_response_bankSlip"
+        nuPay:
+          $ref: "#/components/schemas/postOrders_200_response_nuPay"
+        picPay:
+          $ref: "#/components/schemas/postOrders_200_response_picPay"
+        creditCard:
+          $ref: "#/components/schemas/postOrders_200_response_creditCard"
+        status:
+          enum:
+          - Generating
+          - Pending
+          - Completed
+          - Failed
+          - Canceled
+          - Refunding
+          - Refunded
+          - InDispute
+          - Chargeback
+          type: string
+        paymentMethod:
+          enum:
+          - Pix
+          - CreditCard
+          - DebitCard
+          - BankSlip
+          - Crypto
+          - ApplePay
+          - NuPay
+          - PicPay
+          - AmazonPay
+          - SepaDebit
+          - GooglePay
+          type: string
+        payedAt:
+          description: Data e hora em que o pedido foi pago (ISO 8601)
+          nullable: true
+          type: string
+        errorCode:
+          description: "Código de erro, se houver"
+          nullable: true
+          type: string
+        errorMessage:
+          description: "Mensagem de erro, se houver"
+          nullable: true
+          type: string
+        orderItems:
+          items:
+            $ref: "#/components/schemas/postOrders_200_response_orderItems_inner"
+          type: array
+        session:
+          $ref: "#/components/schemas/postOrders_200_response_session"
+      required:
+      - amount
+      - costFee
+      - errorCode
+      - errorMessage
+      - externalId
+      - externalIntegrationId
+      - externalIntegrationKey
+      - id
+      - orderItems
+      - payedAt
+      - paymentMethod
+      - status
+      type: object
+    postWithdraws_request_payoutAccount:
+      properties:
+        ownerDocument:
+          description: Documento do titular da conta (CPF ou CNPJ)
+          type: string
+        ownerName:
+          description: Nome do titular da conta
+          type: string
+        pixKey:
+          description: PIX key for withdrawal
+          type: string
+        pixType:
+          default: Cnpj
+          description: PIX key type
+          enum:
+          - Cnpj
+          - Cpf
+          - Email
+          - Phone
+          - Random
+          type: string
+      required:
+      - ownerDocument
+      - ownerName
+      - pixKey
+      - pixType
+      type: object
+    postWithdraws_request:
+      additionalProperties: false
+      properties:
+        amount:
+          description: Valor do saque em centavos
+          minimum: 1
+          type: number
+        externalId:
+          description: ID do saque no seu sistema
+          type: string
+        merchant:
+          $ref: "#/components/schemas/MerchantInput"
+        payoutAccount:
+          $ref: "#/components/schemas/postWithdraws_request_payoutAccount"
+      required:
+      - amount
+      - payoutAccount
+      type: object
+    postWithdraws_200_response_payedAt:
+      anyOf:
+      - description: Data e hora em que o saque foi pago (formato ISO 8601)
+        type: Date
+      - format: date-time
+        type: string
+      - format: date
+        type: string
+      - type: number
+      description: Data e hora em que o saque foi pago (formato ISO 8601)
+      nullable: true
+    postWithdraws_200_response_payoutAccount:
+      example:
+        pixType: Cpf
+        ownerName: ownerName
+        id: id
+        ownerDocument: ownerDocument
+        pixKey: pixKey
+      properties:
+        id:
+          description: Identificador único da conta de pagamento
+          type: string
+        ownerDocument:
+          description: Documento do titular da conta (CPF ou CNPJ)
+          pattern: "^\\d{11}$|^\\d{14}$"
+          type: string
+        ownerName:
+          description: Nome do titular da conta
+          type: string
+        pixKey:
+          description: Chave PIX utilizada para o saque
+          type: string
+        pixType:
+          default: Cpf
+          description: Tipo da chave PIX
+          enum:
+          - Cpf
+          - Cnpj
+          - Email
+          - Phone
+          - Random
+          type: string
+      required:
+      - id
+      - ownerDocument
+      - ownerName
+      - pixKey
+      - pixType
+      type: object
+    postWithdraws_200_response:
+      additionalProperties: false
+      example:
+        payedAt: ""
+        costFee: 0.8008281904610115
+        externalIntegrationId: externalIntegrationId
+        errorMessage: errorMessage
+        externalId: externalId
+        errorCode: errorCode
+        payoutAccount:
+          pixType: Cpf
+          ownerName: ownerName
+          id: id
+          ownerDocument: ownerDocument
+          pixKey: pixKey
+        id: id
+        externalIntegrationKey: externalIntegrationKey
+        status: Pending
+      properties:
+        id:
+          description: Identificador único do saque
+          type: string
+        externalId:
+          description: ID do saque no sistema no seu sistema
+          nullable: true
+          type: string
+        externalIntegrationKey:
+          description: Chave do provedor utilizado para o saque
+          type: string
+        externalIntegrationId:
+          description: ID do saque no provedor de pagamento
+          nullable: true
+          type: string
+        costFee:
+          description: Taxa de custo aplicada ao saque
+          type: number
+        status:
+          default: Pending
+          description: Status do saque
+          enum:
+          - Pending
+          - Transferring
+          - Completed
+          - Failed
+          type: string
+        errorCode:
+          description: "Código do erro, se houver"
+          nullable: true
+          type: string
+        errorMessage:
+          description: "Mensagem descritiva do erro, se houver"
+          nullable: true
+          type: string
+        payedAt:
+          $ref: "#/components/schemas/postWithdraws_200_response_payedAt"
+        payoutAccount:
+          $ref: "#/components/schemas/postWithdraws_200_response_payoutAccount"
+      required:
+      - costFee
+      - errorCode
+      - errorMessage
+      - externalId
+      - externalIntegrationId
+      - externalIntegrationKey
+      - id
+      - payedAt
+      - payoutAccount
+      - status
+      type: object
+  securitySchemes:
+    basicAuth:
+      description: "Use o formato Authorization: Basic base64('secret:')"
+      scheme: basic
+      type: http
