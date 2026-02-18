@@ -221,20 +221,20 @@ fetch('https://app.payconductor.ai/api/v1/orders/', {
 ### TypeScript
 
 ```typescript
-import { Configuration, OrdersApi, CustomersApi, CardTokenizationApi, WithdrawalsAndTransfersApi } from './src/v1/typescript';
+import { Configuration, OrderApi, CustomerApi, CardTokenizationApi, TransferApi } from './src/v1/typescript';
 
 const config = new Configuration({
   username: 'your_client_id',
   password: 'your_client_secret',
 });
 
-const ordersApi = new OrdersApi(config);
-const customersApi = new CustomersApi(config);
+const orderApi = new OrderApi(config);
+const customerApi = new CustomerApi(config);
 const cardTokenizationApi = new CardTokenizationApi(config);
-const withdrawalsApi = new WithdrawalsAndTransfersApi(config);
+const transferApi = new TransferApi(config);
 
 // Create an order
-const order = await ordersApi.postOrders({
+const order = await orderApi.postOrders({
   amount: 100.00,
   currency: 'BRL',
   payment: {
@@ -251,7 +251,7 @@ const order = await ordersApi.postOrders({
 });
 
 // Get all orders
-const orders = await ordersApi.getOrders('seven_days', 1, 10);
+const orders = await orderApi.getOrders('seven_days', 1, 10);
 
 // Tokenize a credit card
 const tokenizedCard = await cardTokenizationApi.postCardTokenization({
@@ -273,7 +273,7 @@ const tokenizedCard = await cardTokenizationApi.postCardTokenization({
 });
 
 // Create a withdrawal
-const withdrawal = await withdrawalsApi.postWithdraws({
+const withdrawal = await transferApi.postWithdraws({
   amount: 50.00,
   currency: 'BRL',
   payoutAccount: {
@@ -300,9 +300,9 @@ services.AddPayconductorApi((sp, options) =>
 
 var serviceProvider = services.BuildServiceProvider();
 
-// Orders API
-var ordersApi = serviceProvider.GetRequiredService<IOrdersApi>();
-var orderResponse = await ordersApi.PostOrdersAsync(new PostOrdersRequest
+// Order API
+var orderApi = serviceProvider.GetRequiredService<IOrderApi>();
+var orderResponse = await orderApi.PostOrdersAsync(new PostOrdersRequest
 {
     Amount = 100.00m,
     Currency = "BRL",
@@ -336,9 +336,9 @@ var orderResponse = await ordersApi.PostOrdersAsync(new PostOrdersRequest
     }
 });
 
-// Customers API
-var customersApi = serviceProvider.GetRequiredService<ICustomersApi>();
-var customersResponse = await customersApi.GetCustomersAsync(page: 1, pageSize: 10, period: GetCustomersPeriodEnum.SevenDays);
+// Customer API
+var customerApi = serviceProvider.GetRequiredService<ICustomerApi>();
+var customersResponse = await customerApi.GetCustomersAsync(page: 1, pageSize: 10, period: GetCustomersPeriodEnum.SevenDays);
 
 // Card Tokenization API
 var cardApi = serviceProvider.GetRequiredService<ICardTokenizationApi>();
@@ -364,9 +364,9 @@ var cardResponse = await cardApi.PostCardTokenizationAsync(new PostCardTokenizat
     }
 });
 
-// Withdrawals API
-var withdrawalsApi = serviceProvider.GetRequiredService<IWithdrawalsAndTransfersApi>();
-var withdrawalResponse = await withdrawalsApi.PostWithdrawsAsync(new PostWithdrawsRequest
+// Transfer API
+var transferApi = serviceProvider.GetRequiredService<ITransferApi>();
+var withdrawalResponse = await transferApi.PostWithdrawsAsync(new PostWithdrawsRequest
 {
     Amount = 50.00m,
     Currency = "BRL",

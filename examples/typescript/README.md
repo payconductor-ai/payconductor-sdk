@@ -33,15 +33,15 @@ bun run index.ts
 ## Example Code
 
 ```typescript
-import { Configuration, OrdersApi, CustomersApi, GetOrdersPeriodEnum } from 'payconductor-sdk';
+import { Configuration, OrderApi, CustomerApi, GetOrdersPeriodEnum } from 'payconductor-sdk';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID,
   password: process.env.PAYCONDUCTOR_CLIENT_SECRET,
 });
 
-const ordersApi = new OrdersApi(config);
+const orderApi = new OrderApi(config);
 
 // Get orders
-const orders = await ordersApi.getOrders(GetOrdersPeriodEnum.Last7Days, 1, 10);
+const orders = await orderApi.getOrders(GetOrdersPeriodEnum.Last7Days, 1, 10);
 ```
