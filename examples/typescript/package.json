@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun run index.ts"
+    "start": "bun run index.ts",
+    "build": "bun build ./index.ts --outdir ./dist --target node"
   },
   "dependencies": {
     "payconductor-sdk": "file:../../packages/v1/typescript"
