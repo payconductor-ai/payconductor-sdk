@@ -55,9 +55,9 @@ import PostWithdrawsRequest from './model/PostWithdrawsRequest';
 import PostWithdrawsRequestPayoutAccount from './model/PostWithdrawsRequestPayoutAccount';
 import TokenizedCard from './model/TokenizedCard';
 import CardTokenizationApi from './api/CardTokenizationApi';
-import CustomersApi from './api/CustomersApi';
-import OrdersApi from './api/OrdersApi';
-import WithdrawalsAndTransfersApi from './api/WithdrawalsAndTransfersApi';
+import CustomerApi from './api/CustomerApi';
+import OrderApi from './api/OrderApi';
+import TransferApi from './api/TransferApi';
 
 
 /**
@@ -351,20 +351,20 @@ export {
     CardTokenizationApi,
 
     /**
-    * The CustomersApi service constructor.
-    * @property {module:api/CustomersApi}
+    * The CustomerApi service constructor.
+    * @property {module:api/CustomerApi}
     */
-    CustomersApi,
+    CustomerApi,
 
     /**
-    * The OrdersApi service constructor.
-    * @property {module:api/OrdersApi}
+    * The OrderApi service constructor.
+    * @property {module:api/OrderApi}
     */
-    OrdersApi,
+    OrderApi,
 
     /**
-    * The WithdrawalsAndTransfersApi service constructor.
-    * @property {module:api/WithdrawalsAndTransfersApi}
+    * The TransferApi service constructor.
+    * @property {module:api/TransferApi}
     */
-    WithdrawalsAndTransfersApi
+    TransferApi
 };

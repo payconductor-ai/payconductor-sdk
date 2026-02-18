@@ -57,6 +57,6 @@ export(TokenizedCard)
 
 # APIs
 export(CardTokenizationApi)
-export(CustomersApi)
-export(OrdersApi)
-export(WithdrawalsAndTransfersApi)
+export(CustomerApi)
+export(OrderApi)
+export(TransferApi)

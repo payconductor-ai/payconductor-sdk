@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders_request_items_inner import PostOrdersRequestItemsInner
+from payconductor_sdk.models.post_orders_request_items_inner import PostOrdersRequestItemsInner
 
 class TestPostOrdersRequestItemsInner(unittest.TestCase):
     """PostOrdersRequestItemsInner unit test stubs"""

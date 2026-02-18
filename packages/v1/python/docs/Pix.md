@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.pix import Pix
+from payconductor_sdk.models.pix import Pix
 
 # TODO update the JSON string below
 json = "{}"

@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.pix import Pix
+from payconductor_sdk.models.pix import Pix
 
 class TestPix(unittest.TestCase):
     """Pix unit test stubs"""

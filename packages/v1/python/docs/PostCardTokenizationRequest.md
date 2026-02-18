@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
+from payconductor_sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
 
 # TODO update the JSON string below
 json = "{}"

@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_withdraws200_response_payed_at import PostWithdraws200ResponsePayedAt
+from payconductor_sdk.models.post_withdraws200_response_payed_at import PostWithdraws200ResponsePayedAt
 
 # TODO update the JSON string below
 json = "{}"

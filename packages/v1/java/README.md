@@ -2,7 +2,7 @@
 
 PayConductor API
 - API version: 1.0.0
-  - Build date: 2026-02-18T15:58:14.340077800-03:00[America/Bahia]
+  - Build date: 2026-02-18T17:42:43.092984-03:00[America/Bahia]
   - Generator version: 7.20.0
 
 PayConductor API Documentation.
@@ -201,18 +201,18 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CardTokenizationApi* | [**postCardTokenization**](docs/CardTokenizationApi.md#postCardTokenization) | **POST** /card-tokenization/ | Tokenize card
-*CustomersApi* | [**deleteCustomersById**](docs/CustomersApi.md#deleteCustomersById) | **DELETE** /customers/{id} | 
-*CustomersApi* | [**getCustomers**](docs/CustomersApi.md#getCustomers) | **GET** /customers/ | 
-*CustomersApi* | [**getCustomersById**](docs/CustomersApi.md#getCustomersById) | **GET** /customers/{id} | 
-*CustomersApi* | [**patchCustomersById**](docs/CustomersApi.md#patchCustomersById) | **PATCH** /customers/{id} | 
-*CustomersApi* | [**postCustomers**](docs/CustomersApi.md#postCustomers) | **POST** /customers/ | 
-*OrdersApi* | [**getOrders**](docs/OrdersApi.md#getOrders) | **GET** /orders/ | List orders
-*OrdersApi* | [**getOrdersById**](docs/OrdersApi.md#getOrdersById) | **GET** /orders/{id} | Get order by ID
-*OrdersApi* | [**postOrders**](docs/OrdersApi.md#postOrders) | **POST** /orders/ | Create order
-*OrdersApi* | [**postOrdersByIdRefund**](docs/OrdersApi.md#postOrdersByIdRefund) | **POST** /orders/{id}/refund | Refund order
-*WithdrawalsAndTransfersApi* | [**getWithdraws**](docs/WithdrawalsAndTransfersApi.md#getWithdraws) | **GET** /withdraws/ | List withdrawals
-*WithdrawalsAndTransfersApi* | [**getWithdrawsById**](docs/WithdrawalsAndTransfersApi.md#getWithdrawsById) | **GET** /withdraws/{id} | Get withdrawal by ID
-*WithdrawalsAndTransfersApi* | [**postWithdraws**](docs/WithdrawalsAndTransfersApi.md#postWithdraws) | **POST** /withdraws/ | Create withdrawal
+*CustomerApi* | [**deleteCustomersById**](docs/CustomerApi.md#deleteCustomersById) | **DELETE** /customers/{id} | 
+*CustomerApi* | [**getCustomers**](docs/CustomerApi.md#getCustomers) | **GET** /customers/ | 
+*CustomerApi* | [**getCustomersById**](docs/CustomerApi.md#getCustomersById) | **GET** /customers/{id} | 
+*CustomerApi* | [**patchCustomersById**](docs/CustomerApi.md#patchCustomersById) | **PATCH** /customers/{id} | 
+*CustomerApi* | [**postCustomers**](docs/CustomerApi.md#postCustomers) | **POST** /customers/ | 
+*OrderApi* | [**getOrders**](docs/OrderApi.md#getOrders) | **GET** /orders/ | List orders
+*OrderApi* | [**getOrdersById**](docs/OrderApi.md#getOrdersById) | **GET** /orders/{id} | Get order by ID
+*OrderApi* | [**postOrders**](docs/OrderApi.md#postOrders) | **POST** /orders/ | Create order
+*OrderApi* | [**postOrdersByIdRefund**](docs/OrderApi.md#postOrdersByIdRefund) | **POST** /orders/{id}/refund | Refund order
+*TransferApi* | [**getWithdraws**](docs/TransferApi.md#getWithdraws) | **GET** /withdraws/ | List withdrawals
+*TransferApi* | [**getWithdrawsById**](docs/TransferApi.md#getWithdrawsById) | **GET** /withdraws/{id} | Get withdrawal by ID
+*TransferApi* | [**postWithdraws**](docs/TransferApi.md#postWithdraws) | **POST** /withdraws/ | Create withdrawal
 
 
 ## Documentation for Models

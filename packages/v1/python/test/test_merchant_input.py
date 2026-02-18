@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.merchant_input import MerchantInput
+from payconductor_sdk.models.merchant_input import MerchantInput
 
 class TestMerchantInput(unittest.TestCase):
     """MerchantInput unit test stubs"""

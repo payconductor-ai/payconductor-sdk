@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.credit_card import CreditCard
+from payconductor_sdk.models.credit_card import CreditCard
 
 class TestCreditCard(unittest.TestCase):
     """CreditCard unit test stubs"""

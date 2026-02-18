@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.complete_card_data_expiration import CompleteCardDataExpiration
+from payconductor_sdk.models.complete_card_data_expiration import CompleteCardDataExpiration
 
 # TODO update the JSON string below
 json = "{}"

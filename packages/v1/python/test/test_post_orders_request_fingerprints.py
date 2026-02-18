@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders_request_fingerprints import PostOrdersRequestFingerprints
+from payconductor_sdk.models.post_orders_request_fingerprints import PostOrdersRequestFingerprints
 
 class TestPostOrdersRequestFingerprints(unittest.TestCase):
     """PostOrdersRequestFingerprints unit test stubs"""

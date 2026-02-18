@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_withdraws_request_payout_account import PostWithdrawsRequestPayoutAccount
+from payconductor_sdk.models.post_withdraws_request_payout_account import PostWithdrawsRequestPayoutAccount
 
 # TODO update the JSON string below
 json = "{}"

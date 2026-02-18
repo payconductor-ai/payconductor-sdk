@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
+from payconductor_sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
 
 class TestPostCardTokenizationRequest(unittest.TestCase):
     """PostCardTokenizationRequest unit test stubs"""
@@ -35,9 +35,9 @@ class TestPostCardTokenizationRequest(unittest.TestCase):
         model = PostCardTokenizationRequest()
         if include_optional:
             return PostCardTokenizationRequest(
-                card = payconductor-sdk.models.complete_card_data.Complete card data(
+                card = payconductor_sdk.models.complete_card_data.Complete card data(
                     cvv = '012', 
-                    expiration = payconductor-sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
+                    expiration = payconductor_sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
                         month = 1, 
                         year = 2025, ), 
                     holder_name = '', 
@@ -47,9 +47,9 @@ class TestPostCardTokenizationRequest(unittest.TestCase):
             )
         else:
             return PostCardTokenizationRequest(
-                card = payconductor-sdk.models.complete_card_data.Complete card data(
+                card = payconductor_sdk.models.complete_card_data.Complete card data(
                     cvv = '012', 
-                    expiration = payconductor-sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
+                    expiration = payconductor_sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
                         month = 1, 
                         year = 2025, ), 
                     holder_name = '', 

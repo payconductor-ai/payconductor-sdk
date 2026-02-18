@@ -1,4 +1,4 @@
-# payconductor-sdk.CardTokenizationApi
+# payconductor_sdk.CardTokenizationApi
 
 All URIs are relative to *https://app.payconductor.ai/api/v1*
 
@@ -19,15 +19,15 @@ Tokenize credit cards for future charges.
 * Basic Authentication (basicAuth):
 
 ```python
-import payconductor-sdk
-from payconductor-sdk.models.post_card_tokenization200_response import PostCardTokenization200Response
-from payconductor-sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
-from payconductor-sdk.rest import ApiException
+import payconductor_sdk
+from payconductor_sdk.models.post_card_tokenization200_response import PostCardTokenization200Response
+from payconductor_sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
+from payconductor_sdk.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://app.payconductor.ai/api/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = payconductor-sdk.Configuration(
+configuration = payconductor_sdk.Configuration(
     host = "https://app.payconductor.ai/api/v1"
 )
 
@@ -37,16 +37,16 @@ configuration = payconductor-sdk.Configuration(
 # satisfies your auth use case.
 
 # Configure HTTP basic authorization: basicAuth
-configuration = payconductor-sdk.Configuration(
+configuration = payconductor_sdk.Configuration(
     username = os.environ["USERNAME"],
     password = os.environ["PASSWORD"]
 )
 
 # Enter a context with an instance of the API client
-with payconductor-sdk.ApiClient(configuration) as api_client:
+with payconductor_sdk.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = payconductor-sdk.CardTokenizationApi(api_client)
-    post_card_tokenization_request = payconductor-sdk.PostCardTokenizationRequest() # PostCardTokenizationRequest | Data for creating a customer card
+    api_instance = payconductor_sdk.CardTokenizationApi(api_client)
+    post_card_tokenization_request = payconductor_sdk.PostCardTokenizationRequest() # PostCardTokenizationRequest | Data for creating a customer card
 
     try:
         # Tokenize card

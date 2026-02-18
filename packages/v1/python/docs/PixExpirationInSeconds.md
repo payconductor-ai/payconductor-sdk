@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.pix_expiration_in_seconds import PixExpirationInSeconds
+from payconductor_sdk.models.pix_expiration_in_seconds import PixExpirationInSeconds
 
 # TODO update the JSON string below
 json = "{}"

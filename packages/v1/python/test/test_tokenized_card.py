@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.tokenized_card import TokenizedCard
+from payconductor_sdk.models.tokenized_card import TokenizedCard
 
 class TestTokenizedCard(unittest.TestCase):
     """TokenizedCard unit test stubs"""

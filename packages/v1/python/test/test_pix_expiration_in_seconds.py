@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.pix_expiration_in_seconds import PixExpirationInSeconds
+from payconductor_sdk.models.pix_expiration_in_seconds import PixExpirationInSeconds
 
 class TestPixExpirationInSeconds(unittest.TestCase):
     """PixExpirationInSeconds unit test stubs"""

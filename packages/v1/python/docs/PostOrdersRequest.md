@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_orders_request import PostOrdersRequest
+from payconductor_sdk.models.post_orders_request import PostOrdersRequest
 
 # TODO update the JSON string below
 json = "{}"

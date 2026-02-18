@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_card_tokenization_request_customer import PostCardTokenizationRequestCustomer
+from payconductor_sdk.models.post_card_tokenization_request_customer import PostCardTokenizationRequestCustomer
 
 class TestPostCardTokenizationRequestCustomer(unittest.TestCase):
     """PostCardTokenizationRequestCustomer unit test stubs"""
@@ -35,7 +35,7 @@ class TestPostCardTokenizationRequestCustomer(unittest.TestCase):
         model = PostCardTokenizationRequestCustomer()
         if include_optional:
             return PostCardTokenizationRequestCustomer(
-                address = payconductor-sdk.models.customer_address.Customer address(
+                address = payconductor_sdk.models.customer_address.Customer address(
                     city = '', 
                     country = 'BR', 
                     neighborhood = '', 

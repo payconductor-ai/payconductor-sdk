@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.pic_pay import PicPay
+from payconductor_sdk.models.pic_pay import PicPay
 
 class TestPicPay(unittest.TestCase):
     """PicPay unit test stubs"""

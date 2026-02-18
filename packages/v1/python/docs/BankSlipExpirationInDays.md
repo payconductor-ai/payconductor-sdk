@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.bank_slip_expiration_in_days import BankSlipExpirationInDays
+from payconductor_sdk.models.bank_slip_expiration_in_days import BankSlipExpirationInDays
 
 # TODO update the JSON string below
 json = "{}"

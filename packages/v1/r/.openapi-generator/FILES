@@ -21,11 +21,11 @@ R/customer1.R
 R/customer2.R
 R/customer2_document_type.R
 R/customer_address.R
-R/customers_api.R
+R/customer_api.R
 R/merchant_input.R
 R/nu_pay.R
 R/nu_pay_nu_pay.R
-R/orders_api.R
+R/order_api.R
 R/pic_pay.R
 R/pix.R
 R/pix_expiration_in_seconds.R
@@ -52,7 +52,7 @@ R/post_withdraws200_response_payout_account.R
 R/post_withdraws_request.R
 R/post_withdraws_request_payout_account.R
 R/tokenized_card.R
-R/withdrawals_and_transfers_api.R
+R/transfer_api.R
 README.md
 docs/BankSlip.md
 docs/BankSlipExpirationInDays.md
@@ -67,11 +67,11 @@ docs/Customer1.md
 docs/Customer2.md
 docs/Customer2DocumentType.md
 docs/CustomerAddress.md
-docs/CustomersApi.md
+docs/CustomerApi.md
 docs/MerchantInput.md
 docs/NuPay.md
 docs/NuPayNuPay.md
-docs/OrdersApi.md
+docs/OrderApi.md
 docs/PicPay.md
 docs/Pix.md
 docs/PixExpirationInSeconds.md
@@ -98,7 +98,7 @@ docs/PostWithdraws200ResponsePayoutAccount.md
 docs/PostWithdrawsRequest.md
 docs/PostWithdrawsRequestPayoutAccount.md
 docs/TokenizedCard.md
-docs/WithdrawalsAndTransfersApi.md
+docs/TransferApi.md
 git_push.sh
 tests/testthat.R
 tests/testthat/test_bank_slip.R
@@ -114,11 +114,11 @@ tests/testthat/test_customer1.R
 tests/testthat/test_customer2.R
 tests/testthat/test_customer2_document_type.R
 tests/testthat/test_customer_address.R
-tests/testthat/test_customers_api.R
+tests/testthat/test_customer_api.R
 tests/testthat/test_merchant_input.R
 tests/testthat/test_nu_pay.R
 tests/testthat/test_nu_pay_nu_pay.R
-tests/testthat/test_orders_api.R
+tests/testthat/test_order_api.R
 tests/testthat/test_pic_pay.R
 tests/testthat/test_pix.R
 tests/testthat/test_pix_expiration_in_seconds.R
@@ -145,4 +145,4 @@ tests/testthat/test_post_withdraws200_response_payout_account.R
 tests/testthat/test_post_withdraws_request.R
 tests/testthat/test_post_withdraws_request_payout_account.R
 tests/testthat/test_tokenized_card.R
-tests/testthat/test_withdrawals_and_transfers_api.R
+tests/testthat/test_transfer_api.R

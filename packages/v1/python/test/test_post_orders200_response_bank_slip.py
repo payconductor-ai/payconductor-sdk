@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders200_response_bank_slip import PostOrders200ResponseBankSlip
+from payconductor_sdk.models.post_orders200_response_bank_slip import PostOrders200ResponseBankSlip
 
 class TestPostOrders200ResponseBankSlip(unittest.TestCase):
     """PostOrders200ResponseBankSlip unit test stubs"""

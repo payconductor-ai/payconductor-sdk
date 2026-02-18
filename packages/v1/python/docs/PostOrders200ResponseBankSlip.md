@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_orders200_response_bank_slip import PostOrders200ResponseBankSlip
+from payconductor_sdk.models.post_orders200_response_bank_slip import PostOrders200ResponseBankSlip
 
 # TODO update the JSON string below
 json = "{}"

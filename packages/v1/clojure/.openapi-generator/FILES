@@ -3,9 +3,9 @@
 git_push.sh
 project.clj
 src/payconductor_sdk/api/card_tokenization.clj
-src/payconductor_sdk/api/customers.clj
-src/payconductor_sdk/api/orders.clj
-src/payconductor_sdk/api/withdrawals_and_transfers.clj
+src/payconductor_sdk/api/customer.clj
+src/payconductor_sdk/api/order.clj
+src/payconductor_sdk/api/transfer.clj
 src/payconductor_sdk/core.clj
 src/payconductor_sdk/specs/bank_slip.clj
 src/payconductor_sdk/specs/bank_slip_expiration_in_days.clj

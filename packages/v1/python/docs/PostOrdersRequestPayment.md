@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_orders_request_payment import PostOrdersRequestPayment
+from payconductor_sdk.models.post_orders_request_payment import PostOrdersRequestPayment
 
 # TODO update the JSON string below
 json = "{}"

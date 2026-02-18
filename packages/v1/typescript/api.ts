@@ -838,9 +838,9 @@ export class CardTokenizationApi extends BaseAPI {
 
 
 /**
- * CustomersApi - axios parameter creator
+ * CustomerApi - axios parameter creator
  */
-export const CustomersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CustomerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -1073,10 +1073,10 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
 };
 
 /**
- * CustomersApi - functional programming interface
+ * CustomerApi - functional programming interface
  */
-export const CustomersApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CustomersApiAxiosParamCreator(configuration)
+export const CustomerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CustomerApiAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -1087,7 +1087,7 @@ export const CustomersApiFp = function(configuration?: Configuration) {
         async deleteCustomersById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCustomersById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CustomersApi.deleteCustomersById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CustomerApi.deleteCustomersById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1105,7 +1105,7 @@ export const CustomersApiFp = function(configuration?: Configuration) {
         async getCustomers(page: number, pageSize: number, period: GetCustomersPeriodEnum, email?: string, name?: string, endDate?: string, startDate?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCustomers(page, pageSize, period, email, name, endDate, startDate, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CustomersApi.getCustomers']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CustomerApi.getCustomers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1117,7 +1117,7 @@ export const CustomersApiFp = function(configuration?: Configuration) {
         async getCustomersById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCustomersById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CustomersApi.getCustomersById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CustomerApi.getCustomersById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1130,7 +1130,7 @@ export const CustomersApiFp = function(configuration?: Configuration) {
         async patchCustomersById(id: string, customer1: Customer1, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.patchCustomersById(id, customer1, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CustomersApi.patchCustomersById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CustomerApi.patchCustomersById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1142,17 +1142,17 @@ export const CustomersApiFp = function(configuration?: Configuration) {
         async postCustomers(customer: Customer, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postCustomers(customer, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['CustomersApi.postCustomers']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['CustomerApi.postCustomers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * CustomersApi - factory interface
+ * CustomerApi - factory interface
  */
-export const CustomersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CustomersApiFp(configuration)
+export const CustomerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CustomerApiFp(configuration)
     return {
         /**
          * 
@@ -1210,9 +1210,9 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
 };
 
 /**
- * CustomersApi - object-oriented interface
+ * CustomerApi - object-oriented interface
  */
-export class CustomersApi extends BaseAPI {
+export class CustomerApi extends BaseAPI {
     /**
      * 
      * @param {string} id 
@@ -1220,7 +1220,7 @@ export class CustomersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public deleteCustomersById(id: string, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).deleteCustomersById(id, options).then((request) => request(this.axios, this.basePath));
+        return CustomerApiFp(this.configuration).deleteCustomersById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1236,7 +1236,7 @@ export class CustomersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public getCustomers(page: number, pageSize: number, period: GetCustomersPeriodEnum, email?: string, name?: string, endDate?: string, startDate?: string, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).getCustomers(page, pageSize, period, email, name, endDate, startDate, options).then((request) => request(this.axios, this.basePath));
+        return CustomerApiFp(this.configuration).getCustomers(page, pageSize, period, email, name, endDate, startDate, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1246,7 +1246,7 @@ export class CustomersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public getCustomersById(id: string, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).getCustomersById(id, options).then((request) => request(this.axios, this.basePath));
+        return CustomerApiFp(this.configuration).getCustomersById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1257,7 +1257,7 @@ export class CustomersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public patchCustomersById(id: string, customer1: Customer1, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).patchCustomersById(id, customer1, options).then((request) => request(this.axios, this.basePath));
+        return CustomerApiFp(this.configuration).patchCustomersById(id, customer1, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1267,7 +1267,7 @@ export class CustomersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public postCustomers(customer: Customer, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).postCustomers(customer, options).then((request) => request(this.axios, this.basePath));
+        return CustomerApiFp(this.configuration).postCustomers(customer, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1285,9 +1285,9 @@ export type GetCustomersPeriodEnum = typeof GetCustomersPeriodEnum[keyof typeof 
 
 
 /**
- * OrdersApi - axios parameter creator
+ * OrderApi - axios parameter creator
  */
-export const OrdersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const OrderApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Retrieve a list of orders. Use date filter and pagination parameters to refine results as needed.
@@ -1484,10 +1484,10 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
 };
 
 /**
- * OrdersApi - functional programming interface
+ * OrderApi - functional programming interface
  */
-export const OrdersApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = OrdersApiAxiosParamCreator(configuration)
+export const OrderApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OrderApiAxiosParamCreator(configuration)
     return {
         /**
          * Retrieve a list of orders. Use date filter and pagination parameters to refine results as needed.
@@ -1505,7 +1505,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
         async getOrders(period: GetOrdersPeriodEnum, page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, status?: GetOrdersStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOrders(period, page, pageSize, endDate, startDate, id, status, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrdersApi.getOrders']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OrderApi.getOrders']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1518,7 +1518,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
         async getOrdersById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOrdersById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrdersApi.getOrdersById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OrderApi.getOrdersById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1531,7 +1531,7 @@ export const OrdersApiFp = function(configuration?: Configuration) {
         async postOrders(postOrdersRequest: PostOrdersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostOrders200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postOrders(postOrdersRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrdersApi.postOrders']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OrderApi.postOrders']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1544,17 +1544,17 @@ export const OrdersApiFp = function(configuration?: Configuration) {
         async postOrdersByIdRefund(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postOrdersByIdRefund(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['OrdersApi.postOrdersByIdRefund']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['OrderApi.postOrdersByIdRefund']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * OrdersApi - factory interface
+ * OrderApi - factory interface
  */
-export const OrdersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = OrdersApiFp(configuration)
+export const OrderApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OrderApiFp(configuration)
     return {
         /**
          * Retrieve a list of orders. Use date filter and pagination parameters to refine results as needed.
@@ -1606,9 +1606,9 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
 };
 
 /**
- * OrdersApi - object-oriented interface
+ * OrderApi - object-oriented interface
  */
-export class OrdersApi extends BaseAPI {
+export class OrderApi extends BaseAPI {
     /**
      * Retrieve a list of orders. Use date filter and pagination parameters to refine results as needed.
      * @summary List orders
@@ -1623,7 +1623,7 @@ export class OrdersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public getOrders(period: GetOrdersPeriodEnum, page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, status?: GetOrdersStatusEnum, options?: RawAxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).getOrders(period, page, pageSize, endDate, startDate, id, status, options).then((request) => request(this.axios, this.basePath));
+        return OrderApiFp(this.configuration).getOrders(period, page, pageSize, endDate, startDate, id, status, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1634,7 +1634,7 @@ export class OrdersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public getOrdersById(id: string, options?: RawAxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).getOrdersById(id, options).then((request) => request(this.axios, this.basePath));
+        return OrderApiFp(this.configuration).getOrdersById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1645,7 +1645,7 @@ export class OrdersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public postOrders(postOrdersRequest: PostOrdersRequest, options?: RawAxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).postOrders(postOrdersRequest, options).then((request) => request(this.axios, this.basePath));
+        return OrderApiFp(this.configuration).postOrders(postOrdersRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1656,7 +1656,7 @@ export class OrdersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public postOrdersByIdRefund(id: string, options?: RawAxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).postOrdersByIdRefund(id, options).then((request) => request(this.axios, this.basePath));
+        return OrderApiFp(this.configuration).postOrdersByIdRefund(id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1686,9 +1686,9 @@ export type GetOrdersStatusEnum = typeof GetOrdersStatusEnum[keyof typeof GetOrd
 
 
 /**
- * WithdrawalsAndTransfersApi - axios parameter creator
+ * TransferApi - axios parameter creator
  */
-export const WithdrawalsAndTransfersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const TransferApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)
@@ -1843,10 +1843,10 @@ export const WithdrawalsAndTransfersApiAxiosParamCreator = function (configurati
 };
 
 /**
- * WithdrawalsAndTransfersApi - functional programming interface
+ * TransferApi - functional programming interface
  */
-export const WithdrawalsAndTransfersApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = WithdrawalsAndTransfersApiAxiosParamCreator(configuration)
+export const TransferApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = TransferApiAxiosParamCreator(configuration)
     return {
         /**
          * Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)
@@ -1863,7 +1863,7 @@ export const WithdrawalsAndTransfersApiFp = function(configuration?: Configurati
         async getWithdraws(period: GetWithdrawsPeriodEnum, page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWithdraws(period, page, pageSize, endDate, startDate, id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WithdrawalsAndTransfersApi.getWithdraws']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TransferApi.getWithdraws']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1876,7 +1876,7 @@ export const WithdrawalsAndTransfersApiFp = function(configuration?: Configurati
         async getWithdrawsById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getWithdrawsById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WithdrawalsAndTransfersApi.getWithdrawsById']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TransferApi.getWithdrawsById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1889,17 +1889,17 @@ export const WithdrawalsAndTransfersApiFp = function(configuration?: Configurati
         async postWithdraws(postWithdrawsRequest: PostWithdrawsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostWithdraws200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postWithdraws(postWithdrawsRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['WithdrawalsAndTransfersApi.postWithdraws']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['TransferApi.postWithdraws']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
 
 /**
- * WithdrawalsAndTransfersApi - factory interface
+ * TransferApi - factory interface
  */
-export const WithdrawalsAndTransfersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = WithdrawalsAndTransfersApiFp(configuration)
+export const TransferApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = TransferApiFp(configuration)
     return {
         /**
          * Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)
@@ -1940,9 +1940,9 @@ export const WithdrawalsAndTransfersApiFactory = function (configuration?: Confi
 };
 
 /**
- * WithdrawalsAndTransfersApi - object-oriented interface
+ * TransferApi - object-oriented interface
  */
-export class WithdrawalsAndTransfersApi extends BaseAPI {
+export class TransferApi extends BaseAPI {
     /**
      * Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)
      * @summary List withdrawals
@@ -1956,7 +1956,7 @@ export class WithdrawalsAndTransfersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public getWithdraws(period: GetWithdrawsPeriodEnum, page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, options?: RawAxiosRequestConfig) {
-        return WithdrawalsAndTransfersApiFp(this.configuration).getWithdraws(period, page, pageSize, endDate, startDate, id, options).then((request) => request(this.axios, this.basePath));
+        return TransferApiFp(this.configuration).getWithdraws(period, page, pageSize, endDate, startDate, id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1967,7 +1967,7 @@ export class WithdrawalsAndTransfersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public getWithdrawsById(id: string, options?: RawAxiosRequestConfig) {
-        return WithdrawalsAndTransfersApiFp(this.configuration).getWithdrawsById(id, options).then((request) => request(this.axios, this.basePath));
+        return TransferApiFp(this.configuration).getWithdrawsById(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1978,7 +1978,7 @@ export class WithdrawalsAndTransfersApi extends BaseAPI {
      * @throws {RequiredError}
      */
     public postWithdraws(postWithdrawsRequest: PostWithdrawsRequest, options?: RawAxiosRequestConfig) {
-        return WithdrawalsAndTransfersApiFp(this.configuration).postWithdraws(postWithdrawsRequest, options).then((request) => request(this.axios, this.basePath));
+        return TransferApiFp(this.configuration).postWithdraws(postWithdrawsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

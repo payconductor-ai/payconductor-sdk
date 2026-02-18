@@ -89,11 +89,11 @@ security:
 - basicAuth: []
 tags:
 - description: "Manage charges, check order status, and handle refunds."
-  name: Orders
+  name: Order
 - description: Initiate and monitor withdrawals and transfers to your external accounts.
-  name: Withdrawals and Transfers
+  name: Transfer
 - description: "Manage customers, create, update, delete and list customers."
-  name: Customers
+  name: Customer
 - description: Tokenize credit cards for future charges.
   name: Card Tokenization
 paths:
@@ -189,7 +189,7 @@ paths:
         style: form
       summary: List orders
       tags:
-      - Orders
+      - Order
     post:
       description: Create a new order for payment using the provided data
       operationId: postOrders
@@ -208,7 +208,7 @@ paths:
           description: Response for status 200
       summary: Create order
       tags:
-      - Orders
+      - Order
   /orders/{id}:
     get:
       description: Retrieve the complete data of an order by our ID
@@ -223,7 +223,7 @@ paths:
         style: simple
       summary: Get order by ID
       tags:
-      - Orders
+      - Order
   /orders/{id}/refund:
     post:
       description: Initiate a refund for the order specified by ID.
@@ -238,7 +238,7 @@ paths:
         style: simple
       summary: Refund order
       tags:
-      - Orders
+      - Order
   /withdraws/:
     get:
       description: "Returns a paginated list of withdrawals and transfers. Filter\
@@ -316,7 +316,7 @@ paths:
         style: form
       summary: List withdrawals
       tags:
-      - Withdrawals and Transfers
+      - Transfer
     post:
       description: Create a new withdrawal or transfer to the provided payment account
       operationId: postWithdraws
@@ -335,7 +335,7 @@ paths:
           description: Response for status 200
       summary: Create withdrawal
       tags:
-      - Withdrawals and Transfers
+      - Transfer
   /withdraws/{id}:
     get:
       description: Returns the details of a specific withdrawal or transfer using
@@ -351,7 +351,7 @@ paths:
         style: simple
       summary: Get withdrawal by ID
       tags:
-      - Withdrawals and Transfers
+      - Transfer
   /customers/:
     get:
       operationId: getCustomers
@@ -433,7 +433,7 @@ paths:
           type: string
         style: form
       tags:
-      - Customers
+      - Customer
     post:
       operationId: postCustomers
       requestBody:
@@ -444,7 +444,7 @@ paths:
         description: Schema for creating a new customer
         required: true
       tags:
-      - Customers
+      - Customer
   /customers/{id}:
     delete:
       operationId: deleteCustomersById
@@ -457,7 +457,7 @@ paths:
           type: string
         style: simple
       tags:
-      - Customers
+      - Customer
     get:
       operationId: getCustomersById
       parameters:
@@ -469,7 +469,7 @@ paths:
           type: string
         style: simple
       tags:
-      - Customers
+      - Customer
     patch:
       operationId: patchCustomersById
       parameters:
@@ -488,7 +488,7 @@ paths:
         description: Schema for creating a new customer
         required: true
       tags:
-      - Customers
+      - Customer
   /card-tokenization/:
     post:
       description: Tokenize credit cards for future charges.
@@ -1207,6 +1207,7 @@ components:
       - pixType
       type: object
     postWithdraws_request:
+      additionalProperties: false
       properties:
         amount:
           description: Withdrawal amount in cents
@@ -1273,6 +1274,7 @@ components:
       - pixType
       type: object
     postWithdraws_200_response:
+      additionalProperties: false
       example:
         payedAt: ""
         costFee: 0.8008281904610115

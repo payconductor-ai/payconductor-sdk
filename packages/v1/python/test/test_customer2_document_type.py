@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.customer2_document_type import Customer2DocumentType
+from payconductor_sdk.models.customer2_document_type import Customer2DocumentType
 
 class TestCustomer2DocumentType(unittest.TestCase):
     """Customer2DocumentType unit test stubs"""

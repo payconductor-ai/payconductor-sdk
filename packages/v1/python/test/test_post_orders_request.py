@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders_request import PostOrdersRequest
+from payconductor_sdk.models.post_orders_request import PostOrdersRequest
 
 class TestPostOrdersRequest(unittest.TestCase):
     """PostOrdersRequest unit test stubs"""
@@ -37,8 +37,8 @@ class TestPostOrdersRequest(unittest.TestCase):
             return PostOrdersRequest(
                 charge_amount = 1.337,
                 client_ip = '',
-                customer = payconductor-sdk.models.customer.Customer(
-                    address = payconductor-sdk.models.customer_address.Customer address(
+                customer = payconductor_sdk.models.customer.Customer(
+                    address = payconductor_sdk.models.customer_address.Customer address(
                         city = '', 
                         country = 'BR', 
                         neighborhood = '', 
@@ -53,23 +53,23 @@ class TestPostOrdersRequest(unittest.TestCase):
                     phone_number = '+48 07 88800152', ),
                 discount_amount = 1.337,
                 external_id = '',
-                fingerprints = payconductor-sdk.models.post_orders_request_fingerprints.postOrders_request_fingerprints(
+                fingerprints = payconductor_sdk.models.post_orders_request_fingerprints.postOrders_request_fingerprints(
                     threat_metrix_fingerprint_id = '', ),
                 items = [
-                    payconductor-sdk.models.post_orders_request_items_inner.postOrders_request_items_inner(
+                    payconductor_sdk.models.post_orders_request_items_inner.postOrders_request_items_inner(
                         id = '', 
                         is_physical = True, 
                         name = '', 
                         qty = 1.337, 
                         unit_price = 1.337, )
                     ],
-                merchant = payconductor-sdk.models.merchant_input.MerchantInput(
+                merchant = payconductor_sdk.models.merchant_input.MerchantInput(
                     document = '48072888001528', 
                     email = '', 
                     name = '01', ),
                 payment = None,
                 split_amount_total = 0,
-                session = payconductor-sdk.models.post_orders_request_session.postOrders_request_session(
+                session = payconductor_sdk.models.post_orders_request_session.postOrders_request_session(
                     expires_in_minutes = 15, 
                     checkout_url = '', 
                     session_id = '', 
@@ -82,8 +82,8 @@ class TestPostOrdersRequest(unittest.TestCase):
             return PostOrdersRequest(
                 charge_amount = 1.337,
                 client_ip = '',
-                customer = payconductor-sdk.models.customer.Customer(
-                    address = payconductor-sdk.models.customer_address.Customer address(
+                customer = payconductor_sdk.models.customer.Customer(
+                    address = payconductor_sdk.models.customer_address.Customer address(
                         city = '', 
                         country = 'BR', 
                         neighborhood = '', 

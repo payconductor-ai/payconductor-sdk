@@ -3,9 +3,9 @@
 git_push.sh
 payconductor-sdk-1.0.0-1.rockspec
 payconductor-sdk/api/card_tokenization_api.lua
-payconductor-sdk/api/customers_api.lua
-payconductor-sdk/api/orders_api.lua
-payconductor-sdk/api/withdrawals_and_transfers_api.lua
+payconductor-sdk/api/customer_api.lua
+payconductor-sdk/api/order_api.lua
+payconductor-sdk/api/transfer_api.lua
 payconductor-sdk/model/bank_slip.lua
 payconductor-sdk/model/bank_slip_expiration_in_days.lua
 payconductor-sdk/model/complete_card_data.lua
@@ -59,12 +59,12 @@ spec/customer_1_spec.lua
 spec/customer_2_document_type_spec.lua
 spec/customer_2_spec.lua
 spec/customer_address_spec.lua
+spec/customer_api_spec.lua
 spec/customer_spec.lua
-spec/customers_api_spec.lua
 spec/merchant_input_spec.lua
 spec/nu_pay_nu_pay_spec.lua
 spec/nu_pay_spec.lua
-spec/orders_api_spec.lua
+spec/order_api_spec.lua
 spec/pic_pay_spec.lua
 spec/pix_expiration_in_seconds_spec.lua
 spec/pix_spec.lua
@@ -91,4 +91,4 @@ spec/post_withdraws_200_response_spec.lua
 spec/post_withdraws_request_payout_account_spec.lua
 spec/post_withdraws_request_spec.lua
 spec/tokenized_card_spec.lua
-spec/withdrawals_and_transfers_api_spec.lua
+spec/transfer_api_spec.lua

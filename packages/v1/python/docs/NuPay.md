@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.nu_pay import NuPay
+from payconductor_sdk.models.nu_pay import NuPay
 
 # TODO update the JSON string below
 json = "{}"

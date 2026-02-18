@@ -51,11 +51,11 @@ type APIClient struct {
 
 	CardTokenizationAPI *CardTokenizationAPIService
 
-	CustomersAPI *CustomersAPIService
+	CustomerAPI *CustomerAPIService
 
-	OrdersAPI *OrdersAPIService
+	OrderAPI *OrderAPIService
 
-	WithdrawalsAndTransfersAPI *WithdrawalsAndTransfersAPIService
+	TransferAPI *TransferAPIService
 }
 
 type service struct {
@@ -75,9 +75,9 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.CardTokenizationAPI = (*CardTokenizationAPIService)(&c.common)
-	c.CustomersAPI = (*CustomersAPIService)(&c.common)
-	c.OrdersAPI = (*OrdersAPIService)(&c.common)
-	c.WithdrawalsAndTransfersAPI = (*WithdrawalsAndTransfersAPIService)(&c.common)
+	c.CustomerAPI = (*CustomerAPIService)(&c.common)
+	c.OrderAPI = (*OrderAPIService)(&c.common)
+	c.TransferAPI = (*TransferAPIService)(&c.common)
 
 	return c
 }

@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders200_response_nu_pay import PostOrders200ResponseNuPay
+from payconductor_sdk.models.post_orders200_response_nu_pay import PostOrders200ResponseNuPay
 
 class TestPostOrders200ResponseNuPay(unittest.TestCase):
     """PostOrders200ResponseNuPay unit test stubs"""

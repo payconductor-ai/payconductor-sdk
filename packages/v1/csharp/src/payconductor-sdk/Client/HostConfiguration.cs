@@ -88,9 +88,9 @@ namespace payconductor-sdk.Client
             _services.AddSingleton(jsonSerializerOptionsProvider);
             _services.AddSingleton<IApiFactory, ApiFactory>();
             _services.AddSingleton<CardTokenizationApiEvents>();
-            _services.AddSingleton<CustomersApiEvents>();
-            _services.AddSingleton<OrdersApiEvents>();
-            _services.AddSingleton<WithdrawalsAndTransfersApiEvents>();
+            _services.AddSingleton<CustomerApiEvents>();
+            _services.AddSingleton<OrderApiEvents>();
+            _services.AddSingleton<TransferApiEvents>();
         }
 
         /// <summary>
@@ -109,9 +109,9 @@ namespace payconductor-sdk.Client
             List<IHttpClientBuilder> builders = new List<IHttpClientBuilder>();
 
             builders.Add(_services.AddHttpClient<ICardTokenizationApi, CardTokenizationApi>("payconductor-sdk.Api.ICardTokenizationApi", client));
-            builders.Add(_services.AddHttpClient<ICustomersApi, CustomersApi>("payconductor-sdk.Api.ICustomersApi", client));
-            builders.Add(_services.AddHttpClient<IOrdersApi, OrdersApi>("payconductor-sdk.Api.IOrdersApi", client));
-            builders.Add(_services.AddHttpClient<IWithdrawalsAndTransfersApi, WithdrawalsAndTransfersApi>("payconductor-sdk.Api.IWithdrawalsAndTransfersApi", client));
+            builders.Add(_services.AddHttpClient<ICustomerApi, CustomerApi>("payconductor-sdk.Api.ICustomerApi", client));
+            builders.Add(_services.AddHttpClient<IOrderApi, OrderApi>("payconductor-sdk.Api.IOrderApi", client));
+            builders.Add(_services.AddHttpClient<ITransferApi, TransferApi>("payconductor-sdk.Api.ITransferApi", client));
             
             if (builder != null)
                 foreach (IHttpClientBuilder instance in builders)

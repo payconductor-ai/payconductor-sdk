@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders200_response import PostOrders200Response
+from payconductor_sdk.models.post_orders200_response import PostOrders200Response
 
 class TestPostOrders200Response(unittest.TestCase):
     """PostOrders200Response unit test stubs"""
@@ -41,20 +41,20 @@ class TestPostOrders200Response(unittest.TestCase):
                 external_integration_id = '',
                 amount = 1.337,
                 cost_fee = 1.337,
-                pix = payconductor-sdk.models.post_orders_200_response_pix.postOrders_200_response_pix(
+                pix = payconductor_sdk.models.post_orders_200_response_pix.postOrders_200_response_pix(
                     copy_and_paste_code = '', 
                     qr_code_url = '', 
                     end_to_end_id = '', ),
-                bank_slip = payconductor-sdk.models.post_orders_200_response_bank_slip.postOrders_200_response_bankSlip(
+                bank_slip = payconductor_sdk.models.post_orders_200_response_bank_slip.postOrders_200_response_bankSlip(
                     bar_code = '', 
                     digitable_line = '', 
                     pdf_url = '', ),
-                nu_pay = payconductor-sdk.models.post_orders_200_response_nu_pay.postOrders_200_response_nuPay(
+                nu_pay = payconductor_sdk.models.post_orders_200_response_nu_pay.postOrders_200_response_nuPay(
                     payment_url = '', ),
-                pic_pay = payconductor-sdk.models.post_orders_200_response_pic_pay.postOrders_200_response_picPay(
+                pic_pay = payconductor_sdk.models.post_orders_200_response_pic_pay.postOrders_200_response_picPay(
                     copy_and_paste_code = '', 
                     qr_code_url = '', ),
-                credit_card = payconductor-sdk.models.post_orders_200_response_credit_card.postOrders_200_response_creditCard(
+                credit_card = payconductor_sdk.models.post_orders_200_response_credit_card.postOrders_200_response_creditCard(
                     authorization_code = '', ),
                 status = 'Generating',
                 payment_method = 'Pix',
@@ -62,7 +62,7 @@ class TestPostOrders200Response(unittest.TestCase):
                 error_code = '',
                 error_message = '',
                 order_items = [
-                    payconductor-sdk.models.post_orders_200_response_order_items_inner.postOrders_200_response_orderItems_inner(
+                    payconductor_sdk.models.post_orders_200_response_order_items_inner.postOrders_200_response_orderItems_inner(
                         external_id = '', 
                         id = '', 
                         name = '', 
@@ -71,7 +71,7 @@ class TestPostOrders200Response(unittest.TestCase):
                         total_net_amount = 1.337, 
                         unity_price = 1.337, )
                     ],
-                session = payconductor-sdk.models.post_orders_200_response_session.postOrders_200_response_session(
+                session = payconductor_sdk.models.post_orders_200_response_session.postOrders_200_response_session(
                     session_id = '', )
             )
         else:
@@ -88,7 +88,7 @@ class TestPostOrders200Response(unittest.TestCase):
                 error_code = '',
                 error_message = '',
                 order_items = [
-                    payconductor-sdk.models.post_orders_200_response_order_items_inner.postOrders_200_response_orderItems_inner(
+                    payconductor_sdk.models.post_orders_200_response_order_items_inner.postOrders_200_response_orderItems_inner(
                         external_id = '', 
                         id = '', 
                         name = '', 

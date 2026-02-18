@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.tokenized_card import TokenizedCard
+from payconductor_sdk.models.tokenized_card import TokenizedCard
 
 # TODO update the JSON string below
 json = "{}"

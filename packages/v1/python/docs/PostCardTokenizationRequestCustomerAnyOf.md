@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.post_card_tokenization_request_customer_any_of import PostCardTokenizationRequestCustomerAnyOf
+from payconductor_sdk.models.post_card_tokenization_request_customer_any_of import PostCardTokenizationRequestCustomerAnyOf
 
 # TODO update the JSON string below
 json = "{}"

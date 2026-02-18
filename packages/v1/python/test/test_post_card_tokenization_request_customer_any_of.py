@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_card_tokenization_request_customer_any_of import PostCardTokenizationRequestCustomerAnyOf
+from payconductor_sdk.models.post_card_tokenization_request_customer_any_of import PostCardTokenizationRequestCustomerAnyOf
 
 class TestPostCardTokenizationRequestCustomerAnyOf(unittest.TestCase):
     """PostCardTokenizationRequestCustomerAnyOf unit test stubs"""

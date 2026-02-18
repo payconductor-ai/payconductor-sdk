@@ -311,9 +311,9 @@ cpanm --quiet --no-interactive Class::Accessor Test::Exception Test::More Log::A
 To load the API packages:
 ```perl
 use WWW::OpenAPIClient::CardTokenizationApi;
-use WWW::OpenAPIClient::CustomersApi;
-use WWW::OpenAPIClient::OrdersApi;
-use WWW::OpenAPIClient::WithdrawalsAndTransfersApi;
+use WWW::OpenAPIClient::CustomerApi;
+use WWW::OpenAPIClient::OrderApi;
+use WWW::OpenAPIClient::TransferApi;
 
 ```
 
@@ -372,9 +372,9 @@ use strict;
 use warnings;
 # load the API package
 use WWW::OpenAPIClient::CardTokenizationApi;
-use WWW::OpenAPIClient::CustomersApi;
-use WWW::OpenAPIClient::OrdersApi;
-use WWW::OpenAPIClient::WithdrawalsAndTransfersApi;
+use WWW::OpenAPIClient::CustomerApi;
+use WWW::OpenAPIClient::OrderApi;
+use WWW::OpenAPIClient::TransferApi;
 
 # load the models
 use WWW::OpenAPIClient::Object::BankSlip;
@@ -448,18 +448,18 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CardTokenizationApi* | [**post_card_tokenization**](docs/CardTokenizationApi.md#post_card_tokenization) | **POST** /card-tokenization/ | Tokenize card
-*CustomersApi* | [**delete_customers_by_id**](docs/CustomersApi.md#delete_customers_by_id) | **DELETE** /customers/{id} | 
-*CustomersApi* | [**get_customers**](docs/CustomersApi.md#get_customers) | **GET** /customers/ | 
-*CustomersApi* | [**get_customers_by_id**](docs/CustomersApi.md#get_customers_by_id) | **GET** /customers/{id} | 
-*CustomersApi* | [**patch_customers_by_id**](docs/CustomersApi.md#patch_customers_by_id) | **PATCH** /customers/{id} | 
-*CustomersApi* | [**post_customers**](docs/CustomersApi.md#post_customers) | **POST** /customers/ | 
-*OrdersApi* | [**get_orders**](docs/OrdersApi.md#get_orders) | **GET** /orders/ | List orders
-*OrdersApi* | [**get_orders_by_id**](docs/OrdersApi.md#get_orders_by_id) | **GET** /orders/{id} | Get order by ID
-*OrdersApi* | [**post_orders**](docs/OrdersApi.md#post_orders) | **POST** /orders/ | Create order
-*OrdersApi* | [**post_orders_by_id_refund**](docs/OrdersApi.md#post_orders_by_id_refund) | **POST** /orders/{id}/refund | Refund order
-*WithdrawalsAndTransfersApi* | [**get_withdraws**](docs/WithdrawalsAndTransfersApi.md#get_withdraws) | **GET** /withdraws/ | List withdrawals
-*WithdrawalsAndTransfersApi* | [**get_withdraws_by_id**](docs/WithdrawalsAndTransfersApi.md#get_withdraws_by_id) | **GET** /withdraws/{id} | Get withdrawal by ID
-*WithdrawalsAndTransfersApi* | [**post_withdraws**](docs/WithdrawalsAndTransfersApi.md#post_withdraws) | **POST** /withdraws/ | Create withdrawal
+*CustomerApi* | [**delete_customers_by_id**](docs/CustomerApi.md#delete_customers_by_id) | **DELETE** /customers/{id} | 
+*CustomerApi* | [**get_customers**](docs/CustomerApi.md#get_customers) | **GET** /customers/ | 
+*CustomerApi* | [**get_customers_by_id**](docs/CustomerApi.md#get_customers_by_id) | **GET** /customers/{id} | 
+*CustomerApi* | [**patch_customers_by_id**](docs/CustomerApi.md#patch_customers_by_id) | **PATCH** /customers/{id} | 
+*CustomerApi* | [**post_customers**](docs/CustomerApi.md#post_customers) | **POST** /customers/ | 
+*OrderApi* | [**get_orders**](docs/OrderApi.md#get_orders) | **GET** /orders/ | List orders
+*OrderApi* | [**get_orders_by_id**](docs/OrderApi.md#get_orders_by_id) | **GET** /orders/{id} | Get order by ID
+*OrderApi* | [**post_orders**](docs/OrderApi.md#post_orders) | **POST** /orders/ | Create order
+*OrderApi* | [**post_orders_by_id_refund**](docs/OrderApi.md#post_orders_by_id_refund) | **POST** /orders/{id}/refund | Refund order
+*TransferApi* | [**get_withdraws**](docs/TransferApi.md#get_withdraws) | **GET** /withdraws/ | List withdrawals
+*TransferApi* | [**get_withdraws_by_id**](docs/TransferApi.md#get_withdraws_by_id) | **GET** /withdraws/{id} | Get withdrawal by ID
+*TransferApi* | [**post_withdraws**](docs/TransferApi.md#post_withdraws) | **POST** /withdraws/ | Create withdrawal
 
 
 # DOCUMENTATION FOR MODELS

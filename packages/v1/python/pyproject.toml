@@ -1,5 +1,5 @@
 [project]
-name = "payconductor-sdk"
+name = "payconductor_sdk"
 version = "1.0.0"
 description = "PayConductor API"
 authors = [
@@ -40,7 +40,7 @@ extension-pkg-whitelist = "pydantic"
 
 [tool.mypy]
 files = [
-  "payconductor-sdk",
+  "payconductor_sdk",
   #"test",  # auto-generated tests
   "tests", # hand-written tests
 ]
@@ -78,7 +78,7 @@ disallow_any_generics = true
 
 [[tool.mypy.overrides]]
 module = [
-  "payconductor-sdk.configuration",
+  "payconductor_sdk.configuration",
 ]
 warn_unused_ignores = true
 strict_equality = true

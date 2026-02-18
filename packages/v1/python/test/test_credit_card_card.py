@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.credit_card_card import CreditCardCard
+from payconductor_sdk.models.credit_card_card import CreditCardCard
 
 class TestCreditCardCard(unittest.TestCase):
     """CreditCardCard unit test stubs"""
@@ -38,7 +38,7 @@ class TestCreditCardCard(unittest.TestCase):
                 first_six_card_number = '',
                 token = '',
                 cvv = '012',
-                expiration = payconductor-sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
+                expiration = payconductor_sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
                     month = 1, 
                     year = 2025, ),
                 holder_name = '',
@@ -48,7 +48,7 @@ class TestCreditCardCard(unittest.TestCase):
             return CreditCardCard(
                 token = '',
                 cvv = '012',
-                expiration = payconductor-sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
+                expiration = payconductor_sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
                     month = 1, 
                     year = 2025, ),
                 holder_name = '',

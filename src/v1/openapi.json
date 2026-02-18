@@ -739,15 +739,15 @@
   "tags": [
     {
       "description": "Manage charges, check order status, and handle refunds.",
-      "name": "Orders"
+      "name": "Order"
     },
     {
       "description": "Initiate and monitor withdrawals and transfers to your external accounts.",
-      "name": "Withdrawals and Transfers"
+      "name": "Transfer"
     },
     {
       "description": "Manage customers, create, update, delete and list customers.",
-      "name": "Customers"
+      "name": "Customer"
     },
     {
       "description": "Tokenize credit cards for future charges.",
@@ -758,7 +758,7 @@
     "/orders/": {
       "post": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "Create a new order for payment using the provided data",
         "summary": "Create order",
@@ -1764,7 +1764,7 @@
       },
       "get": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "Retrieve a list of orders. Use date filter and pagination parameters to refine results as needed.",
         "summary": "List orders",
@@ -1888,7 +1888,7 @@
     "/orders/{id}": {
       "get": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "Retrieve the complete data of an order by our ID",
         "summary": "Get order by ID",
@@ -1908,7 +1908,7 @@
     "/orders/{id}/refund": {
       "post": {
         "tags": [
-          "Orders"
+          "Order"
         ],
         "description": "Initiate a refund for the order specified by ID.",
         "summary": "Refund order",
@@ -1928,7 +1928,7 @@
     "/withdraws/": {
       "post": {
         "tags": [
-          "Withdrawals and Transfers"
+          "Transfer"
         ],
         "description": "Create a new withdrawal or transfer to the provided payment account",
         "summary": "Create withdrawal",
@@ -2027,7 +2027,8 @@
                 "required": [
                   "amount",
                   "payoutAccount"
-                ]
+                ],
+                "additionalProperties": false
               }
             }
           },
@@ -2243,7 +2244,8 @@
                     "payedAt",
                     "payoutAccount"
                   ],
-                  "noValidate": true
+                  "noValidate": true,
+                  "additionalProperties": false
                 }
               }
             }
@@ -2253,7 +2255,7 @@
       },
       "get": {
         "tags": [
-          "Withdrawals and Transfers"
+          "Transfer"
         ],
         "description": "Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)",
         "summary": "List withdrawals",
@@ -2358,7 +2360,7 @@
     "/withdraws/{id}": {
       "get": {
         "tags": [
-          "Withdrawals and Transfers"
+          "Transfer"
         ],
         "description": "Returns the details of a specific withdrawal or transfer using its ID",
         "summary": "Get withdrawal by ID",
@@ -2378,7 +2380,7 @@
     "/customers/": {
       "get": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
         "parameters": [
           {
@@ -2489,7 +2491,7 @@
       },
       "post": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
         "requestBody": {
           "description": "Schema for creating a new customer",
@@ -2635,7 +2637,7 @@
     "/customers/{id}": {
       "get": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
         "parameters": [
           {
@@ -2651,7 +2653,7 @@
       },
       "patch": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
         "parameters": [
           {
@@ -2799,7 +2801,7 @@
       },
       "delete": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
         "parameters": [
           {
@@ -2816,11 +2818,11 @@
     },
     "/card-tokenization/": {
       "post": {
-        "description": "Tokenize credit cards for future charges.",
-        "summary": "Tokenize card",
         "tags": [
           "Card Tokenization"
         ],
+        "description": "Tokenize credit cards for future charges.",
+        "summary": "Tokenize card",
         "requestBody": {
           "description": "Data for creating a customer card",
           "content": {

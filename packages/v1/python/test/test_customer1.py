@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.customer1 import Customer1
+from payconductor_sdk.models.customer1 import Customer1
 
 class TestCustomer1(unittest.TestCase):
     """Customer1 unit test stubs"""
@@ -35,7 +35,7 @@ class TestCustomer1(unittest.TestCase):
         model = Customer1()
         if include_optional:
             return Customer1(
-                address = payconductor-sdk.models.customer_address.Customer address(
+                address = payconductor_sdk.models.customer_address.Customer address(
                     city = '', 
                     country = 'BR', 
                     neighborhood = '', 

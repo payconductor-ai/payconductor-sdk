@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_withdraws_request_payout_account import PostWithdrawsRequestPayoutAccount
+from payconductor_sdk.models.post_withdraws_request_payout_account import PostWithdrawsRequestPayoutAccount
 
 class TestPostWithdrawsRequestPayoutAccount(unittest.TestCase):
     """PostWithdrawsRequestPayoutAccount unit test stubs"""

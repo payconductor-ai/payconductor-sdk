@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.api.card_tokenization_api import CardTokenizationApi
+from payconductor_sdk.api.card_tokenization_api import CardTokenizationApi
 
 
 class TestCardTokenizationApi(unittest.TestCase):

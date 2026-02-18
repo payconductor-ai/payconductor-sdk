@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_withdraws200_response import PostWithdraws200Response
+from payconductor_sdk.models.post_withdraws200_response import PostWithdraws200Response
 
 class TestPostWithdraws200Response(unittest.TestCase):
     """PostWithdraws200Response unit test stubs"""
@@ -44,7 +44,7 @@ class TestPostWithdraws200Response(unittest.TestCase):
                 error_code = '',
                 error_message = '',
                 payed_at = None,
-                payout_account = payconductor-sdk.models.post_withdraws_200_response_payout_account.postWithdraws_200_response_payoutAccount(
+                payout_account = payconductor_sdk.models.post_withdraws_200_response_payout_account.postWithdraws_200_response_payoutAccount(
                     id = '', 
                     owner_document = '48072888001528', 
                     owner_name = '', 
@@ -62,7 +62,7 @@ class TestPostWithdraws200Response(unittest.TestCase):
                 error_code = '',
                 error_message = '',
                 payed_at = None,
-                payout_account = payconductor-sdk.models.post_withdraws_200_response_payout_account.postWithdraws_200_response_payoutAccount(
+                payout_account = payconductor_sdk.models.post_withdraws_200_response_payout_account.postWithdraws_200_response_payoutAccount(
                     id = '', 
                     owner_document = '48072888001528', 
                     owner_name = '', 

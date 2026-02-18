@@ -4,9 +4,9 @@
 README.md
 api/openapi.yaml
 api_card_tokenization.go
-api_customers.go
-api_orders.go
-api_withdrawals_and_transfers.go
+api_customer.go
+api_order.go
+api_transfer.go
 client.go
 configuration.go
 docs/BankSlip.md
@@ -21,12 +21,12 @@ docs/Customer.md
 docs/Customer1.md
 docs/Customer2.md
 docs/Customer2DocumentType.md
+docs/CustomerAPI.md
 docs/CustomerAddress.md
-docs/CustomersAPI.md
 docs/MerchantInput.md
 docs/NuPay.md
 docs/NuPayNuPay.md
-docs/OrdersAPI.md
+docs/OrderAPI.md
 docs/PicPay.md
 docs/Pix.md
 docs/PixExpirationInSeconds.md
@@ -53,7 +53,7 @@ docs/PostWithdraws200ResponsePayoutAccount.md
 docs/PostWithdrawsRequest.md
 docs/PostWithdrawsRequestPayoutAccount.md
 docs/TokenizedCard.md
-docs/WithdrawalsAndTransfersAPI.md
+docs/TransferAPI.md
 git_push.sh
 go.mod
 go.sum
@@ -100,7 +100,7 @@ model_post_withdraws_request_payout_account.go
 model_tokenized_card.go
 response.go
 test/api_card_tokenization_test.go
-test/api_customers_test.go
-test/api_orders_test.go
-test/api_withdrawals_and_transfers_test.go
+test/api_customer_test.go
+test/api_order_test.go
+test/api_transfer_test.go
 utils.go

@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders_request_payment import PostOrdersRequestPayment
+from payconductor_sdk.models.post_orders_request_payment import PostOrdersRequestPayment
 
 class TestPostOrdersRequestPayment(unittest.TestCase):
     """PostOrdersRequestPayment unit test stubs"""
@@ -41,7 +41,7 @@ class TestPostOrdersRequestPayment(unittest.TestCase):
                 installments = None,
                 soft_descriptor = '0',
                 expiration_in_days = None,
-                nu_pay = payconductor-sdk.models.nu_pay_nu_pay.NuPay_nuPay(
+                nu_pay = payconductor_sdk.models.nu_pay_nu_pay.NuPay_nuPay(
                     cancel_url = '', 
                     merchant_name = '', 
                     return_url = '', 
@@ -52,7 +52,7 @@ class TestPostOrdersRequestPayment(unittest.TestCase):
                 payment_method = '',
                 card = None,
                 installments = None,
-                nu_pay = payconductor-sdk.models.nu_pay_nu_pay.NuPay_nuPay(
+                nu_pay = payconductor_sdk.models.nu_pay_nu_pay.NuPay_nuPay(
                     cancel_url = '', 
                     merchant_name = '', 
                     return_url = '', 

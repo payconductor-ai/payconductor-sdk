@@ -5,9 +5,9 @@ README.md
 config/config.exs
 config/runtime.exs
 lib/pay_conductor_api/api/card_tokenization.ex
-lib/pay_conductor_api/api/customers.ex
-lib/pay_conductor_api/api/orders.ex
-lib/pay_conductor_api/api/withdrawals_and_transfers.ex
+lib/pay_conductor_api/api/customer.ex
+lib/pay_conductor_api/api/order.ex
+lib/pay_conductor_api/api/transfer.ex
 lib/pay_conductor_api/connection.ex
 lib/pay_conductor_api/deserializer.ex
 lib/pay_conductor_api/model/bank_slip.ex

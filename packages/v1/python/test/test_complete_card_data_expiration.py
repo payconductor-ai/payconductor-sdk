@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.complete_card_data_expiration import CompleteCardDataExpiration
+from payconductor_sdk.models.complete_card_data_expiration import CompleteCardDataExpiration
 
 class TestCompleteCardDataExpiration(unittest.TestCase):
     """CompleteCardDataExpiration unit test stubs"""

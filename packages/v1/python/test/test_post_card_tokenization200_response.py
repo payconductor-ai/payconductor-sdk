@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_card_tokenization200_response import PostCardTokenization200Response
+from payconductor_sdk.models.post_card_tokenization200_response import PostCardTokenization200Response
 
 class TestPostCardTokenization200Response(unittest.TestCase):
     """PostCardTokenization200Response unit test stubs"""

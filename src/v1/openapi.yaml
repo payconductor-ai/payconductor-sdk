@@ -793,7 +793,7 @@ paths:
                   - errorMessage
                   - orderItems
       tags:
-        - Orders
+        - Order
     get:
       operationId: getOrders
       summary: List orders
@@ -884,7 +884,7 @@ paths:
               - InDispute
               - Chargeback
       tags:
-        - Orders
+        - Order
   '/orders/{id}':
     get:
       operationId: getOrdersById
@@ -897,7 +897,7 @@ paths:
           schema:
             type: string
       tags:
-        - Orders
+        - Order
   '/orders/{id}/refund':
     post:
       operationId: postOrdersByIdRefund
@@ -910,7 +910,7 @@ paths:
           schema:
             type: string
       tags:
-        - Orders
+        - Order
   /withdraws/:
     post:
       operationId: postWithdraws
@@ -988,6 +988,7 @@ paths:
                     - ownerName
                     - pixKey
                     - pixType
+              additionalProperties: false
               required:
                 - amount
                 - payoutAccount
@@ -1120,6 +1121,7 @@ paths:
                       - ownerName
                       - pixKey
                       - pixType
+                additionalProperties: false
                 noValidate: true
                 required:
                   - id
@@ -1133,7 +1135,7 @@ paths:
                   - payedAt
                   - payoutAccount
       tags:
-        - Withdrawals and Transfers
+        - Transfer
     get:
       operationId: getWithdraws
       summary: List withdrawals
@@ -1209,7 +1211,7 @@ paths:
             description: 'Withdrawal search ID (can be withdrawal ID, external ID, acquirer ID, or End2EndID)'
             type: string
       tags:
-        - Withdrawals and Transfers
+        - Transfer
   '/withdraws/{id}':
     get:
       operationId: getWithdrawsById
@@ -1222,7 +1224,7 @@ paths:
           schema:
             type: string
       tags:
-        - Withdrawals and Transfers
+        - Transfer
   /customers/:
     get:
       operationId: getCustomers
@@ -1304,7 +1306,7 @@ paths:
             examples:
               - '2025-01-01T03:00:00Z'
       tags:
-        - Customers
+        - Customer
     post:
       operationId: postCustomers
       requestBody:
@@ -1413,7 +1415,7 @@ paths:
                 - name
               title: Customer
       tags:
-        - Customers
+        - Customer
   '/customers/{id}':
     get:
       operationId: getCustomersById
@@ -1424,7 +1426,7 @@ paths:
           schema:
             type: string
       tags:
-        - Customers
+        - Customer
     patch:
       operationId: patchCustomersById
       parameters:
@@ -1534,7 +1536,7 @@ paths:
                   pattern: '^\+(\d{1,2}) (\d{2}) (\d{8,9})$'
               title: Customer
       tags:
-        - Customers
+        - Customer
     delete:
       operationId: deleteCustomersById
       parameters:
@@ -1544,7 +1546,7 @@ paths:
           schema:
             type: string
       tags:
-        - Customers
+        - Customer
   /card-tokenization/:
     post:
       operationId: postCard-tokenization
@@ -1765,11 +1767,11 @@ components:
       type: http
 tags:
   - description: 'Manage charges, check order status, and handle refunds.'
-    name: Orders
+    name: Order
   - description: Initiate and monitor withdrawals and transfers to your external accounts.
-    name: Withdrawals and Transfers
+    name: Transfer
   - description: 'Manage customers, create, update, delete and list customers.'
-    name: Customers
+    name: Customer
   - description: Tokenize credit cards for future charges.
     name: Card Tokenization
 security:

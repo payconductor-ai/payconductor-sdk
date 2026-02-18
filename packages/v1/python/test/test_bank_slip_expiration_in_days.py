@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.bank_slip_expiration_in_days import BankSlipExpirationInDays
+from payconductor_sdk.models.bank_slip_expiration_in_days import BankSlipExpirationInDays
 
 class TestBankSlipExpirationInDays(unittest.TestCase):
     """BankSlipExpirationInDays unit test stubs"""

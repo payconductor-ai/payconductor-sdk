@@ -158,18 +158,18 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CardTokenizationAPI* | [**PostCardTokenization**](docs/CardTokenizationAPI.md#postcardtokenization) | **Post** /card-tokenization/ | Tokenize card
-*CustomersAPI* | [**DeleteCustomersById**](docs/CustomersAPI.md#deletecustomersbyid) | **Delete** /customers/{id} | 
-*CustomersAPI* | [**GetCustomers**](docs/CustomersAPI.md#getcustomers) | **Get** /customers/ | 
-*CustomersAPI* | [**GetCustomersById**](docs/CustomersAPI.md#getcustomersbyid) | **Get** /customers/{id} | 
-*CustomersAPI* | [**PatchCustomersById**](docs/CustomersAPI.md#patchcustomersbyid) | **Patch** /customers/{id} | 
-*CustomersAPI* | [**PostCustomers**](docs/CustomersAPI.md#postcustomers) | **Post** /customers/ | 
-*OrdersAPI* | [**GetOrders**](docs/OrdersAPI.md#getorders) | **Get** /orders/ | List orders
-*OrdersAPI* | [**GetOrdersById**](docs/OrdersAPI.md#getordersbyid) | **Get** /orders/{id} | Get order by ID
-*OrdersAPI* | [**PostOrders**](docs/OrdersAPI.md#postorders) | **Post** /orders/ | Create order
-*OrdersAPI* | [**PostOrdersByIdRefund**](docs/OrdersAPI.md#postordersbyidrefund) | **Post** /orders/{id}/refund | Refund order
-*WithdrawalsAndTransfersAPI* | [**GetWithdraws**](docs/WithdrawalsAndTransfersAPI.md#getwithdraws) | **Get** /withdraws/ | List withdrawals
-*WithdrawalsAndTransfersAPI* | [**GetWithdrawsById**](docs/WithdrawalsAndTransfersAPI.md#getwithdrawsbyid) | **Get** /withdraws/{id} | Get withdrawal by ID
-*WithdrawalsAndTransfersAPI* | [**PostWithdraws**](docs/WithdrawalsAndTransfersAPI.md#postwithdraws) | **Post** /withdraws/ | Create withdrawal
+*CustomerAPI* | [**DeleteCustomersById**](docs/CustomerAPI.md#deletecustomersbyid) | **Delete** /customers/{id} | 
+*CustomerAPI* | [**GetCustomers**](docs/CustomerAPI.md#getcustomers) | **Get** /customers/ | 
+*CustomerAPI* | [**GetCustomersById**](docs/CustomerAPI.md#getcustomersbyid) | **Get** /customers/{id} | 
+*CustomerAPI* | [**PatchCustomersById**](docs/CustomerAPI.md#patchcustomersbyid) | **Patch** /customers/{id} | 
+*CustomerAPI* | [**PostCustomers**](docs/CustomerAPI.md#postcustomers) | **Post** /customers/ | 
+*OrderAPI* | [**GetOrders**](docs/OrderAPI.md#getorders) | **Get** /orders/ | List orders
+*OrderAPI* | [**GetOrdersById**](docs/OrderAPI.md#getordersbyid) | **Get** /orders/{id} | Get order by ID
+*OrderAPI* | [**PostOrders**](docs/OrderAPI.md#postorders) | **Post** /orders/ | Create order
+*OrderAPI* | [**PostOrdersByIdRefund**](docs/OrderAPI.md#postordersbyidrefund) | **Post** /orders/{id}/refund | Refund order
+*TransferAPI* | [**GetWithdraws**](docs/TransferAPI.md#getwithdraws) | **Get** /withdraws/ | List withdrawals
+*TransferAPI* | [**GetWithdrawsById**](docs/TransferAPI.md#getwithdrawsbyid) | **Get** /withdraws/{id} | Get withdrawal by ID
+*TransferAPI* | [**PostWithdraws**](docs/TransferAPI.md#postwithdraws) | **Post** /withdraws/ | Create withdrawal
 
 
 ## Documentation For Models

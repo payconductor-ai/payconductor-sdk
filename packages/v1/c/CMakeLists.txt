@@ -90,9 +90,9 @@ set(SRCS
     model/post_withdraws_request_payout_account.c
     model/tokenized_card.c
     api/CardTokenizationAPI.c
-    api/CustomersAPI.c
-    api/OrdersAPI.c
-    api/WithdrawalsAndTransfersAPI.c
+    api/CustomerAPI.c
+    api/OrderAPI.c
+    api/TransferAPI.c
 
 )
 
@@ -146,9 +146,9 @@ set(HDRS
     model/post_withdraws_request_payout_account.h
     model/tokenized_card.h
     api/CardTokenizationAPI.h
-    api/CustomersAPI.h
-    api/OrdersAPI.h
-    api/WithdrawalsAndTransfersAPI.h
+    api/CustomerAPI.h
+    api/OrderAPI.h
+    api/TransferAPI.h
 
 )
 
@@ -235,9 +235,9 @@ set(HDRS "")
 ## set source files
 #set(SRCS
 #    unit-tests/manual-CardTokenizationAPI.c
-#    unit-tests/manual-CustomersAPI.c
-#    unit-tests/manual-OrdersAPI.c
-#    unit-tests/manual-WithdrawalsAndTransfersAPI.c
+#    unit-tests/manual-CustomerAPI.c
+#    unit-tests/manual-OrderAPI.c
+#    unit-tests/manual-TransferAPI.c
 #)
 
 ##set header files

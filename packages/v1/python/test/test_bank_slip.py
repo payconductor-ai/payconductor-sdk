@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.bank_slip import BankSlip
+from payconductor_sdk.models.bank_slip import BankSlip
 
 class TestBankSlip(unittest.TestCase):
     """BankSlip unit test stubs"""

@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_withdraws200_response_payout_account import PostWithdraws200ResponsePayoutAccount
+from payconductor_sdk.models.post_withdraws200_response_payout_account import PostWithdraws200ResponsePayoutAccount
 
 class TestPostWithdraws200ResponsePayoutAccount(unittest.TestCase):
     """PostWithdraws200ResponsePayoutAccount unit test stubs"""

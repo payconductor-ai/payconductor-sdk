@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_orders200_response_pix import PostOrders200ResponsePix
+from payconductor_sdk.models.post_orders200_response_pix import PostOrders200ResponsePix
 
 class TestPostOrders200ResponsePix(unittest.TestCase):
     """PostOrders200ResponsePix unit test stubs"""

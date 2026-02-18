@@ -163,18 +163,18 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *OpenapiClient::CardTokenizationApi* | [**post_card_tokenization**](docs/CardTokenizationApi.md#post_card_tokenization) | **POST** /card-tokenization/ | Tokenize card
-*OpenapiClient::CustomersApi* | [**delete_customers_by_id**](docs/CustomersApi.md#delete_customers_by_id) | **DELETE** /customers/{id} | 
-*OpenapiClient::CustomersApi* | [**get_customers**](docs/CustomersApi.md#get_customers) | **GET** /customers/ | 
-*OpenapiClient::CustomersApi* | [**get_customers_by_id**](docs/CustomersApi.md#get_customers_by_id) | **GET** /customers/{id} | 
-*OpenapiClient::CustomersApi* | [**patch_customers_by_id**](docs/CustomersApi.md#patch_customers_by_id) | **PATCH** /customers/{id} | 
-*OpenapiClient::CustomersApi* | [**post_customers**](docs/CustomersApi.md#post_customers) | **POST** /customers/ | 
-*OpenapiClient::OrdersApi* | [**get_orders**](docs/OrdersApi.md#get_orders) | **GET** /orders/ | List orders
-*OpenapiClient::OrdersApi* | [**get_orders_by_id**](docs/OrdersApi.md#get_orders_by_id) | **GET** /orders/{id} | Get order by ID
-*OpenapiClient::OrdersApi* | [**post_orders**](docs/OrdersApi.md#post_orders) | **POST** /orders/ | Create order
-*OpenapiClient::OrdersApi* | [**post_orders_by_id_refund**](docs/OrdersApi.md#post_orders_by_id_refund) | **POST** /orders/{id}/refund | Refund order
-*OpenapiClient::WithdrawalsAndTransfersApi* | [**get_withdraws**](docs/WithdrawalsAndTransfersApi.md#get_withdraws) | **GET** /withdraws/ | List withdrawals
-*OpenapiClient::WithdrawalsAndTransfersApi* | [**get_withdraws_by_id**](docs/WithdrawalsAndTransfersApi.md#get_withdraws_by_id) | **GET** /withdraws/{id} | Get withdrawal by ID
-*OpenapiClient::WithdrawalsAndTransfersApi* | [**post_withdraws**](docs/WithdrawalsAndTransfersApi.md#post_withdraws) | **POST** /withdraws/ | Create withdrawal
+*OpenapiClient::CustomerApi* | [**delete_customers_by_id**](docs/CustomerApi.md#delete_customers_by_id) | **DELETE** /customers/{id} | 
+*OpenapiClient::CustomerApi* | [**get_customers**](docs/CustomerApi.md#get_customers) | **GET** /customers/ | 
+*OpenapiClient::CustomerApi* | [**get_customers_by_id**](docs/CustomerApi.md#get_customers_by_id) | **GET** /customers/{id} | 
+*OpenapiClient::CustomerApi* | [**patch_customers_by_id**](docs/CustomerApi.md#patch_customers_by_id) | **PATCH** /customers/{id} | 
+*OpenapiClient::CustomerApi* | [**post_customers**](docs/CustomerApi.md#post_customers) | **POST** /customers/ | 
+*OpenapiClient::OrderApi* | [**get_orders**](docs/OrderApi.md#get_orders) | **GET** /orders/ | List orders
+*OpenapiClient::OrderApi* | [**get_orders_by_id**](docs/OrderApi.md#get_orders_by_id) | **GET** /orders/{id} | Get order by ID
+*OpenapiClient::OrderApi* | [**post_orders**](docs/OrderApi.md#post_orders) | **POST** /orders/ | Create order
+*OpenapiClient::OrderApi* | [**post_orders_by_id_refund**](docs/OrderApi.md#post_orders_by_id_refund) | **POST** /orders/{id}/refund | Refund order
+*OpenapiClient::TransferApi* | [**get_withdraws**](docs/TransferApi.md#get_withdraws) | **GET** /withdraws/ | List withdrawals
+*OpenapiClient::TransferApi* | [**get_withdraws_by_id**](docs/TransferApi.md#get_withdraws_by_id) | **GET** /withdraws/{id} | Get withdrawal by ID
+*OpenapiClient::TransferApi* | [**post_withdraws**](docs/TransferApi.md#post_withdraws) | **POST** /withdraws/ | Create withdrawal
 
 
 ## Documentation for Models

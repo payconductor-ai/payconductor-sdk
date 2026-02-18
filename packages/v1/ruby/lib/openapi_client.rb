@@ -62,9 +62,9 @@ require 'openapi_client/models/tokenized_card'
 
 # APIs
 require 'openapi_client/api/card_tokenization_api'
-require 'openapi_client/api/customers_api'
-require 'openapi_client/api/orders_api'
-require 'openapi_client/api/withdrawals_and_transfers_api'
+require 'openapi_client/api/customer_api'
+require 'openapi_client/api/order_api'
+require 'openapi_client/api/transfer_api'
 
 module OpenapiClient
   class << self

@@ -11,9 +11,9 @@ export 'package:openapi/src/serializers.dart';
 export 'package:openapi/src/model/date.dart';
 
 export 'package:openapi/src/api/card_tokenization_api.dart';
-export 'package:openapi/src/api/customers_api.dart';
-export 'package:openapi/src/api/orders_api.dart';
-export 'package:openapi/src/api/withdrawals_and_transfers_api.dart';
+export 'package:openapi/src/api/customer_api.dart';
+export 'package:openapi/src/api/order_api.dart';
+export 'package:openapi/src/api/transfer_api.dart';
 
 export 'package:openapi/src/model/bank_slip.dart';
 export 'package:openapi/src/model/bank_slip_expiration_in_days.dart';

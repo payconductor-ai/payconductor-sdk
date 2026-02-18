@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.customer_address import CustomerAddress
+from payconductor_sdk.models.customer_address import CustomerAddress
 
 class TestCustomerAddress(unittest.TestCase):
     """CustomerAddress unit test stubs"""

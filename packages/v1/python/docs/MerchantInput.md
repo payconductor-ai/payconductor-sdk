@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.merchant_input import MerchantInput
+from payconductor_sdk.models.merchant_input import MerchantInput
 
 # TODO update the JSON string below
 json = "{}"

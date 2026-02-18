@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.post_withdraws_request import PostWithdrawsRequest
+from payconductor_sdk.models.post_withdraws_request import PostWithdrawsRequest
 
 class TestPostWithdrawsRequest(unittest.TestCase):
     """PostWithdrawsRequest unit test stubs"""
@@ -37,11 +37,11 @@ class TestPostWithdrawsRequest(unittest.TestCase):
             return PostWithdrawsRequest(
                 amount = 1,
                 external_id = '',
-                merchant = payconductor-sdk.models.merchant_input.MerchantInput(
+                merchant = payconductor_sdk.models.merchant_input.MerchantInput(
                     document = '48072888001528', 
                     email = '', 
                     name = '01', ),
-                payout_account = payconductor-sdk.models.post_withdraws_request_payout_account.postWithdraws_request_payoutAccount(
+                payout_account = payconductor_sdk.models.post_withdraws_request_payout_account.postWithdraws_request_payoutAccount(
                     owner_document = '', 
                     owner_name = '', 
                     pix_key = '', 
@@ -50,7 +50,7 @@ class TestPostWithdrawsRequest(unittest.TestCase):
         else:
             return PostWithdrawsRequest(
                 amount = 1,
-                payout_account = payconductor-sdk.models.post_withdraws_request_payout_account.postWithdraws_request_payoutAccount(
+                payout_account = payconductor_sdk.models.post_withdraws_request_payout_account.postWithdraws_request_payoutAccount(
                     owner_document = '', 
                     owner_name = '', 
                     pix_key = '', 

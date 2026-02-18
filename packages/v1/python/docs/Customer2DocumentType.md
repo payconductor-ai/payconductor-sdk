@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.customer2_document_type import Customer2DocumentType
+from payconductor_sdk.models.customer2_document_type import Customer2DocumentType
 
 # TODO update the JSON string below
 json = "{}"

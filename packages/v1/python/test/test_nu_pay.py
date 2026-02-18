@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.nu_pay import NuPay
+from payconductor_sdk.models.nu_pay import NuPay
 
 class TestNuPay(unittest.TestCase):
     """NuPay unit test stubs"""
@@ -36,7 +36,7 @@ class TestNuPay(unittest.TestCase):
         if include_optional:
             return NuPay(
                 payment_method = '',
-                nu_pay = payconductor-sdk.models.nu_pay_nu_pay.NuPay_nuPay(
+                nu_pay = payconductor_sdk.models.nu_pay_nu_pay.NuPay_nuPay(
                     cancel_url = '', 
                     merchant_name = '', 
                     return_url = '', 
@@ -45,7 +45,7 @@ class TestNuPay(unittest.TestCase):
         else:
             return NuPay(
                 payment_method = '',
-                nu_pay = payconductor-sdk.models.nu_pay_nu_pay.NuPay_nuPay(
+                nu_pay = payconductor_sdk.models.nu_pay_nu_pay.NuPay_nuPay(
                     cancel_url = '', 
                     merchant_name = '', 
                     return_url = '', 

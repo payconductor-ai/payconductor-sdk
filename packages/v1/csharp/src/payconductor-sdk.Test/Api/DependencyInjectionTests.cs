@@ -73,14 +73,14 @@ namespace payconductor-sdk.Test.Api
             var cardTokenizationApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICardTokenizationApi>();
             Assert.True(cardTokenizationApi.HttpClient.BaseAddress != null);
 
-            var customersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICustomersApi>();
-            Assert.True(customersApi.HttpClient.BaseAddress != null);
+            var customerApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICustomerApi>();
+            Assert.True(customerApi.HttpClient.BaseAddress != null);
 
-            var ordersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IOrdersApi>();
-            Assert.True(ordersApi.HttpClient.BaseAddress != null);
+            var orderApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IOrderApi>();
+            Assert.True(orderApi.HttpClient.BaseAddress != null);
 
-            var withdrawalsAndTransfersApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IWithdrawalsAndTransfersApi>();
-            Assert.True(withdrawalsAndTransfersApi.HttpClient.BaseAddress != null);
+            var transferApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ITransferApi>();
+            Assert.True(transferApi.HttpClient.BaseAddress != null);
         }
 
         /// <summary>
@@ -92,14 +92,14 @@ namespace payconductor-sdk.Test.Api
             var cardTokenizationApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICardTokenizationApi>();
             Assert.True(cardTokenizationApi.HttpClient.BaseAddress != null);
 
-            var customersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICustomersApi>();
-            Assert.True(customersApi.HttpClient.BaseAddress != null);
+            var customerApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICustomerApi>();
+            Assert.True(customerApi.HttpClient.BaseAddress != null);
 
-            var ordersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IOrdersApi>();
-            Assert.True(ordersApi.HttpClient.BaseAddress != null);
+            var orderApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IOrderApi>();
+            Assert.True(orderApi.HttpClient.BaseAddress != null);
 
-            var withdrawalsAndTransfersApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IWithdrawalsAndTransfersApi>();
-            Assert.True(withdrawalsAndTransfersApi.HttpClient.BaseAddress != null);
+            var transferApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ITransferApi>();
+            Assert.True(transferApi.HttpClient.BaseAddress != null);
         }
 
         /// <summary>
@@ -111,14 +111,14 @@ namespace payconductor-sdk.Test.Api
             var cardTokenizationApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICardTokenizationApi>();
             Assert.True(cardTokenizationApi.HttpClient.BaseAddress != null);
             
-            var customersApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICustomersApi>();
-            Assert.True(customersApi.HttpClient.BaseAddress != null);
+            var customerApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICustomerApi>();
+            Assert.True(customerApi.HttpClient.BaseAddress != null);
             
-            var ordersApi = _hostUsingAddWithAClient.Services.GetRequiredService<IOrdersApi>();
-            Assert.True(ordersApi.HttpClient.BaseAddress != null);
+            var orderApi = _hostUsingAddWithAClient.Services.GetRequiredService<IOrderApi>();
+            Assert.True(orderApi.HttpClient.BaseAddress != null);
             
-            var withdrawalsAndTransfersApi = _hostUsingAddWithAClient.Services.GetRequiredService<IWithdrawalsAndTransfersApi>();
-            Assert.True(withdrawalsAndTransfersApi.HttpClient.BaseAddress != null);
+            var transferApi = _hostUsingAddWithAClient.Services.GetRequiredService<ITransferApi>();
+            Assert.True(transferApi.HttpClient.BaseAddress != null);
         }
 
         /// <summary>
@@ -130,14 +130,14 @@ namespace payconductor-sdk.Test.Api
             var cardTokenizationApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICardTokenizationApi>();
             Assert.True(cardTokenizationApi.HttpClient.BaseAddress != null);
 
-            var customersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICustomersApi>();
-            Assert.True(customersApi.HttpClient.BaseAddress != null);
+            var customerApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICustomerApi>();
+            Assert.True(customerApi.HttpClient.BaseAddress != null);
 
-            var ordersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IOrdersApi>();
-            Assert.True(ordersApi.HttpClient.BaseAddress != null);
+            var orderApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IOrderApi>();
+            Assert.True(orderApi.HttpClient.BaseAddress != null);
 
-            var withdrawalsAndTransfersApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IWithdrawalsAndTransfersApi>();
-            Assert.True(withdrawalsAndTransfersApi.HttpClient.BaseAddress != null);
+            var transferApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ITransferApi>();
+            Assert.True(transferApi.HttpClient.BaseAddress != null);
         }
     }
 }

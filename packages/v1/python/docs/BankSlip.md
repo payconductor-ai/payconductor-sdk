@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from payconductor-sdk.models.bank_slip import BankSlip
+from payconductor_sdk.models.bank_slip import BankSlip
 
 # TODO update the JSON string below
 json = "{}"

@@ -14,7 +14,7 @@
 
 import unittest
 
-from payconductor-sdk.models.complete_card_data import CompleteCardData
+from payconductor_sdk.models.complete_card_data import CompleteCardData
 
 class TestCompleteCardData(unittest.TestCase):
     """CompleteCardData unit test stubs"""
@@ -36,7 +36,7 @@ class TestCompleteCardData(unittest.TestCase):
         if include_optional:
             return CompleteCardData(
                 cvv = '012',
-                expiration = payconductor-sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
+                expiration = payconductor_sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
                     month = 1, 
                     year = 2025, ),
                 holder_name = '',
@@ -45,7 +45,7 @@ class TestCompleteCardData(unittest.TestCase):
         else:
             return CompleteCardData(
                 cvv = '012',
-                expiration = payconductor-sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
+                expiration = payconductor_sdk.models.complete_card_data_expiration.Complete_card_data_expiration(
                     month = 1, 
                     year = 2025, ),
                 holder_name = '',
