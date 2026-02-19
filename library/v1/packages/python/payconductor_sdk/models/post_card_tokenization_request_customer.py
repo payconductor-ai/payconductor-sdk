@@ -19,28 +19,28 @@ import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Optional
-from payconductor_sdk.models.customer2 import Customer2
+from payconductor_sdk.models.customer import Customer
 from payconductor_sdk.models.post_card_tokenization_request_customer_any_of import PostCardTokenizationRequestCustomerAnyOf
 from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-POSTCARDTOKENIZATIONREQUESTCUSTOMER_ANY_OF_SCHEMAS = ["Customer2", "PostCardTokenizationRequestCustomerAnyOf"]
+POSTCARDTOKENIZATIONREQUESTCUSTOMER_ANY_OF_SCHEMAS = ["Customer", "PostCardTokenizationRequestCustomerAnyOf"]
 
 class PostCardTokenizationRequestCustomer(BaseModel):
     """
     PostCardTokenizationRequestCustomer
     """
 
-    # data type: Customer2
-    anyof_schema_1_validator: Optional[Customer2] = None
+    # data type: Customer
+    anyof_schema_1_validator: Optional[Customer] = None
     # data type: PostCardTokenizationRequestCustomerAnyOf
     anyof_schema_2_validator: Optional[PostCardTokenizationRequestCustomerAnyOf] = None
     if TYPE_CHECKING:
-        actual_instance: Optional[Union[Customer2, PostCardTokenizationRequestCustomerAnyOf]] = None
+        actual_instance: Optional[Union[Customer, PostCardTokenizationRequestCustomerAnyOf]] = None
     else:
         actual_instance: Any = None
-    any_of_schemas: Set[str] = { "Customer2", "PostCardTokenizationRequestCustomerAnyOf" }
+    any_of_schemas: Set[str] = { "Customer", "PostCardTokenizationRequestCustomerAnyOf" }
 
     model_config = {
         "validate_assignment": True,
@@ -61,9 +61,9 @@ class PostCardTokenizationRequestCustomer(BaseModel):
     def actual_instance_must_validate_anyof(cls, v):
         instance = PostCardTokenizationRequestCustomer.model_construct()
         error_messages = []
-        # validate data type: Customer2
-        if not isinstance(v, Customer2):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `Customer2`")
+        # validate data type: Customer
+        if not isinstance(v, Customer):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `Customer`")
         else:
             return v
 
@@ -75,7 +75,7 @@ class PostCardTokenizationRequestCustomer(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in PostCardTokenizationRequestCustomer with anyOf schemas: Customer2, PostCardTokenizationRequestCustomerAnyOf. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in PostCardTokenizationRequestCustomer with anyOf schemas: Customer, PostCardTokenizationRequestCustomerAnyOf. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -88,9 +88,9 @@ class PostCardTokenizationRequestCustomer(BaseModel):
         """Returns the object represented by the json string"""
         instance = cls.model_construct()
         error_messages = []
-        # anyof_schema_1_validator: Optional[Customer2] = None
+        # anyof_schema_1_validator: Optional[Customer] = None
         try:
-            instance.actual_instance = Customer2.from_json(json_str)
+            instance.actual_instance = Customer.from_json(json_str)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
@@ -103,7 +103,7 @@ class PostCardTokenizationRequestCustomer(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into PostCardTokenizationRequestCustomer with anyOf schemas: Customer2, PostCardTokenizationRequestCustomerAnyOf. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into PostCardTokenizationRequestCustomer with anyOf schemas: Customer, PostCardTokenizationRequestCustomerAnyOf. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -117,7 +117,7 @@ class PostCardTokenizationRequestCustomer(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], Customer2, PostCardTokenizationRequestCustomerAnyOf]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], Customer, PostCardTokenizationRequestCustomerAnyOf]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

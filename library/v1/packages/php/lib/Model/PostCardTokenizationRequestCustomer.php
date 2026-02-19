@@ -59,7 +59,7 @@ class PostCardTokenizationRequestCustomer implements ModelInterface, ArrayAccess
     protected static $openAPITypes = [
         'address' => '\OpenAPI\Client\Model\CustomerAddress',
         'document_number' => 'string',
-        'document_type' => '\OpenAPI\Client\Model\Customer2DocumentType',
+        'document_type' => '\OpenAPI\Client\Model\DocumentType',
         'email' => 'string',
         'name' => 'string',
         'phone_number' => 'string',
@@ -416,7 +416,7 @@ class PostCardTokenizationRequestCustomer implements ModelInterface, ArrayAccess
     /**
      * Gets document_type
      *
-     * @return \OpenAPI\Client\Model\Customer2DocumentType
+     * @return \OpenAPI\Client\Model\DocumentType
      */
     public function getDocumentType()
     {
@@ -426,7 +426,7 @@ class PostCardTokenizationRequestCustomer implements ModelInterface, ArrayAccess
     /**
      * Sets document_type
      *
-     * @param \OpenAPI\Client\Model\Customer2DocumentType $document_type document_type
+     * @param \OpenAPI\Client\Model\DocumentType $document_type document_type
      *
      * @return self
      */

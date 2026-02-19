@@ -6,7 +6,7 @@
 
 
 static bank_slip_t *bank_slip_create_internal(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     bank_slip_expiration_in_days_t *expiration_in_days
     ) {
     bank_slip_t *bank_slip_local_var = malloc(sizeof(bank_slip_t));
@@ -21,7 +21,7 @@ static bank_slip_t *bank_slip_create_internal(
 }
 
 __attribute__((deprecated)) bank_slip_t *bank_slip_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     bank_slip_expiration_in_days_t *expiration_in_days
     ) {
     return bank_slip_create_internal (
@@ -39,10 +39,6 @@ void bank_slip_free(bank_slip_t *bank_slip) {
         return ;
     }
     listEntry_t *listEntry;
-    if (bank_slip->payment_method) {
-        free(bank_slip->payment_method);
-        bank_slip->payment_method = NULL;
-    }
     if (bank_slip->expiration_in_days) {
         bank_slip_expiration_in_days_free(bank_slip->expiration_in_days);
         bank_slip->expiration_in_days = NULL;
@@ -54,11 +50,16 @@ cJSON *bank_slip_convertToJSON(bank_slip_t *bank_slip) {
     cJSON *item = cJSON_CreateObject();
 
     // bank_slip->payment_method
-    if (!bank_slip->payment_method) {
+    if (payconductor_api_payment_method__NULL == bank_slip->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", bank_slip->payment_method) == NULL) {
-    goto fail; //String
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(bank_slip->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -86,6 +87,9 @@ bank_slip_t *bank_slip_parseFromJSON(cJSON *bank_slipJSON){
 
     bank_slip_t *bank_slip_local_var = NULL;
 
+    // define the local variable for bank_slip->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
+
     // define the local variable for bank_slip->expiration_in_days
     bank_slip_expiration_in_days_t *expiration_in_days_local_nonprim = NULL;
 
@@ -99,10 +103,7 @@ bank_slip_t *bank_slip_parseFromJSON(cJSON *bank_slipJSON){
     }
 
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //String
-    }
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
     // bank_slip->expiration_in_days
     cJSON *expiration_in_days = cJSON_GetObjectItemCaseSensitive(bank_slipJSON, "expirationInDays");
@@ -115,12 +116,15 @@ bank_slip_t *bank_slip_parseFromJSON(cJSON *bank_slipJSON){
 
 
     bank_slip_local_var = bank_slip_create_internal (
-        strdup(payment_method->valuestring),
+        payment_method_local_nonprim,
         expiration_in_days ? expiration_in_days_local_nonprim : NULL
         );
 
     return bank_slip_local_var;
 end:
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
+    }
     if (expiration_in_days_local_nonprim) {
         bank_slip_expiration_in_days_free(expiration_in_days_local_nonprim);
         expiration_in_days_local_nonprim = NULL;

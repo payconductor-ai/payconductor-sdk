@@ -4,12 +4,14 @@
 
 // ignore_for_file: unused_element
 import 'package:openapi/src/model/post_orders200_response_nu_pay.dart';
+import 'package:openapi/src/model/status.dart';
 import 'package:openapi/src/model/post_orders200_response_bank_slip.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:openapi/src/model/post_orders200_response_session.dart';
 import 'package:openapi/src/model/post_orders200_response_order_items_inner.dart';
 import 'package:openapi/src/model/post_orders200_response_credit_card.dart';
 import 'package:openapi/src/model/post_orders200_response_pic_pay.dart';
+import 'package:openapi/src/model/payment_method.dart';
 import 'package:openapi/src/model/post_orders200_response_pix.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
@@ -79,11 +81,11 @@ abstract class PostOrders200Response implements Built<PostOrders200Response, Pos
   PostOrders200ResponseCreditCard? get creditCard;
 
   @BuiltValueField(wireName: r'status')
-  PostOrders200ResponseStatusEnum get status;
-  // enum statusEnum {  Generating,  Pending,  Completed,  Failed,  Canceled,  Refunding,  Refunded,  InDispute,  Chargeback,  };
+  Status get status;
+  // enum statusEnum {  Generating,  Pending,  Completed,  Failed,  Canceled,  Refunding,  Refunded,  InDispute,  Chargeback,  Transferring,  };
 
   @BuiltValueField(wireName: r'paymentMethod')
-  PostOrders200ResponsePaymentMethodEnum get paymentMethod;
+  PaymentMethod get paymentMethod;
   // enum paymentMethodEnum {  Pix,  CreditCard,  DebitCard,  BankSlip,  Crypto,  ApplePay,  NuPay,  PicPay,  AmazonPay,  SepaDebit,  GooglePay,  Draft,  };
 
   /// Date and time when the order was paid (ISO 8601)
@@ -195,12 +197,12 @@ class _$PostOrders200ResponseSerializer implements PrimitiveSerializer<PostOrder
     yield r'status';
     yield serializers.serialize(
       object.status,
-      specifiedType: const FullType(PostOrders200ResponseStatusEnum),
+      specifiedType: const FullType(Status),
     );
     yield r'paymentMethod';
     yield serializers.serialize(
       object.paymentMethod,
-      specifiedType: const FullType(PostOrders200ResponsePaymentMethodEnum),
+      specifiedType: const FullType(PaymentMethod),
     );
     yield r'payedAt';
     yield object.payedAt == null ? null : serializers.serialize(
@@ -334,15 +336,15 @@ class _$PostOrders200ResponseSerializer implements PrimitiveSerializer<PostOrder
         case r'status':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(PostOrders200ResponseStatusEnum),
-          ) as PostOrders200ResponseStatusEnum;
+            specifiedType: const FullType(Status),
+          ) as Status;
           result.status = valueDes;
           break;
         case r'paymentMethod':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(PostOrders200ResponsePaymentMethodEnum),
-          ) as PostOrders200ResponsePaymentMethodEnum;
+            specifiedType: const FullType(PaymentMethod),
+          ) as PaymentMethod;
           result.paymentMethod = valueDes;
           break;
         case r'payedAt':
@@ -411,69 +413,5 @@ class _$PostOrders200ResponseSerializer implements PrimitiveSerializer<PostOrder
     );
     return result.build();
   }
-}
-
-class PostOrders200ResponseStatusEnum extends EnumClass {
-
-  @BuiltValueEnumConst(wireName: r'Generating')
-  static const PostOrders200ResponseStatusEnum generating = _$postOrders200ResponseStatusEnum_generating;
-  @BuiltValueEnumConst(wireName: r'Pending')
-  static const PostOrders200ResponseStatusEnum pending = _$postOrders200ResponseStatusEnum_pending;
-  @BuiltValueEnumConst(wireName: r'Completed')
-  static const PostOrders200ResponseStatusEnum completed = _$postOrders200ResponseStatusEnum_completed;
-  @BuiltValueEnumConst(wireName: r'Failed')
-  static const PostOrders200ResponseStatusEnum failed = _$postOrders200ResponseStatusEnum_failed;
-  @BuiltValueEnumConst(wireName: r'Canceled')
-  static const PostOrders200ResponseStatusEnum canceled = _$postOrders200ResponseStatusEnum_canceled;
-  @BuiltValueEnumConst(wireName: r'Refunding')
-  static const PostOrders200ResponseStatusEnum refunding = _$postOrders200ResponseStatusEnum_refunding;
-  @BuiltValueEnumConst(wireName: r'Refunded')
-  static const PostOrders200ResponseStatusEnum refunded = _$postOrders200ResponseStatusEnum_refunded;
-  @BuiltValueEnumConst(wireName: r'InDispute')
-  static const PostOrders200ResponseStatusEnum inDispute = _$postOrders200ResponseStatusEnum_inDispute;
-  @BuiltValueEnumConst(wireName: r'Chargeback')
-  static const PostOrders200ResponseStatusEnum chargeback = _$postOrders200ResponseStatusEnum_chargeback;
-
-  static Serializer<PostOrders200ResponseStatusEnum> get serializer => _$postOrders200ResponseStatusEnumSerializer;
-
-  const PostOrders200ResponseStatusEnum._(String name): super(name);
-
-  static BuiltSet<PostOrders200ResponseStatusEnum> get values => _$postOrders200ResponseStatusEnumValues;
-  static PostOrders200ResponseStatusEnum valueOf(String name) => _$postOrders200ResponseStatusEnumValueOf(name);
-}
-
-class PostOrders200ResponsePaymentMethodEnum extends EnumClass {
-
-  @BuiltValueEnumConst(wireName: r'Pix')
-  static const PostOrders200ResponsePaymentMethodEnum pix = _$postOrders200ResponsePaymentMethodEnum_pix;
-  @BuiltValueEnumConst(wireName: r'CreditCard')
-  static const PostOrders200ResponsePaymentMethodEnum creditCard = _$postOrders200ResponsePaymentMethodEnum_creditCard;
-  @BuiltValueEnumConst(wireName: r'DebitCard')
-  static const PostOrders200ResponsePaymentMethodEnum debitCard = _$postOrders200ResponsePaymentMethodEnum_debitCard;
-  @BuiltValueEnumConst(wireName: r'BankSlip')
-  static const PostOrders200ResponsePaymentMethodEnum bankSlip = _$postOrders200ResponsePaymentMethodEnum_bankSlip;
-  @BuiltValueEnumConst(wireName: r'Crypto')
-  static const PostOrders200ResponsePaymentMethodEnum crypto = _$postOrders200ResponsePaymentMethodEnum_crypto;
-  @BuiltValueEnumConst(wireName: r'ApplePay')
-  static const PostOrders200ResponsePaymentMethodEnum applePay = _$postOrders200ResponsePaymentMethodEnum_applePay;
-  @BuiltValueEnumConst(wireName: r'NuPay')
-  static const PostOrders200ResponsePaymentMethodEnum nuPay = _$postOrders200ResponsePaymentMethodEnum_nuPay;
-  @BuiltValueEnumConst(wireName: r'PicPay')
-  static const PostOrders200ResponsePaymentMethodEnum picPay = _$postOrders200ResponsePaymentMethodEnum_picPay;
-  @BuiltValueEnumConst(wireName: r'AmazonPay')
-  static const PostOrders200ResponsePaymentMethodEnum amazonPay = _$postOrders200ResponsePaymentMethodEnum_amazonPay;
-  @BuiltValueEnumConst(wireName: r'SepaDebit')
-  static const PostOrders200ResponsePaymentMethodEnum sepaDebit = _$postOrders200ResponsePaymentMethodEnum_sepaDebit;
-  @BuiltValueEnumConst(wireName: r'GooglePay')
-  static const PostOrders200ResponsePaymentMethodEnum googlePay = _$postOrders200ResponsePaymentMethodEnum_googlePay;
-  @BuiltValueEnumConst(wireName: r'Draft')
-  static const PostOrders200ResponsePaymentMethodEnum draft = _$postOrders200ResponsePaymentMethodEnum_draft;
-
-  static Serializer<PostOrders200ResponsePaymentMethodEnum> get serializer => _$postOrders200ResponsePaymentMethodEnumSerializer;
-
-  const PostOrders200ResponsePaymentMethodEnum._(String name): super(name);
-
-  static BuiltSet<PostOrders200ResponsePaymentMethodEnum> get values => _$postOrders200ResponsePaymentMethodEnumValues;
-  static PostOrders200ResponsePaymentMethodEnum valueOf(String name) => _$postOrders200ResponsePaymentMethodEnumValueOf(name);
 }
 

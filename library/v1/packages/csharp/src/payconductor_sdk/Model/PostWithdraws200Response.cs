@@ -36,23 +36,23 @@ namespace payconductor_sdk.Model
         /// <param name="id">Unique withdrawal identifier</param>
         /// <param name="externalIntegrationKey">Provider key used for the withdrawal</param>
         /// <param name="costFee">Cost fee applied to the withdrawal</param>
+        /// <param name="status">status</param>
         /// <param name="payoutAccount">payoutAccount</param>
         /// <param name="externalId">Withdrawal ID in your system</param>
         /// <param name="externalIntegrationId">Withdrawal ID in the payment provider</param>
-        /// <param name="status">Withdrawal status (default to StatusEnum.Pending)</param>
         /// <param name="errorCode">Error code, if any</param>
         /// <param name="errorMessage">Descriptive error message, if any</param>
         /// <param name="payedAt">payedAt</param>
         [JsonConstructor]
-        public PostWithdraws200Response(string id, string externalIntegrationKey, decimal costFee, PostWithdraws200ResponsePayoutAccount payoutAccount, string? externalId = default, string? externalIntegrationId = default, StatusEnum status = StatusEnum.Pending, string? errorCode = default, string? errorMessage = default, PostWithdraws200ResponsePayedAt? payedAt = default)
+        public PostWithdraws200Response(string id, string externalIntegrationKey, decimal costFee, Status status, PostWithdraws200ResponsePayoutAccount payoutAccount, string? externalId = default, string? externalIntegrationId = default, string? errorCode = default, string? errorMessage = default, PostWithdraws200ResponsePayedAt? payedAt = default)
         {
             Id = id;
             ExternalIntegrationKey = externalIntegrationKey;
             CostFee = costFee;
+            Status = status;
             PayoutAccount = payoutAccount;
             ExternalId = externalId;
             ExternalIntegrationId = externalIntegrationId;
-            Status = status;
             ErrorCode = errorCode;
             ErrorMessage = errorMessage;
             PayedAt = payedAt;
@@ -62,106 +62,10 @@ namespace payconductor_sdk.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Withdrawal status
+        /// Gets or Sets Status
         /// </summary>
-        /// <value>Withdrawal status</value>
-        public enum StatusEnum
-        {
-            /// <summary>
-            /// Enum Pending for value: Pending
-            /// </summary>
-            Pending = 1,
-
-            /// <summary>
-            /// Enum Transferring for value: Transferring
-            /// </summary>
-            Transferring = 2,
-
-            /// <summary>
-            /// Enum Completed for value: Completed
-            /// </summary>
-            Completed = 3,
-
-            /// <summary>
-            /// Enum Failed for value: Failed
-            /// </summary>
-            Failed = 4
-        }
-
-        /// <summary>
-        /// Returns a <see cref="StatusEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static StatusEnum StatusEnumFromString(string value)
-        {
-            if (value.Equals("Pending"))
-                return StatusEnum.Pending;
-
-            if (value.Equals("Transferring"))
-                return StatusEnum.Transferring;
-
-            if (value.Equals("Completed"))
-                return StatusEnum.Completed;
-
-            if (value.Equals("Failed"))
-                return StatusEnum.Failed;
-
-            throw new NotImplementedException($"Could not convert value to type StatusEnum: '{value}'");
-        }
-
-        /// <summary>
-        /// Returns a <see cref="StatusEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static StatusEnum? StatusEnumFromStringOrDefault(string value)
-        {
-            if (value.Equals("Pending"))
-                return StatusEnum.Pending;
-
-            if (value.Equals("Transferring"))
-                return StatusEnum.Transferring;
-
-            if (value.Equals("Completed"))
-                return StatusEnum.Completed;
-
-            if (value.Equals("Failed"))
-                return StatusEnum.Failed;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="StatusEnum"/> to the json value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static string StatusEnumToJsonValue(StatusEnum value)
-        {
-            if (value == StatusEnum.Pending)
-                return "Pending";
-
-            if (value == StatusEnum.Transferring)
-                return "Transferring";
-
-            if (value == StatusEnum.Completed)
-                return "Completed";
-
-            if (value == StatusEnum.Failed)
-                return "Failed";
-
-            throw new NotImplementedException($"Value could not be handled: '{value}'");
-        }
-
-        /// <summary>
-        /// Withdrawal status
-        /// </summary>
-        /// <value>Withdrawal status</value>
         [JsonPropertyName("status")]
-        public StatusEnum Status { get; set; }
+        public Status Status { get; set; }
 
         /// <summary>
         /// Unique withdrawal identifier
@@ -235,10 +139,10 @@ namespace payconductor_sdk.Model
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  ExternalIntegrationKey: ").Append(ExternalIntegrationKey).Append("\n");
             sb.Append("  CostFee: ").Append(CostFee).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  PayoutAccount: ").Append(PayoutAccount).Append("\n");
             sb.Append("  ExternalId: ").Append(ExternalId).Append("\n");
             sb.Append("  ExternalIntegrationId: ").Append(ExternalIntegrationId).Append("\n");
-            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  ErrorCode: ").Append(ErrorCode).Append("\n");
             sb.Append("  ErrorMessage: ").Append(ErrorMessage).Append("\n");
             sb.Append("  PayedAt: ").Append(PayedAt).Append("\n");
@@ -282,10 +186,10 @@ namespace payconductor_sdk.Model
             Option<string?> id = default;
             Option<string?> externalIntegrationKey = default;
             Option<decimal?> costFee = default;
+            Option<Status?> status = default;
             Option<PostWithdraws200ResponsePayoutAccount?> payoutAccount = default;
             Option<string?> externalId = default;
             Option<string?> externalIntegrationId = default;
-            Option<PostWithdraws200Response.StatusEnum?> status = default;
             Option<string?> errorCode = default;
             Option<string?> errorMessage = default;
             Option<PostWithdraws200ResponsePayedAt?> payedAt = default;
@@ -314,6 +218,11 @@ namespace payconductor_sdk.Model
                         case "costFee":
                             costFee = new Option<decimal?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (decimal?)null : utf8JsonReader.GetDecimal());
                             break;
+                        case "status":
+                            string? statusRawValue = utf8JsonReader.GetString();
+                            if (statusRawValue != null)
+                                status = new Option<Status?>(StatusValueConverter.FromStringOrDefault(statusRawValue));
+                            break;
                         case "payoutAccount":
                             payoutAccount = new Option<PostWithdraws200ResponsePayoutAccount?>(JsonSerializer.Deserialize<PostWithdraws200ResponsePayoutAccount>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
@@ -322,11 +231,6 @@ namespace payconductor_sdk.Model
                             break;
                         case "externalIntegrationId":
                             externalIntegrationId = new Option<string?>(utf8JsonReader.GetString());
-                            break;
-                        case "status":
-                            string? statusRawValue = utf8JsonReader.GetString();
-                            if (statusRawValue != null)
-                                status = new Option<PostWithdraws200Response.StatusEnum?>(PostWithdraws200Response.StatusEnumFromStringOrDefault(statusRawValue));
                             break;
                         case "errorCode":
                             errorCode = new Option<string?>(utf8JsonReader.GetString());
@@ -352,6 +256,9 @@ namespace payconductor_sdk.Model
             if (!costFee.IsSet)
                 throw new ArgumentException("Property is required for class PostWithdraws200Response.", nameof(costFee));
 
+            if (!status.IsSet)
+                throw new ArgumentException("Property is required for class PostWithdraws200Response.", nameof(status));
+
             if (!payoutAccount.IsSet)
                 throw new ArgumentException("Property is required for class PostWithdraws200Response.", nameof(payoutAccount));
 
@@ -360,9 +267,6 @@ namespace payconductor_sdk.Model
 
             if (!externalIntegrationId.IsSet)
                 throw new ArgumentException("Property is required for class PostWithdraws200Response.", nameof(externalIntegrationId));
-
-            if (!status.IsSet)
-                throw new ArgumentException("Property is required for class PostWithdraws200Response.", nameof(status));
 
             if (!errorCode.IsSet)
                 throw new ArgumentException("Property is required for class PostWithdraws200Response.", nameof(errorCode));
@@ -382,13 +286,13 @@ namespace payconductor_sdk.Model
             if (costFee.IsSet && costFee.Value == null)
                 throw new ArgumentNullException(nameof(costFee), "Property is not nullable for class PostWithdraws200Response.");
 
-            if (payoutAccount.IsSet && payoutAccount.Value == null)
-                throw new ArgumentNullException(nameof(payoutAccount), "Property is not nullable for class PostWithdraws200Response.");
-
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class PostWithdraws200Response.");
 
-            return new PostWithdraws200Response(id.Value!, externalIntegrationKey.Value!, costFee.Value!.Value!, payoutAccount.Value!, externalId.Value!, externalIntegrationId.Value!, status.Value!.Value!, errorCode.Value!, errorMessage.Value!, payedAt.Value!);
+            if (payoutAccount.IsSet && payoutAccount.Value == null)
+                throw new ArgumentNullException(nameof(payoutAccount), "Property is not nullable for class PostWithdraws200Response.");
+
+            return new PostWithdraws200Response(id.Value!, externalIntegrationKey.Value!, costFee.Value!.Value!, status.Value!.Value!, payoutAccount.Value!, externalId.Value!, externalIntegrationId.Value!, errorCode.Value!, errorMessage.Value!, payedAt.Value!);
         }
 
         /// <summary>
@@ -430,6 +334,9 @@ namespace payconductor_sdk.Model
 
             writer.WriteNumber("costFee", postWithdraws200Response.CostFee);
 
+            var statusRawValue = StatusValueConverter.ToJsonValue(postWithdraws200Response.Status);
+            writer.WriteString("status", statusRawValue);
+
             writer.WritePropertyName("payoutAccount");
             JsonSerializer.Serialize(writer, postWithdraws200Response.PayoutAccount, jsonSerializerOptions);
             if (postWithdraws200Response.ExternalId != null)
@@ -442,8 +349,6 @@ namespace payconductor_sdk.Model
             else
                 writer.WriteNull("externalIntegrationId");
 
-            var statusRawValue = PostWithdraws200Response.StatusEnumToJsonValue(postWithdraws200Response.Status);
-            writer.WriteString("status", statusRawValue);
             if (postWithdraws200Response.ErrorCode != null)
                 writer.WriteString("errorCode", postWithdraws200Response.ErrorCode);
             else

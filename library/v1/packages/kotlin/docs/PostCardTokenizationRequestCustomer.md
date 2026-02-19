@@ -5,7 +5,7 @@
 | Name | Type | Description | Notes |
 | ------------ | ------------- | ------------- | ------------- |
 | **documentNumber** | **kotlin.String** | Customer CPF or CNPJ without formatting |  |
-| **documentType** | [**Customer2DocumentType**](Customer2DocumentType.md) |  |  |
+| **documentType** | [**DocumentType**](DocumentType.md) |  |  |
 | **email** | **kotlin.String** | Customer email |  |
 | **name** | **kotlin.String** | Customer full name |  |
 | **id** | **kotlin.String** | ID do cliente existente |  |

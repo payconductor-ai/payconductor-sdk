@@ -17,10 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from payconductor_sdk.models.draft_available_payment_methods_inner import DraftAvailablePaymentMethodsInner
+from payconductor_sdk.models.available_payment_methods import AvailablePaymentMethods
 from payconductor_sdk.models.draft_expiration_in_seconds import DraftExpirationInSeconds
+from payconductor_sdk.models.payment_method import PaymentMethod
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,9 +29,9 @@ class Draft(BaseModel):
     """
     Used to create an order without generating a real payment. Use to create orders that will be paid later
     """ # noqa: E501
-    payment_method: StrictStr = Field(alias="paymentMethod")
+    payment_method: PaymentMethod = Field(alias="paymentMethod")
     expiration_in_seconds: Optional[DraftExpirationInSeconds] = Field(default=None, alias="expirationInSeconds")
-    available_payment_methods: Optional[List[DraftAvailablePaymentMethodsInner]] = Field(default=None, description="Available payment methods for this order", alias="availablePaymentMethods")
+    available_payment_methods: Optional[List[AvailablePaymentMethods]] = Field(default=None, description="Available payment methods for this order", alias="availablePaymentMethods")
     __properties: ClassVar[List[str]] = ["paymentMethod", "expirationInSeconds", "availablePaymentMethods"]
 
     model_config = ConfigDict(
@@ -75,13 +76,6 @@ class Draft(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of expiration_in_seconds
         if self.expiration_in_seconds:
             _dict['expirationInSeconds'] = self.expiration_in_seconds.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in available_payment_methods (list)
-        _items = []
-        if self.available_payment_methods:
-            for _item_available_payment_methods in self.available_payment_methods:
-                if _item_available_payment_methods:
-                    _items.append(_item_available_payment_methods.to_dict())
-            _dict['availablePaymentMethods'] = _items
         return _dict
 
     @classmethod
@@ -96,7 +90,7 @@ class Draft(BaseModel):
         _obj = cls.model_validate({
             "paymentMethod": obj.get("paymentMethod"),
             "expirationInSeconds": DraftExpirationInSeconds.from_dict(obj["expirationInSeconds"]) if obj.get("expirationInSeconds") is not None else None,
-            "availablePaymentMethods": [DraftAvailablePaymentMethodsInner.from_dict(_item) for _item in obj["availablePaymentMethods"]] if obj.get("availablePaymentMethods") is not None else None
+            "availablePaymentMethods": obj.get("availablePaymentMethods")
         })
         return _obj
 

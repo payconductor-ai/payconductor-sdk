@@ -1,0 +1,32 @@
+/*
+ * available_payment_methods.h
+ *
+ * 
+ */
+
+#ifndef _available_payment_methods_H_
+#define _available_payment_methods_H_
+
+#include <string.h>
+#include "../external/cJSON.h"
+#include "../include/list.h"
+#include "../include/keyValuePair.h"
+#include "../include/binary.h"
+
+typedef struct available_payment_methods_t available_payment_methods_t;
+
+
+// Enum  for available_payment_methods
+
+typedef enum { payconductor_api_available_payment_methods__NULL = 0, payconductor_api_available_payment_methods__Pix, payconductor_api_available_payment_methods__CreditCard, payconductor_api_available_payment_methods__DebitCard, payconductor_api_available_payment_methods__BankSlip, payconductor_api_available_payment_methods__Crypto, payconductor_api_available_payment_methods__ApplePay, payconductor_api_available_payment_methods__NuPay, payconductor_api_available_payment_methods__PicPay, payconductor_api_available_payment_methods__AmazonPay, payconductor_api_available_payment_methods__SepaDebit, payconductor_api_available_payment_methods__GooglePay, payconductor_api_available_payment_methods__Draft } payconductor_api_available_payment_methods__e;
+
+char* available_payment_methods_available_payment_methods_ToString(payconductor_api_available_payment_methods__e available_payment_methods);
+
+payconductor_api_available_payment_methods__e available_payment_methods_available_payment_methods_FromString(char* available_payment_methods);
+
+cJSON *available_payment_methods_convertToJSON(payconductor_api_available_payment_methods__e available_payment_methods);
+
+payconductor_api_available_payment_methods__e available_payment_methods_parseFromJSON(cJSON *available_payment_methodsJSON);
+
+#endif /* _available_payment_methods_H_ */
+

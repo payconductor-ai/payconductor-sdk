@@ -82,6 +82,7 @@ Category | Method | HTTP request | Description
 
 ## Documentation for Models
 
+ - [available_payment_methods_t](docs/available_payment_methods.md)
  - [bank_slip_t](docs/bank_slip.md)
  - [bank_slip_expiration_in_days_t](docs/bank_slip_expiration_in_days.md)
  - [complete_card_data_t](docs/complete_card_data.md)
@@ -91,18 +92,19 @@ Category | Method | HTTP request | Description
  - [credit_card_installments_t](docs/credit_card_installments.md)
  - [customer_t](docs/customer.md)
  - [customer_1_t](docs/customer_1.md)
- - [customer_2_t](docs/customer_2.md)
- - [customer_2_document_type_t](docs/customer_2_document_type.md)
  - [customer_address_t](docs/customer_address.md)
+ - [document_type_t](docs/document_type.md)
  - [draft_t](docs/draft.md)
- - [draft_available_payment_methods_inner_t](docs/draft_available_payment_methods_inner.md)
  - [draft_expiration_in_seconds_t](docs/draft_expiration_in_seconds.md)
+ - [event_t](docs/event.md)
  - [merchant_input_t](docs/merchant_input.md)
  - [nu_pay_t](docs/nu_pay.md)
  - [nu_pay_nu_pay_t](docs/nu_pay_nu_pay.md)
+ - [payment_method_t](docs/payment_method.md)
  - [pic_pay_t](docs/pic_pay.md)
  - [pix_t](docs/pix.md)
  - [pix_expiration_in_seconds_t](docs/pix_expiration_in_seconds.md)
+ - [pix_type_t](docs/pix_type.md)
  - [post_card_tokenization_200_response_t](docs/post_card_tokenization_200_response.md)
  - [post_card_tokenization_request_t](docs/post_card_tokenization_request.md)
  - [post_card_tokenization_request_customer_t](docs/post_card_tokenization_request_customer.md)
@@ -126,6 +128,7 @@ Category | Method | HTTP request | Description
  - [post_withdraws_200_response_payout_account_t](docs/post_withdraws_200_response_payout_account.md)
  - [post_withdraws_request_t](docs/post_withdraws_request.md)
  - [post_withdraws_request_payout_account_t](docs/post_withdraws_request_payout_account.md)
+ - [status_t](docs/status.md)
  - [tokenized_card_t](docs/tokenized_card.md)
 
 

@@ -245,7 +245,7 @@ import (
 )
 
 func main() {
-	customer := *openapiclient.NewCustomer("DocumentNumber_example", "DocumentType_example", "Email_example", "Name_example") // Customer | Schema for creating a new customer
+	customer := *openapiclient.NewCustomer("DocumentNumber_example", openapiclient.DocumentType("Cpf"), "Email_example", "Name_example") // Customer | Schema for creating a new customer
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

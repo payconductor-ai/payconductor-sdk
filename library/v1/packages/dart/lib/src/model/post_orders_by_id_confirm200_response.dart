@@ -4,9 +4,10 @@
 
 // ignore_for_file: unused_element
 import 'package:openapi/src/model/post_orders200_response_nu_pay.dart';
+import 'package:openapi/src/model/status.dart';
 import 'package:openapi/src/model/post_orders200_response_bank_slip.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:openapi/src/model/post_orders200_response_pic_pay.dart';
+import 'package:openapi/src/model/payment_method.dart';
 import 'package:openapi/src/model/post_orders200_response_pix.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
@@ -60,11 +61,11 @@ abstract class PostOrdersByIdConfirm200Response implements Built<PostOrdersByIdC
   PostOrders200ResponsePicPay? get picPay;
 
   @BuiltValueField(wireName: r'status')
-  PostOrdersByIdConfirm200ResponseStatusEnum get status;
-  // enum statusEnum {  Generating,  Pending,  Completed,  Failed,  Canceled,  Refunding,  Refunded,  InDispute,  Chargeback,  };
+  Status get status;
+  // enum statusEnum {  Generating,  Pending,  Completed,  Failed,  Canceled,  Refunding,  Refunded,  InDispute,  Chargeback,  Transferring,  };
 
   @BuiltValueField(wireName: r'paymentMethod')
-  PostOrdersByIdConfirm200ResponsePaymentMethodEnum get paymentMethod;
+  PaymentMethod get paymentMethod;
   // enum paymentMethodEnum {  Pix,  CreditCard,  DebitCard,  BankSlip,  Crypto,  ApplePay,  NuPay,  PicPay,  AmazonPay,  SepaDebit,  GooglePay,  Draft,  };
 
   /// Date and time when the order was paid (ISO 8601)
@@ -153,12 +154,12 @@ class _$PostOrdersByIdConfirm200ResponseSerializer implements PrimitiveSerialize
     yield r'status';
     yield serializers.serialize(
       object.status,
-      specifiedType: const FullType(PostOrdersByIdConfirm200ResponseStatusEnum),
+      specifiedType: const FullType(Status),
     );
     yield r'paymentMethod';
     yield serializers.serialize(
       object.paymentMethod,
-      specifiedType: const FullType(PostOrdersByIdConfirm200ResponsePaymentMethodEnum),
+      specifiedType: const FullType(PaymentMethod),
     );
     yield r'payedAt';
     yield object.payedAt == null ? null : serializers.serialize(
@@ -258,15 +259,15 @@ class _$PostOrdersByIdConfirm200ResponseSerializer implements PrimitiveSerialize
         case r'status':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(PostOrdersByIdConfirm200ResponseStatusEnum),
-          ) as PostOrdersByIdConfirm200ResponseStatusEnum;
+            specifiedType: const FullType(Status),
+          ) as Status;
           result.status = valueDes;
           break;
         case r'paymentMethod':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(PostOrdersByIdConfirm200ResponsePaymentMethodEnum),
-          ) as PostOrdersByIdConfirm200ResponsePaymentMethodEnum;
+            specifiedType: const FullType(PaymentMethod),
+          ) as PaymentMethod;
           result.paymentMethod = valueDes;
           break;
         case r'payedAt':
@@ -320,69 +321,5 @@ class _$PostOrdersByIdConfirm200ResponseSerializer implements PrimitiveSerialize
     );
     return result.build();
   }
-}
-
-class PostOrdersByIdConfirm200ResponseStatusEnum extends EnumClass {
-
-  @BuiltValueEnumConst(wireName: r'Generating')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum generating = _$postOrdersByIdConfirm200ResponseStatusEnum_generating;
-  @BuiltValueEnumConst(wireName: r'Pending')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum pending = _$postOrdersByIdConfirm200ResponseStatusEnum_pending;
-  @BuiltValueEnumConst(wireName: r'Completed')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum completed = _$postOrdersByIdConfirm200ResponseStatusEnum_completed;
-  @BuiltValueEnumConst(wireName: r'Failed')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum failed = _$postOrdersByIdConfirm200ResponseStatusEnum_failed;
-  @BuiltValueEnumConst(wireName: r'Canceled')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum canceled = _$postOrdersByIdConfirm200ResponseStatusEnum_canceled;
-  @BuiltValueEnumConst(wireName: r'Refunding')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum refunding = _$postOrdersByIdConfirm200ResponseStatusEnum_refunding;
-  @BuiltValueEnumConst(wireName: r'Refunded')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum refunded = _$postOrdersByIdConfirm200ResponseStatusEnum_refunded;
-  @BuiltValueEnumConst(wireName: r'InDispute')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum inDispute = _$postOrdersByIdConfirm200ResponseStatusEnum_inDispute;
-  @BuiltValueEnumConst(wireName: r'Chargeback')
-  static const PostOrdersByIdConfirm200ResponseStatusEnum chargeback = _$postOrdersByIdConfirm200ResponseStatusEnum_chargeback;
-
-  static Serializer<PostOrdersByIdConfirm200ResponseStatusEnum> get serializer => _$postOrdersByIdConfirm200ResponseStatusEnumSerializer;
-
-  const PostOrdersByIdConfirm200ResponseStatusEnum._(String name): super(name);
-
-  static BuiltSet<PostOrdersByIdConfirm200ResponseStatusEnum> get values => _$postOrdersByIdConfirm200ResponseStatusEnumValues;
-  static PostOrdersByIdConfirm200ResponseStatusEnum valueOf(String name) => _$postOrdersByIdConfirm200ResponseStatusEnumValueOf(name);
-}
-
-class PostOrdersByIdConfirm200ResponsePaymentMethodEnum extends EnumClass {
-
-  @BuiltValueEnumConst(wireName: r'Pix')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum pix = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_pix;
-  @BuiltValueEnumConst(wireName: r'CreditCard')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum creditCard = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_creditCard;
-  @BuiltValueEnumConst(wireName: r'DebitCard')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum debitCard = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_debitCard;
-  @BuiltValueEnumConst(wireName: r'BankSlip')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum bankSlip = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_bankSlip;
-  @BuiltValueEnumConst(wireName: r'Crypto')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum crypto = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_crypto;
-  @BuiltValueEnumConst(wireName: r'ApplePay')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum applePay = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_applePay;
-  @BuiltValueEnumConst(wireName: r'NuPay')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum nuPay = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_nuPay;
-  @BuiltValueEnumConst(wireName: r'PicPay')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum picPay = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_picPay;
-  @BuiltValueEnumConst(wireName: r'AmazonPay')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum amazonPay = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_amazonPay;
-  @BuiltValueEnumConst(wireName: r'SepaDebit')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum sepaDebit = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_sepaDebit;
-  @BuiltValueEnumConst(wireName: r'GooglePay')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum googlePay = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_googlePay;
-  @BuiltValueEnumConst(wireName: r'Draft')
-  static const PostOrdersByIdConfirm200ResponsePaymentMethodEnum draft = _$postOrdersByIdConfirm200ResponsePaymentMethodEnum_draft;
-
-  static Serializer<PostOrdersByIdConfirm200ResponsePaymentMethodEnum> get serializer => _$postOrdersByIdConfirm200ResponsePaymentMethodEnumSerializer;
-
-  const PostOrdersByIdConfirm200ResponsePaymentMethodEnum._(String name): super(name);
-
-  static BuiltSet<PostOrdersByIdConfirm200ResponsePaymentMethodEnum> get values => _$postOrdersByIdConfirm200ResponsePaymentMethodEnumValues;
-  static PostOrdersByIdConfirm200ResponsePaymentMethodEnum valueOf(String name) => _$postOrdersByIdConfirm200ResponsePaymentMethodEnumValueOf(name);
 }
 

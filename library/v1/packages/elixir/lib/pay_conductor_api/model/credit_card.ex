@@ -15,7 +15,7 @@ defmodule PayConductorAPI.Model.CreditCard do
   ]
 
   @type t :: %__MODULE__{
-    :paymentMethod => String.t,
+    :paymentMethod => PayConductorAPI.Model.PaymentMethod.t,
     :card => PayConductorAPI.Model.CreditCardCard.t,
     :installments => PayConductorAPI.Model.CreditCardInstallments.t,
     :softDescriptor => String.t | nil
@@ -25,6 +25,7 @@ defmodule PayConductorAPI.Model.CreditCard do
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:paymentMethod, :struct, PayConductorAPI.Model.PaymentMethod)
      |> Deserializer.deserialize(:card, :struct, PayConductorAPI.Model.CreditCardCard)
      |> Deserializer.deserialize(:installments, :struct, PayConductorAPI.Model.CreditCardInstallments)
   end

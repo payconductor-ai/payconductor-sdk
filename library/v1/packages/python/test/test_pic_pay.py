@@ -35,11 +35,11 @@ class TestPicPay(unittest.TestCase):
         model = PicPay()
         if include_optional:
             return PicPay(
-                payment_method = ''
+                payment_method = 'Pix'
             )
         else:
             return PicPay(
-                payment_method = '',
+                payment_method = 'Pix',
         )
         """
 

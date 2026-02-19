@@ -7,7 +7,7 @@ void main() {
   // TODO add properties to the builder and call build()
 
   group(PostOrdersRequestPayment, () {
-    // String paymentMethod
+    // PaymentMethod paymentMethod
     test('to test the property `paymentMethod`', () async {
       // TODO
     });
@@ -44,7 +44,7 @@ void main() {
     });
 
     // Available payment methods for this order
-    // BuiltList<DraftAvailablePaymentMethodsInner> availablePaymentMethods
+    // BuiltList<AvailablePaymentMethods> availablePaymentMethods
     test('to test the property `availablePaymentMethods`', () async {
       // TODO
     });

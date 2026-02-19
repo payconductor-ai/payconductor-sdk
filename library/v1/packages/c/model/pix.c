@@ -6,7 +6,7 @@
 
 
 static pix_t *pix_create_internal(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     pix_expiration_in_seconds_t *expiration_in_seconds
     ) {
     pix_t *pix_local_var = malloc(sizeof(pix_t));
@@ -21,7 +21,7 @@ static pix_t *pix_create_internal(
 }
 
 __attribute__((deprecated)) pix_t *pix_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     pix_expiration_in_seconds_t *expiration_in_seconds
     ) {
     return pix_create_internal (
@@ -39,10 +39,6 @@ void pix_free(pix_t *pix) {
         return ;
     }
     listEntry_t *listEntry;
-    if (pix->payment_method) {
-        free(pix->payment_method);
-        pix->payment_method = NULL;
-    }
     if (pix->expiration_in_seconds) {
         pix_expiration_in_seconds_free(pix->expiration_in_seconds);
         pix->expiration_in_seconds = NULL;
@@ -54,11 +50,16 @@ cJSON *pix_convertToJSON(pix_t *pix) {
     cJSON *item = cJSON_CreateObject();
 
     // pix->payment_method
-    if (!pix->payment_method) {
+    if (payconductor_api_payment_method__NULL == pix->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", pix->payment_method) == NULL) {
-    goto fail; //String
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(pix->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -86,6 +87,9 @@ pix_t *pix_parseFromJSON(cJSON *pixJSON){
 
     pix_t *pix_local_var = NULL;
 
+    // define the local variable for pix->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
+
     // define the local variable for pix->expiration_in_seconds
     pix_expiration_in_seconds_t *expiration_in_seconds_local_nonprim = NULL;
 
@@ -99,10 +103,7 @@ pix_t *pix_parseFromJSON(cJSON *pixJSON){
     }
 
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //String
-    }
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
     // pix->expiration_in_seconds
     cJSON *expiration_in_seconds = cJSON_GetObjectItemCaseSensitive(pixJSON, "expirationInSeconds");
@@ -115,12 +116,15 @@ pix_t *pix_parseFromJSON(cJSON *pixJSON){
 
 
     pix_local_var = pix_create_internal (
-        strdup(payment_method->valuestring),
+        payment_method_local_nonprim,
         expiration_in_seconds ? expiration_in_seconds_local_nonprim : NULL
         );
 
     return pix_local_var;
 end:
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
+    }
     if (expiration_in_seconds_local_nonprim) {
         pix_expiration_in_seconds_free(expiration_in_seconds_local_nonprim);
         expiration_in_seconds_local_nonprim = NULL;

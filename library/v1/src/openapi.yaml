@@ -296,222 +296,21 @@ paths:
                 payment:
                   description: 'Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)'
                   anyOf:
-                    - title: Pix
-                      type: object
-                      properties:
-                        paymentMethod:
-                          $ref: '#/components/schemas/PaymentMethod'
-                        expirationInSeconds:
-                          description: PIX expiration time in seconds
-                          default: 3600
-                          anyOf:
-                            - format: integer
-                              default: 0
-                              type: string
-                            - default: 3600
-                              description: PIX expiration time in seconds
-                              examples:
-                                - 3600
-                                - 86400
-                              minimum: 3600
-                              type: integer
-                          examples:
-                            - 3600
-                            - 86400
-                          minimum: 3600
-                      required:
-                        - paymentMethod
-                    - title: Credit Card
-                      type: object
-                      properties:
-                        paymentMethod:
-                          $ref: '#/components/schemas/PaymentMethod'
-                        card:
-                          anyOf:
-                            - title: Tokenized card
-                              type: object
-                              properties:
-                                firstSixCardNumber:
-                                  description: First 6 digits of the credit card
-                                  type: string
-                                  examples:
-                                    - '411111'
-                                token:
-                                  description: Previously generated credit card token
-                                  type: string
-                              required:
-                                - token
-                            - title: Complete card data
-                              type: object
-                              properties:
-                                cvv:
-                                  description: Card security code (CVV)
-                                  type: string
-                                  examples:
-                                    - '123'
-                                    - '1234'
-                                  maxLength: 4
-                                  minLength: 3
-                                expiration:
-                                  type: object
-                                  properties:
-                                    month:
-                                      description: Card expiration month
-                                      type: number
-                                      examples:
-                                        - 1
-                                        - 12
-                                      maximum: 12
-                                      minimum: 1
-                                    year:
-                                      description: Card expiration year
-                                      type: number
-                                      examples:
-                                        - 2030
-                                      maximum: 2046
-                                      minimum: 2025
-                                  required:
-                                    - month
-                                    - year
-                                holderName:
-                                  description: Card holder name
-                                  type: string
-                                  examples:
-                                    - JOHN DOE
-                                number:
-                                  description: Credit card number
-                                  type: string
-                                  examples:
-                                    - '4242424242424242'
-                              required:
-                                - cvv
-                                - expiration
-                                - holderName
-                                - number
-                        installments:
-                          description: Number of installments
-                          default: 1
-                          anyOf:
-                            - format: integer
-                              default: 0
-                              type: string
-                            - default: 1
-                              description: Number of installments
-                              maximum: 12
-                              minimum: 1
-                              type: integer
-                          maximum: 12
-                          minimum: 1
-                        softDescriptor:
-                          description: Text that will appear on the card statement (soft descriptor)
-                          type: string
-                          examples:
-                            - PEDRO*TESTE
-                          maxLength: 22
-                          minLength: 1
-                      required:
-                        - paymentMethod
-                        - card
-                        - installments
-                    - title: Bank Slip
-                      type: object
-                      properties:
-                        paymentMethod:
-                          $ref: '#/components/schemas/PaymentMethod'
-                        expirationInDays:
-                          description: Days until bank slip expires
-                          default: 7
-                          anyOf:
-                            - format: integer
-                              default: 0
-                              type: string
-                            - default: 7
-                              description: Days until bank slip expires
-                              examples:
-                                - 3
-                                - 7
-                                - 15
-                              minimum: 1
-                              type: integer
-                          examples:
-                            - 3
-                            - 7
-                            - 15
-                          minimum: 1
-                      required:
-                        - paymentMethod
-                    - title: NuPay
-                      type: object
-                      properties:
-                        paymentMethod:
-                          $ref: '#/components/schemas/PaymentMethod'
-                        nuPay:
-                          description: Specific data for NuPay payment
-                          type: object
-                          properties:
-                            cancelUrl:
-                              description: Payment cancellation URL
-                              type: string
-                              examples:
-                                - 'https://example.com/cancel'
-                            merchantName:
-                              description: Merchant name
-                              type: string
-                              examples:
-                                - My Store
-                            returnUrl:
-                              description: Return URL after payment completion
-                              type: string
-                              examples:
-                                - 'https://example.com/success'
-                            storeName:
-                              description: Store name
-                              type: string
-                              examples:
-                                - Downtown Branch
-                          required:
-                            - cancelUrl
-                            - merchantName
-                            - returnUrl
-                      required:
-                        - paymentMethod
-                        - nuPay
-                    - title: PicPay
-                      type: object
-                      properties:
-                        paymentMethod:
-                          $ref: '#/components/schemas/PaymentMethod'
-                      required:
-                        - paymentMethod
-                    - title: Draft
-                      description: Used to create an order without generating a real payment. Use to create orders that will be paid later
-                      type: object
-                      properties:
-                        paymentMethod:
-                          $ref: '#/components/schemas/PaymentMethod'
-                        expirationInSeconds:
-                          description: Order expiration time in seconds
-                          default: 3600
-                          anyOf:
-                            - format: integer
-                              default: 0
-                              type: string
-                            - default: 3600
-                              description: Order expiration time in seconds
-                              examples:
-                                - 3600
-                                - 86400
-                              type: integer
-                          examples:
-                            - 3600
-                            - 86400
-                        availablePaymentMethods:
-                          description: Available payment methods for this order
-                          type: array
-                          items:
-                            $ref: '#/components/schemas/AvailablePaymentMethods'
-                      required:
-                        - paymentMethod
+                    - $ref: '#/components/schemas/Pix'
+                    - $ref: '#/components/schemas/CreditCard'
+                    - $ref: '#/components/schemas/BankSlip'
+                    - $ref: '#/components/schemas/NuPay'
+                    - $ref: '#/components/schemas/PicPay'
+                    - $ref: '#/components/schemas/Draft'
+                  discriminator:
+                    propertyName: paymentMethod
+                    mapping:
+                      Pix: '#/components/schemas/Pix'
+                      CreditCard: '#/components/schemas/CreditCard'
+                      BankSlip: '#/components/schemas/BankSlip'
+                      NuPay: '#/components/schemas/NuPay'
+                      PicPay: '#/components/schemas/PicPay'
+                      Draft: '#/components/schemas/Draft'
                   noValidate: true
                 splitAmountTotal:
                   description: 'Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)'
@@ -899,222 +698,21 @@ paths:
             schema:
               description: 'Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)'
               anyOf:
-                - title: Pix
-                  type: object
-                  properties:
-                    paymentMethod:
-                      $ref: '#/components/schemas/PaymentMethod'
-                    expirationInSeconds:
-                      description: PIX expiration time in seconds
-                      default: 3600
-                      anyOf:
-                        - format: integer
-                          default: 0
-                          type: string
-                        - default: 3600
-                          description: PIX expiration time in seconds
-                          examples:
-                            - 3600
-                            - 86400
-                          minimum: 3600
-                          type: integer
-                      examples:
-                        - 3600
-                        - 86400
-                      minimum: 3600
-                  required:
-                    - paymentMethod
-                - title: Credit Card
-                  type: object
-                  properties:
-                    paymentMethod:
-                      $ref: '#/components/schemas/PaymentMethod'
-                    card:
-                      anyOf:
-                        - title: Tokenized card
-                          type: object
-                          properties:
-                            firstSixCardNumber:
-                              description: First 6 digits of the credit card
-                              type: string
-                              examples:
-                                - '411111'
-                            token:
-                              description: Previously generated credit card token
-                              type: string
-                          required:
-                            - token
-                        - title: Complete card data
-                          type: object
-                          properties:
-                            cvv:
-                              description: Card security code (CVV)
-                              type: string
-                              examples:
-                                - '123'
-                                - '1234'
-                              maxLength: 4
-                              minLength: 3
-                            expiration:
-                              type: object
-                              properties:
-                                month:
-                                  description: Card expiration month
-                                  type: number
-                                  examples:
-                                    - 1
-                                    - 12
-                                  maximum: 12
-                                  minimum: 1
-                                year:
-                                  description: Card expiration year
-                                  type: number
-                                  examples:
-                                    - 2030
-                                  maximum: 2046
-                                  minimum: 2025
-                              required:
-                                - month
-                                - year
-                            holderName:
-                              description: Card holder name
-                              type: string
-                              examples:
-                                - JOHN DOE
-                            number:
-                              description: Credit card number
-                              type: string
-                              examples:
-                                - '4242424242424242'
-                          required:
-                            - cvv
-                            - expiration
-                            - holderName
-                            - number
-                    installments:
-                      description: Number of installments
-                      default: 1
-                      anyOf:
-                        - format: integer
-                          default: 0
-                          type: string
-                        - default: 1
-                          description: Number of installments
-                          maximum: 12
-                          minimum: 1
-                          type: integer
-                      maximum: 12
-                      minimum: 1
-                    softDescriptor:
-                      description: Text that will appear on the card statement (soft descriptor)
-                      type: string
-                      examples:
-                        - PEDRO*TESTE
-                      maxLength: 22
-                      minLength: 1
-                  required:
-                    - paymentMethod
-                    - card
-                    - installments
-                - title: Bank Slip
-                  type: object
-                  properties:
-                    paymentMethod:
-                      $ref: '#/components/schemas/PaymentMethod'
-                    expirationInDays:
-                      description: Days until bank slip expires
-                      default: 7
-                      anyOf:
-                        - format: integer
-                          default: 0
-                          type: string
-                        - default: 7
-                          description: Days until bank slip expires
-                          examples:
-                            - 3
-                            - 7
-                            - 15
-                          minimum: 1
-                          type: integer
-                      examples:
-                        - 3
-                        - 7
-                        - 15
-                      minimum: 1
-                  required:
-                    - paymentMethod
-                - title: NuPay
-                  type: object
-                  properties:
-                    paymentMethod:
-                      $ref: '#/components/schemas/PaymentMethod'
-                    nuPay:
-                      description: Specific data for NuPay payment
-                      type: object
-                      properties:
-                        cancelUrl:
-                          description: Payment cancellation URL
-                          type: string
-                          examples:
-                            - 'https://example.com/cancel'
-                        merchantName:
-                          description: Merchant name
-                          type: string
-                          examples:
-                            - My Store
-                        returnUrl:
-                          description: Return URL after payment completion
-                          type: string
-                          examples:
-                            - 'https://example.com/success'
-                        storeName:
-                          description: Store name
-                          type: string
-                          examples:
-                            - Downtown Branch
-                      required:
-                        - cancelUrl
-                        - merchantName
-                        - returnUrl
-                  required:
-                    - paymentMethod
-                    - nuPay
-                - title: PicPay
-                  type: object
-                  properties:
-                    paymentMethod:
-                      $ref: '#/components/schemas/PaymentMethod'
-                  required:
-                    - paymentMethod
-                - title: Draft
-                  description: Used to create an order without generating a real payment. Use to create orders that will be paid later
-                  type: object
-                  properties:
-                    paymentMethod:
-                      $ref: '#/components/schemas/PaymentMethod'
-                    expirationInSeconds:
-                      description: Order expiration time in seconds
-                      default: 3600
-                      anyOf:
-                        - format: integer
-                          default: 0
-                          type: string
-                        - default: 3600
-                          description: Order expiration time in seconds
-                          examples:
-                            - 3600
-                            - 86400
-                          type: integer
-                      examples:
-                        - 3600
-                        - 86400
-                    availablePaymentMethods:
-                      description: Available payment methods for this order
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/AvailablePaymentMethods'
-                  required:
-                    - paymentMethod
+                - $ref: '#/components/schemas/Pix'
+                - $ref: '#/components/schemas/CreditCard'
+                - $ref: '#/components/schemas/BankSlip'
+                - $ref: '#/components/schemas/NuPay'
+                - $ref: '#/components/schemas/PicPay'
+                - $ref: '#/components/schemas/Draft'
+              discriminator:
+                propertyName: paymentMethod
+                mapping:
+                  Pix: '#/components/schemas/Pix'
+                  CreditCard: '#/components/schemas/CreditCard'
+                  BankSlip: '#/components/schemas/BankSlip'
+                  NuPay: '#/components/schemas/NuPay'
+                  PicPay: '#/components/schemas/PicPay'
+                  Draft: '#/components/schemas/Draft'
               noValidate: true
       responses:
         '200':
@@ -2166,6 +1764,228 @@ components:
         - SepaDebit
         - GooglePay
         - Draft
+    Pix:
+      type: object
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        expirationInSeconds:
+          description: PIX expiration time in seconds
+          default: 3600
+          anyOf:
+            - format: integer
+              default: 0
+              type: string
+            - default: 3600
+              description: PIX expiration time in seconds
+              examples:
+                - 3600
+                - 86400
+              minimum: 3600
+              type: integer
+          examples:
+            - 3600
+            - 86400
+          minimum: 3600
+      required:
+        - paymentMethod
+      title: Pix
+    CreditCard:
+      type: object
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        card:
+          anyOf:
+            - title: Tokenized card
+              type: object
+              properties:
+                firstSixCardNumber:
+                  description: First 6 digits of the credit card
+                  type: string
+                  examples:
+                    - '411111'
+                token:
+                  description: Previously generated credit card token
+                  type: string
+              required:
+                - token
+            - title: Complete card data
+              type: object
+              properties:
+                cvv:
+                  description: Card security code (CVV)
+                  type: string
+                  examples:
+                    - '123'
+                    - '1234'
+                  maxLength: 4
+                  minLength: 3
+                expiration:
+                  type: object
+                  properties:
+                    month:
+                      description: Card expiration month
+                      type: number
+                      examples:
+                        - 1
+                        - 12
+                      maximum: 12
+                      minimum: 1
+                    year:
+                      description: Card expiration year
+                      type: number
+                      examples:
+                        - 2030
+                      maximum: 2046
+                      minimum: 2025
+                  required:
+                    - month
+                    - year
+                holderName:
+                  description: Card holder name
+                  type: string
+                  examples:
+                    - JOHN DOE
+                number:
+                  description: Credit card number
+                  type: string
+                  examples:
+                    - '4242424242424242'
+              required:
+                - cvv
+                - expiration
+                - holderName
+                - number
+        installments:
+          description: Number of installments
+          default: 1
+          anyOf:
+            - format: integer
+              default: 0
+              type: string
+            - default: 1
+              description: Number of installments
+              maximum: 12
+              minimum: 1
+              type: integer
+          maximum: 12
+          minimum: 1
+        softDescriptor:
+          description: Text that will appear on the card statement (soft descriptor)
+          type: string
+          examples:
+            - PEDRO*TESTE
+          maxLength: 22
+          minLength: 1
+      required:
+        - paymentMethod
+        - card
+        - installments
+      title: Credit Card
+    BankSlip:
+      type: object
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        expirationInDays:
+          description: Days until bank slip expires
+          default: 7
+          anyOf:
+            - format: integer
+              default: 0
+              type: string
+            - default: 7
+              description: Days until bank slip expires
+              examples:
+                - 3
+                - 7
+                - 15
+              minimum: 1
+              type: integer
+          examples:
+            - 3
+            - 7
+            - 15
+          minimum: 1
+      required:
+        - paymentMethod
+      title: Bank Slip
+    NuPay:
+      type: object
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        nuPay:
+          description: Specific data for NuPay payment
+          type: object
+          properties:
+            cancelUrl:
+              description: Payment cancellation URL
+              type: string
+              examples:
+                - 'https://example.com/cancel'
+            merchantName:
+              description: Merchant name
+              type: string
+              examples:
+                - My Store
+            returnUrl:
+              description: Return URL after payment completion
+              type: string
+              examples:
+                - 'https://example.com/success'
+            storeName:
+              description: Store name
+              type: string
+              examples:
+                - Downtown Branch
+          required:
+            - cancelUrl
+            - merchantName
+            - returnUrl
+      required:
+        - paymentMethod
+        - nuPay
+      title: NuPay
+    PicPay:
+      type: object
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+      required:
+        - paymentMethod
+      title: PicPay
+    Draft:
+      description: Used to create an order without generating a real payment. Use to create orders that will be paid later
+      type: object
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        expirationInSeconds:
+          description: Order expiration time in seconds
+          default: 3600
+          anyOf:
+            - format: integer
+              default: 0
+              type: string
+            - default: 3600
+              description: Order expiration time in seconds
+              examples:
+                - 3600
+                - 86400
+              type: integer
+          examples:
+            - 3600
+            - 86400
+        availablePaymentMethods:
+          description: Available payment methods for this order
+          type: array
+          items:
+            $ref: '#/components/schemas/AvailablePaymentMethods'
+      required:
+        - paymentMethod
+      title: Draft
   securitySchemes:
     basicAuth:
       description: 'Use the format Authorization: Basic base64(''client_id:client_secret'')'

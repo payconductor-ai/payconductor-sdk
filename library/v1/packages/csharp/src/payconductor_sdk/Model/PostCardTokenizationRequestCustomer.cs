@@ -33,11 +33,11 @@ namespace payconductor_sdk.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="PostCardTokenizationRequestCustomer" /> class.
         /// </summary>
-        /// <param name="customer2"></param>
+        /// <param name="customer"></param>
         /// <param name="postCardTokenizationRequestCustomerAnyOf"></param>
-        public PostCardTokenizationRequestCustomer(Option<Customer2?> customer2, Option<PostCardTokenizationRequestCustomerAnyOf?> postCardTokenizationRequestCustomerAnyOf)
+        public PostCardTokenizationRequestCustomer(Option<Customer?> customer, Option<PostCardTokenizationRequestCustomerAnyOf?> postCardTokenizationRequestCustomerAnyOf)
         {
-            Customer2Option = customer2;
+            CustomerOption = customer;
             PostCardTokenizationRequestCustomerAnyOfOption = postCardTokenizationRequestCustomerAnyOf;
             OnCreated();
         }
@@ -45,16 +45,16 @@ namespace payconductor_sdk.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Customer2
+        /// Used to track the state of Customer
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Customer2?> Customer2Option { get; private set; }
+        public Option<Customer?> CustomerOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Customer2
+        /// Gets or Sets Customer
         /// </summary>
-        public Customer2? Customer2 { get { return this.Customer2Option; } set { this.Customer2Option = new(value); } }
+        public Customer? Customer { get { return this.CustomerOption; } set { this.CustomerOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of PostCardTokenizationRequestCustomerAnyOf
@@ -113,7 +113,7 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Customer2? customer2 = default;
+            Customer? customer = default;
             PostCardTokenizationRequestCustomerAnyOf? postCardTokenizationRequestCustomerAnyOf = default;
 
             Utf8JsonReader utf8JsonReaderAnyOf = utf8JsonReader;
@@ -127,8 +127,8 @@ namespace payconductor_sdk.Model
 
                 if (utf8JsonReaderAnyOf.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderAnyOf.CurrentDepth - 1)
                 {
-                    Utf8JsonReader utf8JsonReaderCustomer2 = utf8JsonReader;
-                    ClientUtils.TryDeserialize<Customer2?>(ref utf8JsonReaderCustomer2, jsonSerializerOptions, out customer2);
+                    Utf8JsonReader utf8JsonReaderCustomer = utf8JsonReader;
+                    ClientUtils.TryDeserialize<Customer?>(ref utf8JsonReaderCustomer, jsonSerializerOptions, out customer);
 
                     Utf8JsonReader utf8JsonReaderPostCardTokenizationRequestCustomerAnyOf = utf8JsonReader;
                     ClientUtils.TryDeserialize<PostCardTokenizationRequestCustomerAnyOf?>(ref utf8JsonReaderPostCardTokenizationRequestCustomerAnyOf, jsonSerializerOptions, out postCardTokenizationRequestCustomerAnyOf);
@@ -156,14 +156,14 @@ namespace payconductor_sdk.Model
                 }
             }
 
-            Option<Customer2?> customer2ParsedValue = customer2 == null
+            Option<Customer?> customerParsedValue = customer == null
                 ? default
-                : new Option<Customer2?>(customer2);
+                : new Option<Customer?>(customer);
             Option<PostCardTokenizationRequestCustomerAnyOf?> postCardTokenizationRequestCustomerAnyOfParsedValue = postCardTokenizationRequestCustomerAnyOf == null
                 ? default
                 : new Option<PostCardTokenizationRequestCustomerAnyOf?>(postCardTokenizationRequestCustomerAnyOf);
 
-            return new PostCardTokenizationRequestCustomer(customer2ParsedValue, postCardTokenizationRequestCustomerAnyOfParsedValue);
+            return new PostCardTokenizationRequestCustomer(customerParsedValue, postCardTokenizationRequestCustomerAnyOfParsedValue);
         }
 
         /// <summary>
@@ -177,10 +177,10 @@ namespace payconductor_sdk.Model
         {
             writer.WriteStartObject();
 
-            if (postCardTokenizationRequestCustomer.Customer2Option.IsSet && postCardTokenizationRequestCustomer.Customer2Option.Value != null)
+            if (postCardTokenizationRequestCustomer.CustomerOption.IsSet && postCardTokenizationRequestCustomer.CustomerOption.Value != null)
             {
-                Customer2JsonConverter customer2JsonConverter = (Customer2JsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postCardTokenizationRequestCustomer.Customer2Option.Value.GetType()));
-                customer2JsonConverter.WriteProperties(writer, postCardTokenizationRequestCustomer.Customer2Option.Value, jsonSerializerOptions);
+                CustomerJsonConverter customerJsonConverter = (CustomerJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postCardTokenizationRequestCustomer.CustomerOption.Value.GetType()));
+                customerJsonConverter.WriteProperties(writer, postCardTokenizationRequestCustomer.CustomerOption.Value, jsonSerializerOptions);
             }
 
             if (postCardTokenizationRequestCustomer.PostCardTokenizationRequestCustomerAnyOfOption.IsSet && postCardTokenizationRequestCustomer.PostCardTokenizationRequestCustomerAnyOfOption.Value != null)

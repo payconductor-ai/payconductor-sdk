@@ -6,7 +6,7 @@
 
 
 static nu_pay_t *nu_pay_create_internal(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     nu_pay_nu_pay_t *nu_pay
     ) {
     nu_pay_t *nu_pay_local_var = malloc(sizeof(nu_pay_t));
@@ -21,7 +21,7 @@ static nu_pay_t *nu_pay_create_internal(
 }
 
 __attribute__((deprecated)) nu_pay_t *nu_pay_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     nu_pay_nu_pay_t *nu_pay
     ) {
     return nu_pay_create_internal (
@@ -39,10 +39,6 @@ void nu_pay_free(nu_pay_t *nu_pay) {
         return ;
     }
     listEntry_t *listEntry;
-    if (nu_pay->payment_method) {
-        free(nu_pay->payment_method);
-        nu_pay->payment_method = NULL;
-    }
     if (nu_pay->nu_pay) {
         nu_pay_nu_pay_free(nu_pay->nu_pay);
         nu_pay->nu_pay = NULL;
@@ -54,11 +50,16 @@ cJSON *nu_pay_convertToJSON(nu_pay_t *nu_pay) {
     cJSON *item = cJSON_CreateObject();
 
     // nu_pay->payment_method
-    if (!nu_pay->payment_method) {
+    if (payconductor_api_payment_method__NULL == nu_pay->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", nu_pay->payment_method) == NULL) {
-    goto fail; //String
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(nu_pay->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -87,6 +88,9 @@ nu_pay_t *nu_pay_parseFromJSON(cJSON *nu_payJSON){
 
     nu_pay_t *nu_pay_local_var = NULL;
 
+    // define the local variable for nu_pay->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
+
     // define the local variable for nu_pay->nu_pay
     nu_pay_nu_pay_t *nu_pay_local_nonprim = NULL;
 
@@ -100,10 +104,7 @@ nu_pay_t *nu_pay_parseFromJSON(cJSON *nu_payJSON){
     }
 
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //String
-    }
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
     // nu_pay->nu_pay
     cJSON *nu_pay = cJSON_GetObjectItemCaseSensitive(nu_payJSON, "nuPay");
@@ -119,12 +120,15 @@ nu_pay_t *nu_pay_parseFromJSON(cJSON *nu_payJSON){
 
 
     nu_pay_local_var = nu_pay_create_internal (
-        strdup(payment_method->valuestring),
+        payment_method_local_nonprim,
         nu_pay_local_nonprim
         );
 
     return nu_pay_local_var;
 end:
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
+    }
     if (nu_pay_local_nonprim) {
         nu_pay_nu_pay_free(nu_pay_local_nonprim);
         nu_pay_local_nonprim = NULL;

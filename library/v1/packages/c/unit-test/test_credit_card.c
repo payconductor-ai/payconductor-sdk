@@ -24,14 +24,14 @@ credit_card_t* instantiate_credit_card(int include_optional) {
   credit_card_t* credit_card = NULL;
   if (include_optional) {
     credit_card = credit_card_create(
-      "0",
+      payconductor_api_credit_card__Pix,
       null,
       null,
       "0"
     );
   } else {
     credit_card = credit_card_create(
-      "0",
+      payconductor_api_credit_card__Pix,
       null,
       null,
       "0"

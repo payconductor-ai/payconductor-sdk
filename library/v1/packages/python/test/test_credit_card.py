@@ -35,14 +35,14 @@ class TestCreditCard(unittest.TestCase):
         model = CreditCard()
         if include_optional:
             return CreditCard(
-                payment_method = '',
+                payment_method = 'Pix',
                 card = None,
                 installments = None,
                 soft_descriptor = '0'
             )
         else:
             return CreditCard(
-                payment_method = '',
+                payment_method = 'Pix',
                 card = None,
                 installments = None,
         )

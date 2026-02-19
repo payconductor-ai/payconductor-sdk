@@ -2,6 +2,7 @@
   (:require [clojure.spec.alpha :as s]
             [spec-tools.data-spec :as ds]
             [payconductor-sdk.specs.customer-address :refer :all]
+            [payconductor-sdk.specs.document-type :refer :all]
             )
   (:import (java.io File)))
 
@@ -10,7 +11,7 @@
   {
    (ds/opt :address) customer-address-spec
    (ds/opt :documentNumber) string?
-   (ds/opt :documentType) string?
+   (ds/opt :documentType) document-type-spec
    (ds/opt :email) string?
    (ds/opt :name) string?
    (ds/opt :phoneNumber) string?

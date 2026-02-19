@@ -48,6 +48,7 @@ set(SRCS
     src/binary.c
     external/cJSON.c
     model/object.c
+    model/available_payment_methods.c
     model/bank_slip.c
     model/bank_slip_expiration_in_days.c
     model/complete_card_data.c
@@ -57,18 +58,19 @@ set(SRCS
     model/credit_card_installments.c
     model/customer.c
     model/customer_1.c
-    model/customer_2.c
-    model/customer_2_document_type.c
     model/customer_address.c
+    model/document_type.c
     model/draft.c
-    model/draft_available_payment_methods_inner.c
     model/draft_expiration_in_seconds.c
+    model/event.c
     model/merchant_input.c
     model/nu_pay.c
     model/nu_pay_nu_pay.c
+    model/payment_method.c
     model/pic_pay.c
     model/pix.c
     model/pix_expiration_in_seconds.c
+    model/pix_type.c
     model/post_card_tokenization_200_response.c
     model/post_card_tokenization_request.c
     model/post_card_tokenization_request_customer.c
@@ -92,6 +94,7 @@ set(SRCS
     model/post_withdraws_200_response_payout_account.c
     model/post_withdraws_request.c
     model/post_withdraws_request_payout_account.c
+    model/status.c
     model/tokenized_card.c
     api/CardTokenizationAPI.c
     api/CustomersAPI.c
@@ -108,6 +111,7 @@ set(HDRS
     external/cJSON.h
     model/object.h
     model/any_type.h
+    model/available_payment_methods.h
     model/bank_slip.h
     model/bank_slip_expiration_in_days.h
     model/complete_card_data.h
@@ -117,18 +121,19 @@ set(HDRS
     model/credit_card_installments.h
     model/customer.h
     model/customer_1.h
-    model/customer_2.h
-    model/customer_2_document_type.h
     model/customer_address.h
+    model/document_type.h
     model/draft.h
-    model/draft_available_payment_methods_inner.h
     model/draft_expiration_in_seconds.h
+    model/event.h
     model/merchant_input.h
     model/nu_pay.h
     model/nu_pay_nu_pay.h
+    model/payment_method.h
     model/pic_pay.h
     model/pix.h
     model/pix_expiration_in_seconds.h
+    model/pix_type.h
     model/post_card_tokenization_200_response.h
     model/post_card_tokenization_request.h
     model/post_card_tokenization_request_customer.h
@@ -152,6 +157,7 @@ set(HDRS
     model/post_withdraws_200_response_payout_account.h
     model/post_withdraws_request.h
     model/post_withdraws_request_payout_account.h
+    model/status.h
     model/tokenized_card.h
     api/CardTokenizationAPI.h
     api/CustomersAPI.h

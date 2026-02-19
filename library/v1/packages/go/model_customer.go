@@ -24,7 +24,7 @@ type Customer struct {
 	Address *CustomerAddress `json:"address,omitempty"`
 	// Customer CPF or CNPJ without formatting
 	DocumentNumber string `json:"documentNumber" validate:"regexp=^\\\\d{11}$|^\\\\d{14}$"`
-	DocumentType string `json:"documentType"`
+	DocumentType DocumentType `json:"documentType"`
 	// Customer email
 	Email string `json:"email"`
 	// Customer full name
@@ -39,7 +39,7 @@ type _Customer Customer
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCustomer(documentNumber string, documentType string, email string, name string) *Customer {
+func NewCustomer(documentNumber string, documentType DocumentType, email string, name string) *Customer {
 	this := Customer{}
 	this.DocumentNumber = documentNumber
 	this.DocumentType = documentType
@@ -113,9 +113,9 @@ func (o *Customer) SetDocumentNumber(v string) {
 }
 
 // GetDocumentType returns the DocumentType field value
-func (o *Customer) GetDocumentType() string {
+func (o *Customer) GetDocumentType() DocumentType {
 	if o == nil {
-		var ret string
+		var ret DocumentType
 		return ret
 	}
 
@@ -124,7 +124,7 @@ func (o *Customer) GetDocumentType() string {
 
 // GetDocumentTypeOk returns a tuple with the DocumentType field value
 // and a boolean to check if the value has been set.
-func (o *Customer) GetDocumentTypeOk() (*string, bool) {
+func (o *Customer) GetDocumentTypeOk() (*DocumentType, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -132,7 +132,7 @@ func (o *Customer) GetDocumentTypeOk() (*string, bool) {
 }
 
 // SetDocumentType sets field value
-func (o *Customer) SetDocumentType(v string) {
+func (o *Customer) SetDocumentType(v DocumentType) {
 	o.DocumentType = v
 }
 

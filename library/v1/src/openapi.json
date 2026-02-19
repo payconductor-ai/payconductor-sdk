@@ -725,6 +725,323 @@
           "GooglePay",
           "Draft"
         ]
+      },
+      "Pix": {
+        "title": "Pix",
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "expirationInSeconds": {
+            "default": 3600,
+            "description": "PIX expiration time in seconds",
+            "examples": [
+              3600,
+              86400
+            ],
+            "minimum": 3600,
+            "anyOf": [
+              {
+                "format": "integer",
+                "default": 0,
+                "type": "string"
+              },
+              {
+                "default": 3600,
+                "description": "PIX expiration time in seconds",
+                "examples": [
+                  3600,
+                  86400
+                ],
+                "minimum": 3600,
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "required": [
+          "paymentMethod"
+        ]
+      },
+      "CreditCard": {
+        "title": "Credit Card",
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "card": {
+            "anyOf": [
+              {
+                "title": "Tokenized card",
+                "type": "object",
+                "properties": {
+                  "firstSixCardNumber": {
+                    "description": "First 6 digits of the credit card",
+                    "examples": [
+                      "411111"
+                    ],
+                    "type": "string"
+                  },
+                  "token": {
+                    "description": "Previously generated credit card token",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token"
+                ]
+              },
+              {
+                "title": "Complete card data",
+                "type": "object",
+                "properties": {
+                  "cvv": {
+                    "description": "Card security code (CVV)",
+                    "examples": [
+                      "123",
+                      "1234"
+                    ],
+                    "maxLength": 4,
+                    "minLength": 3,
+                    "type": "string"
+                  },
+                  "expiration": {
+                    "type": "object",
+                    "properties": {
+                      "month": {
+                        "description": "Card expiration month",
+                        "examples": [
+                          1,
+                          12
+                        ],
+                        "maximum": 12,
+                        "minimum": 1,
+                        "type": "number"
+                      },
+                      "year": {
+                        "description": "Card expiration year",
+                        "examples": [
+                          2030
+                        ],
+                        "maximum": 2046,
+                        "minimum": 2025,
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "month",
+                      "year"
+                    ]
+                  },
+                  "holderName": {
+                    "description": "Card holder name",
+                    "examples": [
+                      "JOHN DOE"
+                    ],
+                    "type": "string"
+                  },
+                  "number": {
+                    "description": "Credit card number",
+                    "examples": [
+                      "4242424242424242"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "cvv",
+                  "expiration",
+                  "holderName",
+                  "number"
+                ]
+              }
+            ]
+          },
+          "installments": {
+            "default": 1,
+            "description": "Number of installments",
+            "maximum": 12,
+            "minimum": 1,
+            "anyOf": [
+              {
+                "format": "integer",
+                "default": 0,
+                "type": "string"
+              },
+              {
+                "default": 1,
+                "description": "Number of installments",
+                "maximum": 12,
+                "minimum": 1,
+                "type": "integer"
+              }
+            ]
+          },
+          "softDescriptor": {
+            "description": "Text that will appear on the card statement (soft descriptor)",
+            "minLength": 1,
+            "maxLength": 22,
+            "examples": [
+              "PEDRO*TESTE"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentMethod",
+          "card",
+          "installments"
+        ]
+      },
+      "BankSlip": {
+        "title": "Bank Slip",
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "expirationInDays": {
+            "default": 7,
+            "description": "Days until bank slip expires",
+            "examples": [
+              3,
+              7,
+              15
+            ],
+            "minimum": 1,
+            "anyOf": [
+              {
+                "format": "integer",
+                "default": 0,
+                "type": "string"
+              },
+              {
+                "default": 7,
+                "description": "Days until bank slip expires",
+                "examples": [
+                  3,
+                  7,
+                  15
+                ],
+                "minimum": 1,
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "required": [
+          "paymentMethod"
+        ]
+      },
+      "NuPay": {
+        "title": "NuPay",
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "nuPay": {
+            "description": "Specific data for NuPay payment",
+            "type": "object",
+            "properties": {
+              "cancelUrl": {
+                "description": "Payment cancellation URL",
+                "examples": [
+                  "https://example.com/cancel"
+                ],
+                "type": "string"
+              },
+              "merchantName": {
+                "description": "Merchant name",
+                "examples": [
+                  "My Store"
+                ],
+                "type": "string"
+              },
+              "returnUrl": {
+                "description": "Return URL after payment completion",
+                "examples": [
+                  "https://example.com/success"
+                ],
+                "type": "string"
+              },
+              "storeName": {
+                "description": "Store name",
+                "examples": [
+                  "Downtown Branch"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "cancelUrl",
+              "merchantName",
+              "returnUrl"
+            ]
+          }
+        },
+        "required": [
+          "paymentMethod",
+          "nuPay"
+        ]
+      },
+      "PicPay": {
+        "title": "PicPay",
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          }
+        },
+        "required": [
+          "paymentMethod"
+        ]
+      },
+      "Draft": {
+        "title": "Draft",
+        "description": "Used to create an order without generating a real payment. Use to create orders that will be paid later",
+        "type": "object",
+        "properties": {
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "expirationInSeconds": {
+            "default": 3600,
+            "description": "Order expiration time in seconds",
+            "examples": [
+              3600,
+              86400
+            ],
+            "anyOf": [
+              {
+                "format": "integer",
+                "default": 0,
+                "type": "string"
+              },
+              {
+                "default": 3600,
+                "description": "Order expiration time in seconds",
+                "examples": [
+                  3600,
+                  86400
+                ],
+                "type": "integer"
+              }
+            ]
+          },
+          "availablePaymentMethods": {
+            "description": "Available payment methods for this order",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailablePaymentMethods"
+            }
+          }
+        },
+        "required": [
+          "paymentMethod"
+        ]
       }
     }
   },
@@ -1032,324 +1349,36 @@
                     "description": "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)",
                     "anyOf": [
                       {
-                        "title": "Pix",
-                        "type": "object",
-                        "properties": {
-                          "paymentMethod": {
-                            "$ref": "#/components/schemas/PaymentMethod"
-                          },
-                          "expirationInSeconds": {
-                            "default": 3600,
-                            "description": "PIX expiration time in seconds",
-                            "examples": [
-                              3600,
-                              86400
-                            ],
-                            "minimum": 3600,
-                            "anyOf": [
-                              {
-                                "format": "integer",
-                                "default": 0,
-                                "type": "string"
-                              },
-                              {
-                                "default": 3600,
-                                "description": "PIX expiration time in seconds",
-                                "examples": [
-                                  3600,
-                                  86400
-                                ],
-                                "minimum": 3600,
-                                "type": "integer"
-                              }
-                            ]
-                          }
-                        },
-                        "required": [
-                          "paymentMethod"
-                        ]
+                        "$ref": "#/components/schemas/Pix"
                       },
                       {
-                        "title": "Credit Card",
-                        "type": "object",
-                        "properties": {
-                          "paymentMethod": {
-                            "$ref": "#/components/schemas/PaymentMethod"
-                          },
-                          "card": {
-                            "anyOf": [
-                              {
-                                "title": "Tokenized card",
-                                "type": "object",
-                                "properties": {
-                                  "firstSixCardNumber": {
-                                    "description": "First 6 digits of the credit card",
-                                    "examples": [
-                                      "411111"
-                                    ],
-                                    "type": "string"
-                                  },
-                                  "token": {
-                                    "description": "Previously generated credit card token",
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "token"
-                                ]
-                              },
-                              {
-                                "title": "Complete card data",
-                                "type": "object",
-                                "properties": {
-                                  "cvv": {
-                                    "description": "Card security code (CVV)",
-                                    "examples": [
-                                      "123",
-                                      "1234"
-                                    ],
-                                    "maxLength": 4,
-                                    "minLength": 3,
-                                    "type": "string"
-                                  },
-                                  "expiration": {
-                                    "type": "object",
-                                    "properties": {
-                                      "month": {
-                                        "description": "Card expiration month",
-                                        "examples": [
-                                          1,
-                                          12
-                                        ],
-                                        "maximum": 12,
-                                        "minimum": 1,
-                                        "type": "number"
-                                      },
-                                      "year": {
-                                        "description": "Card expiration year",
-                                        "examples": [
-                                          2030
-                                        ],
-                                        "maximum": 2046,
-                                        "minimum": 2025,
-                                        "type": "number"
-                                      }
-                                    },
-                                    "required": [
-                                      "month",
-                                      "year"
-                                    ]
-                                  },
-                                  "holderName": {
-                                    "description": "Card holder name",
-                                    "examples": [
-                                      "JOHN DOE"
-                                    ],
-                                    "type": "string"
-                                  },
-                                  "number": {
-                                    "description": "Credit card number",
-                                    "examples": [
-                                      "4242424242424242"
-                                    ],
-                                    "type": "string"
-                                  }
-                                },
-                                "required": [
-                                  "cvv",
-                                  "expiration",
-                                  "holderName",
-                                  "number"
-                                ]
-                              }
-                            ]
-                          },
-                          "installments": {
-                            "default": 1,
-                            "description": "Number of installments",
-                            "maximum": 12,
-                            "minimum": 1,
-                            "anyOf": [
-                              {
-                                "format": "integer",
-                                "default": 0,
-                                "type": "string"
-                              },
-                              {
-                                "default": 1,
-                                "description": "Number of installments",
-                                "maximum": 12,
-                                "minimum": 1,
-                                "type": "integer"
-                              }
-                            ]
-                          },
-                          "softDescriptor": {
-                            "description": "Text that will appear on the card statement (soft descriptor)",
-                            "minLength": 1,
-                            "maxLength": 22,
-                            "examples": [
-                              "PEDRO*TESTE"
-                            ],
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "paymentMethod",
-                          "card",
-                          "installments"
-                        ]
+                        "$ref": "#/components/schemas/CreditCard"
                       },
                       {
-                        "title": "Bank Slip",
-                        "type": "object",
-                        "properties": {
-                          "paymentMethod": {
-                            "$ref": "#/components/schemas/PaymentMethod"
-                          },
-                          "expirationInDays": {
-                            "default": 7,
-                            "description": "Days until bank slip expires",
-                            "examples": [
-                              3,
-                              7,
-                              15
-                            ],
-                            "minimum": 1,
-                            "anyOf": [
-                              {
-                                "format": "integer",
-                                "default": 0,
-                                "type": "string"
-                              },
-                              {
-                                "default": 7,
-                                "description": "Days until bank slip expires",
-                                "examples": [
-                                  3,
-                                  7,
-                                  15
-                                ],
-                                "minimum": 1,
-                                "type": "integer"
-                              }
-                            ]
-                          }
-                        },
-                        "required": [
-                          "paymentMethod"
-                        ]
+                        "$ref": "#/components/schemas/BankSlip"
                       },
                       {
-                        "title": "NuPay",
-                        "type": "object",
-                        "properties": {
-                          "paymentMethod": {
-                            "$ref": "#/components/schemas/PaymentMethod"
-                          },
-                          "nuPay": {
-                            "description": "Specific data for NuPay payment",
-                            "type": "object",
-                            "properties": {
-                              "cancelUrl": {
-                                "description": "Payment cancellation URL",
-                                "examples": [
-                                  "https://example.com/cancel"
-                                ],
-                                "type": "string"
-                              },
-                              "merchantName": {
-                                "description": "Merchant name",
-                                "examples": [
-                                  "My Store"
-                                ],
-                                "type": "string"
-                              },
-                              "returnUrl": {
-                                "description": "Return URL after payment completion",
-                                "examples": [
-                                  "https://example.com/success"
-                                ],
-                                "type": "string"
-                              },
-                              "storeName": {
-                                "description": "Store name",
-                                "examples": [
-                                  "Downtown Branch"
-                                ],
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "cancelUrl",
-                              "merchantName",
-                              "returnUrl"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "paymentMethod",
-                          "nuPay"
-                        ]
+                        "$ref": "#/components/schemas/NuPay"
                       },
                       {
-                        "title": "PicPay",
-                        "type": "object",
-                        "properties": {
-                          "paymentMethod": {
-                            "$ref": "#/components/schemas/PaymentMethod"
-                          }
-                        },
-                        "required": [
-                          "paymentMethod"
-                        ]
+                        "$ref": "#/components/schemas/PicPay"
                       },
                       {
-                        "title": "Draft",
-                        "description": "Used to create an order without generating a real payment. Use to create orders that will be paid later",
-                        "type": "object",
-                        "properties": {
-                          "paymentMethod": {
-                            "$ref": "#/components/schemas/PaymentMethod"
-                          },
-                          "expirationInSeconds": {
-                            "default": 3600,
-                            "description": "Order expiration time in seconds",
-                            "examples": [
-                              3600,
-                              86400
-                            ],
-                            "anyOf": [
-                              {
-                                "format": "integer",
-                                "default": 0,
-                                "type": "string"
-                              },
-                              {
-                                "default": 3600,
-                                "description": "Order expiration time in seconds",
-                                "examples": [
-                                  3600,
-                                  86400
-                                ],
-                                "type": "integer"
-                              }
-                            ]
-                          },
-                          "availablePaymentMethods": {
-                            "description": "Available payment methods for this order",
-                            "type": "array",
-                            "items": {
-                              "$ref": "#/components/schemas/AvailablePaymentMethods"
-                            }
-                          }
-                        },
-                        "required": [
-                          "paymentMethod"
-                        ]
+                        "$ref": "#/components/schemas/Draft"
                       }
                     ],
-                    "noValidate": true
+                    "noValidate": true,
+                    "discriminator": {
+                      "propertyName": "paymentMethod",
+                      "mapping": {
+                        "Pix": "#/components/schemas/Pix",
+                        "CreditCard": "#/components/schemas/CreditCard",
+                        "BankSlip": "#/components/schemas/BankSlip",
+                        "NuPay": "#/components/schemas/NuPay",
+                        "PicPay": "#/components/schemas/PicPay",
+                        "Draft": "#/components/schemas/Draft"
+                      }
+                    }
                   },
                   "splitAmountTotal": {
                     "description": "Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)",
@@ -1921,324 +1950,36 @@
                 "description": "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)",
                 "anyOf": [
                   {
-                    "title": "Pix",
-                    "type": "object",
-                    "properties": {
-                      "paymentMethod": {
-                        "$ref": "#/components/schemas/PaymentMethod"
-                      },
-                      "expirationInSeconds": {
-                        "default": 3600,
-                        "description": "PIX expiration time in seconds",
-                        "examples": [
-                          3600,
-                          86400
-                        ],
-                        "minimum": 3600,
-                        "anyOf": [
-                          {
-                            "format": "integer",
-                            "default": 0,
-                            "type": "string"
-                          },
-                          {
-                            "default": 3600,
-                            "description": "PIX expiration time in seconds",
-                            "examples": [
-                              3600,
-                              86400
-                            ],
-                            "minimum": 3600,
-                            "type": "integer"
-                          }
-                        ]
-                      }
-                    },
-                    "required": [
-                      "paymentMethod"
-                    ]
+                    "$ref": "#/components/schemas/Pix"
                   },
                   {
-                    "title": "Credit Card",
-                    "type": "object",
-                    "properties": {
-                      "paymentMethod": {
-                        "$ref": "#/components/schemas/PaymentMethod"
-                      },
-                      "card": {
-                        "anyOf": [
-                          {
-                            "title": "Tokenized card",
-                            "type": "object",
-                            "properties": {
-                              "firstSixCardNumber": {
-                                "description": "First 6 digits of the credit card",
-                                "examples": [
-                                  "411111"
-                                ],
-                                "type": "string"
-                              },
-                              "token": {
-                                "description": "Previously generated credit card token",
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "token"
-                            ]
-                          },
-                          {
-                            "title": "Complete card data",
-                            "type": "object",
-                            "properties": {
-                              "cvv": {
-                                "description": "Card security code (CVV)",
-                                "examples": [
-                                  "123",
-                                  "1234"
-                                ],
-                                "maxLength": 4,
-                                "minLength": 3,
-                                "type": "string"
-                              },
-                              "expiration": {
-                                "type": "object",
-                                "properties": {
-                                  "month": {
-                                    "description": "Card expiration month",
-                                    "examples": [
-                                      1,
-                                      12
-                                    ],
-                                    "maximum": 12,
-                                    "minimum": 1,
-                                    "type": "number"
-                                  },
-                                  "year": {
-                                    "description": "Card expiration year",
-                                    "examples": [
-                                      2030
-                                    ],
-                                    "maximum": 2046,
-                                    "minimum": 2025,
-                                    "type": "number"
-                                  }
-                                },
-                                "required": [
-                                  "month",
-                                  "year"
-                                ]
-                              },
-                              "holderName": {
-                                "description": "Card holder name",
-                                "examples": [
-                                  "JOHN DOE"
-                                ],
-                                "type": "string"
-                              },
-                              "number": {
-                                "description": "Credit card number",
-                                "examples": [
-                                  "4242424242424242"
-                                ],
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "cvv",
-                              "expiration",
-                              "holderName",
-                              "number"
-                            ]
-                          }
-                        ]
-                      },
-                      "installments": {
-                        "default": 1,
-                        "description": "Number of installments",
-                        "maximum": 12,
-                        "minimum": 1,
-                        "anyOf": [
-                          {
-                            "format": "integer",
-                            "default": 0,
-                            "type": "string"
-                          },
-                          {
-                            "default": 1,
-                            "description": "Number of installments",
-                            "maximum": 12,
-                            "minimum": 1,
-                            "type": "integer"
-                          }
-                        ]
-                      },
-                      "softDescriptor": {
-                        "description": "Text that will appear on the card statement (soft descriptor)",
-                        "minLength": 1,
-                        "maxLength": 22,
-                        "examples": [
-                          "PEDRO*TESTE"
-                        ],
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "paymentMethod",
-                      "card",
-                      "installments"
-                    ]
+                    "$ref": "#/components/schemas/CreditCard"
                   },
                   {
-                    "title": "Bank Slip",
-                    "type": "object",
-                    "properties": {
-                      "paymentMethod": {
-                        "$ref": "#/components/schemas/PaymentMethod"
-                      },
-                      "expirationInDays": {
-                        "default": 7,
-                        "description": "Days until bank slip expires",
-                        "examples": [
-                          3,
-                          7,
-                          15
-                        ],
-                        "minimum": 1,
-                        "anyOf": [
-                          {
-                            "format": "integer",
-                            "default": 0,
-                            "type": "string"
-                          },
-                          {
-                            "default": 7,
-                            "description": "Days until bank slip expires",
-                            "examples": [
-                              3,
-                              7,
-                              15
-                            ],
-                            "minimum": 1,
-                            "type": "integer"
-                          }
-                        ]
-                      }
-                    },
-                    "required": [
-                      "paymentMethod"
-                    ]
+                    "$ref": "#/components/schemas/BankSlip"
                   },
                   {
-                    "title": "NuPay",
-                    "type": "object",
-                    "properties": {
-                      "paymentMethod": {
-                        "$ref": "#/components/schemas/PaymentMethod"
-                      },
-                      "nuPay": {
-                        "description": "Specific data for NuPay payment",
-                        "type": "object",
-                        "properties": {
-                          "cancelUrl": {
-                            "description": "Payment cancellation URL",
-                            "examples": [
-                              "https://example.com/cancel"
-                            ],
-                            "type": "string"
-                          },
-                          "merchantName": {
-                            "description": "Merchant name",
-                            "examples": [
-                              "My Store"
-                            ],
-                            "type": "string"
-                          },
-                          "returnUrl": {
-                            "description": "Return URL after payment completion",
-                            "examples": [
-                              "https://example.com/success"
-                            ],
-                            "type": "string"
-                          },
-                          "storeName": {
-                            "description": "Store name",
-                            "examples": [
-                              "Downtown Branch"
-                            ],
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "cancelUrl",
-                          "merchantName",
-                          "returnUrl"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "paymentMethod",
-                      "nuPay"
-                    ]
+                    "$ref": "#/components/schemas/NuPay"
                   },
                   {
-                    "title": "PicPay",
-                    "type": "object",
-                    "properties": {
-                      "paymentMethod": {
-                        "$ref": "#/components/schemas/PaymentMethod"
-                      }
-                    },
-                    "required": [
-                      "paymentMethod"
-                    ]
+                    "$ref": "#/components/schemas/PicPay"
                   },
                   {
-                    "title": "Draft",
-                    "description": "Used to create an order without generating a real payment. Use to create orders that will be paid later",
-                    "type": "object",
-                    "properties": {
-                      "paymentMethod": {
-                        "$ref": "#/components/schemas/PaymentMethod"
-                      },
-                      "expirationInSeconds": {
-                        "default": 3600,
-                        "description": "Order expiration time in seconds",
-                        "examples": [
-                          3600,
-                          86400
-                        ],
-                        "anyOf": [
-                          {
-                            "format": "integer",
-                            "default": 0,
-                            "type": "string"
-                          },
-                          {
-                            "default": 3600,
-                            "description": "Order expiration time in seconds",
-                            "examples": [
-                              3600,
-                              86400
-                            ],
-                            "type": "integer"
-                          }
-                        ]
-                      },
-                      "availablePaymentMethods": {
-                        "description": "Available payment methods for this order",
-                        "type": "array",
-                        "items": {
-                          "$ref": "#/components/schemas/AvailablePaymentMethods"
-                        }
-                      }
-                    },
-                    "required": [
-                      "paymentMethod"
-                    ]
+                    "$ref": "#/components/schemas/Draft"
                   }
                 ],
-                "noValidate": true
+                "noValidate": true,
+                "discriminator": {
+                  "propertyName": "paymentMethod",
+                  "mapping": {
+                    "Pix": "#/components/schemas/Pix",
+                    "CreditCard": "#/components/schemas/CreditCard",
+                    "BankSlip": "#/components/schemas/BankSlip",
+                    "NuPay": "#/components/schemas/NuPay",
+                    "PicPay": "#/components/schemas/PicPay",
+                    "Draft": "#/components/schemas/Draft"
+                  }
+                }
               }
             }
           },

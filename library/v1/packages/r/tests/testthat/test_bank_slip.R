@@ -6,7 +6,7 @@ context("Test BankSlip")
 model_instance <- BankSlip$new()
 
 test_that("paymentMethod", {
-  # tests for the property `paymentMethod` (character)
+  # tests for the property `paymentMethod` (PaymentMethod)
 
   # uncomment below to test the property
   #expect_equal(model.instance$`paymentMethod`, "EXPECTED_RESULT")

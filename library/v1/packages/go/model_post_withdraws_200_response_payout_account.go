@@ -29,8 +29,7 @@ type PostWithdraws200ResponsePayoutAccount struct {
 	OwnerName string `json:"ownerName"`
 	// PIX key used for the withdrawal
 	PixKey string `json:"pixKey"`
-	// PIX key type
-	PixType string `json:"pixType"`
+	PixType PixType `json:"pixType"`
 }
 
 type _PostWithdraws200ResponsePayoutAccount PostWithdraws200ResponsePayoutAccount
@@ -39,7 +38,7 @@ type _PostWithdraws200ResponsePayoutAccount PostWithdraws200ResponsePayoutAccoun
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPostWithdraws200ResponsePayoutAccount(id string, ownerDocument string, ownerName string, pixKey string, pixType string) *PostWithdraws200ResponsePayoutAccount {
+func NewPostWithdraws200ResponsePayoutAccount(id string, ownerDocument string, ownerName string, pixKey string, pixType PixType) *PostWithdraws200ResponsePayoutAccount {
 	this := PostWithdraws200ResponsePayoutAccount{}
 	this.Id = id
 	this.OwnerDocument = ownerDocument
@@ -54,8 +53,6 @@ func NewPostWithdraws200ResponsePayoutAccount(id string, ownerDocument string, o
 // but it doesn't guarantee that properties required by API are set
 func NewPostWithdraws200ResponsePayoutAccountWithDefaults() *PostWithdraws200ResponsePayoutAccount {
 	this := PostWithdraws200ResponsePayoutAccount{}
-	var pixType string = "Cpf"
-	this.PixType = pixType
 	return &this
 }
 
@@ -156,9 +153,9 @@ func (o *PostWithdraws200ResponsePayoutAccount) SetPixKey(v string) {
 }
 
 // GetPixType returns the PixType field value
-func (o *PostWithdraws200ResponsePayoutAccount) GetPixType() string {
+func (o *PostWithdraws200ResponsePayoutAccount) GetPixType() PixType {
 	if o == nil {
-		var ret string
+		var ret PixType
 		return ret
 	}
 
@@ -167,7 +164,7 @@ func (o *PostWithdraws200ResponsePayoutAccount) GetPixType() string {
 
 // GetPixTypeOk returns a tuple with the PixType field value
 // and a boolean to check if the value has been set.
-func (o *PostWithdraws200ResponsePayoutAccount) GetPixTypeOk() (*string, bool) {
+func (o *PostWithdraws200ResponsePayoutAccount) GetPixTypeOk() (*PixType, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -175,7 +172,7 @@ func (o *PostWithdraws200ResponsePayoutAccount) GetPixTypeOk() (*string, bool) {
 }
 
 // SetPixType sets field value
-func (o *PostWithdraws200ResponsePayoutAccount) SetPixType(v string) {
+func (o *PostWithdraws200ResponsePayoutAccount) SetPixType(v PixType) {
 	o.PixType = v
 }
 

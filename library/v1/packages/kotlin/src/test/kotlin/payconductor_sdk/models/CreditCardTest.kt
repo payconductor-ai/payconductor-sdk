@@ -21,6 +21,7 @@ import io.kotlintest.specs.ShouldSpec
 import payconductor_sdk.models.CreditCard
 import payconductor_sdk.models.CreditCardCard
 import payconductor_sdk.models.CreditCardInstallments
+import payconductor_sdk.models.PaymentMethod
 
 class CreditCardTest : ShouldSpec() {
     init {

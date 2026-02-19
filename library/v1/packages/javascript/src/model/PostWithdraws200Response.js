@@ -14,6 +14,7 @@
 import ApiClient from '../ApiClient';
 import PostWithdraws200ResponsePayedAt from './PostWithdraws200ResponsePayedAt';
 import PostWithdraws200ResponsePayoutAccount from './PostWithdraws200ResponsePayoutAccount';
+import Status from './Status';
 
 /**
  * The PostWithdraws200Response model module.
@@ -29,7 +30,7 @@ class PostWithdraws200Response {
      * @param externalIntegrationKey {String} Provider key used for the withdrawal
      * @param externalIntegrationId {String} Withdrawal ID in the payment provider
      * @param costFee {Number} Cost fee applied to the withdrawal
-     * @param status {module:model/PostWithdraws200Response.StatusEnum} Withdrawal status
+     * @param status {module:model/Status} 
      * @param errorCode {String} Error code, if any
      * @param errorMessage {String} Descriptive error message, if any
      * @param payedAt {module:model/PostWithdraws200ResponsePayedAt} 
@@ -51,7 +52,7 @@ class PostWithdraws200Response {
         obj['externalIntegrationKey'] = externalIntegrationKey;
         obj['externalIntegrationId'] = externalIntegrationId;
         obj['costFee'] = costFee;
-        obj['status'] = status || 'Pending';
+        obj['status'] = status;
         obj['errorCode'] = errorCode;
         obj['errorMessage'] = errorMessage;
         obj['payedAt'] = payedAt;
@@ -85,7 +86,7 @@ class PostWithdraws200Response {
                 obj['costFee'] = ApiClient.convertToType(data['costFee'], 'Number');
             }
             if (data.hasOwnProperty('status')) {
-                obj['status'] = ApiClient.convertToType(data['status'], 'String');
+                obj['status'] = Status.constructFromObject(data['status']);
             }
             if (data.hasOwnProperty('errorCode')) {
                 obj['errorCode'] = ApiClient.convertToType(data['errorCode'], 'String');
@@ -130,10 +131,6 @@ class PostWithdraws200Response {
         // ensure the json data is a string
         if (data['externalIntegrationId'] && !(typeof data['externalIntegrationId'] === 'string' || data['externalIntegrationId'] instanceof String)) {
             throw new Error("Expected the field `externalIntegrationId` to be a primitive type in the JSON string but got " + data['externalIntegrationId']);
-        }
-        // ensure the json data is a string
-        if (data['status'] && !(typeof data['status'] === 'string' || data['status'] instanceof String)) {
-            throw new Error("Expected the field `status` to be a primitive type in the JSON string but got " + data['status']);
         }
         // ensure the json data is a string
         if (data['errorCode'] && !(typeof data['errorCode'] === 'string' || data['errorCode'] instanceof String)) {
@@ -191,11 +188,9 @@ PostWithdraws200Response.prototype['externalIntegrationId'] = undefined;
 PostWithdraws200Response.prototype['costFee'] = undefined;
 
 /**
- * Withdrawal status
- * @member {module:model/PostWithdraws200Response.StatusEnum} status
- * @default 'Pending'
+ * @member {module:model/Status} status
  */
-PostWithdraws200Response.prototype['status'] = 'Pending';
+PostWithdraws200Response.prototype['status'] = undefined;
 
 /**
  * Error code, if any
@@ -221,39 +216,6 @@ PostWithdraws200Response.prototype['payoutAccount'] = undefined;
 
 
 
-
-
-/**
- * Allowed values for the <code>status</code> property.
- * @enum {String}
- * @readonly
- */
-PostWithdraws200Response['StatusEnum'] = {
-
-    /**
-     * value: "Pending"
-     * @const
-     */
-    "Pending": "Pending",
-
-    /**
-     * value: "Transferring"
-     * @const
-     */
-    "Transferring": "Transferring",
-
-    /**
-     * value: "Completed"
-     * @const
-     */
-    "Completed": "Completed",
-
-    /**
-     * value: "Failed"
-     * @const
-     */
-    "Failed": "Failed"
-};
 
 
 

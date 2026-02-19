@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**paymentMethod** | **String** |  |  |
+|**paymentMethod** | **PaymentMethod** |  |  |
 |**expirationInSeconds** | [**PixExpirationInSeconds**](PixExpirationInSeconds.md) |  |  [optional] |
 
 

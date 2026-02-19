@@ -38,8 +38,8 @@ type PostOrders200Response struct {
 	NuPay *PostOrders200ResponseNuPay `json:"nuPay,omitempty"`
 	PicPay *PostOrders200ResponsePicPay `json:"picPay,omitempty"`
 	CreditCard *PostOrders200ResponseCreditCard `json:"creditCard,omitempty"`
-	Status string `json:"status"`
-	PaymentMethod string `json:"paymentMethod"`
+	Status Status `json:"status"`
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
 	// Date and time when the order was paid (ISO 8601)
 	PayedAt NullableString `json:"payedAt"`
 	// Error code, if any
@@ -56,7 +56,7 @@ type _PostOrders200Response PostOrders200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPostOrders200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, amount float32, costFee float32, status string, paymentMethod string, payedAt NullableString, errorCode NullableString, errorMessage NullableString, orderItems []PostOrders200ResponseOrderItemsInner) *PostOrders200Response {
+func NewPostOrders200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, amount float32, costFee float32, status Status, paymentMethod PaymentMethod, payedAt NullableString, errorCode NullableString, errorMessage NullableString, orderItems []PostOrders200ResponseOrderItemsInner) *PostOrders200Response {
 	this := PostOrders200Response{}
 	this.Id = id
 	this.ExternalId = externalId
@@ -390,9 +390,9 @@ func (o *PostOrders200Response) SetCreditCard(v PostOrders200ResponseCreditCard)
 }
 
 // GetStatus returns the Status field value
-func (o *PostOrders200Response) GetStatus() string {
+func (o *PostOrders200Response) GetStatus() Status {
 	if o == nil {
-		var ret string
+		var ret Status
 		return ret
 	}
 
@@ -401,7 +401,7 @@ func (o *PostOrders200Response) GetStatus() string {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *PostOrders200Response) GetStatusOk() (*string, bool) {
+func (o *PostOrders200Response) GetStatusOk() (*Status, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -409,14 +409,14 @@ func (o *PostOrders200Response) GetStatusOk() (*string, bool) {
 }
 
 // SetStatus sets field value
-func (o *PostOrders200Response) SetStatus(v string) {
+func (o *PostOrders200Response) SetStatus(v Status) {
 	o.Status = v
 }
 
 // GetPaymentMethod returns the PaymentMethod field value
-func (o *PostOrders200Response) GetPaymentMethod() string {
+func (o *PostOrders200Response) GetPaymentMethod() PaymentMethod {
 	if o == nil {
-		var ret string
+		var ret PaymentMethod
 		return ret
 	}
 
@@ -425,7 +425,7 @@ func (o *PostOrders200Response) GetPaymentMethod() string {
 
 // GetPaymentMethodOk returns a tuple with the PaymentMethod field value
 // and a boolean to check if the value has been set.
-func (o *PostOrders200Response) GetPaymentMethodOk() (*string, bool) {
+func (o *PostOrders200Response) GetPaymentMethodOk() (*PaymentMethod, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -433,7 +433,7 @@ func (o *PostOrders200Response) GetPaymentMethodOk() (*string, bool) {
 }
 
 // SetPaymentMethod sets field value
-func (o *PostOrders200Response) SetPaymentMethod(v string) {
+func (o *PostOrders200Response) SetPaymentMethod(v PaymentMethod) {
 	o.PaymentMethod = v
 }
 

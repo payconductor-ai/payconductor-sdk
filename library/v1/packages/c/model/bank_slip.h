@@ -16,18 +16,19 @@
 typedef struct bank_slip_t bank_slip_t;
 
 #include "bank_slip_expiration_in_days.h"
+#include "payment_method.h"
 
 
 
 typedef struct bank_slip_t {
-    char *payment_method; // string
+    payconductor_api_payment_method__e payment_method; //referenced enum
     struct bank_slip_expiration_in_days_t *expiration_in_days; //model
 
     int _library_owned; // Is the library responsible for freeing this object?
 } bank_slip_t;
 
 __attribute__((deprecated)) bank_slip_t *bank_slip_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     bank_slip_expiration_in_days_t *expiration_in_days
 );
 

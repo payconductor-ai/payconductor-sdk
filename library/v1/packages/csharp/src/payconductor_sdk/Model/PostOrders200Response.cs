@@ -52,7 +52,7 @@ namespace payconductor_sdk.Model
         /// <param name="errorMessage">Error message, if any</param>
         /// <param name="session">session</param>
         [JsonConstructor]
-        public PostOrders200Response(string id, string externalIntegrationKey, decimal amount, decimal costFee, StatusEnum status, PaymentMethodEnum paymentMethod, List<PostOrders200ResponseOrderItemsInner> orderItems, string? externalId = default, string? externalIntegrationId = default, Option<PostOrders200ResponsePix?> pix = default, Option<PostOrders200ResponseBankSlip?> bankSlip = default, Option<PostOrders200ResponseNuPay?> nuPay = default, Option<PostOrders200ResponsePicPay?> picPay = default, Option<PostOrders200ResponseCreditCard?> creditCard = default, string? payedAt = default, string? errorCode = default, string? errorMessage = default, Option<PostOrders200ResponseSession?> session = default)
+        public PostOrders200Response(string id, string externalIntegrationKey, decimal amount, decimal costFee, Status status, PaymentMethod paymentMethod, List<PostOrders200ResponseOrderItemsInner> orderItems, string? externalId = default, string? externalIntegrationId = default, Option<PostOrders200ResponsePix?> pix = default, Option<PostOrders200ResponseBankSlip?> bankSlip = default, Option<PostOrders200ResponseNuPay?> nuPay = default, Option<PostOrders200ResponsePicPay?> picPay = default, Option<PostOrders200ResponseCreditCard?> creditCard = default, string? payedAt = default, string? errorCode = default, string? errorMessage = default, Option<PostOrders200ResponseSession?> session = default)
         {
             Id = id;
             ExternalIntegrationKey = externalIntegrationKey;
@@ -78,386 +78,16 @@ namespace payconductor_sdk.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Defines Status
-        /// </summary>
-        public enum StatusEnum
-        {
-            /// <summary>
-            /// Enum Generating for value: Generating
-            /// </summary>
-            Generating = 1,
-
-            /// <summary>
-            /// Enum Pending for value: Pending
-            /// </summary>
-            Pending = 2,
-
-            /// <summary>
-            /// Enum Completed for value: Completed
-            /// </summary>
-            Completed = 3,
-
-            /// <summary>
-            /// Enum Failed for value: Failed
-            /// </summary>
-            Failed = 4,
-
-            /// <summary>
-            /// Enum Canceled for value: Canceled
-            /// </summary>
-            Canceled = 5,
-
-            /// <summary>
-            /// Enum Refunding for value: Refunding
-            /// </summary>
-            Refunding = 6,
-
-            /// <summary>
-            /// Enum Refunded for value: Refunded
-            /// </summary>
-            Refunded = 7,
-
-            /// <summary>
-            /// Enum InDispute for value: InDispute
-            /// </summary>
-            InDispute = 8,
-
-            /// <summary>
-            /// Enum Chargeback for value: Chargeback
-            /// </summary>
-            Chargeback = 9
-        }
-
-        /// <summary>
-        /// Returns a <see cref="StatusEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static StatusEnum StatusEnumFromString(string value)
-        {
-            if (value.Equals("Generating"))
-                return StatusEnum.Generating;
-
-            if (value.Equals("Pending"))
-                return StatusEnum.Pending;
-
-            if (value.Equals("Completed"))
-                return StatusEnum.Completed;
-
-            if (value.Equals("Failed"))
-                return StatusEnum.Failed;
-
-            if (value.Equals("Canceled"))
-                return StatusEnum.Canceled;
-
-            if (value.Equals("Refunding"))
-                return StatusEnum.Refunding;
-
-            if (value.Equals("Refunded"))
-                return StatusEnum.Refunded;
-
-            if (value.Equals("InDispute"))
-                return StatusEnum.InDispute;
-
-            if (value.Equals("Chargeback"))
-                return StatusEnum.Chargeback;
-
-            throw new NotImplementedException($"Could not convert value to type StatusEnum: '{value}'");
-        }
-
-        /// <summary>
-        /// Returns a <see cref="StatusEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static StatusEnum? StatusEnumFromStringOrDefault(string value)
-        {
-            if (value.Equals("Generating"))
-                return StatusEnum.Generating;
-
-            if (value.Equals("Pending"))
-                return StatusEnum.Pending;
-
-            if (value.Equals("Completed"))
-                return StatusEnum.Completed;
-
-            if (value.Equals("Failed"))
-                return StatusEnum.Failed;
-
-            if (value.Equals("Canceled"))
-                return StatusEnum.Canceled;
-
-            if (value.Equals("Refunding"))
-                return StatusEnum.Refunding;
-
-            if (value.Equals("Refunded"))
-                return StatusEnum.Refunded;
-
-            if (value.Equals("InDispute"))
-                return StatusEnum.InDispute;
-
-            if (value.Equals("Chargeback"))
-                return StatusEnum.Chargeback;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="StatusEnum"/> to the json value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static string StatusEnumToJsonValue(StatusEnum value)
-        {
-            if (value == StatusEnum.Generating)
-                return "Generating";
-
-            if (value == StatusEnum.Pending)
-                return "Pending";
-
-            if (value == StatusEnum.Completed)
-                return "Completed";
-
-            if (value == StatusEnum.Failed)
-                return "Failed";
-
-            if (value == StatusEnum.Canceled)
-                return "Canceled";
-
-            if (value == StatusEnum.Refunding)
-                return "Refunding";
-
-            if (value == StatusEnum.Refunded)
-                return "Refunded";
-
-            if (value == StatusEnum.InDispute)
-                return "InDispute";
-
-            if (value == StatusEnum.Chargeback)
-                return "Chargeback";
-
-            throw new NotImplementedException($"Value could not be handled: '{value}'");
-        }
-
-        /// <summary>
         /// Gets or Sets Status
         /// </summary>
         [JsonPropertyName("status")]
-        public StatusEnum Status { get; set; }
-
-        /// <summary>
-        /// Defines PaymentMethod
-        /// </summary>
-        public enum PaymentMethodEnum
-        {
-            /// <summary>
-            /// Enum Pix for value: Pix
-            /// </summary>
-            Pix = 1,
-
-            /// <summary>
-            /// Enum CreditCard for value: CreditCard
-            /// </summary>
-            CreditCard = 2,
-
-            /// <summary>
-            /// Enum DebitCard for value: DebitCard
-            /// </summary>
-            DebitCard = 3,
-
-            /// <summary>
-            /// Enum BankSlip for value: BankSlip
-            /// </summary>
-            BankSlip = 4,
-
-            /// <summary>
-            /// Enum Crypto for value: Crypto
-            /// </summary>
-            Crypto = 5,
-
-            /// <summary>
-            /// Enum ApplePay for value: ApplePay
-            /// </summary>
-            ApplePay = 6,
-
-            /// <summary>
-            /// Enum NuPay for value: NuPay
-            /// </summary>
-            NuPay = 7,
-
-            /// <summary>
-            /// Enum PicPay for value: PicPay
-            /// </summary>
-            PicPay = 8,
-
-            /// <summary>
-            /// Enum AmazonPay for value: AmazonPay
-            /// </summary>
-            AmazonPay = 9,
-
-            /// <summary>
-            /// Enum SepaDebit for value: SepaDebit
-            /// </summary>
-            SepaDebit = 10,
-
-            /// <summary>
-            /// Enum GooglePay for value: GooglePay
-            /// </summary>
-            GooglePay = 11,
-
-            /// <summary>
-            /// Enum Draft for value: Draft
-            /// </summary>
-            Draft = 12
-        }
-
-        /// <summary>
-        /// Returns a <see cref="PaymentMethodEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static PaymentMethodEnum PaymentMethodEnumFromString(string value)
-        {
-            if (value.Equals("Pix"))
-                return PaymentMethodEnum.Pix;
-
-            if (value.Equals("CreditCard"))
-                return PaymentMethodEnum.CreditCard;
-
-            if (value.Equals("DebitCard"))
-                return PaymentMethodEnum.DebitCard;
-
-            if (value.Equals("BankSlip"))
-                return PaymentMethodEnum.BankSlip;
-
-            if (value.Equals("Crypto"))
-                return PaymentMethodEnum.Crypto;
-
-            if (value.Equals("ApplePay"))
-                return PaymentMethodEnum.ApplePay;
-
-            if (value.Equals("NuPay"))
-                return PaymentMethodEnum.NuPay;
-
-            if (value.Equals("PicPay"))
-                return PaymentMethodEnum.PicPay;
-
-            if (value.Equals("AmazonPay"))
-                return PaymentMethodEnum.AmazonPay;
-
-            if (value.Equals("SepaDebit"))
-                return PaymentMethodEnum.SepaDebit;
-
-            if (value.Equals("GooglePay"))
-                return PaymentMethodEnum.GooglePay;
-
-            if (value.Equals("Draft"))
-                return PaymentMethodEnum.Draft;
-
-            throw new NotImplementedException($"Could not convert value to type PaymentMethodEnum: '{value}'");
-        }
-
-        /// <summary>
-        /// Returns a <see cref="PaymentMethodEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static PaymentMethodEnum? PaymentMethodEnumFromStringOrDefault(string value)
-        {
-            if (value.Equals("Pix"))
-                return PaymentMethodEnum.Pix;
-
-            if (value.Equals("CreditCard"))
-                return PaymentMethodEnum.CreditCard;
-
-            if (value.Equals("DebitCard"))
-                return PaymentMethodEnum.DebitCard;
-
-            if (value.Equals("BankSlip"))
-                return PaymentMethodEnum.BankSlip;
-
-            if (value.Equals("Crypto"))
-                return PaymentMethodEnum.Crypto;
-
-            if (value.Equals("ApplePay"))
-                return PaymentMethodEnum.ApplePay;
-
-            if (value.Equals("NuPay"))
-                return PaymentMethodEnum.NuPay;
-
-            if (value.Equals("PicPay"))
-                return PaymentMethodEnum.PicPay;
-
-            if (value.Equals("AmazonPay"))
-                return PaymentMethodEnum.AmazonPay;
-
-            if (value.Equals("SepaDebit"))
-                return PaymentMethodEnum.SepaDebit;
-
-            if (value.Equals("GooglePay"))
-                return PaymentMethodEnum.GooglePay;
-
-            if (value.Equals("Draft"))
-                return PaymentMethodEnum.Draft;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="PaymentMethodEnum"/> to the json value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static string PaymentMethodEnumToJsonValue(PaymentMethodEnum value)
-        {
-            if (value == PaymentMethodEnum.Pix)
-                return "Pix";
-
-            if (value == PaymentMethodEnum.CreditCard)
-                return "CreditCard";
-
-            if (value == PaymentMethodEnum.DebitCard)
-                return "DebitCard";
-
-            if (value == PaymentMethodEnum.BankSlip)
-                return "BankSlip";
-
-            if (value == PaymentMethodEnum.Crypto)
-                return "Crypto";
-
-            if (value == PaymentMethodEnum.ApplePay)
-                return "ApplePay";
-
-            if (value == PaymentMethodEnum.NuPay)
-                return "NuPay";
-
-            if (value == PaymentMethodEnum.PicPay)
-                return "PicPay";
-
-            if (value == PaymentMethodEnum.AmazonPay)
-                return "AmazonPay";
-
-            if (value == PaymentMethodEnum.SepaDebit)
-                return "SepaDebit";
-
-            if (value == PaymentMethodEnum.GooglePay)
-                return "GooglePay";
-
-            if (value == PaymentMethodEnum.Draft)
-                return "Draft";
-
-            throw new NotImplementedException($"Value could not be handled: '{value}'");
-        }
+        public Status Status { get; set; }
 
         /// <summary>
         /// Gets or Sets PaymentMethod
         /// </summary>
         [JsonPropertyName("paymentMethod")]
-        public PaymentMethodEnum PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// Order ID in the system
@@ -673,8 +303,8 @@ namespace payconductor_sdk.Model
             Option<string?> externalIntegrationKey = default;
             Option<decimal?> amount = default;
             Option<decimal?> costFee = default;
-            Option<PostOrders200Response.StatusEnum?> status = default;
-            Option<PostOrders200Response.PaymentMethodEnum?> paymentMethod = default;
+            Option<Status?> status = default;
+            Option<PaymentMethod?> paymentMethod = default;
             Option<List<PostOrders200ResponseOrderItemsInner>?> orderItems = default;
             Option<string?> externalId = default;
             Option<string?> externalIntegrationId = default;
@@ -718,12 +348,12 @@ namespace payconductor_sdk.Model
                         case "status":
                             string? statusRawValue = utf8JsonReader.GetString();
                             if (statusRawValue != null)
-                                status = new Option<PostOrders200Response.StatusEnum?>(PostOrders200Response.StatusEnumFromStringOrDefault(statusRawValue));
+                                status = new Option<Status?>(StatusValueConverter.FromStringOrDefault(statusRawValue));
                             break;
                         case "paymentMethod":
                             string? paymentMethodRawValue = utf8JsonReader.GetString();
                             if (paymentMethodRawValue != null)
-                                paymentMethod = new Option<PostOrders200Response.PaymentMethodEnum?>(PostOrders200Response.PaymentMethodEnumFromStringOrDefault(paymentMethodRawValue));
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
                             break;
                         case "orderItems":
                             orderItems = new Option<List<PostOrders200ResponseOrderItemsInner>?>(JsonSerializer.Deserialize<List<PostOrders200ResponseOrderItemsInner>>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -898,10 +528,12 @@ namespace payconductor_sdk.Model
 
             writer.WriteNumber("costFee", postOrders200Response.CostFee);
 
-            var statusRawValue = PostOrders200Response.StatusEnumToJsonValue(postOrders200Response.Status);
+            var statusRawValue = StatusValueConverter.ToJsonValue(postOrders200Response.Status);
             writer.WriteString("status", statusRawValue);
-            var paymentMethodRawValue = PostOrders200Response.PaymentMethodEnumToJsonValue(postOrders200Response.PaymentMethod);
+
+            var paymentMethodRawValue = PaymentMethodValueConverter.ToJsonValue(postOrders200Response.PaymentMethod);
             writer.WriteString("paymentMethod", paymentMethodRawValue);
+
             writer.WritePropertyName("orderItems");
             JsonSerializer.Serialize(writer, postOrders200Response.OrderItems, jsonSerializerOptions);
             if (postOrders200Response.ExternalId != null)

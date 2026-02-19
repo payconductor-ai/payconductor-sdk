@@ -6,7 +6,7 @@
 
 
 static credit_card_t *credit_card_create_internal(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     credit_card_card_t *card,
     credit_card_installments_t *installments,
     char *soft_descriptor
@@ -25,7 +25,7 @@ static credit_card_t *credit_card_create_internal(
 }
 
 __attribute__((deprecated)) credit_card_t *credit_card_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     credit_card_card_t *card,
     credit_card_installments_t *installments,
     char *soft_descriptor
@@ -47,10 +47,6 @@ void credit_card_free(credit_card_t *credit_card) {
         return ;
     }
     listEntry_t *listEntry;
-    if (credit_card->payment_method) {
-        free(credit_card->payment_method);
-        credit_card->payment_method = NULL;
-    }
     if (credit_card->card) {
         credit_card_card_free(credit_card->card);
         credit_card->card = NULL;
@@ -70,11 +66,16 @@ cJSON *credit_card_convertToJSON(credit_card_t *credit_card) {
     cJSON *item = cJSON_CreateObject();
 
     // credit_card->payment_method
-    if (!credit_card->payment_method) {
+    if (payconductor_api_payment_method__NULL == credit_card->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", credit_card->payment_method) == NULL) {
-    goto fail; //String
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(credit_card->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -125,6 +126,9 @@ credit_card_t *credit_card_parseFromJSON(cJSON *credit_cardJSON){
 
     credit_card_t *credit_card_local_var = NULL;
 
+    // define the local variable for credit_card->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
+
     // define the local variable for credit_card->card
     credit_card_card_t *card_local_nonprim = NULL;
 
@@ -141,10 +145,7 @@ credit_card_t *credit_card_parseFromJSON(cJSON *credit_cardJSON){
     }
 
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //String
-    }
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
     // credit_card->card
     cJSON *card = cJSON_GetObjectItemCaseSensitive(credit_cardJSON, "card");
@@ -184,7 +185,7 @@ credit_card_t *credit_card_parseFromJSON(cJSON *credit_cardJSON){
 
 
     credit_card_local_var = credit_card_create_internal (
-        strdup(payment_method->valuestring),
+        payment_method_local_nonprim,
         card_local_nonprim,
         installments_local_nonprim,
         soft_descriptor && !cJSON_IsNull(soft_descriptor) ? strdup(soft_descriptor->valuestring) : NULL
@@ -192,6 +193,9 @@ credit_card_t *credit_card_parseFromJSON(cJSON *credit_cardJSON){
 
     return credit_card_local_var;
 end:
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
+    }
     if (card_local_nonprim) {
         credit_card_card_free(card_local_nonprim);
         card_local_nonprim = NULL;

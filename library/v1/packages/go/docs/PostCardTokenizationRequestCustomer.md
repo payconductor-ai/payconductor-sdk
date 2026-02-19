@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Address** | Pointer to [**CustomerAddress**](CustomerAddress.md) |  | [optional] 
 **DocumentNumber** | **string** | Customer CPF or CNPJ without formatting | 
-**DocumentType** | [**Customer2DocumentType**](Customer2DocumentType.md) |  | 
+**DocumentType** | [**DocumentType**](DocumentType.md) |  | 
 **Email** | **string** | Customer email | 
 **Name** | **string** | Customer full name | 
 **PhoneNumber** | Pointer to **string** | Customer phone number in +55 DD 9XXXXXXXX format | [optional] 
@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 
 ### NewPostCardTokenizationRequestCustomer
 
-`func NewPostCardTokenizationRequestCustomer(documentNumber string, documentType Customer2DocumentType, email string, name string, id string, ) *PostCardTokenizationRequestCustomer`
+`func NewPostCardTokenizationRequestCustomer(documentNumber string, documentType DocumentType, email string, name string, id string, ) *PostCardTokenizationRequestCustomer`
 
 NewPostCardTokenizationRequestCustomer instantiates a new PostCardTokenizationRequestCustomer object
 This constructor will assign default values to properties that have it defined,
@@ -78,20 +78,20 @@ SetDocumentNumber sets DocumentNumber field to given value.
 
 ### GetDocumentType
 
-`func (o *PostCardTokenizationRequestCustomer) GetDocumentType() Customer2DocumentType`
+`func (o *PostCardTokenizationRequestCustomer) GetDocumentType() DocumentType`
 
 GetDocumentType returns the DocumentType field if non-nil, zero value otherwise.
 
 ### GetDocumentTypeOk
 
-`func (o *PostCardTokenizationRequestCustomer) GetDocumentTypeOk() (*Customer2DocumentType, bool)`
+`func (o *PostCardTokenizationRequestCustomer) GetDocumentTypeOk() (*DocumentType, bool)`
 
 GetDocumentTypeOk returns a tuple with the DocumentType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDocumentType
 
-`func (o *PostCardTokenizationRequestCustomer) SetDocumentType(v Customer2DocumentType)`
+`func (o *PostCardTokenizationRequestCustomer) SetDocumentType(v DocumentType)`
 
 SetDocumentType sets DocumentType field to given value.
 

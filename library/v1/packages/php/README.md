@@ -172,6 +172,7 @@ Class | Method | HTTP request | Description
 
 ## Models
 
+- [AvailablePaymentMethods](docs/Model/AvailablePaymentMethods.md)
 - [BankSlip](docs/Model/BankSlip.md)
 - [BankSlipExpirationInDays](docs/Model/BankSlipExpirationInDays.md)
 - [CompleteCardData](docs/Model/CompleteCardData.md)
@@ -181,18 +182,19 @@ Class | Method | HTTP request | Description
 - [CreditCardInstallments](docs/Model/CreditCardInstallments.md)
 - [Customer](docs/Model/Customer.md)
 - [Customer1](docs/Model/Customer1.md)
-- [Customer2](docs/Model/Customer2.md)
-- [Customer2DocumentType](docs/Model/Customer2DocumentType.md)
 - [CustomerAddress](docs/Model/CustomerAddress.md)
+- [DocumentType](docs/Model/DocumentType.md)
 - [Draft](docs/Model/Draft.md)
-- [DraftAvailablePaymentMethodsInner](docs/Model/DraftAvailablePaymentMethodsInner.md)
 - [DraftExpirationInSeconds](docs/Model/DraftExpirationInSeconds.md)
+- [Event](docs/Model/Event.md)
 - [MerchantInput](docs/Model/MerchantInput.md)
 - [NuPay](docs/Model/NuPay.md)
 - [NuPayNuPay](docs/Model/NuPayNuPay.md)
+- [PaymentMethod](docs/Model/PaymentMethod.md)
 - [PicPay](docs/Model/PicPay.md)
 - [Pix](docs/Model/Pix.md)
 - [PixExpirationInSeconds](docs/Model/PixExpirationInSeconds.md)
+- [PixType](docs/Model/PixType.md)
 - [PostCardTokenization200Response](docs/Model/PostCardTokenization200Response.md)
 - [PostCardTokenizationRequest](docs/Model/PostCardTokenizationRequest.md)
 - [PostCardTokenizationRequestCustomer](docs/Model/PostCardTokenizationRequestCustomer.md)
@@ -216,6 +218,7 @@ Class | Method | HTTP request | Description
 - [PostWithdraws200ResponsePayoutAccount](docs/Model/PostWithdraws200ResponsePayoutAccount.md)
 - [PostWithdrawsRequest](docs/Model/PostWithdrawsRequest.md)
 - [PostWithdrawsRequestPayoutAccount](docs/Model/PostWithdrawsRequestPayoutAccount.md)
+- [Status](docs/Model/Status.md)
 - [TokenizedCard](docs/Model/TokenizedCard.md)
 
 ## Authorization

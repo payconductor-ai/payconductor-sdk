@@ -28,9 +28,8 @@ pub struct PostWithdraws200Response {
     /// Cost fee applied to the withdrawal
     #[serde(rename = "costFee")]
     pub cost_fee: f64,
-    /// Withdrawal status
     #[serde(rename = "status")]
-    pub status: Status,
+    pub status: models::Status,
     /// Error code, if any
     #[serde(rename = "errorCode", deserialize_with = "Option::deserialize")]
     pub error_code: Option<String>,
@@ -44,7 +43,7 @@ pub struct PostWithdraws200Response {
 }
 
 impl PostWithdraws200Response {
-    pub fn new(id: String, external_id: Option<String>, external_integration_key: String, external_integration_id: Option<String>, cost_fee: f64, status: Status, error_code: Option<String>, error_message: Option<String>, payed_at: Option<models::PostWithdraws200ResponsePayedAt>, payout_account: models::PostWithdraws200ResponsePayoutAccount) -> PostWithdraws200Response {
+    pub fn new(id: String, external_id: Option<String>, external_integration_key: String, external_integration_id: Option<String>, cost_fee: f64, status: models::Status, error_code: Option<String>, error_message: Option<String>, payed_at: Option<models::PostWithdraws200ResponsePayedAt>, payout_account: models::PostWithdraws200ResponsePayoutAccount) -> PostWithdraws200Response {
         PostWithdraws200Response {
             id,
             external_id,
@@ -57,24 +56,6 @@ impl PostWithdraws200Response {
             payed_at: if let Some(x) = payed_at {Some(Box::new(x))} else {None},
             payout_account: Box::new(payout_account),
         }
-    }
-}
-/// Withdrawal status
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Status {
-    #[serde(rename = "Pending")]
-    Pending,
-    #[serde(rename = "Transferring")]
-    Transferring,
-    #[serde(rename = "Completed")]
-    Completed,
-    #[serde(rename = "Failed")]
-    Failed,
-}
-
-impl Default for Status {
-    fn default() -> Status {
-        Self::Pending
     }
 }
 

@@ -21,10 +21,10 @@ var _ MappedNullable = &Draft{}
 
 // Draft Used to create an order without generating a real payment. Use to create orders that will be paid later
 type Draft struct {
-	PaymentMethod string `json:"paymentMethod"`
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
 	ExpirationInSeconds *DraftExpirationInSeconds `json:"expirationInSeconds,omitempty"`
 	// Available payment methods for this order
-	AvailablePaymentMethods []DraftAvailablePaymentMethodsInner `json:"availablePaymentMethods,omitempty"`
+	AvailablePaymentMethods []AvailablePaymentMethods `json:"availablePaymentMethods,omitempty"`
 }
 
 type _Draft Draft
@@ -33,7 +33,7 @@ type _Draft Draft
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewDraft(paymentMethod string) *Draft {
+func NewDraft(paymentMethod PaymentMethod) *Draft {
 	this := Draft{}
 	this.PaymentMethod = paymentMethod
 	var expirationInSeconds DraftExpirationInSeconds = 3600
@@ -52,9 +52,9 @@ func NewDraftWithDefaults() *Draft {
 }
 
 // GetPaymentMethod returns the PaymentMethod field value
-func (o *Draft) GetPaymentMethod() string {
+func (o *Draft) GetPaymentMethod() PaymentMethod {
 	if o == nil {
-		var ret string
+		var ret PaymentMethod
 		return ret
 	}
 
@@ -63,7 +63,7 @@ func (o *Draft) GetPaymentMethod() string {
 
 // GetPaymentMethodOk returns a tuple with the PaymentMethod field value
 // and a boolean to check if the value has been set.
-func (o *Draft) GetPaymentMethodOk() (*string, bool) {
+func (o *Draft) GetPaymentMethodOk() (*PaymentMethod, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -71,7 +71,7 @@ func (o *Draft) GetPaymentMethodOk() (*string, bool) {
 }
 
 // SetPaymentMethod sets field value
-func (o *Draft) SetPaymentMethod(v string) {
+func (o *Draft) SetPaymentMethod(v PaymentMethod) {
 	o.PaymentMethod = v
 }
 
@@ -108,9 +108,9 @@ func (o *Draft) SetExpirationInSeconds(v DraftExpirationInSeconds) {
 }
 
 // GetAvailablePaymentMethods returns the AvailablePaymentMethods field value if set, zero value otherwise.
-func (o *Draft) GetAvailablePaymentMethods() []DraftAvailablePaymentMethodsInner {
+func (o *Draft) GetAvailablePaymentMethods() []AvailablePaymentMethods {
 	if o == nil || IsNil(o.AvailablePaymentMethods) {
-		var ret []DraftAvailablePaymentMethodsInner
+		var ret []AvailablePaymentMethods
 		return ret
 	}
 	return o.AvailablePaymentMethods
@@ -118,7 +118,7 @@ func (o *Draft) GetAvailablePaymentMethods() []DraftAvailablePaymentMethodsInner
 
 // GetAvailablePaymentMethodsOk returns a tuple with the AvailablePaymentMethods field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Draft) GetAvailablePaymentMethodsOk() ([]DraftAvailablePaymentMethodsInner, bool) {
+func (o *Draft) GetAvailablePaymentMethodsOk() ([]AvailablePaymentMethods, bool) {
 	if o == nil || IsNil(o.AvailablePaymentMethods) {
 		return nil, false
 	}
@@ -134,8 +134,8 @@ func (o *Draft) HasAvailablePaymentMethods() bool {
 	return false
 }
 
-// SetAvailablePaymentMethods gets a reference to the given []DraftAvailablePaymentMethodsInner and assigns it to the AvailablePaymentMethods field.
-func (o *Draft) SetAvailablePaymentMethods(v []DraftAvailablePaymentMethodsInner) {
+// SetAvailablePaymentMethods gets a reference to the given []AvailablePaymentMethods and assigns it to the AvailablePaymentMethods field.
+func (o *Draft) SetAvailablePaymentMethods(v []AvailablePaymentMethods) {
 	o.AvailablePaymentMethods = v
 }
 

@@ -6,7 +6,7 @@ context("Test PostOrdersRequestPayment")
 model_instance <- PostOrdersRequestPayment$new()
 
 test_that("paymentMethod", {
-  # tests for the property `paymentMethod` (character)
+  # tests for the property `paymentMethod` (PaymentMethod)
 
   # uncomment below to test the property
   #expect_equal(model.instance$`paymentMethod`, "EXPECTED_RESULT")
@@ -56,7 +56,7 @@ test_that("nuPay", {
 })
 
 test_that("availablePaymentMethods", {
-  # tests for the property `availablePaymentMethods` (array[DraftAvailablePaymentMethodsInner])
+  # tests for the property `availablePaymentMethods` (array[AvailablePaymentMethods])
   # Available payment methods for this order
 
   # uncomment below to test the property

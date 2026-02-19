@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import org.openapitools.client.model.PostWithdraws200ResponsePayedAt;
 import org.openapitools.client.model.PostWithdraws200ResponsePayoutAccount;
+import org.openapitools.client.model.Status;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,7 +52,7 @@ import org.openapitools.client.JSON;
 /**
  * PostWithdraws200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostWithdraws200Response {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -78,66 +79,10 @@ public class PostWithdraws200Response {
   @javax.annotation.Nonnull
   private BigDecimal costFee;
 
-  /**
-   * Withdrawal status
-   */
-  @JsonAdapter(StatusEnum.Adapter.class)
-  public enum StatusEnum {
-    PENDING("Pending"),
-    
-    TRANSFERRING("Transferring"),
-    
-    COMPLETED("Completed"),
-    
-    FAILED("Failed");
-
-    private String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static StatusEnum fromValue(String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<StatusEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final StatusEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public StatusEnum read(final JsonReader jsonReader) throws IOException {
-        String value =  jsonReader.nextString();
-        return StatusEnum.fromValue(value);
-      }
-    }
-
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      String value = jsonElement.getAsString();
-      StatusEnum.fromValue(value);
-    }
-  }
-
   public static final String SERIALIZED_NAME_STATUS = "status";
   @SerializedName(SERIALIZED_NAME_STATUS)
   @javax.annotation.Nonnull
-  private StatusEnum status = StatusEnum.PENDING;
+  private Status status;
 
   public static final String SERIALIZED_NAME_ERROR_CODE = "errorCode";
   @SerializedName(SERIALIZED_NAME_ERROR_CODE)
@@ -257,21 +202,21 @@ public class PostWithdraws200Response {
   }
 
 
-  public PostWithdraws200Response status(@javax.annotation.Nonnull StatusEnum status) {
+  public PostWithdraws200Response status(@javax.annotation.Nonnull Status status) {
     this.status = status;
     return this;
   }
 
   /**
-   * Withdrawal status
+   * Get status
    * @return status
    */
   @javax.annotation.Nonnull
-  public StatusEnum getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(@javax.annotation.Nonnull StatusEnum status) {
+  public void setStatus(@javax.annotation.Nonnull Status status) {
     this.status = status;
   }
 
@@ -460,11 +405,8 @@ public class PostWithdraws200Response {
       if ((jsonObj.get("externalIntegrationId") != null && !jsonObj.get("externalIntegrationId").isJsonNull()) && !jsonObj.get("externalIntegrationId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `externalIntegrationId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("externalIntegrationId").toString()));
       }
-      if (!jsonObj.get("status").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
-      }
       // validate the required field `status`
-      StatusEnum.validateJsonElement(jsonObj.get("status"));
+      Status.validateJsonElement(jsonObj.get("status"));
       if ((jsonObj.get("errorCode") != null && !jsonObj.get("errorCode").isJsonNull()) && !jsonObj.get("errorCode").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `errorCode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("errorCode").toString()));
       }

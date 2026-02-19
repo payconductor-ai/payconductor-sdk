@@ -27,7 +27,7 @@ post_orders_request_payment_t* instantiate_post_orders_request_payment(int inclu
   post_orders_request_payment_t* post_orders_request_payment = NULL;
   if (include_optional) {
     post_orders_request_payment = post_orders_request_payment_create(
-      "0",
+      payconductor_api_post_orders_request_payment__Pix,
       null,
       null,
       null,
@@ -39,7 +39,7 @@ post_orders_request_payment_t* instantiate_post_orders_request_payment(int inclu
     );
   } else {
     post_orders_request_payment = post_orders_request_payment_create(
-      "0",
+      payconductor_api_post_orders_request_payment__Pix,
       null,
       null,
       null,

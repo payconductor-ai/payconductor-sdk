@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import org.openapitools.client.model.PostWithdraws200ResponsePayedAt;
 import org.openapitools.client.model.PostWithdraws200ResponsePayoutAccount;
+import org.openapitools.client.model.Status;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

@@ -35,15 +35,15 @@ class TestDraft(unittest.TestCase):
         model = Draft()
         if include_optional:
             return Draft(
-                payment_method = '',
+                payment_method = 'Pix',
                 expiration_in_seconds = None,
                 available_payment_methods = [
-                    null
+                    'Pix'
                     ]
             )
         else:
             return Draft(
-                payment_method = '',
+                payment_method = 'Pix',
         )
         """
 

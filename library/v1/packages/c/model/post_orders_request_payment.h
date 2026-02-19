@@ -15,23 +15,32 @@
 
 typedef struct post_orders_request_payment_t post_orders_request_payment_t;
 
+#include "available_payment_methods.h"
 #include "bank_slip.h"
 #include "bank_slip_expiration_in_days.h"
 #include "credit_card.h"
 #include "credit_card_card.h"
 #include "credit_card_installments.h"
 #include "draft.h"
-#include "draft_available_payment_methods_inner.h"
 #include "draft_expiration_in_seconds.h"
 #include "nu_pay.h"
 #include "nu_pay_nu_pay.h"
+#include "payment_method.h"
 #include "pic_pay.h"
 #include "pix.h"
+
+// Enum  for post_orders_request_payment
+
+typedef enum  { payconductor_api_post_orders_request_payment__NULL = 0, payconductor_api_post_orders_request_payment__Pix, payconductor_api_post_orders_request_payment__CreditCard, payconductor_api_post_orders_request_payment__DebitCard, payconductor_api_post_orders_request_payment__BankSlip, payconductor_api_post_orders_request_payment__Crypto, payconductor_api_post_orders_request_payment__ApplePay, payconductor_api_post_orders_request_payment__NuPay, payconductor_api_post_orders_request_payment__PicPay, payconductor_api_post_orders_request_payment__AmazonPay, payconductor_api_post_orders_request_payment__SepaDebit, payconductor_api_post_orders_request_payment__GooglePay, payconductor_api_post_orders_request_payment__Draft } payconductor_api_post_orders_request_payment__e;
+
+char* post_orders_request_payment_available_payment_methods_ToString(payconductor_api_post_orders_request_payment__e available_payment_methods);
+
+payconductor_api_post_orders_request_payment__e post_orders_request_payment_available_payment_methods_FromString(char* available_payment_methods);
 
 
 
 typedef struct post_orders_request_payment_t {
-    char *payment_method; // string
+    payconductor_api_payment_method__e payment_method; //referenced enum
     struct draft_expiration_in_seconds_t *expiration_in_seconds; //model
     struct credit_card_card_t *card; //model
     struct credit_card_installments_t *installments; //model
@@ -44,7 +53,7 @@ typedef struct post_orders_request_payment_t {
 } post_orders_request_payment_t;
 
 __attribute__((deprecated)) post_orders_request_payment_t *post_orders_request_payment_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     draft_expiration_in_seconds_t *expiration_in_seconds,
     credit_card_card_t *card,
     credit_card_installments_t *installments,

@@ -8,14 +8,7 @@
 | **ownerDocument** | **kotlin.String** | Account holder document (CPF or CNPJ) |  |
 | **ownerName** | **kotlin.String** | Account holder name |  |
 | **pixKey** | **kotlin.String** | PIX key used for the withdrawal |  |
-| **pixType** | [**inline**](#PixType) | PIX key type |  |
-
-
-<a id="PixType"></a>
-## Enum: pixType
-| Name | Value |
-| ---- | ----- |
-| pixType | Cpf, Cnpj, Email, Phone, Random |
+| **pixType** | [**PixType**](PixType.md) |  |  |
 
 
 

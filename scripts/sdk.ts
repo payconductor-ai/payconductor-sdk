@@ -53,8 +53,9 @@ const SKIP_AS_ENUM_NAME = new Set([
   "allOf", "oneOf", "anyOf", "not",
 ]);
 
-// Matches discriminated-union const arrays: { anyOf: [{ type: string, const: X }, ...] }
-// openapi-generator doesn't infer a shared enum type from this pattern.
+// Matches the discriminated-union pattern the spec uses for array item types:
+//   availablePaymentMethods.items: { anyOf: [{ type: string, const: Pix }, ...] }
+// openapi-generator doesn't resolve this into a typed enum on its own.
 const isConstStringAnyOf = (node: any): boolean =>
     Array.isArray(node?.anyOf) &&
     node.anyOf.length > 1 &&
@@ -67,8 +68,9 @@ const isStringEnum = (node: any): boolean =>
     Array.isArray(node?.enum) &&
     node.enum.every((v: any) => typeof v === "string");
 
-// Matches a single const inside discriminated union branches.
-// Each branch contributes one value; the collect pass merges them into one enum.
+// Matches a single const value inside a discriminated union branch:
+//   payment.anyOf[0].properties.paymentMethod: { type: string, const: Pix }
+// Each branch has its own const. The collect pass merges all of them into one enum.
 const isSingleConst = (node: any): boolean =>
     node?.type === "string" && typeof node?.const === "string";
 
@@ -83,18 +85,20 @@ const buildEnumSchema = (values: string[]) => ({
 
 //#region Patcher
 /**
- * Lifts inline string enums into components/schemas and replaces them with $refs.
+ * Lifts all inline string enums into components/schemas and replaces them with $refs.
  *
- * Patterns handled:
+ * Three inline patterns are handled:
  *   1. anyOf const-union  — { anyOf: [{ type: string, const: A }, { type: string, const: B }] }
  *   2. Plain string enum  — { type: string, enum: [A, B, C] }
- *   3. Single const       — { type: string, const: A } (per-branch in discriminated unions)
+ *   3. Single const       — { type: string, const: A } (appears per-branch in discriminated unions)
  *
- * Pass 1: Collect — walk the doc, accumulate enum values per property key.
- *   Multiple occurrences of the same key across branches merge into one set.
+ * Pass 1 (collect): walk the doc, accumulate enum values per property key into a registry.
+ *   Multiple occurrences of the same key (e.g. `paymentMethod: { const: "Pix" }` and
+ *   `paymentMethod: { const: "CreditCard" }` in separate anyOf branches) merge into one Set.
  *
- * Pass 2: Replace — swap matched nodes with $refs, skipping components/schemas
- *   to avoid circular self-references.
+ * Pass 2 (replace): walk again, swap every matched inline node with a $ref.
+ *   components/schemas is skipped to prevent the freshly-written schemas from
+ *   being overwritten with circular self-references.
  */
 const patchOpenApi = (data: any): any => {
   data.components ??= {};
@@ -109,7 +113,8 @@ const patchOpenApi = (data: any): any => {
 
   // --- Pass 1: Collect ---
   // SKIP_AS_ENUM_NAME only controls whether a key becomes a schema name — we always recurse.
-  // Early-return on skip would prevent reaching nested isSingleConst nodes inside structural keys.
+  // A previous early-return-on-skip approach caused isSingleConst nodes nested inside
+  // `properties` to never be reached, breaking paymentMethod collection.
   const collect = (node: any) => {
     if (Array.isArray(node)) { node.forEach(collect); return; }
     if (typeof node !== "object" || node === null) return;
@@ -213,7 +218,54 @@ const patchOpenApi = (data: any): any => {
     return node;
   };
 
-  return replace(data);
+  const patched = replace(data);
+
+  // --- Pass 3: Discriminator ---
+  // openapi-generator merges all anyOf branches into one flat interface when there's no
+  // discriminator. Adding `discriminator.propertyName` tells the generator to emit a proper
+  // union type. It also requires every branch to be a $ref (not inline), so we promote each
+  // branch to a named schema in components/schemas using the branch's `title` as the name.
+  const addDiscriminators = (node: any) => {
+    if (Array.isArray(node)) { node.forEach(addDiscriminators); return; }
+    if (typeof node !== "object" || node === null) return;
+
+    for (const key of Object.keys(node)) {
+      const child = node[key];
+      if (typeof child === "object" && child !== null) addDiscriminators(child);
+    }
+
+    if (!Array.isArray(node.anyOf)) return;
+    const branches = node.anyOf as any[];
+    if (!branches.every((b: any) => b.type === "object" && b.properties)) return;
+
+    // Find a property that every branch has as a $ref — that's the discriminator key.
+    const candidateKeys = Object.keys(branches[0].properties);
+    const discriminatorKey = candidateKeys.find((k) =>
+        branches.every((b: any) => b.properties[k]?.["$ref"] !== undefined)
+    );
+    if (!discriminatorKey) return;
+
+    // Promote each branch to a named schema. Name comes from `title`, falling back to
+    // the const value of the discriminator property, then a generated index-based name.
+    const mapping: Record<string, string> = {};
+    node.anyOf = branches.map((branch: any, i: number) => {
+      if (branch["$ref"]) return branch;
+      const constVal = branch.properties[discriminatorKey]?.const as string | undefined;
+      const schemaName = branch.title
+          ? (branch.title as string).replace(/\s+/g, "")
+          : constVal ?? `${toPascalCase(discriminatorKey)}Variant${i}`;
+
+      patched.components.schemas[schemaName] = branch;
+      // title == wire value in this spec, so schemaName doubles as the mapping key.
+      mapping[schemaName] = `#/components/schemas/${schemaName}`;
+      return { $ref: `#/components/schemas/${schemaName}` };
+    });
+
+    node.discriminator = { propertyName: discriminatorKey, mapping };
+  };
+
+  addDiscriminators(patched);
+  return patched;
 };
 //#endregion
 
@@ -257,7 +309,7 @@ const generateSdk = async (version: string, languages: string[]) => {
       "-g", langConfig.generator,
       "-o", langConfig.outputDir,
       "--skip-validate-spec",
-      "--additional-properties=packageName=payconductor_sdk,projectName=payconductor-sdk,npmName=payconductor-sdk,npmRepository=https://github.com/payconductor-ai/payconductor-sdk.git",
+      "--additional-properties=packageName=payconductor_sdk,projectName=payconductor-sdk,npmName=payconductor-sdk,npmRepository=https://github.com/payconductor-ai/payconductor-sdk.git,legacyDiscriminatorBehavior=false",
     ]);
 
     await proc.exited;

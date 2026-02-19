@@ -8,8 +8,8 @@ Name | Type | Description | Notes
 **ExternalIntegrationKey** | **string** | Provider used to process the order | 
 **Amount** | **decimal** | Total order amount | 
 **CostFee** | **decimal** | Cost fee applied to the order | 
-**Status** | **string** |  | 
-**PaymentMethod** | **string** |  | 
+**Status** | **Status** |  | 
+**PaymentMethod** | **PaymentMethod** |  | 
 **OrderItems** | [**List&lt;PostOrders200ResponseOrderItemsInner&gt;**](PostOrders200ResponseOrderItemsInner.md) |  | 
 **ExternalId** | **string** | External order ID (provided by your integration) | 
 **ExternalIntegrationId** | **string** | Order ID in the payment provider | 

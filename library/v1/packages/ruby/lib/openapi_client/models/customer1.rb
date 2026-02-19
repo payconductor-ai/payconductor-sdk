@@ -81,7 +81,7 @@ module OpenapiClient
       {
         :'address' => :'CustomerAddress',
         :'document_number' => :'String',
-        :'document_type' => :'String',
+        :'document_type' => :'DocumentType',
         :'email' => :'String',
         :'name' => :'String',
         :'phone_number' => :'String'
@@ -158,8 +158,6 @@ module OpenapiClient
     def valid?
       warn '[DEPRECATED] the `valid?` method is obsolete'
       return false if !@document_number.nil? && @document_number !~ Regexp.new(/^\d{11}$|^\d{14}$/)
-      document_type_validator = EnumAttributeValidator.new('String', ["Cpf", "Cnpj"])
-      return false unless document_type_validator.valid?(@document_type)
       return false if !@phone_number.nil? && @phone_number !~ Regexp.new(/^\+(\d{1,2}) (\d{2}) (\d{8,9})$/)
       true
     end
@@ -177,16 +175,6 @@ module OpenapiClient
       end
 
       @document_number = document_number
-    end
-
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] document_type Object to be assigned
-    def document_type=(document_type)
-      validator = EnumAttributeValidator.new('String', ["Cpf", "Cnpj"])
-      unless validator.valid?(document_type)
-        fail ArgumentError, "invalid value for \"document_type\", must be one of #{validator.allowable_values}."
-      end
-      @document_type = document_type
     end
 
     # Custom attribute writer method with validation

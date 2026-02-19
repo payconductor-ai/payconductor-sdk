@@ -38,8 +38,8 @@ post_orders_by_id_confirm_200_response_t* instantiate_post_orders_by_id_confirm_
       instantiate_post_orders_200_response_nu_pay(0),
        // false, not to have infinite recursion
       instantiate_post_orders_200_response_pic_pay(0),
-      payconductor_api_post_orders_by_id_confirm_200_response_STATUS_Generating,
-      payconductor_api_post_orders_by_id_confirm_200_response_PAYMENTMETHOD_Pix,
+      payconductor_api_post_orders_by_id_confirm_200_response__Generating,
+      payconductor_api_post_orders_by_id_confirm_200_response__Pix,
       "0",
       "0",
       "0"
@@ -54,8 +54,8 @@ post_orders_by_id_confirm_200_response_t* instantiate_post_orders_by_id_confirm_
       NULL,
       NULL,
       NULL,
-      payconductor_api_post_orders_by_id_confirm_200_response_STATUS_Generating,
-      payconductor_api_post_orders_by_id_confirm_200_response_PAYMENTMETHOD_Pix,
+      payconductor_api_post_orders_by_id_confirm_200_response__Generating,
+      payconductor_api_post_orders_by_id_confirm_200_response__Pix,
       "0",
       "0",
       "0"

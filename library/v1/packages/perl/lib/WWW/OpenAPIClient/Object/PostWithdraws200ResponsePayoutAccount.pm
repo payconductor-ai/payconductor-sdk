@@ -30,6 +30,7 @@ use Log::Any qw($log);
 use Date::Parse;
 use DateTime;
 
+use WWW::OpenAPIClient::Object::PixType;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
 
@@ -248,9 +249,9 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'pix_type' => {
-        datatype => 'string',
+        datatype => 'PixType',
         base_name => 'pixType',
-        description => 'PIX key type',
+        description => '',
         format => '',
         read_only => '',
             },
@@ -261,7 +262,7 @@ __PACKAGE__->openapi_types( {
     'owner_document' => 'string',
     'owner_name' => 'string',
     'pix_key' => 'string',
-    'pix_type' => 'string'
+    'pix_type' => 'PixType'
 } );
 
 __PACKAGE__->attribute_map( {

@@ -9,7 +9,7 @@
 | **external_integration_key** | **String** | Provider key used for the withdrawal |  |
 | **external_integration_id** | **String** | Withdrawal ID in the payment provider |  |
 | **cost_fee** | **Float** | Cost fee applied to the withdrawal |  |
-| **status** | **String** | Withdrawal status | [default to &#39;Pending&#39;] |
+| **status** | [**Status**](Status.md) |  |  |
 | **error_code** | **String** | Error code, if any |  |
 | **error_message** | **String** | Descriptive error message, if any |  |
 | **payed_at** | [**PostWithdraws200ResponsePayedAt**](PostWithdraws200ResponsePayedAt.md) |  |  |

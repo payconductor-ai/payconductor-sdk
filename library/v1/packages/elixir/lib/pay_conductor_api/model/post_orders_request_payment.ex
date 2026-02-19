@@ -19,26 +19,27 @@ defmodule PayConductorAPI.Model.PostOrdersRequestPayment do
   ]
 
   @type t :: %__MODULE__{
-    :paymentMethod => String.t,
+    :paymentMethod => PayConductorAPI.Model.PaymentMethod.t,
     :expirationInSeconds => PayConductorAPI.Model.DraftExpirationInSeconds.t | nil,
     :card => PayConductorAPI.Model.CreditCardCard.t,
     :installments => PayConductorAPI.Model.CreditCardInstallments.t,
     :softDescriptor => String.t | nil,
     :expirationInDays => PayConductorAPI.Model.BankSlipExpirationInDays.t | nil,
     :nuPay => PayConductorAPI.Model.NuPayNuPay.t,
-    :availablePaymentMethods => [PayConductorAPI.Model.DraftAvailablePaymentMethodsInner.t] | nil
+    :availablePaymentMethods => [PayConductorAPI.Model.AvailablePaymentMethods.t] | nil
   }
 
   alias PayConductorAPI.Deserializer
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:paymentMethod, :struct, PayConductorAPI.Model.PaymentMethod)
      |> Deserializer.deserialize(:expirationInSeconds, :struct, PayConductorAPI.Model.DraftExpirationInSeconds)
      |> Deserializer.deserialize(:card, :struct, PayConductorAPI.Model.CreditCardCard)
      |> Deserializer.deserialize(:installments, :struct, PayConductorAPI.Model.CreditCardInstallments)
      |> Deserializer.deserialize(:expirationInDays, :struct, PayConductorAPI.Model.BankSlipExpirationInDays)
      |> Deserializer.deserialize(:nuPay, :struct, PayConductorAPI.Model.NuPayNuPay)
-     |> Deserializer.deserialize(:availablePaymentMethods, :list, PayConductorAPI.Model.DraftAvailablePaymentMethodsInner)
+     |> Deserializer.deserialize(:availablePaymentMethods, :list, PayConductorAPI.Model.AvailablePaymentMethods)
   end
 end
 

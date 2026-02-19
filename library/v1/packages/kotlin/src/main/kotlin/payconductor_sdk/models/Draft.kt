@@ -15,8 +15,9 @@
 
 package payconductor_sdk.models
 
-import payconductor_sdk.models.DraftAvailablePaymentMethodsInner
+import payconductor_sdk.models.AvailablePaymentMethods
 import payconductor_sdk.models.DraftExpirationInSeconds
+import payconductor_sdk.models.PaymentMethod
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -33,14 +34,14 @@ import com.squareup.moshi.JsonClass
 data class Draft (
 
     @Json(name = "paymentMethod")
-    val paymentMethod: kotlin.String,
+    val paymentMethod: PaymentMethod,
 
     @Json(name = "expirationInSeconds")
     val expirationInSeconds: DraftExpirationInSeconds? = null,
 
     /* Available payment methods for this order */
     @Json(name = "availablePaymentMethods")
-    val availablePaymentMethods: kotlin.collections.List<DraftAvailablePaymentMethodsInner>? = null
+    val availablePaymentMethods: kotlin.collections.List<AvailablePaymentMethods>? = null
 
 ) {
 

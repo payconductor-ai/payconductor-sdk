@@ -178,7 +178,7 @@ OpenapiClient.configure do |config|
 end
 
 api_instance = OpenapiClient::TransfersApi.new
-post_withdraws_request = OpenapiClient::PostWithdrawsRequest.new({amount: 3.56, payout_account: OpenapiClient::PostWithdrawsRequestPayoutAccount.new({owner_document: 'owner_document_example', owner_name: 'owner_name_example', pix_key: 'pix_key_example', pix_type: 'Cnpj'})}) # PostWithdrawsRequest | 
+post_withdraws_request = OpenapiClient::PostWithdrawsRequest.new({amount: 3.56, payout_account: OpenapiClient::PostWithdrawsRequestPayoutAccount.new({owner_document: 'owner_document_example', owner_name: 'owner_name_example', pix_key: 'pix_key_example', pix_type: OpenapiClient::PixType::Cpf})}) # PostWithdrawsRequest | 
 
 begin
   # Create withdrawal

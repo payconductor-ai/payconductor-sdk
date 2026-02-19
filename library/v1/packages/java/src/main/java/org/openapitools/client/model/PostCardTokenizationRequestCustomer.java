@@ -21,9 +21,9 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import org.openapitools.client.model.Customer2;
-import org.openapitools.client.model.Customer2DocumentType;
+import org.openapitools.client.model.Customer;
 import org.openapitools.client.model.CustomerAddress;
+import org.openapitools.client.model.DocumentType;
 import org.openapitools.client.model.PostCardTokenizationRequestCustomerAnyOf;
 
 
@@ -61,7 +61,7 @@ import com.google.gson.JsonParseException;
 
 import org.openapitools.client.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(PostCardTokenizationRequestCustomer.class.getName());
 
@@ -73,7 +73,7 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
                 return null; // this class only serializes 'PostCardTokenizationRequestCustomer' and its subtypes
             }
             final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-            final TypeAdapter<Customer2> adapterCustomer2 = gson.getDelegateAdapter(this, TypeToken.get(Customer2.class));
+            final TypeAdapter<Customer> adapterCustomer = gson.getDelegateAdapter(this, TypeToken.get(Customer.class));
             final TypeAdapter<PostCardTokenizationRequestCustomerAnyOf> adapterPostCardTokenizationRequestCustomerAnyOf = gson.getDelegateAdapter(this, TypeToken.get(PostCardTokenizationRequestCustomerAnyOf.class));
 
             return (TypeAdapter<T>) new TypeAdapter<PostCardTokenizationRequestCustomer>() {
@@ -84,9 +84,9 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
                         return;
                     }
 
-                    // check if the actual instance is of the type `Customer2`
-                    if (value.getActualInstance() instanceof Customer2) {
-                        JsonElement element = adapterCustomer2.toJsonTree((Customer2)value.getActualInstance());
+                    // check if the actual instance is of the type `Customer`
+                    if (value.getActualInstance() instanceof Customer) {
+                        JsonElement element = adapterCustomer.toJsonTree((Customer)value.getActualInstance());
                         elementAdapter.write(out, element);
                         return;
                     }
@@ -96,7 +96,7 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
                         elementAdapter.write(out, element);
                         return;
                     }
-                    throw new IOException("Failed to serialize as the type doesn't match anyOf schemas: Customer2, PostCardTokenizationRequestCustomerAnyOf");
+                    throw new IOException("Failed to serialize as the type doesn't match anyOf schemas: Customer, PostCardTokenizationRequestCustomerAnyOf");
                 }
 
                 @Override
@@ -107,18 +107,18 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
                     ArrayList<String> errorMessages = new ArrayList<>();
                     TypeAdapter actualAdapter = elementAdapter;
 
-                    // deserialize Customer2
+                    // deserialize Customer
                     try {
                         // validate the JSON object to see if any exception is thrown
-                        Customer2.validateJsonElement(jsonElement);
-                        actualAdapter = adapterCustomer2;
+                        Customer.validateJsonElement(jsonElement);
+                        actualAdapter = adapterCustomer;
                         PostCardTokenizationRequestCustomer ret = new PostCardTokenizationRequestCustomer();
                         ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
                         return ret;
                     } catch (Exception e) {
                         // deserialization failed, continue
-                        errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Customer2 failed with `%s`.", e.getMessage()));
-                        log.log(Level.FINER, "Input data does not match schema 'Customer2'", e);
+                        errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Customer failed with `%s`.", e.getMessage()));
+                        log.log(Level.FINER, "Input data does not match schema 'Customer'", e);
                     }
                     // deserialize PostCardTokenizationRequestCustomerAnyOf
                     try {
@@ -153,7 +153,7 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
     }
 
     static {
-        schemas.put("Customer2", Customer2.class);
+        schemas.put("Customer", Customer.class);
         schemas.put("PostCardTokenizationRequestCustomerAnyOf", PostCardTokenizationRequestCustomerAnyOf.class);
     }
 
@@ -165,13 +165,13 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
     /**
      * Set the instance that matches the anyOf child schema, check
      * the instance parameter is valid against the anyOf child schemas:
-     * Customer2, PostCardTokenizationRequestCustomerAnyOf
+     * Customer, PostCardTokenizationRequestCustomerAnyOf
      *
      * It could be an instance of the 'anyOf' schemas.
      */
     @Override
     public void setActualInstance(Object instance) {
-        if (instance instanceof Customer2) {
+        if (instance instanceof Customer) {
             super.setActualInstance(instance);
             return;
         }
@@ -181,14 +181,14 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
             return;
         }
 
-        throw new RuntimeException("Invalid instance type. Must be Customer2, PostCardTokenizationRequestCustomerAnyOf");
+        throw new RuntimeException("Invalid instance type. Must be Customer, PostCardTokenizationRequestCustomerAnyOf");
     }
 
     /**
      * Get the actual instance, which can be the following:
-     * Customer2, PostCardTokenizationRequestCustomerAnyOf
+     * Customer, PostCardTokenizationRequestCustomerAnyOf
      *
-     * @return The actual instance (Customer2, PostCardTokenizationRequestCustomerAnyOf)
+     * @return The actual instance (Customer, PostCardTokenizationRequestCustomerAnyOf)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -197,14 +197,14 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
     }
 
     /**
-     * Get the actual instance of `Customer2`. If the actual instance is not `Customer2`,
+     * Get the actual instance of `Customer`. If the actual instance is not `Customer`,
      * the ClassCastException will be thrown.
      *
-     * @return The actual instance of `Customer2`
-     * @throws ClassCastException if the instance is not `Customer2`
+     * @return The actual instance of `Customer`
+     * @throws ClassCastException if the instance is not `Customer`
      */
-    public Customer2 getCustomer2() throws ClassCastException {
-        return (Customer2)super.getActualInstance();
+    public Customer getCustomer() throws ClassCastException {
+        return (Customer)super.getActualInstance();
     }
 
     /**
@@ -227,12 +227,12 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
         // validate anyOf schemas one by one
         ArrayList<String> errorMessages = new ArrayList<>();
-        // validate the json string with Customer2
+        // validate the json string with Customer
         try {
-            Customer2.validateJsonElement(jsonElement);
+            Customer.validateJsonElement(jsonElement);
             return;
         } catch (Exception e) {
-            errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Customer2 failed with `%s`.", e.getMessage()));
+            errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Customer failed with `%s`.", e.getMessage()));
             // continue to the next one
         }
         // validate the json string with PostCardTokenizationRequestCustomerAnyOf
@@ -243,7 +243,7 @@ public class PostCardTokenizationRequestCustomer extends AbstractOpenApiSchema {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for PostCardTokenizationRequestCustomerAnyOf failed with `%s`.", e.getMessage()));
             // continue to the next one
         }
-        throw new IOException(String.format(java.util.Locale.ROOT, "The JSON string is invalid for PostCardTokenizationRequestCustomer with anyOf schemas: Customer2, PostCardTokenizationRequestCustomerAnyOf. no class match the result, expected at least 1. Detailed failure message for anyOf schemas: %s. JSON: %s", errorMessages, jsonElement.toString()));
+        throw new IOException(String.format(java.util.Locale.ROOT, "The JSON string is invalid for PostCardTokenizationRequestCustomer with anyOf schemas: Customer, PostCardTokenizationRequestCustomerAnyOf. no class match the result, expected at least 1. Detailed failure message for anyOf schemas: %s. JSON: %s", errorMessages, jsonElement.toString()));
     }
 
     /**

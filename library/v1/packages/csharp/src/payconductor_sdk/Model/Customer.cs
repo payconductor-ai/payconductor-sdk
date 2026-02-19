@@ -40,7 +40,7 @@ namespace payconductor_sdk.Model
         /// <param name="address">address</param>
         /// <param name="phoneNumber">Customer phone number in +55 DD 9XXXXXXXX format</param>
         [JsonConstructor]
-        public Customer(string documentNumber, DocumentTypeEnum documentType, string email, string name, Option<CustomerAddress?> address = default, Option<string?> phoneNumber = default)
+        public Customer(string documentNumber, DocumentType documentType, string email, string name, Option<CustomerAddress?> address = default, Option<string?> phoneNumber = default)
         {
             DocumentNumber = documentNumber;
             DocumentType = documentType;
@@ -54,76 +54,10 @@ namespace payconductor_sdk.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Defines DocumentType
-        /// </summary>
-        public enum DocumentTypeEnum
-        {
-            /// <summary>
-            /// Enum Cpf for value: Cpf
-            /// </summary>
-            Cpf = 1,
-
-            /// <summary>
-            /// Enum Cnpj for value: Cnpj
-            /// </summary>
-            Cnpj = 2
-        }
-
-        /// <summary>
-        /// Returns a <see cref="DocumentTypeEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static DocumentTypeEnum DocumentTypeEnumFromString(string value)
-        {
-            if (value.Equals("Cpf"))
-                return DocumentTypeEnum.Cpf;
-
-            if (value.Equals("Cnpj"))
-                return DocumentTypeEnum.Cnpj;
-
-            throw new NotImplementedException($"Could not convert value to type DocumentTypeEnum: '{value}'");
-        }
-
-        /// <summary>
-        /// Returns a <see cref="DocumentTypeEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static DocumentTypeEnum? DocumentTypeEnumFromStringOrDefault(string value)
-        {
-            if (value.Equals("Cpf"))
-                return DocumentTypeEnum.Cpf;
-
-            if (value.Equals("Cnpj"))
-                return DocumentTypeEnum.Cnpj;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="DocumentTypeEnum"/> to the json value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static string DocumentTypeEnumToJsonValue(DocumentTypeEnum value)
-        {
-            if (value == DocumentTypeEnum.Cpf)
-                return "Cpf";
-
-            if (value == DocumentTypeEnum.Cnpj)
-                return "Cnpj";
-
-            throw new NotImplementedException($"Value could not be handled: '{value}'");
-        }
-
-        /// <summary>
         /// Gets or Sets DocumentType
         /// </summary>
         [JsonPropertyName("documentType")]
-        public DocumentTypeEnum DocumentType { get; set; }
+        public DocumentType DocumentType { get; set; }
 
         /// <summary>
         /// Customer CPF or CNPJ without formatting
@@ -245,7 +179,7 @@ namespace payconductor_sdk.Model
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
             Option<string?> documentNumber = default;
-            Option<Customer.DocumentTypeEnum?> documentType = default;
+            Option<DocumentType?> documentType = default;
             Option<string?> email = default;
             Option<string?> name = default;
             Option<CustomerAddress?> address = default;
@@ -272,7 +206,7 @@ namespace payconductor_sdk.Model
                         case "documentType":
                             string? documentTypeRawValue = utf8JsonReader.GetString();
                             if (documentTypeRawValue != null)
-                                documentType = new Option<Customer.DocumentTypeEnum?>(Customer.DocumentTypeEnumFromStringOrDefault(documentTypeRawValue));
+                                documentType = new Option<DocumentType?>(DocumentTypeValueConverter.FromStringOrDefault(documentTypeRawValue));
                             break;
                         case "email":
                             email = new Option<string?>(utf8JsonReader.GetString()!);
@@ -366,8 +300,9 @@ namespace payconductor_sdk.Model
 
             writer.WriteString("documentNumber", customer.DocumentNumber);
 
-            var documentTypeRawValue = Customer.DocumentTypeEnumToJsonValue(customer.DocumentType);
+            var documentTypeRawValue = DocumentTypeValueConverter.ToJsonValue(customer.DocumentType);
             writer.WriteString("documentType", documentTypeRawValue);
+
             writer.WriteString("email", customer.Email);
 
             writer.WriteString("name", customer.Name);

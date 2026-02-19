@@ -40,8 +40,8 @@ defmodule PayConductorAPI.Model.PostOrders200Response do
     :nuPay => PayConductorAPI.Model.PostOrders200ResponseNuPay.t | nil,
     :picPay => PayConductorAPI.Model.PostOrders200ResponsePicPay.t | nil,
     :creditCard => PayConductorAPI.Model.PostOrders200ResponseCreditCard.t | nil,
-    :status => String.t,
-    :paymentMethod => String.t,
+    :status => PayConductorAPI.Model.Status.t,
+    :paymentMethod => PayConductorAPI.Model.PaymentMethod.t,
     :payedAt => String.t | nil,
     :errorCode => String.t | nil,
     :errorMessage => String.t | nil,
@@ -58,6 +58,8 @@ defmodule PayConductorAPI.Model.PostOrders200Response do
      |> Deserializer.deserialize(:nuPay, :struct, PayConductorAPI.Model.PostOrders200ResponseNuPay)
      |> Deserializer.deserialize(:picPay, :struct, PayConductorAPI.Model.PostOrders200ResponsePicPay)
      |> Deserializer.deserialize(:creditCard, :struct, PayConductorAPI.Model.PostOrders200ResponseCreditCard)
+     |> Deserializer.deserialize(:status, :struct, PayConductorAPI.Model.Status)
+     |> Deserializer.deserialize(:paymentMethod, :struct, PayConductorAPI.Model.PaymentMethod)
      |> Deserializer.deserialize(:orderItems, :list, PayConductorAPI.Model.PostOrders200ResponseOrderItemsInner)
      |> Deserializer.deserialize(:session, :struct, PayConductorAPI.Model.PostOrders200ResponseSession)
   end

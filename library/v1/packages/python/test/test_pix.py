@@ -35,12 +35,12 @@ class TestPix(unittest.TestCase):
         model = Pix()
         if include_optional:
             return Pix(
-                payment_method = '',
+                payment_method = 'Pix',
                 expiration_in_seconds = None
             )
         else:
             return Pix(
-                payment_method = '',
+                payment_method = 'Pix',
         )
         """
 

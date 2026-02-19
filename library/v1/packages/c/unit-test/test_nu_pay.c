@@ -23,13 +23,13 @@ nu_pay_t* instantiate_nu_pay(int include_optional) {
   nu_pay_t* nu_pay = NULL;
   if (include_optional) {
     nu_pay = nu_pay_create(
-      "0",
+      payconductor_api_nu_pay__Pix,
        // false, not to have infinite recursion
       instantiate_nu_pay_nu_pay(0)
     );
   } else {
     nu_pay = nu_pay_create(
-      "0",
+      payconductor_api_nu_pay__Pix,
       NULL
     );
   }

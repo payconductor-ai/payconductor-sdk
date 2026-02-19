@@ -10,7 +10,7 @@
 #' @field ownerDocument Account holder document (CPF or CNPJ) character
 #' @field ownerName Account holder name character
 #' @field pixKey PIX key for withdrawal character
-#' @field pixType PIX key type character
+#' @field pixType  \link{PixType}
 #' @importFrom R6 R6Class
 #' @importFrom jsonlite fromJSON toJSON
 #' @export
@@ -28,7 +28,7 @@ PostWithdrawsRequestPayoutAccount <- R6::R6Class(
     #' @param ownerDocument Account holder document (CPF or CNPJ)
     #' @param ownerName Account holder name
     #' @param pixKey PIX key for withdrawal
-    #' @param pixType PIX key type
+    #' @param pixType pixType
     #' @param ... Other optional arguments.
     initialize = function(`ownerDocument`, `ownerName`, `pixKey`, `pixType`, ...) {
       if (!missing(`ownerDocument`)) {
@@ -50,12 +50,10 @@ PostWithdrawsRequestPayoutAccount <- R6::R6Class(
         self$`pixKey` <- `pixKey`
       }
       if (!missing(`pixType`)) {
-        if (!(`pixType` %in% c("Cnpj", "Cpf", "Email", "Phone", "Random"))) {
-          stop(paste("Error! \"", `pixType`, "\" cannot be assigned to `pixType`. Must be \"Cnpj\", \"Cpf\", \"Email\", \"Phone\", \"Random\".", sep = ""))
+        if (!(`pixType` %in% c())) {
+          stop(paste("Error! \"", `pixType`, "\" cannot be assigned to `pixType`. Must be .", sep = ""))
         }
-        if (!(is.character(`pixType`) && length(`pixType`) == 1)) {
-          stop(paste("Error! Invalid data for `pixType`. Must be a string:", `pixType`))
-        }
+        stopifnot(R6::is.R6(`pixType`))
         self$`pixType` <- `pixType`
       }
     },
@@ -105,9 +103,32 @@ PostWithdrawsRequestPayoutAccount <- R6::R6Class(
       }
       if (!is.null(self$`pixType`)) {
         PostWithdrawsRequestPayoutAccountObject[["pixType"]] <-
-          self$`pixType`
+          self$extractSimpleType(self$`pixType`)
       }
       return(PostWithdrawsRequestPayoutAccountObject)
+    },
+
+    extractSimpleType = function(x) {
+      if (R6::is.R6(x)) {
+        return(x$toSimpleType())
+      } else if (!self$hasNestedR6(x)) {
+        return(x)
+      }
+      lapply(x, self$extractSimpleType)
+    },
+
+    hasNestedR6 = function(x) {
+      if (R6::is.R6(x)) {
+        return(TRUE)
+      }
+      if (is.list(x)) {
+        for (item in x) {
+          if (self$hasNestedR6(item)) {
+            return(TRUE)
+          }
+        }
+      }
+      FALSE
     },
 
     #' @description
@@ -127,10 +148,9 @@ PostWithdrawsRequestPayoutAccount <- R6::R6Class(
         self$`pixKey` <- this_object$`pixKey`
       }
       if (!is.null(this_object$`pixType`)) {
-        if (!is.null(this_object$`pixType`) && !(this_object$`pixType` %in% c("Cnpj", "Cpf", "Email", "Phone", "Random"))) {
-          stop(paste("Error! \"", this_object$`pixType`, "\" cannot be assigned to `pixType`. Must be \"Cnpj\", \"Cpf\", \"Email\", \"Phone\", \"Random\".", sep = ""))
-        }
-        self$`pixType` <- this_object$`pixType`
+        `pixtype_object` <- PixType$new()
+        `pixtype_object`$fromJSON(jsonlite::toJSON(this_object$`pixType`, auto_unbox = TRUE, digits = NA))
+        self$`pixType` <- `pixtype_object`
       }
       self
     },
@@ -156,10 +176,7 @@ PostWithdrawsRequestPayoutAccount <- R6::R6Class(
       self$`ownerDocument` <- this_object$`ownerDocument`
       self$`ownerName` <- this_object$`ownerName`
       self$`pixKey` <- this_object$`pixKey`
-      if (!is.null(this_object$`pixType`) && !(this_object$`pixType` %in% c("Cnpj", "Cpf", "Email", "Phone", "Random"))) {
-        stop(paste("Error! \"", this_object$`pixType`, "\" cannot be assigned to `pixType`. Must be \"Cnpj\", \"Cpf\", \"Email\", \"Phone\", \"Random\".", sep = ""))
-      }
-      self$`pixType` <- this_object$`pixType`
+      self$`pixType` <- PixType$new()$fromJSON(jsonlite::toJSON(this_object$`pixType`, auto_unbox = TRUE, digits = NA))
       self
     },
 
@@ -195,9 +212,7 @@ PostWithdrawsRequestPayoutAccount <- R6::R6Class(
       }
       # check the required field `pixType`
       if (!is.null(input_json$`pixType`)) {
-        if (!(is.character(input_json$`pixType`) && length(input_json$`pixType`) == 1)) {
-          stop(paste("Error! Invalid data for `pixType`. Must be a string:", input_json$`pixType`))
-        }
+        stopifnot(R6::is.R6(input_json$`pixType`))
       } else {
         stop(paste("The JSON input `", input, "` is invalid for PostWithdrawsRequestPayoutAccount: the required field `pixType` is missing."))
       }

@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:openapi/src/model/payment_method.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -15,7 +16,8 @@ part 'pic_pay.g.dart';
 @BuiltValue()
 abstract class PicPay implements Built<PicPay, PicPayBuilder> {
   @BuiltValueField(wireName: r'paymentMethod')
-  String get paymentMethod;
+  PaymentMethod get paymentMethod;
+  // enum paymentMethodEnum {  Pix,  CreditCard,  DebitCard,  BankSlip,  Crypto,  ApplePay,  NuPay,  PicPay,  AmazonPay,  SepaDebit,  GooglePay,  Draft,  };
 
   PicPay._();
 
@@ -43,7 +45,7 @@ class _$PicPaySerializer implements PrimitiveSerializer<PicPay> {
     yield r'paymentMethod';
     yield serializers.serialize(
       object.paymentMethod,
-      specifiedType: const FullType(String),
+      specifiedType: const FullType(PaymentMethod),
     );
   }
 
@@ -71,8 +73,8 @@ class _$PicPaySerializer implements PrimitiveSerializer<PicPay> {
         case r'paymentMethod':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType(PaymentMethod),
+          ) as PaymentMethod;
           result.paymentMethod = valueDes;
           break;
         default:

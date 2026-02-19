@@ -17,6 +17,7 @@ package payconductor_sdk.models
 
 import payconductor_sdk.models.PostWithdraws200ResponsePayedAt
 import payconductor_sdk.models.PostWithdraws200ResponsePayoutAccount
+import payconductor_sdk.models.Status
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -29,7 +30,7 @@ import com.squareup.moshi.JsonClass
  * @param externalIntegrationKey Provider key used for the withdrawal
  * @param externalIntegrationId Withdrawal ID in the payment provider
  * @param costFee Cost fee applied to the withdrawal
- * @param status Withdrawal status
+ * @param status 
  * @param errorCode Error code, if any
  * @param errorMessage Descriptive error message, if any
  * @param payedAt 
@@ -59,9 +60,8 @@ data class PostWithdraws200Response (
     @Json(name = "costFee")
     val costFee: java.math.BigDecimal,
 
-    /* Withdrawal status */
     @Json(name = "status")
-    val status: PostWithdraws200Response.Status = Status.Pending,
+    val status: Status,
 
     /* Error code, if any */
     @Json(name = "errorCode")
@@ -79,18 +79,6 @@ data class PostWithdraws200Response (
 
 ) {
 
-    /**
-     * Withdrawal status
-     *
-     * Values: Pending,Transferring,Completed,Failed
-     */
-    @JsonClass(generateAdapter = false)
-    enum class Status(val value: kotlin.String) {
-        @Json(name = "Pending") Pending("Pending"),
-        @Json(name = "Transferring") Transferring("Transferring"),
-        @Json(name = "Completed") Completed("Completed"),
-        @Json(name = "Failed") Failed("Failed");
-    }
 
 }
 

@@ -23,12 +23,12 @@ pix_t* instantiate_pix(int include_optional) {
   pix_t* pix = NULL;
   if (include_optional) {
     pix = pix_create(
-      "0",
+      payconductor_api_pix__Pix,
       null
     );
   } else {
     pix = pix_create(
-      "0",
+      payconductor_api_pix__Pix,
       null
     );
   }

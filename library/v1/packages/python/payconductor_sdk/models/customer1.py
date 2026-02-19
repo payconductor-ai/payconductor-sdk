@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from payconductor_sdk.models.customer_address import CustomerAddress
+from payconductor_sdk.models.document_type import DocumentType
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,7 +31,7 @@ class Customer1(BaseModel):
     """ # noqa: E501
     address: Optional[CustomerAddress] = None
     document_number: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Customer CPF or CNPJ without formatting", alias="documentNumber")
-    document_type: Optional[StrictStr] = Field(default=None, alias="documentType")
+    document_type: Optional[DocumentType] = Field(default=None, alias="documentType")
     email: Optional[StrictStr] = Field(default=None, description="Customer email")
     name: Optional[StrictStr] = Field(default=None, description="Customer full name")
     phone_number: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Customer phone number in +55 DD 9XXXXXXXX format", alias="phoneNumber")
@@ -44,16 +45,6 @@ class Customer1(BaseModel):
 
         if not re.match(r"^\d{11}$|^\d{14}$", value):
             raise ValueError(r"must validate the regular expression /^\d{11}$|^\d{14}$/")
-        return value
-
-    @field_validator('document_type')
-    def document_type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['Cpf', 'Cnpj']):
-            raise ValueError("must be one of enum values ('Cpf', 'Cnpj')")
         return value
 
     @field_validator('phone_number')

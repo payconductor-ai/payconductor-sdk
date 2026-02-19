@@ -19,6 +19,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.PostWithdrawsRequestPayoutAccount
+import payconductor_sdk.models.PixType
 
 class PostWithdrawsRequestPayoutAccountTest : ShouldSpec() {
     init {
@@ -43,7 +44,7 @@ class PostWithdrawsRequestPayoutAccountTest : ShouldSpec() {
             //modelInstance.pixKey shouldBe ("TODO")
         }
 
-        // to test the property `pixType` - PIX key type
+        // to test the property `pixType`
         should("test pixType") {
             // uncomment below to test the property
             //modelInstance.pixType shouldBe ("TODO")

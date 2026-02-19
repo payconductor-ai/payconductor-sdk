@@ -110,8 +110,8 @@ module OpenapiClient
         :'bank_slip' => :'PostOrders200ResponseBankSlip',
         :'nu_pay' => :'PostOrders200ResponseNuPay',
         :'pic_pay' => :'PostOrders200ResponsePicPay',
-        :'status' => :'String',
-        :'payment_method' => :'String',
+        :'status' => :'Status',
+        :'payment_method' => :'PaymentMethod',
         :'payed_at' => :'String',
         :'error_code' => :'String',
         :'error_message' => :'String'
@@ -251,11 +251,7 @@ module OpenapiClient
       return false if @amount.nil?
       return false if @cost_fee.nil?
       return false if @status.nil?
-      status_validator = EnumAttributeValidator.new('String', ["Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback"])
-      return false unless status_validator.valid?(@status)
       return false if @payment_method.nil?
-      payment_method_validator = EnumAttributeValidator.new('String', ["Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft"])
-      return false unless payment_method_validator.valid?(@payment_method)
       true
     end
 
@@ -289,23 +285,23 @@ module OpenapiClient
       @cost_fee = cost_fee
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] status Object to be assigned
+    # Custom attribute writer method with validation
+    # @param [Object] status Value to be assigned
     def status=(status)
-      validator = EnumAttributeValidator.new('String', ["Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback"])
-      unless validator.valid?(status)
-        fail ArgumentError, "invalid value for \"status\", must be one of #{validator.allowable_values}."
+      if status.nil?
+        fail ArgumentError, 'status cannot be nil'
       end
+
       @status = status
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] payment_method Object to be assigned
+    # Custom attribute writer method with validation
+    # @param [Object] payment_method Value to be assigned
     def payment_method=(payment_method)
-      validator = EnumAttributeValidator.new('String', ["Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft"])
-      unless validator.valid?(payment_method)
-        fail ArgumentError, "invalid value for \"payment_method\", must be one of #{validator.allowable_values}."
+      if payment_method.nil?
+        fail ArgumentError, 'payment_method cannot be nil'
       end
+
       @payment_method = payment_method
     end
 

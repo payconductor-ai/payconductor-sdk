@@ -4,23 +4,6 @@
 #include "post_withdraws_200_response.h"
 
 
-char* post_withdraws_200_response_status_ToString(payconductor_api_post_withdraws_200_response_STATUS_e status) {
-    char* statusArray[] =  { "NULL", "Pending", "Transferring", "Completed", "Failed" };
-    return statusArray[status];
-}
-
-payconductor_api_post_withdraws_200_response_STATUS_e post_withdraws_200_response_status_FromString(char* status){
-    int stringToReturn = 0;
-    char *statusArray[] =  { "NULL", "Pending", "Transferring", "Completed", "Failed" };
-    size_t sizeofArray = sizeof(statusArray) / sizeof(statusArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(status, statusArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 static post_withdraws_200_response_t *post_withdraws_200_response_create_internal(
     char *id,
@@ -28,7 +11,7 @@ static post_withdraws_200_response_t *post_withdraws_200_response_create_interna
     char *external_integration_key,
     char *external_integration_id,
     double cost_fee,
-    payconductor_api_post_withdraws_200_response_STATUS_e status,
+    payconductor_api_status__e status,
     char *error_code,
     char *error_message,
     post_withdraws_200_response_payed_at_t *payed_at,
@@ -59,7 +42,7 @@ __attribute__((deprecated)) post_withdraws_200_response_t *post_withdraws_200_re
     char *external_integration_key,
     char *external_integration_id,
     double cost_fee,
-    payconductor_api_post_withdraws_200_response_STATUS_e status,
+    payconductor_api_status__e status,
     char *error_code,
     char *error_message,
     post_withdraws_200_response_payed_at_t *payed_at,
@@ -172,12 +155,16 @@ cJSON *post_withdraws_200_response_convertToJSON(post_withdraws_200_response_t *
 
 
     // post_withdraws_200_response->status
-    if (payconductor_api_post_withdraws_200_response_STATUS_NULL == post_withdraws_200_response->status) {
+    if (payconductor_api_status__NULL == post_withdraws_200_response->status) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "status", post_withdraws_200_response_status_ToString(post_withdraws_200_response->status)) == NULL)
-    {
-    goto fail; //Enum
+    cJSON *status_local_JSON = status_convertToJSON(post_withdraws_200_response->status);
+    if(status_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "status", status_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -237,6 +224,9 @@ fail:
 post_withdraws_200_response_t *post_withdraws_200_response_parseFromJSON(cJSON *post_withdraws_200_responseJSON){
 
     post_withdraws_200_response_t *post_withdraws_200_response_local_var = NULL;
+
+    // define the local variable for post_withdraws_200_response->status
+    payconductor_api_status__e status_local_nonprim = 0;
 
     // define the local variable for post_withdraws_200_response->payed_at
     post_withdraws_200_response_payed_at_t *payed_at_local_nonprim = NULL;
@@ -328,13 +318,8 @@ post_withdraws_200_response_t *post_withdraws_200_response_parseFromJSON(cJSON *
         goto end;
     }
 
-    payconductor_api_post_withdraws_200_response_STATUS_e statusVariable;
     
-    if(!cJSON_IsString(status))
-    {
-    goto end; //Enum
-    }
-    statusVariable = post_withdraws_200_response_status_FromString(status->valuestring);
+    status_local_nonprim = status_parseFromJSON(status); //custom
 
     // post_withdraws_200_response->error_code
     cJSON *error_code = cJSON_GetObjectItemCaseSensitive(post_withdraws_200_responseJSON, "errorCode");
@@ -397,7 +382,7 @@ post_withdraws_200_response_t *post_withdraws_200_response_parseFromJSON(cJSON *
         strdup(external_integration_key->valuestring),
         strdup(external_integration_id->valuestring),
         cost_fee->valuedouble,
-        statusVariable,
+        status_local_nonprim,
         strdup(error_code->valuestring),
         strdup(error_message->valuestring),
         payed_at_local_nonprim,
@@ -406,6 +391,9 @@ post_withdraws_200_response_t *post_withdraws_200_response_parseFromJSON(cJSON *
 
     return post_withdraws_200_response_local_var;
 end:
+    if (status_local_nonprim) {
+        status_local_nonprim = 0;
+    }
     if (payed_at_local_nonprim) {
         post_withdraws_200_response_payed_at_free(payed_at_local_nonprim);
         payed_at_local_nonprim = NULL;

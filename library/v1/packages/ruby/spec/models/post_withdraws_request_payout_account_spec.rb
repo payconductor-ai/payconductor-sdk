@@ -48,10 +48,6 @@ describe OpenapiClient::PostWithdrawsRequestPayoutAccount do
   describe 'test attribute "pix_type"' do
     it 'should work' do
       # assertion here. ref: https://rspec.info/features/3-12/rspec-expectations/built-in-matchers/
-      # validator = Petstore::EnumTest::EnumAttributeValidator.new('String', ["Cnpj", "Cpf", "Email", "Phone", "Random"])
-      # validator.allowable_values.each do |value|
-      #   expect { instance.pix_type = value }.not_to raise_error
-      # end
     end
   end
 

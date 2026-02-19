@@ -26,7 +26,7 @@ defmodule PayConductorAPI.Model.PostWithdraws200Response do
     :externalIntegrationKey => String.t,
     :externalIntegrationId => String.t | nil,
     :costFee => number(),
-    :status => String.t,
+    :status => PayConductorAPI.Model.Status.t,
     :errorCode => String.t | nil,
     :errorMessage => String.t | nil,
     :payedAt => PayConductorAPI.Model.PostWithdraws200ResponsePayedAt.t | nil,
@@ -37,6 +37,7 @@ defmodule PayConductorAPI.Model.PostWithdraws200Response do
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:status, :struct, PayConductorAPI.Model.Status)
      |> Deserializer.deserialize(:payedAt, :struct, PayConductorAPI.Model.PostWithdraws200ResponsePayedAt)
      |> Deserializer.deserialize(:payoutAccount, :struct, PayConductorAPI.Model.PostWithdraws200ResponsePayoutAccount)
   end

@@ -16,6 +16,7 @@
 package payconductor_sdk.models
 
 import payconductor_sdk.models.BankSlipExpirationInDays
+import payconductor_sdk.models.PaymentMethod
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -31,7 +32,7 @@ import com.squareup.moshi.JsonClass
 data class BankSlip (
 
     @Json(name = "paymentMethod")
-    val paymentMethod: kotlin.String,
+    val paymentMethod: PaymentMethod,
 
     @Json(name = "expirationInDays")
     val expirationInDays: BankSlipExpirationInDays? = null

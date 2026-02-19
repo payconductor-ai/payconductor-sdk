@@ -4,6 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:openapi/src/model/nu_pay_nu_pay.dart';
+import 'package:openapi/src/model/payment_method.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -17,7 +18,8 @@ part 'nu_pay.g.dart';
 @BuiltValue()
 abstract class NuPay implements Built<NuPay, NuPayBuilder> {
   @BuiltValueField(wireName: r'paymentMethod')
-  String get paymentMethod;
+  PaymentMethod get paymentMethod;
+  // enum paymentMethodEnum {  Pix,  CreditCard,  DebitCard,  BankSlip,  Crypto,  ApplePay,  NuPay,  PicPay,  AmazonPay,  SepaDebit,  GooglePay,  Draft,  };
 
   @BuiltValueField(wireName: r'nuPay')
   NuPayNuPay get nuPay;
@@ -48,7 +50,7 @@ class _$NuPaySerializer implements PrimitiveSerializer<NuPay> {
     yield r'paymentMethod';
     yield serializers.serialize(
       object.paymentMethod,
-      specifiedType: const FullType(String),
+      specifiedType: const FullType(PaymentMethod),
     );
     yield r'nuPay';
     yield serializers.serialize(
@@ -81,8 +83,8 @@ class _$NuPaySerializer implements PrimitiveSerializer<NuPay> {
         case r'paymentMethod':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType(PaymentMethod),
+          ) as PaymentMethod;
           result.paymentMethod = valueDes;
           break;
         case r'nuPay':

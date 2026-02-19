@@ -4,40 +4,6 @@
 #include "post_orders_200_response.h"
 
 
-char* post_orders_200_response_status_ToString(payconductor_api_post_orders_200_response_STATUS_e status) {
-    char* statusArray[] =  { "NULL", "Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback" };
-    return statusArray[status];
-}
-
-payconductor_api_post_orders_200_response_STATUS_e post_orders_200_response_status_FromString(char* status){
-    int stringToReturn = 0;
-    char *statusArray[] =  { "NULL", "Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback" };
-    size_t sizeofArray = sizeof(statusArray) / sizeof(statusArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(status, statusArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
-char* post_orders_200_response_payment_method_ToString(payconductor_api_post_orders_200_response_PAYMENTMETHOD_e payment_method) {
-    char* payment_methodArray[] =  { "NULL", "Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft" };
-    return payment_methodArray[payment_method];
-}
-
-payconductor_api_post_orders_200_response_PAYMENTMETHOD_e post_orders_200_response_payment_method_FromString(char* payment_method){
-    int stringToReturn = 0;
-    char *payment_methodArray[] =  { "NULL", "Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft" };
-    size_t sizeofArray = sizeof(payment_methodArray) / sizeof(payment_methodArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(payment_method, payment_methodArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 static post_orders_200_response_t *post_orders_200_response_create_internal(
     char *id,
@@ -51,8 +17,8 @@ static post_orders_200_response_t *post_orders_200_response_create_internal(
     post_orders_200_response_nu_pay_t *nu_pay,
     post_orders_200_response_pic_pay_t *pic_pay,
     post_orders_200_response_credit_card_t *credit_card,
-    payconductor_api_post_orders_200_response_STATUS_e status,
-    payconductor_api_post_orders_200_response_PAYMENTMETHOD_e payment_method,
+    payconductor_api_status__e status,
+    payconductor_api_payment_method__e payment_method,
     char *payed_at,
     char *error_code,
     char *error_message,
@@ -98,8 +64,8 @@ __attribute__((deprecated)) post_orders_200_response_t *post_orders_200_response
     post_orders_200_response_nu_pay_t *nu_pay,
     post_orders_200_response_pic_pay_t *pic_pay,
     post_orders_200_response_credit_card_t *credit_card,
-    payconductor_api_post_orders_200_response_STATUS_e status,
-    payconductor_api_post_orders_200_response_PAYMENTMETHOD_e payment_method,
+    payconductor_api_status__e status,
+    payconductor_api_payment_method__e payment_method,
     char *payed_at,
     char *error_code,
     char *error_message,
@@ -322,22 +288,30 @@ cJSON *post_orders_200_response_convertToJSON(post_orders_200_response_t *post_o
 
 
     // post_orders_200_response->status
-    if (payconductor_api_post_orders_200_response_STATUS_NULL == post_orders_200_response->status) {
+    if (payconductor_api_status__NULL == post_orders_200_response->status) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "status", post_orders_200_response_status_ToString(post_orders_200_response->status)) == NULL)
-    {
-    goto fail; //Enum
+    cJSON *status_local_JSON = status_convertToJSON(post_orders_200_response->status);
+    if(status_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "status", status_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
     // post_orders_200_response->payment_method
-    if (payconductor_api_post_orders_200_response_PAYMENTMETHOD_NULL == post_orders_200_response->payment_method) {
+    if (payconductor_api_payment_method__NULL == post_orders_200_response->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", post_orders_200_response_payment_method_ToString(post_orders_200_response->payment_method)) == NULL)
-    {
-    goto fail; //Enum
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(post_orders_200_response->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -427,6 +401,12 @@ post_orders_200_response_t *post_orders_200_response_parseFromJSON(cJSON *post_o
 
     // define the local variable for post_orders_200_response->credit_card
     post_orders_200_response_credit_card_t *credit_card_local_nonprim = NULL;
+
+    // define the local variable for post_orders_200_response->status
+    payconductor_api_status__e status_local_nonprim = 0;
+
+    // define the local variable for post_orders_200_response->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
 
     // define the local list for post_orders_200_response->order_items
     list_t *order_itemsList = NULL;
@@ -578,13 +558,8 @@ post_orders_200_response_t *post_orders_200_response_parseFromJSON(cJSON *post_o
         goto end;
     }
 
-    payconductor_api_post_orders_200_response_STATUS_e statusVariable;
     
-    if(!cJSON_IsString(status))
-    {
-    goto end; //Enum
-    }
-    statusVariable = post_orders_200_response_status_FromString(status->valuestring);
+    status_local_nonprim = status_parseFromJSON(status); //custom
 
     // post_orders_200_response->payment_method
     cJSON *payment_method = cJSON_GetObjectItemCaseSensitive(post_orders_200_responseJSON, "paymentMethod");
@@ -595,13 +570,8 @@ post_orders_200_response_t *post_orders_200_response_parseFromJSON(cJSON *post_o
         goto end;
     }
 
-    payconductor_api_post_orders_200_response_PAYMENTMETHOD_e payment_methodVariable;
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //Enum
-    }
-    payment_methodVariable = post_orders_200_response_payment_method_FromString(payment_method->valuestring);
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
     // post_orders_200_response->payed_at
     cJSON *payed_at = cJSON_GetObjectItemCaseSensitive(post_orders_200_responseJSON, "payedAt");
@@ -697,8 +667,8 @@ post_orders_200_response_t *post_orders_200_response_parseFromJSON(cJSON *post_o
         nu_pay ? nu_pay_local_nonprim : NULL,
         pic_pay ? pic_pay_local_nonprim : NULL,
         credit_card ? credit_card_local_nonprim : NULL,
-        statusVariable,
-        payment_methodVariable,
+        status_local_nonprim,
+        payment_method_local_nonprim,
         strdup(payed_at->valuestring),
         strdup(error_code->valuestring),
         strdup(error_message->valuestring),
@@ -727,6 +697,12 @@ end:
     if (credit_card_local_nonprim) {
         post_orders_200_response_credit_card_free(credit_card_local_nonprim);
         credit_card_local_nonprim = NULL;
+    }
+    if (status_local_nonprim) {
+        status_local_nonprim = 0;
+    }
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
     }
     if (order_itemsList) {
         listEntry_t *listEntry = NULL;

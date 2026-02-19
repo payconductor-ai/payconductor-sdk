@@ -4,6 +4,6 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | **character** |  | 
+**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [Enum: ] 
 
 

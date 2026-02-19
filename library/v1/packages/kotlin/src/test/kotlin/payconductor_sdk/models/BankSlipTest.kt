@@ -20,6 +20,7 @@ import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.BankSlip
 import payconductor_sdk.models.BankSlipExpirationInDays
+import payconductor_sdk.models.PaymentMethod
 
 class BankSlipTest : ShouldSpec() {
     init {

@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **bank_slip** | Option<[**models::PostOrders200ResponseBankSlip**](PostOrders200ResponseBankSlip.md)> |  | [optional]
 **nu_pay** | Option<[**models::PostOrders200ResponseNuPay**](PostOrders200ResponseNuPay.md)> |  | [optional]
 **pic_pay** | Option<[**models::PostOrders200ResponsePicPay**](PostOrders200ResponsePicPay.md)> |  | [optional]
-**status** | **Status** |  (enum: Generating, Pending, Completed, Failed, Canceled, Refunding, Refunded, InDispute, Chargeback) | 
-**payment_method** | **PaymentMethod** |  (enum: Pix, CreditCard, DebitCard, BankSlip, Crypto, ApplePay, NuPay, PicPay, AmazonPay, SepaDebit, GooglePay, Draft) | 
+**status** | [**models::Status**](Status.md) |  | 
+**payment_method** | [**models::PaymentMethod**](PaymentMethod.md) |  | 
 **payed_at** | Option<**String**> | Date and time when the order was paid (ISO 8601) | 
 **error_code** | Option<**String**> | Error code, if any | 
 **error_message** | Option<**String**> | Error message, if any | 

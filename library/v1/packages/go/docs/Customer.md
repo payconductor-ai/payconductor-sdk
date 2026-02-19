@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Address** | Pointer to [**CustomerAddress**](CustomerAddress.md) |  | [optional] 
 **DocumentNumber** | **string** | Customer CPF or CNPJ without formatting | 
-**DocumentType** | **string** |  | 
+**DocumentType** | [**DocumentType**](DocumentType.md) |  | 
 **Email** | **string** | Customer email | 
 **Name** | **string** | Customer full name | 
 **PhoneNumber** | Pointer to **string** | Customer phone number in +55 DD 9XXXXXXXX format | [optional] 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewCustomer
 
-`func NewCustomer(documentNumber string, documentType string, email string, name string, ) *Customer`
+`func NewCustomer(documentNumber string, documentType DocumentType, email string, name string, ) *Customer`
 
 NewCustomer instantiates a new Customer object
 This constructor will assign default values to properties that have it defined,
@@ -77,20 +77,20 @@ SetDocumentNumber sets DocumentNumber field to given value.
 
 ### GetDocumentType
 
-`func (o *Customer) GetDocumentType() string`
+`func (o *Customer) GetDocumentType() DocumentType`
 
 GetDocumentType returns the DocumentType field if non-nil, zero value otherwise.
 
 ### GetDocumentTypeOk
 
-`func (o *Customer) GetDocumentTypeOk() (*string, bool)`
+`func (o *Customer) GetDocumentTypeOk() (*DocumentType, bool)`
 
 GetDocumentTypeOk returns a tuple with the DocumentType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDocumentType
 
-`func (o *Customer) SetDocumentType(v string)`
+`func (o *Customer) SetDocumentType(v DocumentType)`
 
 SetDocumentType sets DocumentType field to given value.
 

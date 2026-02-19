@@ -30,8 +30,9 @@ use Log::Any qw($log);
 use Date::Parse;
 use DateTime;
 
-use WWW::OpenAPIClient::Object::DraftAvailablePaymentMethodsInner;
+use WWW::OpenAPIClient::Object::AvailablePaymentMethods;
 use WWW::OpenAPIClient::Object::DraftExpirationInSeconds;
+use WWW::OpenAPIClient::Object::PaymentMethod;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
 
@@ -222,7 +223,7 @@ __PACKAGE__->class_documentation({description => 'Used to create an order withou
 
 __PACKAGE__->method_documentation({
     'payment_method' => {
-        datatype => 'string',
+        datatype => 'PaymentMethod',
         base_name => 'paymentMethod',
         description => '',
         format => '',
@@ -236,7 +237,7 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'available_payment_methods' => {
-        datatype => 'ARRAY[DraftAvailablePaymentMethodsInner]',
+        datatype => 'ARRAY[AvailablePaymentMethods]',
         base_name => 'availablePaymentMethods',
         description => 'Available payment methods for this order',
         format => '',
@@ -245,9 +246,9 @@ __PACKAGE__->method_documentation({
 });
 
 __PACKAGE__->openapi_types( {
-    'payment_method' => 'string',
+    'payment_method' => 'PaymentMethod',
     'expiration_in_seconds' => 'DraftExpirationInSeconds',
-    'available_payment_methods' => 'ARRAY[DraftAvailablePaymentMethodsInner]'
+    'available_payment_methods' => 'ARRAY[AvailablePaymentMethods]'
 } );
 
 __PACKAGE__->attribute_map( {

@@ -30,6 +30,7 @@ use Log::Any qw($log);
 use Date::Parse;
 use DateTime;
 
+use WWW::OpenAPIClient::Object::PaymentMethod;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
 
@@ -220,7 +221,7 @@ __PACKAGE__->class_documentation({description => '',
 
 __PACKAGE__->method_documentation({
     'payment_method' => {
-        datatype => 'string',
+        datatype => 'PaymentMethod',
         base_name => 'paymentMethod',
         description => '',
         format => '',
@@ -229,7 +230,7 @@ __PACKAGE__->method_documentation({
 });
 
 __PACKAGE__->openapi_types( {
-    'payment_method' => 'string'
+    'payment_method' => 'PaymentMethod'
 } );
 
 __PACKAGE__->attribute_map( {

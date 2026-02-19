@@ -25,8 +25,7 @@ void main() {
       // TODO
     });
 
-    // PIX key type
-    // String pixType (default value: 'Cnpj')
+    // PixType pixType
     test('to test the property `pixType`', () async {
       // TODO
     });

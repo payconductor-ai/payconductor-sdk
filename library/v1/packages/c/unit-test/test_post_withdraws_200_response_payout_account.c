@@ -26,7 +26,7 @@ post_withdraws_200_response_payout_account_t* instantiate_post_withdraws_200_res
       "a",
       "0",
       "0",
-      payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_"Cpf"
+      payconductor_api_post_withdraws_200_response_payout_account__Cpf
     );
   } else {
     post_withdraws_200_response_payout_account = post_withdraws_200_response_payout_account_create(
@@ -34,7 +34,7 @@ post_withdraws_200_response_payout_account_t* instantiate_post_withdraws_200_res
       "a",
       "0",
       "0",
-      payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_"Cpf"
+      payconductor_api_post_withdraws_200_response_payout_account__Cpf
     );
   }
 

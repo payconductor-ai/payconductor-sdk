@@ -5,6 +5,8 @@
             [payconductor-sdk.specs.post-orders-200-response-bank-slip :refer :all]
             [payconductor-sdk.specs.post-orders-200-response-nu-pay :refer :all]
             [payconductor-sdk.specs.post-orders-200-response-pic-pay :refer :all]
+            [payconductor-sdk.specs.status :refer :all]
+            [payconductor-sdk.specs.payment-method :refer :all]
             )
   (:import (java.io File)))
 
@@ -19,8 +21,8 @@
    (ds/opt :bankSlip) post-orders-200-response-bank-slip-spec
    (ds/opt :nuPay) post-orders-200-response-nu-pay-spec
    (ds/opt :picPay) post-orders-200-response-pic-pay-spec
-   (ds/req :status) string?
-   (ds/req :paymentMethod) string?
+   (ds/req :status) status-spec
+   (ds/req :paymentMethod) payment-method-spec
    (ds/req :payedAt) string?
    (ds/req :errorCode) string?
    (ds/req :errorMessage) string?

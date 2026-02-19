@@ -35,7 +35,7 @@ class TestPostOrdersRequestPayment(unittest.TestCase):
         model = PostOrdersRequestPayment()
         if include_optional:
             return PostOrdersRequestPayment(
-                payment_method = '',
+                payment_method = 'Pix',
                 expiration_in_seconds = None,
                 card = None,
                 installments = None,
@@ -47,12 +47,12 @@ class TestPostOrdersRequestPayment(unittest.TestCase):
                     return_url = '', 
                     store_name = '', ),
                 available_payment_methods = [
-                    null
+                    'Pix'
                     ]
             )
         else:
             return PostOrdersRequestPayment(
-                payment_method = '',
+                payment_method = 'Pix',
                 card = None,
                 installments = None,
                 nu_pay = payconductor_sdk.models.nu_pay_nu_pay.NuPay_nuPay(

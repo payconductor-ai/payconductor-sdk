@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import org.openapitools.client.model.PixType;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * PostWithdrawsRequestPayoutAccount
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostWithdrawsRequestPayoutAccount {
   public static final String SERIALIZED_NAME_OWNER_DOCUMENT = "ownerDocument";
   @SerializedName(SERIALIZED_NAME_OWNER_DOCUMENT)
@@ -65,68 +66,10 @@ public class PostWithdrawsRequestPayoutAccount {
   @javax.annotation.Nonnull
   private String pixKey;
 
-  /**
-   * PIX key type
-   */
-  @JsonAdapter(PixTypeEnum.Adapter.class)
-  public enum PixTypeEnum {
-    CNPJ("Cnpj"),
-    
-    CPF("Cpf"),
-    
-    EMAIL("Email"),
-    
-    PHONE("Phone"),
-    
-    RANDOM("Random");
-
-    private String value;
-
-    PixTypeEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static PixTypeEnum fromValue(String value) {
-      for (PixTypeEnum b : PixTypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<PixTypeEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final PixTypeEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public PixTypeEnum read(final JsonReader jsonReader) throws IOException {
-        String value =  jsonReader.nextString();
-        return PixTypeEnum.fromValue(value);
-      }
-    }
-
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      String value = jsonElement.getAsString();
-      PixTypeEnum.fromValue(value);
-    }
-  }
-
   public static final String SERIALIZED_NAME_PIX_TYPE = "pixType";
   @SerializedName(SERIALIZED_NAME_PIX_TYPE)
   @javax.annotation.Nonnull
-  private PixTypeEnum pixType = PixTypeEnum.CNPJ;
+  private PixType pixType;
 
   public PostWithdrawsRequestPayoutAccount() {
   }
@@ -188,21 +131,21 @@ public class PostWithdrawsRequestPayoutAccount {
   }
 
 
-  public PostWithdrawsRequestPayoutAccount pixType(@javax.annotation.Nonnull PixTypeEnum pixType) {
+  public PostWithdrawsRequestPayoutAccount pixType(@javax.annotation.Nonnull PixType pixType) {
     this.pixType = pixType;
     return this;
   }
 
   /**
-   * PIX key type
+   * Get pixType
    * @return pixType
    */
   @javax.annotation.Nonnull
-  public PixTypeEnum getPixType() {
+  public PixType getPixType() {
     return pixType;
   }
 
-  public void setPixType(@javax.annotation.Nonnull PixTypeEnum pixType) {
+  public void setPixType(@javax.annotation.Nonnull PixType pixType) {
     this.pixType = pixType;
   }
 
@@ -300,11 +243,8 @@ public class PostWithdrawsRequestPayoutAccount {
       if (!jsonObj.get("pixKey").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `pixKey` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pixKey").toString()));
       }
-      if (!jsonObj.get("pixType").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `pixType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pixType").toString()));
-      }
       // validate the required field `pixType`
-      PixTypeEnum.validateJsonElement(jsonObj.get("pixType"));
+      PixType.validateJsonElement(jsonObj.get("pixType"));
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

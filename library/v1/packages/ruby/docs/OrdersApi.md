@@ -182,7 +182,7 @@ OpenapiClient.configure do |config|
 end
 
 api_instance = OpenapiClient::OrdersApi.new
-post_orders_request = OpenapiClient::PostOrdersRequest.new({charge_amount: 3.56, client_ip: 'client_ip_example', customer: OpenapiClient::Customer.new({document_number: 'document_number_example', document_type: 'Cpf', email: 'email_example', name: 'name_example'}), discount_amount: 3.56, external_id: 'external_id_example', payment: OpenapiClient::PostOrdersRequestPayment.new({payment_method: 'payment_method_example', card: OpenapiClient::CreditCardCard.new({token: 'token_example', cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), installments: OpenapiClient::CreditCardInstallments.new, nu_pay: OpenapiClient::NuPayNuPay.new({cancel_url: 'cancel_url_example', merchant_name: 'merchant_name_example', return_url: 'return_url_example'})}), shipping_fee: 3.56, tax_fee: 3.56}) # PostOrdersRequest | 
+post_orders_request = OpenapiClient::PostOrdersRequest.new({charge_amount: 3.56, client_ip: 'client_ip_example', customer: OpenapiClient::Customer.new({document_number: 'document_number_example', document_type: OpenapiClient::DocumentType::Cpf, email: 'email_example', name: 'name_example'}), discount_amount: 3.56, external_id: 'external_id_example', payment: OpenapiClient::PostOrdersRequestPayment.new({payment_method: OpenapiClient::PaymentMethod::Pix, card: OpenapiClient::CreditCardCard.new({token: 'token_example', cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), installments: OpenapiClient::CreditCardInstallments.new, nu_pay: OpenapiClient::NuPayNuPay.new({cancel_url: 'cancel_url_example', merchant_name: 'merchant_name_example', return_url: 'return_url_example'})}), shipping_fee: 3.56, tax_fee: 3.56}) # PostOrdersRequest | 
 
 begin
   # Create order
@@ -253,7 +253,7 @@ end
 
 api_instance = OpenapiClient::OrdersApi.new
 id = 'id_example' # String | 
-post_orders_request_payment = OpenapiClient::PostOrdersRequestPayment.new({payment_method: 'payment_method_example', card: OpenapiClient::CreditCardCard.new({token: 'token_example', cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), installments: OpenapiClient::CreditCardInstallments.new, nu_pay: OpenapiClient::NuPayNuPay.new({cancel_url: 'cancel_url_example', merchant_name: 'merchant_name_example', return_url: 'return_url_example'})}) # PostOrdersRequestPayment | Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+post_orders_request_payment = OpenapiClient::PostOrdersRequestPayment.new({payment_method: OpenapiClient::PaymentMethod::Pix, card: OpenapiClient::CreditCardCard.new({token: 'token_example', cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), installments: OpenapiClient::CreditCardInstallments.new, nu_pay: OpenapiClient::NuPayNuPay.new({cancel_url: 'cancel_url_example', merchant_name: 'merchant_name_example', return_url: 'return_url_example'})}) # PostOrdersRequestPayment | Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
 
 begin
   # Confirm order

@@ -15,16 +15,17 @@
 
 package payconductor_sdk.models
 
+import payconductor_sdk.models.AvailablePaymentMethods
 import payconductor_sdk.models.BankSlip
 import payconductor_sdk.models.BankSlipExpirationInDays
 import payconductor_sdk.models.CreditCard
 import payconductor_sdk.models.CreditCardCard
 import payconductor_sdk.models.CreditCardInstallments
 import payconductor_sdk.models.Draft
-import payconductor_sdk.models.DraftAvailablePaymentMethodsInner
 import payconductor_sdk.models.DraftExpirationInSeconds
 import payconductor_sdk.models.NuPay
 import payconductor_sdk.models.NuPayNuPay
+import payconductor_sdk.models.PaymentMethod
 import payconductor_sdk.models.PicPay
 import payconductor_sdk.models.Pix
 
@@ -48,7 +49,7 @@ import com.squareup.moshi.JsonClass
 data class PostOrdersRequestPayment (
 
     @Json(name = "paymentMethod")
-    val paymentMethod: kotlin.String,
+    val paymentMethod: PaymentMethod,
 
     @Json(name = "card")
     val card: CreditCardCard,
@@ -71,7 +72,7 @@ data class PostOrdersRequestPayment (
 
     /* Available payment methods for this order */
     @Json(name = "availablePaymentMethods")
-    val availablePaymentMethods: kotlin.collections.List<DraftAvailablePaymentMethodsInner>? = null
+    val availablePaymentMethods: kotlin.collections.List<AvailablePaymentMethods>? = null
 
 ) {
 

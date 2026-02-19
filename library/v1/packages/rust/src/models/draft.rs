@@ -15,17 +15,17 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Draft {
     #[serde(rename = "paymentMethod")]
-    pub payment_method: String,
+    pub payment_method: models::PaymentMethod,
     #[serde(rename = "expirationInSeconds", skip_serializing_if = "Option::is_none")]
     pub expiration_in_seconds: Option<Box<models::DraftExpirationInSeconds>>,
     /// Available payment methods for this order
     #[serde(rename = "availablePaymentMethods", skip_serializing_if = "Option::is_none")]
-    pub available_payment_methods: Option<Vec<models::DraftAvailablePaymentMethodsInner>>,
+    pub available_payment_methods: Option<Vec<models::AvailablePaymentMethods>>,
 }
 
 impl Draft {
     /// Used to create an order without generating a real payment. Use to create orders that will be paid later
-    pub fn new(payment_method: String) -> Draft {
+    pub fn new(payment_method: models::PaymentMethod) -> Draft {
         Draft {
             payment_method,
             expiration_in_seconds: None,

@@ -15,14 +15,7 @@
 
 typedef struct post_withdraws_200_response_payout_account_t post_withdraws_200_response_payout_account_t;
 
-
-// Enum PIXTYPE for post_withdraws_200_response_payout_account
-
-typedef enum  { payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_NULL = 0, payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_Cpf, payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_Cnpj, payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_Email, payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_Phone, payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_Random } payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e;
-
-char* post_withdraws_200_response_payout_account_pix_type_ToString(payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_type);
-
-payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e post_withdraws_200_response_payout_account_pix_type_FromString(char* pix_type);
+#include "pix_type.h"
 
 
 
@@ -31,7 +24,7 @@ typedef struct post_withdraws_200_response_payout_account_t {
     char *owner_document; // string
     char *owner_name; // string
     char *pix_key; // string
-    payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_type; //enum
+    payconductor_api_pix_type__e pix_type; //referenced enum
 
     int _library_owned; // Is the library responsible for freeing this object?
 } post_withdraws_200_response_payout_account_t;
@@ -41,7 +34,7 @@ __attribute__((deprecated)) post_withdraws_200_response_payout_account_t *post_w
     char *owner_document,
     char *owner_name,
     char *pix_key,
-    payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_type
+    payconductor_api_pix_type__e pix_type
 );
 
 void post_withdraws_200_response_payout_account_free(post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout_account);

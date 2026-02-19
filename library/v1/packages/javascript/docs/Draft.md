@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | **String** |  | 
+**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **expirationInSeconds** | [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] 
-**availablePaymentMethods** | [**[DraftAvailablePaymentMethodsInner]**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order | [optional] 
+**availablePaymentMethods** | [**[AvailablePaymentMethods]**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] 
 
 

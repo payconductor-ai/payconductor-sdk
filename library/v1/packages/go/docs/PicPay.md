@@ -4,13 +4,13 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PaymentMethod** | **string** |  | 
+**PaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 
 ## Methods
 
 ### NewPicPay
 
-`func NewPicPay(paymentMethod string, ) *PicPay`
+`func NewPicPay(paymentMethod PaymentMethod, ) *PicPay`
 
 NewPicPay instantiates a new PicPay object
 This constructor will assign default values to properties that have it defined,
@@ -27,20 +27,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetPaymentMethod
 
-`func (o *PicPay) GetPaymentMethod() string`
+`func (o *PicPay) GetPaymentMethod() PaymentMethod`
 
 GetPaymentMethod returns the PaymentMethod field if non-nil, zero value otherwise.
 
 ### GetPaymentMethodOk
 
-`func (o *PicPay) GetPaymentMethodOk() (*string, bool)`
+`func (o *PicPay) GetPaymentMethodOk() (*PaymentMethod, bool)`
 
 GetPaymentMethodOk returns a tuple with the PaymentMethod field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPaymentMethod
 
-`func (o *PicPay) SetPaymentMethod(v string)`
+`func (o *PicPay) SetPaymentMethod(v PaymentMethod)`
 
 SetPaymentMethod sets PaymentMethod field to given value.
 

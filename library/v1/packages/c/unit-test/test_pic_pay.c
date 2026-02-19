@@ -22,11 +22,11 @@ pic_pay_t* instantiate_pic_pay(int include_optional) {
   pic_pay_t* pic_pay = NULL;
   if (include_optional) {
     pic_pay = pic_pay_create(
-      "0"
+      payconductor_api_pic_pay__Pix
     );
   } else {
     pic_pay = pic_pay_create(
-      "0"
+      payconductor_api_pic_pay__Pix
     );
   }
 

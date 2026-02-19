@@ -19,7 +19,7 @@ module OpenapiClient
       # List of class defined in anyOf (OpenAPI v3)
       def openapi_any_of
         [
-          :'Customer2',
+          :'Customer',
           :'PostCardTokenizationRequestCustomerAnyOf'
         ]
       end

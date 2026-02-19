@@ -14,13 +14,13 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct BankSlip {
     #[serde(rename = "paymentMethod")]
-    pub payment_method: String,
+    pub payment_method: models::PaymentMethod,
     #[serde(rename = "expirationInDays", skip_serializing_if = "Option::is_none")]
     pub expiration_in_days: Option<Box<models::BankSlipExpirationInDays>>,
 }
 
 impl BankSlip {
-    pub fn new(payment_method: String) -> BankSlip {
+    pub fn new(payment_method: models::PaymentMethod) -> BankSlip {
         BankSlip {
             payment_method,
             expiration_in_days: None,

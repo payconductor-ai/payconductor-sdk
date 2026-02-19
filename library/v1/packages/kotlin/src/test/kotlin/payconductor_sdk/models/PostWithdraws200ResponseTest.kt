@@ -21,6 +21,7 @@ import io.kotlintest.specs.ShouldSpec
 import payconductor_sdk.models.PostWithdraws200Response
 import payconductor_sdk.models.PostWithdraws200ResponsePayedAt
 import payconductor_sdk.models.PostWithdraws200ResponsePayoutAccount
+import payconductor_sdk.models.Status
 
 class PostWithdraws200ResponseTest : ShouldSpec() {
     init {
@@ -57,7 +58,7 @@ class PostWithdraws200ResponseTest : ShouldSpec() {
             //modelInstance.costFee shouldBe ("TODO")
         }
 
-        // to test the property `status` - Withdrawal status
+        // to test the property `status`
         should("test status") {
             // uncomment below to test the property
             //modelInstance.status shouldBe ("TODO")

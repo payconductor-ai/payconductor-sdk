@@ -15,9 +15,9 @@
 
 typedef struct post_card_tokenization_request_customer_t post_card_tokenization_request_customer_t;
 
-#include "customer_2.h"
-#include "customer_2_document_type.h"
+#include "customer.h"
 #include "customer_address.h"
+#include "document_type.h"
 #include "post_card_tokenization_request_customer_any_of.h"
 
 
@@ -25,7 +25,7 @@ typedef struct post_card_tokenization_request_customer_t post_card_tokenization_
 typedef struct post_card_tokenization_request_customer_t {
     struct customer_address_t *address; //model
     char *document_number; // string
-    struct customer_2_document_type_t *document_type; //model
+    payconductor_api_document_type__e document_type; //referenced enum
     char *email; // string
     char *name; // string
     char *phone_number; // string
@@ -37,7 +37,7 @@ typedef struct post_card_tokenization_request_customer_t {
 __attribute__((deprecated)) post_card_tokenization_request_customer_t *post_card_tokenization_request_customer_create(
     customer_address_t *address,
     char *document_number,
-    customer_2_document_type_t *document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number,

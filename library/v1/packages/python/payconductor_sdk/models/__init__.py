@@ -13,6 +13,7 @@
 """  # noqa: E501
 
 # import models into model package
+from payconductor_sdk.models.available_payment_methods import AvailablePaymentMethods
 from payconductor_sdk.models.bank_slip import BankSlip
 from payconductor_sdk.models.bank_slip_expiration_in_days import BankSlipExpirationInDays
 from payconductor_sdk.models.complete_card_data import CompleteCardData
@@ -22,18 +23,19 @@ from payconductor_sdk.models.credit_card_card import CreditCardCard
 from payconductor_sdk.models.credit_card_installments import CreditCardInstallments
 from payconductor_sdk.models.customer import Customer
 from payconductor_sdk.models.customer1 import Customer1
-from payconductor_sdk.models.customer2 import Customer2
-from payconductor_sdk.models.customer2_document_type import Customer2DocumentType
 from payconductor_sdk.models.customer_address import CustomerAddress
+from payconductor_sdk.models.document_type import DocumentType
 from payconductor_sdk.models.draft import Draft
-from payconductor_sdk.models.draft_available_payment_methods_inner import DraftAvailablePaymentMethodsInner
 from payconductor_sdk.models.draft_expiration_in_seconds import DraftExpirationInSeconds
+from payconductor_sdk.models.event import Event
 from payconductor_sdk.models.merchant_input import MerchantInput
 from payconductor_sdk.models.nu_pay import NuPay
 from payconductor_sdk.models.nu_pay_nu_pay import NuPayNuPay
+from payconductor_sdk.models.payment_method import PaymentMethod
 from payconductor_sdk.models.pic_pay import PicPay
 from payconductor_sdk.models.pix import Pix
 from payconductor_sdk.models.pix_expiration_in_seconds import PixExpirationInSeconds
+from payconductor_sdk.models.pix_type import PixType
 from payconductor_sdk.models.post_card_tokenization200_response import PostCardTokenization200Response
 from payconductor_sdk.models.post_card_tokenization_request import PostCardTokenizationRequest
 from payconductor_sdk.models.post_card_tokenization_request_customer import PostCardTokenizationRequestCustomer
@@ -57,5 +59,6 @@ from payconductor_sdk.models.post_withdraws200_response_payed_at import PostWith
 from payconductor_sdk.models.post_withdraws200_response_payout_account import PostWithdraws200ResponsePayoutAccount
 from payconductor_sdk.models.post_withdraws_request import PostWithdrawsRequest
 from payconductor_sdk.models.post_withdraws_request_payout_account import PostWithdrawsRequestPayoutAccount
+from payconductor_sdk.models.status import Status
 from payconductor_sdk.models.tokenized_card import TokenizedCard
 

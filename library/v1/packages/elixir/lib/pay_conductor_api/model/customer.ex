@@ -19,7 +19,7 @@ defmodule PayConductorAPI.Model.Customer do
   @type t :: %__MODULE__{
     :address => PayConductorAPI.Model.CustomerAddress.t | nil,
     :documentNumber => String.t,
-    :documentType => String.t,
+    :documentType => PayConductorAPI.Model.DocumentType.t,
     :email => String.t,
     :name => String.t,
     :phoneNumber => String.t | nil
@@ -30,6 +30,7 @@ defmodule PayConductorAPI.Model.Customer do
   def decode(value) do
     value
      |> Deserializer.deserialize(:address, :struct, PayConductorAPI.Model.CustomerAddress)
+     |> Deserializer.deserialize(:documentType, :struct, PayConductorAPI.Model.DocumentType)
   end
 end
 

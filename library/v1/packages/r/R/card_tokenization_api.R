@@ -16,7 +16,7 @@
 #' ####################  PostCardTokenization  ####################
 #'
 #' library(payconductor_sdk)
-#' var_post_card_tokenization_request <- postCard_tokenization_request$new(Complete_card_data$new("cvv_example", Complete_card_data_expiration$new(123, 123), "holderName_example", "number_example"), "saveCard_example", postCard_tokenization_request_customer$new("documentNumber_example", Customer_2_documentType$new(), "email_example", "name_example", "id_example", Customer_address$new("city_example", "country_example", "neighborhood_example", "number_example", "state_example", "street_example", "zipCode_example"), "phoneNumber_example")) # PostCardTokenizationRequest | Data for creating a customer card
+#' var_post_card_tokenization_request <- postCard_tokenization_request$new(Complete_card_data$new("cvv_example", Complete_card_data_expiration$new(123, 123), "holderName_example", "number_example"), "saveCard_example", postCard_tokenization_request_customer$new("documentNumber_example", DocumentType$new(), "email_example", "name_example", "id_example", Customer_address$new("city_example", "country_example", "neighborhood_example", "number_example", "state_example", "street_example", "zipCode_example"), "phoneNumber_example")) # PostCardTokenizationRequest | Data for creating a customer card
 #'
 #' #Tokenize card
 #' api_instance <- CardTokenizationApi$new()

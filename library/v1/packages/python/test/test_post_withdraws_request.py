@@ -45,7 +45,7 @@ class TestPostWithdrawsRequest(unittest.TestCase):
                     owner_document = '', 
                     owner_name = '', 
                     pix_key = '', 
-                    pix_type = 'Cnpj', )
+                    pix_type = 'Cpf', )
             )
         else:
             return PostWithdrawsRequest(
@@ -54,7 +54,7 @@ class TestPostWithdrawsRequest(unittest.TestCase):
                     owner_document = '', 
                     owner_name = '', 
                     pix_key = '', 
-                    pix_type = 'Cnpj', ),
+                    pix_type = 'Cpf', ),
         )
         """
 

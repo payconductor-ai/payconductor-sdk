@@ -42,9 +42,9 @@ pub struct PostOrders200Response {
     #[serde(rename = "creditCard", skip_serializing_if = "Option::is_none")]
     pub credit_card: Option<Box<models::PostOrders200ResponseCreditCard>>,
     #[serde(rename = "status")]
-    pub status: Status,
+    pub status: models::Status,
     #[serde(rename = "paymentMethod")]
-    pub payment_method: PaymentMethod,
+    pub payment_method: models::PaymentMethod,
     /// Date and time when the order was paid (ISO 8601)
     #[serde(rename = "payedAt", deserialize_with = "Option::deserialize")]
     pub payed_at: Option<String>,
@@ -61,7 +61,7 @@ pub struct PostOrders200Response {
 }
 
 impl PostOrders200Response {
-    pub fn new(id: String, external_id: Option<String>, external_integration_key: String, external_integration_id: Option<String>, amount: f64, cost_fee: f64, status: Status, payment_method: PaymentMethod, payed_at: Option<String>, error_code: Option<String>, error_message: Option<String>, order_items: Vec<models::PostOrders200ResponseOrderItemsInner>) -> PostOrders200Response {
+    pub fn new(id: String, external_id: Option<String>, external_integration_key: String, external_integration_id: Option<String>, amount: f64, cost_fee: f64, status: models::Status, payment_method: models::PaymentMethod, payed_at: Option<String>, error_code: Option<String>, error_message: Option<String>, order_items: Vec<models::PostOrders200ResponseOrderItemsInner>) -> PostOrders200Response {
         PostOrders200Response {
             id,
             external_id,
@@ -82,68 +82,6 @@ impl PostOrders200Response {
             order_items,
             session: None,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Status {
-    #[serde(rename = "Generating")]
-    Generating,
-    #[serde(rename = "Pending")]
-    Pending,
-    #[serde(rename = "Completed")]
-    Completed,
-    #[serde(rename = "Failed")]
-    Failed,
-    #[serde(rename = "Canceled")]
-    Canceled,
-    #[serde(rename = "Refunding")]
-    Refunding,
-    #[serde(rename = "Refunded")]
-    Refunded,
-    #[serde(rename = "InDispute")]
-    InDispute,
-    #[serde(rename = "Chargeback")]
-    Chargeback,
-}
-
-impl Default for Status {
-    fn default() -> Status {
-        Self::Generating
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum PaymentMethod {
-    #[serde(rename = "Pix")]
-    Pix,
-    #[serde(rename = "CreditCard")]
-    CreditCard,
-    #[serde(rename = "DebitCard")]
-    DebitCard,
-    #[serde(rename = "BankSlip")]
-    BankSlip,
-    #[serde(rename = "Crypto")]
-    Crypto,
-    #[serde(rename = "ApplePay")]
-    ApplePay,
-    #[serde(rename = "NuPay")]
-    NuPay,
-    #[serde(rename = "PicPay")]
-    PicPay,
-    #[serde(rename = "AmazonPay")]
-    AmazonPay,
-    #[serde(rename = "SepaDebit")]
-    SepaDebit,
-    #[serde(rename = "GooglePay")]
-    GooglePay,
-    #[serde(rename = "Draft")]
-    Draft,
-}
-
-impl Default for PaymentMethod {
-    fn default() -> PaymentMethod {
-        Self::Pix
     }
 }
 

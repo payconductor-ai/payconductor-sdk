@@ -13,6 +13,7 @@
 
 import ApiClient from '../ApiClient';
 import BankSlipExpirationInDays from './BankSlipExpirationInDays';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * The BankSlip model module.
@@ -23,7 +24,7 @@ class BankSlip {
     /**
      * Constructs a new <code>BankSlip</code>.
      * @alias module:model/BankSlip
-     * @param paymentMethod {String} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      */
     constructor(paymentMethod) { 
         
@@ -51,7 +52,7 @@ class BankSlip {
             obj = obj || new BankSlip();
 
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
             if (data.hasOwnProperty('expirationInDays')) {
                 obj['expirationInDays'] = BankSlipExpirationInDays.constructFromObject(data['expirationInDays']);
@@ -72,10 +73,6 @@ class BankSlip {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
-        }
         // validate the optional field `expirationInDays`
         if (data['expirationInDays']) { // data not null
           BankSlipExpirationInDays.validateJSON(data['expirationInDays']);
@@ -90,7 +87,7 @@ class BankSlip {
 BankSlip.RequiredProperties = ["paymentMethod"];
 
 /**
- * @member {String} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 BankSlip.prototype['paymentMethod'] = undefined;
 

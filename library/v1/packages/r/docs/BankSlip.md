@@ -4,7 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | **character** |  | 
+**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [Enum: ] 
 **expirationInDays** | [**BankSlipExpirationInDays**](Bank_Slip_expirationInDays.md) |  | [optional] 
 
 

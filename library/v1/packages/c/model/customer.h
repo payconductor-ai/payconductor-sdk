@@ -16,21 +16,14 @@
 typedef struct customer_t customer_t;
 
 #include "customer_address.h"
-
-// Enum DOCUMENTTYPE for customer
-
-typedef enum  { payconductor_api_customer_DOCUMENTTYPE_NULL = 0, payconductor_api_customer_DOCUMENTTYPE_Cpf, payconductor_api_customer_DOCUMENTTYPE_Cnpj } payconductor_api_customer_DOCUMENTTYPE_e;
-
-char* customer_document_type_ToString(payconductor_api_customer_DOCUMENTTYPE_e document_type);
-
-payconductor_api_customer_DOCUMENTTYPE_e customer_document_type_FromString(char* document_type);
+#include "document_type.h"
 
 
 
 typedef struct customer_t {
     struct customer_address_t *address; //model
     char *document_number; // string
-    payconductor_api_customer_DOCUMENTTYPE_e document_type; //enum
+    payconductor_api_document_type__e document_type; //referenced enum
     char *email; // string
     char *name; // string
     char *phone_number; // string
@@ -41,7 +34,7 @@ typedef struct customer_t {
 __attribute__((deprecated)) customer_t *customer_create(
     customer_address_t *address,
     char *document_number,
-    payconductor_api_customer_DOCUMENTTYPE_e document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number

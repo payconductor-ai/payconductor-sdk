@@ -8,14 +8,14 @@ use WWW::OpenAPIClient::Object::PostOrdersRequestPayment;
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**payment_method** | **string** |  | 
+**payment_method** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **expiration_in_seconds** | [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] 
 **card** | [**CreditCardCard**](CreditCardCard.md) |  | 
 **installments** | [**CreditCardInstallments**](CreditCardInstallments.md) |  | 
 **soft_descriptor** | **string** | Text that will appear on the card statement (soft descriptor) | [optional] 
 **expiration_in_days** | [**BankSlipExpirationInDays**](BankSlipExpirationInDays.md) |  | [optional] 
 **nu_pay** | [**NuPayNuPay**](NuPayNuPay.md) |  | 
-**available_payment_methods** | [**ARRAY[DraftAvailablePaymentMethodsInner]**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order | [optional] 
+**available_payment_methods** | [**ARRAY[AvailablePaymentMethods]**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

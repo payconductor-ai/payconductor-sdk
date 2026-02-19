@@ -3,10 +3,10 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:openapi/src/model/customer2.dart';
 import 'package:openapi/src/model/customer_address.dart';
-import 'package:openapi/src/model/customer2_document_type.dart';
 import 'package:openapi/src/model/post_card_tokenization_request_customer_any_of.dart';
+import 'package:openapi/src/model/customer.dart';
+import 'package:openapi/src/model/document_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:one_of/any_of.dart';
@@ -25,7 +25,7 @@ part 'post_card_tokenization_request_customer.g.dart';
 /// * [id] - ID do cliente existente
 @BuiltValue()
 abstract class PostCardTokenizationRequestCustomer implements Built<PostCardTokenizationRequestCustomer, PostCardTokenizationRequestCustomerBuilder> {
-  /// Any Of [Customer2], [PostCardTokenizationRequestCustomerAnyOf]
+  /// Any Of [Customer], [PostCardTokenizationRequestCustomerAnyOf]
   AnyOf get anyOf;
 
   PostCardTokenizationRequestCustomer._();
@@ -71,7 +71,7 @@ class _$PostCardTokenizationRequestCustomerSerializer implements PrimitiveSerial
   }) {
     final result = PostCardTokenizationRequestCustomerBuilder();
     Object? anyOfDataSrc;
-    final targetType = const FullType(AnyOf, [FullType(Customer2), FullType(PostCardTokenizationRequestCustomerAnyOf), ]);
+    final targetType = const FullType(AnyOf, [FullType(Customer), FullType(PostCardTokenizationRequestCustomerAnyOf), ]);
     anyOfDataSrc = serialized;
     result.anyOf = serializers.deserialize(anyOfDataSrc, specifiedType: targetType) as AnyOf;
     return result.build();

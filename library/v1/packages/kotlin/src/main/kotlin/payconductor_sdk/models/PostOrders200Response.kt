@@ -15,6 +15,7 @@
 
 package payconductor_sdk.models
 
+import payconductor_sdk.models.PaymentMethod
 import payconductor_sdk.models.PostOrders200ResponseBankSlip
 import payconductor_sdk.models.PostOrders200ResponseCreditCard
 import payconductor_sdk.models.PostOrders200ResponseNuPay
@@ -22,6 +23,7 @@ import payconductor_sdk.models.PostOrders200ResponseOrderItemsInner
 import payconductor_sdk.models.PostOrders200ResponsePicPay
 import payconductor_sdk.models.PostOrders200ResponsePix
 import payconductor_sdk.models.PostOrders200ResponseSession
+import payconductor_sdk.models.Status
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -77,10 +79,10 @@ data class PostOrders200Response (
     val costFee: java.math.BigDecimal,
 
     @Json(name = "status")
-    val status: PostOrders200Response.Status,
+    val status: Status,
 
     @Json(name = "paymentMethod")
-    val paymentMethod: PostOrders200Response.PaymentMethod,
+    val paymentMethod: PaymentMethod,
 
     /* Date and time when the order was paid (ISO 8601) */
     @Json(name = "payedAt")
@@ -117,43 +119,6 @@ data class PostOrders200Response (
 
 ) {
 
-    /**
-     * 
-     *
-     * Values: Generating,Pending,Completed,Failed,Canceled,Refunding,Refunded,InDispute,Chargeback
-     */
-    @JsonClass(generateAdapter = false)
-    enum class Status(val value: kotlin.String) {
-        @Json(name = "Generating") Generating("Generating"),
-        @Json(name = "Pending") Pending("Pending"),
-        @Json(name = "Completed") Completed("Completed"),
-        @Json(name = "Failed") Failed("Failed"),
-        @Json(name = "Canceled") Canceled("Canceled"),
-        @Json(name = "Refunding") Refunding("Refunding"),
-        @Json(name = "Refunded") Refunded("Refunded"),
-        @Json(name = "InDispute") InDispute("InDispute"),
-        @Json(name = "Chargeback") Chargeback("Chargeback");
-    }
-    /**
-     * 
-     *
-     * Values: Pix,CreditCard,DebitCard,BankSlip,Crypto,ApplePay,NuPay,PicPay,AmazonPay,SepaDebit,GooglePay,Draft
-     */
-    @JsonClass(generateAdapter = false)
-    enum class PaymentMethod(val value: kotlin.String) {
-        @Json(name = "Pix") Pix("Pix"),
-        @Json(name = "CreditCard") CreditCard("CreditCard"),
-        @Json(name = "DebitCard") DebitCard("DebitCard"),
-        @Json(name = "BankSlip") BankSlip("BankSlip"),
-        @Json(name = "Crypto") Crypto("Crypto"),
-        @Json(name = "ApplePay") ApplePay("ApplePay"),
-        @Json(name = "NuPay") NuPay("NuPay"),
-        @Json(name = "PicPay") PicPay("PicPay"),
-        @Json(name = "AmazonPay") AmazonPay("AmazonPay"),
-        @Json(name = "SepaDebit") SepaDebit("SepaDebit"),
-        @Json(name = "GooglePay") GooglePay("GooglePay"),
-        @Json(name = "Draft") Draft("Draft");
-    }
 
 }
 

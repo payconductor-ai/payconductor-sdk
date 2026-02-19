@@ -22,8 +22,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.DraftAvailablePaymentMethodsInner;
+import org.openapitools.client.model.AvailablePaymentMethods;
 import org.openapitools.client.model.DraftExpirationInSeconds;
+import org.openapitools.client.model.PaymentMethod;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

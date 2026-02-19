@@ -12,8 +12,9 @@
  */
 
 import ApiClient from '../ApiClient';
-import DraftAvailablePaymentMethodsInner from './DraftAvailablePaymentMethodsInner';
+import AvailablePaymentMethods from './AvailablePaymentMethods';
 import DraftExpirationInSeconds from './DraftExpirationInSeconds';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * The Draft model module.
@@ -25,7 +26,7 @@ class Draft {
      * Constructs a new <code>Draft</code>.
      * Used to create an order without generating a real payment. Use to create orders that will be paid later
      * @alias module:model/Draft
-     * @param paymentMethod {String} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      */
     constructor(paymentMethod) { 
         
@@ -53,13 +54,13 @@ class Draft {
             obj = obj || new Draft();
 
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
             if (data.hasOwnProperty('expirationInSeconds')) {
                 obj['expirationInSeconds'] = DraftExpirationInSeconds.constructFromObject(data['expirationInSeconds']);
             }
             if (data.hasOwnProperty('availablePaymentMethods')) {
-                obj['availablePaymentMethods'] = ApiClient.convertToType(data['availablePaymentMethods'], [DraftAvailablePaymentMethodsInner]);
+                obj['availablePaymentMethods'] = ApiClient.convertToType(data['availablePaymentMethods'], [AvailablePaymentMethods]);
             }
         }
         return obj;
@@ -77,23 +78,13 @@ class Draft {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
-        }
         // validate the optional field `expirationInSeconds`
         if (data['expirationInSeconds']) { // data not null
           DraftExpirationInSeconds.validateJSON(data['expirationInSeconds']);
         }
-        if (data['availablePaymentMethods']) { // data not null
-            // ensure the json data is an array
-            if (!Array.isArray(data['availablePaymentMethods'])) {
-                throw new Error("Expected the field `availablePaymentMethods` to be an array in the JSON data but got " + data['availablePaymentMethods']);
-            }
-            // validate the optional field `availablePaymentMethods` (array)
-            for (const item of data['availablePaymentMethods']) {
-                DraftAvailablePaymentMethodsInner.validateJSON(item);
-            };
+        // ensure the json data is an array
+        if (!Array.isArray(data['availablePaymentMethods'])) {
+            throw new Error("Expected the field `availablePaymentMethods` to be an array in the JSON data but got " + data['availablePaymentMethods']);
         }
 
         return true;
@@ -105,7 +96,7 @@ class Draft {
 Draft.RequiredProperties = ["paymentMethod"];
 
 /**
- * @member {String} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 Draft.prototype['paymentMethod'] = undefined;
 
@@ -116,7 +107,7 @@ Draft.prototype['expirationInSeconds'] = undefined;
 
 /**
  * Available payment methods for this order
- * @member {Array.<module:model/DraftAvailablePaymentMethodsInner>} availablePaymentMethods
+ * @member {Array.<module:model/AvailablePaymentMethods>} availablePaymentMethods
  */
 Draft.prototype['availablePaymentMethods'] = undefined;
 

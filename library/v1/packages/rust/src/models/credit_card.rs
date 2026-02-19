@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CreditCard {
     #[serde(rename = "paymentMethod")]
-    pub payment_method: String,
+    pub payment_method: models::PaymentMethod,
     #[serde(rename = "card")]
     pub card: Box<models::CreditCardCard>,
     #[serde(rename = "installments")]
@@ -25,7 +25,7 @@ pub struct CreditCard {
 }
 
 impl CreditCard {
-    pub fn new(payment_method: String, card: models::CreditCardCard, installments: models::CreditCardInstallments) -> CreditCard {
+    pub fn new(payment_method: models::PaymentMethod, card: models::CreditCardCard, installments: models::CreditCardInstallments) -> CreditCard {
         CreditCard {
             payment_method,
             card: Box::new(card),

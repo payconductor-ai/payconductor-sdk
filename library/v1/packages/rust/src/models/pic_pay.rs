@@ -14,11 +14,11 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PicPay {
     #[serde(rename = "paymentMethod")]
-    pub payment_method: String,
+    pub payment_method: models::PaymentMethod,
 }
 
 impl PicPay {
-    pub fn new(payment_method: String) -> PicPay {
+    pub fn new(payment_method: models::PaymentMethod) -> PicPay {
         PicPay {
             payment_method,
         }

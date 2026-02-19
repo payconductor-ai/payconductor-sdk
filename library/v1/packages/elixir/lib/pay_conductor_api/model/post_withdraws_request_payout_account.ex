@@ -18,11 +18,14 @@ defmodule PayConductorAPI.Model.PostWithdrawsRequestPayoutAccount do
     :ownerDocument => String.t,
     :ownerName => String.t,
     :pixKey => String.t,
-    :pixType => String.t
+    :pixType => PayConductorAPI.Model.PixType.t
   }
+
+  alias PayConductorAPI.Deserializer
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:pixType, :struct, PayConductorAPI.Model.PixType)
   end
 end
 

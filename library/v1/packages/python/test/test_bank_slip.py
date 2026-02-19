@@ -35,12 +35,12 @@ class TestBankSlip(unittest.TestCase):
         model = BankSlip()
         if include_optional:
             return BankSlip(
-                payment_method = '',
+                payment_method = 'Pix',
                 expiration_in_days = None
             )
         else:
             return BankSlip(
-                payment_method = '',
+                payment_method = 'Pix',
         )
         """
 

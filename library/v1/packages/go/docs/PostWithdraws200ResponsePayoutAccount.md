@@ -8,13 +8,13 @@ Name | Type | Description | Notes
 **OwnerDocument** | **string** | Account holder document (CPF or CNPJ) | 
 **OwnerName** | **string** | Account holder name | 
 **PixKey** | **string** | PIX key used for the withdrawal | 
-**PixType** | **string** | PIX key type | [default to "Cpf"]
+**PixType** | [**PixType**](PixType.md) |  | 
 
 ## Methods
 
 ### NewPostWithdraws200ResponsePayoutAccount
 
-`func NewPostWithdraws200ResponsePayoutAccount(id string, ownerDocument string, ownerName string, pixKey string, pixType string, ) *PostWithdraws200ResponsePayoutAccount`
+`func NewPostWithdraws200ResponsePayoutAccount(id string, ownerDocument string, ownerName string, pixKey string, pixType PixType, ) *PostWithdraws200ResponsePayoutAccount`
 
 NewPostWithdraws200ResponsePayoutAccount instantiates a new PostWithdraws200ResponsePayoutAccount object
 This constructor will assign default values to properties that have it defined,
@@ -111,20 +111,20 @@ SetPixKey sets PixKey field to given value.
 
 ### GetPixType
 
-`func (o *PostWithdraws200ResponsePayoutAccount) GetPixType() string`
+`func (o *PostWithdraws200ResponsePayoutAccount) GetPixType() PixType`
 
 GetPixType returns the PixType field if non-nil, zero value otherwise.
 
 ### GetPixTypeOk
 
-`func (o *PostWithdraws200ResponsePayoutAccount) GetPixTypeOk() (*string, bool)`
+`func (o *PostWithdraws200ResponsePayoutAccount) GetPixTypeOk() (*PixType, bool)`
 
 GetPixTypeOk returns a tuple with the PixType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPixType
 
-`func (o *PostWithdraws200ResponsePayoutAccount) SetPixType(v string)`
+`func (o *PostWithdraws200ResponsePayoutAccount) SetPixType(v PixType)`
 
 SetPixType sets PixType field to given value.
 

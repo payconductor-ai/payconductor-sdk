@@ -25,13 +25,12 @@ pub struct PostWithdraws200ResponsePayoutAccount {
     /// PIX key used for the withdrawal
     #[serde(rename = "pixKey")]
     pub pix_key: String,
-    /// PIX key type
     #[serde(rename = "pixType")]
-    pub pix_type: PixType,
+    pub pix_type: models::PixType,
 }
 
 impl PostWithdraws200ResponsePayoutAccount {
-    pub fn new(id: String, owner_document: String, owner_name: String, pix_key: String, pix_type: PixType) -> PostWithdraws200ResponsePayoutAccount {
+    pub fn new(id: String, owner_document: String, owner_name: String, pix_key: String, pix_type: models::PixType) -> PostWithdraws200ResponsePayoutAccount {
         PostWithdraws200ResponsePayoutAccount {
             id,
             owner_document,
@@ -39,26 +38,6 @@ impl PostWithdraws200ResponsePayoutAccount {
             pix_key,
             pix_type,
         }
-    }
-}
-/// PIX key type
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum PixType {
-    #[serde(rename = "Cpf")]
-    Cpf,
-    #[serde(rename = "Cnpj")]
-    Cnpj,
-    #[serde(rename = "Email")]
-    Email,
-    #[serde(rename = "Phone")]
-    Phone,
-    #[serde(rename = "Random")]
-    Random,
-}
-
-impl Default for PixType {
-    fn default() -> PixType {
-        Self::Cpf
     }
 }
 

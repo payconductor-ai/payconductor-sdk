@@ -57,7 +57,7 @@ class CreditCard implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'payment_method' => 'string',
+        'payment_method' => '\OpenAPI\Client\Model\PaymentMethod',
         'card' => '\OpenAPI\Client\Model\CreditCardCard',
         'installments' => '\OpenAPI\Client\Model\CreditCardInstallments',
         'soft_descriptor' => 'string'
@@ -330,7 +330,7 @@ class CreditCard implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets payment_method
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\PaymentMethod
      */
     public function getPaymentMethod()
     {
@@ -340,7 +340,7 @@ class CreditCard implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets payment_method
      *
-     * @param string $payment_method payment_method
+     * @param \OpenAPI\Client\Model\PaymentMethod $payment_method payment_method
      *
      * @return self
      */

@@ -142,6 +142,7 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 <a id="documentation-for-models"></a>
 ## Documentation for Models
 
+ - [payconductor_sdk.models.AvailablePaymentMethods](docs/AvailablePaymentMethods.md)
  - [payconductor_sdk.models.BankSlip](docs/BankSlip.md)
  - [payconductor_sdk.models.BankSlipExpirationInDays](docs/BankSlipExpirationInDays.md)
  - [payconductor_sdk.models.CompleteCardData](docs/CompleteCardData.md)
@@ -151,18 +152,19 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
  - [payconductor_sdk.models.CreditCardInstallments](docs/CreditCardInstallments.md)
  - [payconductor_sdk.models.Customer](docs/Customer.md)
  - [payconductor_sdk.models.Customer1](docs/Customer1.md)
- - [payconductor_sdk.models.Customer2](docs/Customer2.md)
- - [payconductor_sdk.models.Customer2DocumentType](docs/Customer2DocumentType.md)
  - [payconductor_sdk.models.CustomerAddress](docs/CustomerAddress.md)
+ - [payconductor_sdk.models.DocumentType](docs/DocumentType.md)
  - [payconductor_sdk.models.Draft](docs/Draft.md)
- - [payconductor_sdk.models.DraftAvailablePaymentMethodsInner](docs/DraftAvailablePaymentMethodsInner.md)
  - [payconductor_sdk.models.DraftExpirationInSeconds](docs/DraftExpirationInSeconds.md)
+ - [payconductor_sdk.models.Event](docs/Event.md)
  - [payconductor_sdk.models.MerchantInput](docs/MerchantInput.md)
  - [payconductor_sdk.models.NuPay](docs/NuPay.md)
  - [payconductor_sdk.models.NuPayNuPay](docs/NuPayNuPay.md)
+ - [payconductor_sdk.models.PaymentMethod](docs/PaymentMethod.md)
  - [payconductor_sdk.models.PicPay](docs/PicPay.md)
  - [payconductor_sdk.models.Pix](docs/Pix.md)
  - [payconductor_sdk.models.PixExpirationInSeconds](docs/PixExpirationInSeconds.md)
+ - [payconductor_sdk.models.PixType](docs/PixType.md)
  - [payconductor_sdk.models.PostCardTokenization200Response](docs/PostCardTokenization200Response.md)
  - [payconductor_sdk.models.PostCardTokenizationRequest](docs/PostCardTokenizationRequest.md)
  - [payconductor_sdk.models.PostCardTokenizationRequestCustomer](docs/PostCardTokenizationRequestCustomer.md)
@@ -186,6 +188,7 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
  - [payconductor_sdk.models.PostWithdraws200ResponsePayoutAccount](docs/PostWithdraws200ResponsePayoutAccount.md)
  - [payconductor_sdk.models.PostWithdrawsRequest](docs/PostWithdrawsRequest.md)
  - [payconductor_sdk.models.PostWithdrawsRequestPayoutAccount](docs/PostWithdrawsRequestPayoutAccount.md)
+ - [payconductor_sdk.models.Status](docs/Status.md)
  - [payconductor_sdk.models.TokenizedCard](docs/TokenizedCard.md)
 
 

@@ -6,7 +6,7 @@
 
 
 static pic_pay_t *pic_pay_create_internal(
-    char *payment_method
+    payconductor_api_payment_method__e payment_method
     ) {
     pic_pay_t *pic_pay_local_var = malloc(sizeof(pic_pay_t));
     if (!pic_pay_local_var) {
@@ -19,7 +19,7 @@ static pic_pay_t *pic_pay_create_internal(
 }
 
 __attribute__((deprecated)) pic_pay_t *pic_pay_create(
-    char *payment_method
+    payconductor_api_payment_method__e payment_method
     ) {
     return pic_pay_create_internal (
         payment_method
@@ -35,10 +35,6 @@ void pic_pay_free(pic_pay_t *pic_pay) {
         return ;
     }
     listEntry_t *listEntry;
-    if (pic_pay->payment_method) {
-        free(pic_pay->payment_method);
-        pic_pay->payment_method = NULL;
-    }
     free(pic_pay);
 }
 
@@ -46,11 +42,16 @@ cJSON *pic_pay_convertToJSON(pic_pay_t *pic_pay) {
     cJSON *item = cJSON_CreateObject();
 
     // pic_pay->payment_method
-    if (!pic_pay->payment_method) {
+    if (payconductor_api_payment_method__NULL == pic_pay->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", pic_pay->payment_method) == NULL) {
-    goto fail; //String
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(pic_pay->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
     return item;
@@ -65,6 +66,9 @@ pic_pay_t *pic_pay_parseFromJSON(cJSON *pic_payJSON){
 
     pic_pay_t *pic_pay_local_var = NULL;
 
+    // define the local variable for pic_pay->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
+
     // pic_pay->payment_method
     cJSON *payment_method = cJSON_GetObjectItemCaseSensitive(pic_payJSON, "paymentMethod");
     if (cJSON_IsNull(payment_method)) {
@@ -75,18 +79,18 @@ pic_pay_t *pic_pay_parseFromJSON(cJSON *pic_payJSON){
     }
 
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //String
-    }
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
 
     pic_pay_local_var = pic_pay_create_internal (
-        strdup(payment_method->valuestring)
+        payment_method_local_nonprim
         );
 
     return pic_pay_local_var;
 end:
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
+    }
     return NULL;
 
 }

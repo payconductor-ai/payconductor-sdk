@@ -14,6 +14,7 @@
 import ApiClient from '../ApiClient';
 import CreditCardCard from './CreditCardCard';
 import CreditCardInstallments from './CreditCardInstallments';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * The CreditCard model module.
@@ -24,7 +25,7 @@ class CreditCard {
     /**
      * Constructs a new <code>CreditCard</code>.
      * @alias module:model/CreditCard
-     * @param paymentMethod {String} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      * @param card {module:model/CreditCardCard} 
      * @param installments {module:model/CreditCardInstallments} 
      */
@@ -56,7 +57,7 @@ class CreditCard {
             obj = obj || new CreditCard();
 
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
             if (data.hasOwnProperty('card')) {
                 obj['card'] = CreditCardCard.constructFromObject(data['card']);
@@ -83,10 +84,6 @@ class CreditCard {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
-        }
         // validate the optional field `card`
         if (data['card']) { // data not null
           CreditCardCard.validateJSON(data['card']);
@@ -109,7 +106,7 @@ class CreditCard {
 CreditCard.RequiredProperties = ["paymentMethod", "card", "installments"];
 
 /**
- * @member {String} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 CreditCard.prototype['paymentMethod'] = undefined;
 

@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **BankSlip** | Pointer to [**PostOrders200ResponseBankSlip**](PostOrders200ResponseBankSlip.md) |  | [optional] 
 **NuPay** | Pointer to [**PostOrders200ResponseNuPay**](PostOrders200ResponseNuPay.md) |  | [optional] 
 **PicPay** | Pointer to [**PostOrders200ResponsePicPay**](PostOrders200ResponsePicPay.md) |  | [optional] 
-**Status** | **string** |  | 
-**PaymentMethod** | **string** |  | 
+**Status** | [**Status**](Status.md) |  | 
+**PaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **PayedAt** | **NullableString** | Date and time when the order was paid (ISO 8601) | 
 **ErrorCode** | **NullableString** | Error code, if any | 
 **ErrorMessage** | **NullableString** | Error message, if any | 
@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 
 ### NewPostOrdersByIdConfirm200Response
 
-`func NewPostOrdersByIdConfirm200Response(id string, externalId NullableString, amount float32, costFee float32, status string, paymentMethod string, payedAt NullableString, errorCode NullableString, errorMessage NullableString, ) *PostOrdersByIdConfirm200Response`
+`func NewPostOrdersByIdConfirm200Response(id string, externalId NullableString, amount float32, costFee float32, status Status, paymentMethod PaymentMethod, payedAt NullableString, errorCode NullableString, errorMessage NullableString, ) *PostOrdersByIdConfirm200Response`
 
 NewPostOrdersByIdConfirm200Response instantiates a new PostOrdersByIdConfirm200Response object
 This constructor will assign default values to properties that have it defined,
@@ -229,40 +229,40 @@ HasPicPay returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *PostOrdersByIdConfirm200Response) GetStatus() string`
+`func (o *PostOrdersByIdConfirm200Response) GetStatus() Status`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *PostOrdersByIdConfirm200Response) GetStatusOk() (*string, bool)`
+`func (o *PostOrdersByIdConfirm200Response) GetStatusOk() (*Status, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *PostOrdersByIdConfirm200Response) SetStatus(v string)`
+`func (o *PostOrdersByIdConfirm200Response) SetStatus(v Status)`
 
 SetStatus sets Status field to given value.
 
 
 ### GetPaymentMethod
 
-`func (o *PostOrdersByIdConfirm200Response) GetPaymentMethod() string`
+`func (o *PostOrdersByIdConfirm200Response) GetPaymentMethod() PaymentMethod`
 
 GetPaymentMethod returns the PaymentMethod field if non-nil, zero value otherwise.
 
 ### GetPaymentMethodOk
 
-`func (o *PostOrdersByIdConfirm200Response) GetPaymentMethodOk() (*string, bool)`
+`func (o *PostOrdersByIdConfirm200Response) GetPaymentMethodOk() (*PaymentMethod, bool)`
 
 GetPaymentMethodOk returns a tuple with the PaymentMethod field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPaymentMethod
 
-`func (o *PostOrdersByIdConfirm200Response) SetPaymentMethod(v string)`
+`func (o *PostOrdersByIdConfirm200Response) SetPaymentMethod(v PaymentMethod)`
 
 SetPaymentMethod sets PaymentMethod field to given value.
 

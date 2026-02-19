@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **address** | Option<[**models::CustomerAddress**](CustomerAddress.md)> |  | [optional]
 **document_number** | Option<**String**> | Customer CPF or CNPJ without formatting | [optional]
-**document_type** | Option<**DocumentType**> |  (enum: Cpf, Cnpj) | [optional]
+**document_type** | Option<[**models::DocumentType**](DocumentType.md)> |  | [optional]
 **email** | Option<**String**> | Customer email | [optional]
 **name** | Option<**String**> | Customer full name | [optional]
 **phone_number** | Option<**String**> | Customer phone number in +55 DD 9XXXXXXXX format | [optional]

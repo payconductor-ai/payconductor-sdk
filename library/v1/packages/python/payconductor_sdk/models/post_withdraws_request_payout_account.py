@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
+from payconductor_sdk.models.pix_type import PixType
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,15 +30,8 @@ class PostWithdrawsRequestPayoutAccount(BaseModel):
     owner_document: StrictStr = Field(description="Account holder document (CPF or CNPJ)", alias="ownerDocument")
     owner_name: StrictStr = Field(description="Account holder name", alias="ownerName")
     pix_key: StrictStr = Field(description="PIX key for withdrawal", alias="pixKey")
-    pix_type: StrictStr = Field(description="PIX key type", alias="pixType")
+    pix_type: PixType = Field(alias="pixType")
     __properties: ClassVar[List[str]] = ["ownerDocument", "ownerName", "pixKey", "pixType"]
-
-    @field_validator('pix_type')
-    def pix_type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['Cnpj', 'Cpf', 'Email', 'Phone', 'Random']):
-            raise ValueError("must be one of enum values ('Cnpj', 'Cpf', 'Email', 'Phone', 'Random')")
-        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,7 +87,7 @@ class PostWithdrawsRequestPayoutAccount(BaseModel):
             "ownerDocument": obj.get("ownerDocument"),
             "ownerName": obj.get("ownerName"),
             "pixKey": obj.get("pixKey"),
-            "pixType": obj.get("pixType") if obj.get("pixType") is not None else 'Cnpj'
+            "pixType": obj.get("pixType")
         })
         return _obj
 

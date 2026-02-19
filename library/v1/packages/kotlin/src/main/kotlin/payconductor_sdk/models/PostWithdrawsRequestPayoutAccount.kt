@@ -15,6 +15,7 @@
 
 package payconductor_sdk.models
 
+import payconductor_sdk.models.PixType
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -25,7 +26,7 @@ import com.squareup.moshi.JsonClass
  * @param ownerDocument Account holder document (CPF or CNPJ)
  * @param ownerName Account holder name
  * @param pixKey PIX key for withdrawal
- * @param pixType PIX key type
+ * @param pixType 
  */
 
 
@@ -43,25 +44,11 @@ data class PostWithdrawsRequestPayoutAccount (
     @Json(name = "pixKey")
     val pixKey: kotlin.String,
 
-    /* PIX key type */
     @Json(name = "pixType")
-    val pixType: PostWithdrawsRequestPayoutAccount.PixType = PixType.Cnpj
+    val pixType: PixType
 
 ) {
 
-    /**
-     * PIX key type
-     *
-     * Values: Cnpj,Cpf,Email,Phone,Random
-     */
-    @JsonClass(generateAdapter = false)
-    enum class PixType(val value: kotlin.String) {
-        @Json(name = "Cnpj") Cnpj("Cnpj"),
-        @Json(name = "Cpf") Cpf("Cpf"),
-        @Json(name = "Email") Email("Email"),
-        @Json(name = "Phone") Phone("Phone"),
-        @Json(name = "Random") Random("Random");
-    }
 
 }
 

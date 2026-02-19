@@ -36,7 +36,7 @@ namespace payconductor_sdk.Model
         /// <param name="paymentMethod">paymentMethod</param>
         /// <param name="expirationInSeconds">expirationInSeconds</param>
         [JsonConstructor]
-        public Pix(string paymentMethod, Option<PixExpirationInSeconds?> expirationInSeconds = default)
+        public Pix(PaymentMethod paymentMethod, Option<PixExpirationInSeconds?> expirationInSeconds = default)
         {
             PaymentMethod = paymentMethod;
             ExpirationInSecondsOption = expirationInSeconds;
@@ -49,7 +49,7 @@ namespace payconductor_sdk.Model
         /// Gets or Sets PaymentMethod
         /// </summary>
         [JsonPropertyName("paymentMethod")]
-        public string PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// Used to track the state of ExpirationInSeconds
@@ -111,7 +111,7 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> paymentMethod = default;
+            Option<PaymentMethod?> paymentMethod = default;
             Option<PixExpirationInSeconds?> expirationInSeconds = default;
 
             while (utf8JsonReader.Read())
@@ -130,7 +130,9 @@ namespace payconductor_sdk.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "paymentMethod":
-                            paymentMethod = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? paymentMethodRawValue = utf8JsonReader.GetString();
+                            if (paymentMethodRawValue != null)
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
                             break;
                         case "expirationInSeconds":
                             expirationInSeconds = new Option<PixExpirationInSeconds?>(JsonSerializer.Deserialize<PixExpirationInSeconds>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -150,7 +152,7 @@ namespace payconductor_sdk.Model
             if (expirationInSeconds.IsSet && expirationInSeconds.Value == null)
                 throw new ArgumentNullException(nameof(expirationInSeconds), "Property is not nullable for class Pix.");
 
-            return new Pix(paymentMethod.Value!, expirationInSeconds);
+            return new Pix(paymentMethod.Value!.Value!, expirationInSeconds);
         }
 
         /// <summary>
@@ -177,13 +179,11 @@ namespace payconductor_sdk.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, Pix pix, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (pix.PaymentMethod == null)
-                throw new ArgumentNullException(nameof(pix.PaymentMethod), "Property is required for class Pix.");
-
             if (pix.ExpirationInSecondsOption.IsSet && pix.ExpirationInSeconds == null)
                 throw new ArgumentNullException(nameof(pix.ExpirationInSeconds), "Property is required for class Pix.");
 
-            writer.WriteString("paymentMethod", pix.PaymentMethod);
+            var paymentMethodRawValue = PaymentMethodValueConverter.ToJsonValue(pix.PaymentMethod);
+            writer.WriteString("paymentMethod", paymentMethodRawValue);
 
             if (pix.ExpirationInSecondsOption.IsSet)
             {

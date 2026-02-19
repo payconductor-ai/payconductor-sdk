@@ -4,6 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:openapi/src/model/bank_slip_expiration_in_days.dart';
+import 'package:openapi/src/model/payment_method.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -17,7 +18,8 @@ part 'bank_slip.g.dart';
 @BuiltValue()
 abstract class BankSlip implements Built<BankSlip, BankSlipBuilder> {
   @BuiltValueField(wireName: r'paymentMethod')
-  String get paymentMethod;
+  PaymentMethod get paymentMethod;
+  // enum paymentMethodEnum {  Pix,  CreditCard,  DebitCard,  BankSlip,  Crypto,  ApplePay,  NuPay,  PicPay,  AmazonPay,  SepaDebit,  GooglePay,  Draft,  };
 
   @BuiltValueField(wireName: r'expirationInDays')
   BankSlipExpirationInDays? get expirationInDays;
@@ -48,7 +50,7 @@ class _$BankSlipSerializer implements PrimitiveSerializer<BankSlip> {
     yield r'paymentMethod';
     yield serializers.serialize(
       object.paymentMethod,
-      specifiedType: const FullType(String),
+      specifiedType: const FullType(PaymentMethod),
     );
     if (object.expirationInDays != null) {
       yield r'expirationInDays';
@@ -83,8 +85,8 @@ class _$BankSlipSerializer implements PrimitiveSerializer<BankSlip> {
         case r'paymentMethod':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType(PaymentMethod),
+          ) as PaymentMethod;
           result.paymentMethod = valueDes;
           break;
         case r'expirationInDays':

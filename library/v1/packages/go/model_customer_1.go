@@ -22,7 +22,7 @@ type Customer1 struct {
 	Address *CustomerAddress `json:"address,omitempty"`
 	// Customer CPF or CNPJ without formatting
 	DocumentNumber *string `json:"documentNumber,omitempty" validate:"regexp=^\\\\d{11}$|^\\\\d{14}$"`
-	DocumentType *string `json:"documentType,omitempty"`
+	DocumentType *DocumentType `json:"documentType,omitempty"`
 	// Customer email
 	Email *string `json:"email,omitempty"`
 	// Customer full name
@@ -113,9 +113,9 @@ func (o *Customer1) SetDocumentNumber(v string) {
 }
 
 // GetDocumentType returns the DocumentType field value if set, zero value otherwise.
-func (o *Customer1) GetDocumentType() string {
+func (o *Customer1) GetDocumentType() DocumentType {
 	if o == nil || IsNil(o.DocumentType) {
-		var ret string
+		var ret DocumentType
 		return ret
 	}
 	return *o.DocumentType
@@ -123,7 +123,7 @@ func (o *Customer1) GetDocumentType() string {
 
 // GetDocumentTypeOk returns a tuple with the DocumentType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Customer1) GetDocumentTypeOk() (*string, bool) {
+func (o *Customer1) GetDocumentTypeOk() (*DocumentType, bool) {
 	if o == nil || IsNil(o.DocumentType) {
 		return nil, false
 	}
@@ -139,8 +139,8 @@ func (o *Customer1) HasDocumentType() bool {
 	return false
 }
 
-// SetDocumentType gets a reference to the given string and assigns it to the DocumentType field.
-func (o *Customer1) SetDocumentType(v string) {
+// SetDocumentType gets a reference to the given DocumentType and assigns it to the DocumentType field.
+func (o *Customer1) SetDocumentType(v DocumentType) {
 	o.DocumentType = &v
 }
 

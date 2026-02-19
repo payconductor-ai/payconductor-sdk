@@ -252,7 +252,7 @@ OpenapiClient.configure do |config|
 end
 
 api_instance = OpenapiClient::CustomersApi.new
-customer = OpenapiClient::Customer.new({document_number: 'document_number_example', document_type: 'Cpf', email: 'email_example', name: 'name_example'}) # Customer | Schema for creating a new customer
+customer = OpenapiClient::Customer.new({document_number: 'document_number_example', document_type: OpenapiClient::DocumentType::Cpf, email: 'email_example', name: 'name_example'}) # Customer | Schema for creating a new customer
 
 begin
   # Create new customer

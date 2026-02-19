@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import PaymentMethod from './PaymentMethod';
 import PixExpirationInSeconds from './PixExpirationInSeconds';
 
 /**
@@ -23,7 +24,7 @@ class Pix {
     /**
      * Constructs a new <code>Pix</code>.
      * @alias module:model/Pix
-     * @param paymentMethod {String} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      */
     constructor(paymentMethod) { 
         
@@ -51,7 +52,7 @@ class Pix {
             obj = obj || new Pix();
 
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
             if (data.hasOwnProperty('expirationInSeconds')) {
                 obj['expirationInSeconds'] = PixExpirationInSeconds.constructFromObject(data['expirationInSeconds']);
@@ -72,10 +73,6 @@ class Pix {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
-        }
         // validate the optional field `expirationInSeconds`
         if (data['expirationInSeconds']) { // data not null
           PixExpirationInSeconds.validateJSON(data['expirationInSeconds']);
@@ -90,7 +87,7 @@ class Pix {
 Pix.RequiredProperties = ["paymentMethod"];
 
 /**
- * @member {String} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 Pix.prototype['paymentMethod'] = undefined;
 

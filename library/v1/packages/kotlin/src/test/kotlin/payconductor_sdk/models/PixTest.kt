@@ -19,6 +19,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.Pix
+import payconductor_sdk.models.PaymentMethod
 import payconductor_sdk.models.PixExpirationInSeconds
 
 class PixTest : ShouldSpec() {

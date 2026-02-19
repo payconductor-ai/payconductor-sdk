@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
+from payconductor_sdk.models.pix_type import PixType
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,7 +32,7 @@ class PostWithdraws200ResponsePayoutAccount(BaseModel):
     owner_document: Annotated[str, Field(strict=True)] = Field(description="Account holder document (CPF or CNPJ)", alias="ownerDocument")
     owner_name: StrictStr = Field(description="Account holder name", alias="ownerName")
     pix_key: StrictStr = Field(description="PIX key used for the withdrawal", alias="pixKey")
-    pix_type: StrictStr = Field(description="PIX key type", alias="pixType")
+    pix_type: PixType = Field(alias="pixType")
     __properties: ClassVar[List[str]] = ["id", "ownerDocument", "ownerName", "pixKey", "pixType"]
 
     @field_validator('owner_document')
@@ -39,13 +40,6 @@ class PostWithdraws200ResponsePayoutAccount(BaseModel):
         """Validates the regular expression"""
         if not re.match(r"^\d{11}$|^\d{14}$", value):
             raise ValueError(r"must validate the regular expression /^\d{11}$|^\d{14}$/")
-        return value
-
-    @field_validator('pix_type')
-    def pix_type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['Cpf', 'Cnpj', 'Email', 'Phone', 'Random']):
-            raise ValueError("must be one of enum values ('Cpf', 'Cnpj', 'Email', 'Phone', 'Random')")
         return value
 
     model_config = ConfigDict(
@@ -103,7 +97,7 @@ class PostWithdraws200ResponsePayoutAccount(BaseModel):
             "ownerDocument": obj.get("ownerDocument"),
             "ownerName": obj.get("ownerName"),
             "pixKey": obj.get("pixKey"),
-            "pixType": obj.get("pixType") if obj.get("pixType") is not None else 'Cpf'
+            "pixType": obj.get("pixType")
         })
         return _obj
 

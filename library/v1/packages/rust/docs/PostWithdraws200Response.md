@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **external_integration_key** | **String** | Provider key used for the withdrawal | 
 **external_integration_id** | Option<**String**> | Withdrawal ID in the payment provider | 
 **cost_fee** | **f64** | Cost fee applied to the withdrawal | 
-**status** | **Status** | Withdrawal status (enum: Pending, Transferring, Completed, Failed) | [default to Pending]
+**status** | [**models::Status**](Status.md) |  | 
 **error_code** | Option<**String**> | Error code, if any | 
 **error_message** | Option<**String**> | Descriptive error message, if any | 
 **payed_at** | Option<[**models::PostWithdraws200ResponsePayedAt**](PostWithdraws200ResponsePayedAt.md)> |  | 

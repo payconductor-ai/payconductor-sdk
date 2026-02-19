@@ -28,7 +28,7 @@ OpenapiClient.configure do |config|
 end
 
 api_instance = OpenapiClient::CardTokenizationApi.new
-post_card_tokenization_request = OpenapiClient::PostCardTokenizationRequest.new({card: OpenapiClient::CompleteCardData.new({cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), save_card: false, customer: OpenapiClient::PostCardTokenizationRequestCustomer.new({document_number: 'document_number_example', document_type: OpenapiClient::Customer2DocumentType.new, email: 'email_example', name: 'name_example', id: 'id_example'})}) # PostCardTokenizationRequest | Data for creating a customer card
+post_card_tokenization_request = OpenapiClient::PostCardTokenizationRequest.new({card: OpenapiClient::CompleteCardData.new({cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), save_card: false, customer: OpenapiClient::PostCardTokenizationRequestCustomer.new({document_number: 'document_number_example', document_type: OpenapiClient::DocumentType::Cpf, email: 'email_example', name: 'name_example', id: 'id_example'})}) # PostCardTokenizationRequest | Data for creating a customer card
 
 begin
   # Tokenize card

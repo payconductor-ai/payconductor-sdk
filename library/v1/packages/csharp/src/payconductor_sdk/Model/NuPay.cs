@@ -36,7 +36,7 @@ namespace payconductor_sdk.Model
         /// <param name="paymentMethod">paymentMethod</param>
         /// <param name="varNuPay">varNuPay</param>
         [JsonConstructor]
-        public NuPay(string paymentMethod, NuPayNuPay varNuPay)
+        public NuPay(PaymentMethod paymentMethod, NuPayNuPay varNuPay)
         {
             PaymentMethod = paymentMethod;
             VarNuPay = varNuPay;
@@ -49,7 +49,7 @@ namespace payconductor_sdk.Model
         /// Gets or Sets PaymentMethod
         /// </summary>
         [JsonPropertyName("paymentMethod")]
-        public string PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// Gets or Sets VarNuPay
@@ -104,7 +104,7 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> paymentMethod = default;
+            Option<PaymentMethod?> paymentMethod = default;
             Option<NuPayNuPay?> varNuPay = default;
 
             while (utf8JsonReader.Read())
@@ -123,7 +123,9 @@ namespace payconductor_sdk.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "paymentMethod":
-                            paymentMethod = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? paymentMethodRawValue = utf8JsonReader.GetString();
+                            if (paymentMethodRawValue != null)
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
                             break;
                         case "nuPay":
                             varNuPay = new Option<NuPayNuPay?>(JsonSerializer.Deserialize<NuPayNuPay>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -146,7 +148,7 @@ namespace payconductor_sdk.Model
             if (varNuPay.IsSet && varNuPay.Value == null)
                 throw new ArgumentNullException(nameof(varNuPay), "Property is not nullable for class NuPay.");
 
-            return new NuPay(paymentMethod.Value!, varNuPay.Value!);
+            return new NuPay(paymentMethod.Value!.Value!, varNuPay.Value!);
         }
 
         /// <summary>
@@ -173,13 +175,11 @@ namespace payconductor_sdk.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, NuPay nuPay, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (nuPay.PaymentMethod == null)
-                throw new ArgumentNullException(nameof(nuPay.PaymentMethod), "Property is required for class NuPay.");
-
             if (nuPay.VarNuPay == null)
                 throw new ArgumentNullException(nameof(nuPay.VarNuPay), "Property is required for class NuPay.");
 
-            writer.WriteString("paymentMethod", nuPay.PaymentMethod);
+            var paymentMethodRawValue = PaymentMethodValueConverter.ToJsonValue(nuPay.PaymentMethod);
+            writer.WriteString("paymentMethod", paymentMethodRawValue);
 
             writer.WritePropertyName("nuPay");
             JsonSerializer.Serialize(writer, nuPay.VarNuPay, jsonSerializerOptions);

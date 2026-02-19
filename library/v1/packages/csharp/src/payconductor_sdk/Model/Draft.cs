@@ -37,7 +37,7 @@ namespace payconductor_sdk.Model
         /// <param name="expirationInSeconds">expirationInSeconds</param>
         /// <param name="availablePaymentMethods">Available payment methods for this order</param>
         [JsonConstructor]
-        public Draft(string paymentMethod, Option<DraftExpirationInSeconds?> expirationInSeconds = default, Option<List<DraftAvailablePaymentMethodsInner>?> availablePaymentMethods = default)
+        public Draft(PaymentMethod paymentMethod, Option<DraftExpirationInSeconds?> expirationInSeconds = default, Option<List<AvailablePaymentMethods>?> availablePaymentMethods = default)
         {
             PaymentMethod = paymentMethod;
             ExpirationInSecondsOption = expirationInSeconds;
@@ -51,7 +51,7 @@ namespace payconductor_sdk.Model
         /// Gets or Sets PaymentMethod
         /// </summary>
         [JsonPropertyName("paymentMethod")]
-        public string PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// Used to track the state of ExpirationInSeconds
@@ -71,14 +71,14 @@ namespace payconductor_sdk.Model
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<List<DraftAvailablePaymentMethodsInner>?> AvailablePaymentMethodsOption { get; private set; }
+        public Option<List<AvailablePaymentMethods>?> AvailablePaymentMethodsOption { get; private set; }
 
         /// <summary>
         /// Available payment methods for this order
         /// </summary>
         /// <value>Available payment methods for this order</value>
         [JsonPropertyName("availablePaymentMethods")]
-        public List<DraftAvailablePaymentMethodsInner>? AvailablePaymentMethods { get { return this.AvailablePaymentMethodsOption; } set { this.AvailablePaymentMethodsOption = new(value); } }
+        public List<AvailablePaymentMethods>? AvailablePaymentMethods { get { return this.AvailablePaymentMethodsOption; } set { this.AvailablePaymentMethodsOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -128,9 +128,9 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> paymentMethod = default;
+            Option<PaymentMethod?> paymentMethod = default;
             Option<DraftExpirationInSeconds?> expirationInSeconds = default;
-            Option<List<DraftAvailablePaymentMethodsInner>?> availablePaymentMethods = default;
+            Option<List<AvailablePaymentMethods>?> availablePaymentMethods = default;
 
             while (utf8JsonReader.Read())
             {
@@ -148,13 +148,15 @@ namespace payconductor_sdk.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "paymentMethod":
-                            paymentMethod = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? paymentMethodRawValue = utf8JsonReader.GetString();
+                            if (paymentMethodRawValue != null)
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
                             break;
                         case "expirationInSeconds":
                             expirationInSeconds = new Option<DraftExpirationInSeconds?>(JsonSerializer.Deserialize<DraftExpirationInSeconds>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "availablePaymentMethods":
-                            availablePaymentMethods = new Option<List<DraftAvailablePaymentMethodsInner>?>(JsonSerializer.Deserialize<List<DraftAvailablePaymentMethodsInner>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            availablePaymentMethods = new Option<List<AvailablePaymentMethods>?>(JsonSerializer.Deserialize<List<AvailablePaymentMethods>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         default:
                             break;
@@ -174,7 +176,7 @@ namespace payconductor_sdk.Model
             if (availablePaymentMethods.IsSet && availablePaymentMethods.Value == null)
                 throw new ArgumentNullException(nameof(availablePaymentMethods), "Property is not nullable for class Draft.");
 
-            return new Draft(paymentMethod.Value!, expirationInSeconds, availablePaymentMethods);
+            return new Draft(paymentMethod.Value!.Value!, expirationInSeconds, availablePaymentMethods);
         }
 
         /// <summary>
@@ -201,16 +203,14 @@ namespace payconductor_sdk.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, Draft draft, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (draft.PaymentMethod == null)
-                throw new ArgumentNullException(nameof(draft.PaymentMethod), "Property is required for class Draft.");
-
             if (draft.ExpirationInSecondsOption.IsSet && draft.ExpirationInSeconds == null)
                 throw new ArgumentNullException(nameof(draft.ExpirationInSeconds), "Property is required for class Draft.");
 
             if (draft.AvailablePaymentMethodsOption.IsSet && draft.AvailablePaymentMethods == null)
                 throw new ArgumentNullException(nameof(draft.AvailablePaymentMethods), "Property is required for class Draft.");
 
-            writer.WriteString("paymentMethod", draft.PaymentMethod);
+            var paymentMethodRawValue = PaymentMethodValueConverter.ToJsonValue(draft.PaymentMethod);
+            writer.WriteString("paymentMethod", paymentMethodRawValue);
 
             if (draft.ExpirationInSecondsOption.IsSet)
             {

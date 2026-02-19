@@ -18,8 +18,8 @@
 #' @field nuPay  \link{PostOrders200ResponseNuPay} [optional]
 #' @field picPay  \link{PostOrders200ResponsePicPay} [optional]
 #' @field creditCard  \link{PostOrders200ResponseCreditCard} [optional]
-#' @field status  character
-#' @field paymentMethod  character
+#' @field status  \link{Status}
+#' @field paymentMethod  \link{PaymentMethod}
 #' @field payedAt Date and time when the order was paid (ISO 8601) character
 #' @field errorCode Error code, if any character
 #' @field errorMessage Error message, if any character
@@ -104,21 +104,17 @@ PostOrders200Response <- R6::R6Class(
         self$`costFee` <- `costFee`
       }
       if (!missing(`status`)) {
-        if (!(`status` %in% c("Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback"))) {
-          stop(paste("Error! \"", `status`, "\" cannot be assigned to `status`. Must be \"Generating\", \"Pending\", \"Completed\", \"Failed\", \"Canceled\", \"Refunding\", \"Refunded\", \"InDispute\", \"Chargeback\".", sep = ""))
+        if (!(`status` %in% c())) {
+          stop(paste("Error! \"", `status`, "\" cannot be assigned to `status`. Must be .", sep = ""))
         }
-        if (!(is.character(`status`) && length(`status`) == 1)) {
-          stop(paste("Error! Invalid data for `status`. Must be a string:", `status`))
-        }
+        stopifnot(R6::is.R6(`status`))
         self$`status` <- `status`
       }
       if (!missing(`paymentMethod`)) {
-        if (!(`paymentMethod` %in% c("Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft"))) {
-          stop(paste("Error! \"", `paymentMethod`, "\" cannot be assigned to `paymentMethod`. Must be \"Pix\", \"CreditCard\", \"DebitCard\", \"BankSlip\", \"Crypto\", \"ApplePay\", \"NuPay\", \"PicPay\", \"AmazonPay\", \"SepaDebit\", \"GooglePay\", \"Draft\".", sep = ""))
+        if (!(`paymentMethod` %in% c())) {
+          stop(paste("Error! \"", `paymentMethod`, "\" cannot be assigned to `paymentMethod`. Must be .", sep = ""))
         }
-        if (!(is.character(`paymentMethod`) && length(`paymentMethod`) == 1)) {
-          stop(paste("Error! Invalid data for `paymentMethod`. Must be a string:", `paymentMethod`))
-        }
+        stopifnot(R6::is.R6(`paymentMethod`))
         self$`paymentMethod` <- `paymentMethod`
       }
       if (!missing(`payedAt`)) {
@@ -247,11 +243,11 @@ PostOrders200Response <- R6::R6Class(
       }
       if (!is.null(self$`status`)) {
         PostOrders200ResponseObject[["status"]] <-
-          self$`status`
+          self$extractSimpleType(self$`status`)
       }
       if (!is.null(self$`paymentMethod`)) {
         PostOrders200ResponseObject[["paymentMethod"]] <-
-          self$`paymentMethod`
+          self$extractSimpleType(self$`paymentMethod`)
       }
       if (!is.null(self$`payedAt`)) {
         PostOrders200ResponseObject[["payedAt"]] <-
@@ -350,16 +346,14 @@ PostOrders200Response <- R6::R6Class(
         self$`creditCard` <- `creditcard_object`
       }
       if (!is.null(this_object$`status`)) {
-        if (!is.null(this_object$`status`) && !(this_object$`status` %in% c("Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback"))) {
-          stop(paste("Error! \"", this_object$`status`, "\" cannot be assigned to `status`. Must be \"Generating\", \"Pending\", \"Completed\", \"Failed\", \"Canceled\", \"Refunding\", \"Refunded\", \"InDispute\", \"Chargeback\".", sep = ""))
-        }
-        self$`status` <- this_object$`status`
+        `status_object` <- Status$new()
+        `status_object`$fromJSON(jsonlite::toJSON(this_object$`status`, auto_unbox = TRUE, digits = NA))
+        self$`status` <- `status_object`
       }
       if (!is.null(this_object$`paymentMethod`)) {
-        if (!is.null(this_object$`paymentMethod`) && !(this_object$`paymentMethod` %in% c("Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft"))) {
-          stop(paste("Error! \"", this_object$`paymentMethod`, "\" cannot be assigned to `paymentMethod`. Must be \"Pix\", \"CreditCard\", \"DebitCard\", \"BankSlip\", \"Crypto\", \"ApplePay\", \"NuPay\", \"PicPay\", \"AmazonPay\", \"SepaDebit\", \"GooglePay\", \"Draft\".", sep = ""))
-        }
-        self$`paymentMethod` <- this_object$`paymentMethod`
+        `paymentmethod_object` <- PaymentMethod$new()
+        `paymentmethod_object`$fromJSON(jsonlite::toJSON(this_object$`paymentMethod`, auto_unbox = TRUE, digits = NA))
+        self$`paymentMethod` <- `paymentmethod_object`
       }
       if (!is.null(this_object$`payedAt`)) {
         self$`payedAt` <- this_object$`payedAt`
@@ -410,14 +404,8 @@ PostOrders200Response <- R6::R6Class(
       self$`nuPay` <- PostOrders200ResponseNuPay$new()$fromJSON(jsonlite::toJSON(this_object$`nuPay`, auto_unbox = TRUE, digits = NA))
       self$`picPay` <- PostOrders200ResponsePicPay$new()$fromJSON(jsonlite::toJSON(this_object$`picPay`, auto_unbox = TRUE, digits = NA))
       self$`creditCard` <- PostOrders200ResponseCreditCard$new()$fromJSON(jsonlite::toJSON(this_object$`creditCard`, auto_unbox = TRUE, digits = NA))
-      if (!is.null(this_object$`status`) && !(this_object$`status` %in% c("Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback"))) {
-        stop(paste("Error! \"", this_object$`status`, "\" cannot be assigned to `status`. Must be \"Generating\", \"Pending\", \"Completed\", \"Failed\", \"Canceled\", \"Refunding\", \"Refunded\", \"InDispute\", \"Chargeback\".", sep = ""))
-      }
-      self$`status` <- this_object$`status`
-      if (!is.null(this_object$`paymentMethod`) && !(this_object$`paymentMethod` %in% c("Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft"))) {
-        stop(paste("Error! \"", this_object$`paymentMethod`, "\" cannot be assigned to `paymentMethod`. Must be \"Pix\", \"CreditCard\", \"DebitCard\", \"BankSlip\", \"Crypto\", \"ApplePay\", \"NuPay\", \"PicPay\", \"AmazonPay\", \"SepaDebit\", \"GooglePay\", \"Draft\".", sep = ""))
-      }
-      self$`paymentMethod` <- this_object$`paymentMethod`
+      self$`status` <- Status$new()$fromJSON(jsonlite::toJSON(this_object$`status`, auto_unbox = TRUE, digits = NA))
+      self$`paymentMethod` <- PaymentMethod$new()$fromJSON(jsonlite::toJSON(this_object$`paymentMethod`, auto_unbox = TRUE, digits = NA))
       self$`payedAt` <- this_object$`payedAt`
       self$`errorCode` <- this_object$`errorCode`
       self$`errorMessage` <- this_object$`errorMessage`
@@ -476,17 +464,13 @@ PostOrders200Response <- R6::R6Class(
       }
       # check the required field `status`
       if (!is.null(input_json$`status`)) {
-        if (!(is.character(input_json$`status`) && length(input_json$`status`) == 1)) {
-          stop(paste("Error! Invalid data for `status`. Must be a string:", input_json$`status`))
-        }
+        stopifnot(R6::is.R6(input_json$`status`))
       } else {
         stop(paste("The JSON input `", input, "` is invalid for PostOrders200Response: the required field `status` is missing."))
       }
       # check the required field `paymentMethod`
       if (!is.null(input_json$`paymentMethod`)) {
-        if (!(is.character(input_json$`paymentMethod`) && length(input_json$`paymentMethod`) == 1)) {
-          stop(paste("Error! Invalid data for `paymentMethod`. Must be a string:", input_json$`paymentMethod`))
-        }
+        stopifnot(R6::is.R6(input_json$`paymentMethod`))
       } else {
         stop(paste("The JSON input `", input, "` is invalid for PostOrders200Response: the required field `paymentMethod` is missing."))
       }

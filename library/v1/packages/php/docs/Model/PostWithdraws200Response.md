@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **external_integration_key** | **string** | Provider key used for the withdrawal |
 **external_integration_id** | **string** | Withdrawal ID in the payment provider |
 **cost_fee** | **float** | Cost fee applied to the withdrawal |
-**status** | **string** | Withdrawal status | [default to 'Pending']
+**status** | [**\OpenAPI\Client\Model\Status**](Status.md) |  |
 **error_code** | **string** | Error code, if any |
 **error_message** | **string** | Descriptive error message, if any |
 **payed_at** | [**\OpenAPI\Client\Model\PostWithdraws200ResponsePayedAt**](PostWithdraws200ResponsePayedAt.md) |  |

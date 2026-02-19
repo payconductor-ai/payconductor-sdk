@@ -17,10 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from payconductor_sdk.models.post_withdraws200_response_payed_at import PostWithdraws200ResponsePayedAt
 from payconductor_sdk.models.post_withdraws200_response_payout_account import PostWithdraws200ResponsePayoutAccount
+from payconductor_sdk.models.status import Status
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,19 +34,12 @@ class PostWithdraws200Response(BaseModel):
     external_integration_key: StrictStr = Field(description="Provider key used for the withdrawal", alias="externalIntegrationKey")
     external_integration_id: Optional[StrictStr] = Field(description="Withdrawal ID in the payment provider", alias="externalIntegrationId")
     cost_fee: Union[StrictFloat, StrictInt] = Field(description="Cost fee applied to the withdrawal", alias="costFee")
-    status: StrictStr = Field(description="Withdrawal status")
+    status: Status
     error_code: Optional[StrictStr] = Field(description="Error code, if any", alias="errorCode")
     error_message: Optional[StrictStr] = Field(description="Descriptive error message, if any", alias="errorMessage")
     payed_at: Optional[PostWithdraws200ResponsePayedAt] = Field(alias="payedAt")
     payout_account: PostWithdraws200ResponsePayoutAccount = Field(alias="payoutAccount")
     __properties: ClassVar[List[str]] = ["id", "externalId", "externalIntegrationKey", "externalIntegrationId", "costFee", "status", "errorCode", "errorMessage", "payedAt", "payoutAccount"]
-
-    @field_validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['Pending', 'Transferring', 'Completed', 'Failed']):
-            raise ValueError("must be one of enum values ('Pending', 'Transferring', 'Completed', 'Failed')")
-        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -134,7 +128,7 @@ class PostWithdraws200Response(BaseModel):
             "externalIntegrationKey": obj.get("externalIntegrationKey"),
             "externalIntegrationId": obj.get("externalIntegrationId"),
             "costFee": obj.get("costFee"),
-            "status": obj.get("status") if obj.get("status") is not None else 'Pending',
+            "status": obj.get("status"),
             "errorCode": obj.get("errorCode"),
             "errorMessage": obj.get("errorMessage"),
             "payedAt": PostWithdraws200ResponsePayedAt.from_dict(obj["payedAt"]) if obj.get("payedAt") is not None else None,

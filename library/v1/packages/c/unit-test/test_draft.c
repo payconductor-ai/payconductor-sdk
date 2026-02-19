@@ -23,13 +23,13 @@ draft_t* instantiate_draft(int include_optional) {
   draft_t* draft = NULL;
   if (include_optional) {
     draft = draft_create(
-      "0",
+      payconductor_api_draft__Pix,
       null,
       list_createList()
     );
   } else {
     draft = draft_create(
-      "0",
+      payconductor_api_draft__Pix,
       null,
       list_createList()
     );

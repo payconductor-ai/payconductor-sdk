@@ -5,8 +5,8 @@ Used to create an order without generating a real payment. Use to create orders 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | **character** |  | 
+**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [Enum: ] 
 **expirationInSeconds** | [**DraftExpirationInSeconds**](Draft_expirationInSeconds.md) |  | [optional] 
-**availablePaymentMethods** | [**array[DraftAvailablePaymentMethodsInner]**](Draft_availablePaymentMethods_inner.md) | Available payment methods for this order | [optional] 
+**availablePaymentMethods** | [**array[AvailablePaymentMethods]**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] 
 
 

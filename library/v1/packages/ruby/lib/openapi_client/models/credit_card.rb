@@ -24,6 +24,28 @@ module OpenapiClient
     # Text that will appear on the card statement (soft descriptor)
     attr_accessor :soft_descriptor
 
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
+
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
+
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
@@ -47,7 +69,7 @@ module OpenapiClient
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'payment_method' => :'String',
+        :'payment_method' => :'PaymentMethod',
         :'card' => :'CreditCardCard',
         :'installments' => :'CreditCardInstallments',
         :'soft_descriptor' => :'String'

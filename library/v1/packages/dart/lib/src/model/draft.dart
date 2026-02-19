@@ -4,8 +4,9 @@
 
 // ignore_for_file: unused_element
 import 'package:built_collection/built_collection.dart';
+import 'package:openapi/src/model/available_payment_methods.dart';
 import 'package:openapi/src/model/draft_expiration_in_seconds.dart';
-import 'package:openapi/src/model/draft_available_payment_methods_inner.dart';
+import 'package:openapi/src/model/payment_method.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -20,14 +21,15 @@ part 'draft.g.dart';
 @BuiltValue()
 abstract class Draft implements Built<Draft, DraftBuilder> {
   @BuiltValueField(wireName: r'paymentMethod')
-  String get paymentMethod;
+  PaymentMethod get paymentMethod;
+  // enum paymentMethodEnum {  Pix,  CreditCard,  DebitCard,  BankSlip,  Crypto,  ApplePay,  NuPay,  PicPay,  AmazonPay,  SepaDebit,  GooglePay,  Draft,  };
 
   @BuiltValueField(wireName: r'expirationInSeconds')
   DraftExpirationInSeconds? get expirationInSeconds;
 
   /// Available payment methods for this order
   @BuiltValueField(wireName: r'availablePaymentMethods')
-  BuiltList<DraftAvailablePaymentMethodsInner>? get availablePaymentMethods;
+  BuiltList<AvailablePaymentMethods>? get availablePaymentMethods;
 
   Draft._();
 
@@ -55,7 +57,7 @@ class _$DraftSerializer implements PrimitiveSerializer<Draft> {
     yield r'paymentMethod';
     yield serializers.serialize(
       object.paymentMethod,
-      specifiedType: const FullType(String),
+      specifiedType: const FullType(PaymentMethod),
     );
     if (object.expirationInSeconds != null) {
       yield r'expirationInSeconds';
@@ -68,7 +70,7 @@ class _$DraftSerializer implements PrimitiveSerializer<Draft> {
       yield r'availablePaymentMethods';
       yield serializers.serialize(
         object.availablePaymentMethods,
-        specifiedType: const FullType(BuiltList, [FullType(DraftAvailablePaymentMethodsInner)]),
+        specifiedType: const FullType(BuiltList, [FullType(AvailablePaymentMethods)]),
       );
     }
   }
@@ -97,8 +99,8 @@ class _$DraftSerializer implements PrimitiveSerializer<Draft> {
         case r'paymentMethod':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
+            specifiedType: const FullType(PaymentMethod),
+          ) as PaymentMethod;
           result.paymentMethod = valueDes;
           break;
         case r'expirationInSeconds':
@@ -111,8 +113,8 @@ class _$DraftSerializer implements PrimitiveSerializer<Draft> {
         case r'availablePaymentMethods':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(BuiltList, [FullType(DraftAvailablePaymentMethodsInner)]),
-          ) as BuiltList<DraftAvailablePaymentMethodsInner>;
+            specifiedType: const FullType(BuiltList, [FullType(AvailablePaymentMethods)]),
+          ) as BuiltList<AvailablePaymentMethods>;
           result.availablePaymentMethods.replace(valueDes);
           break;
         default:

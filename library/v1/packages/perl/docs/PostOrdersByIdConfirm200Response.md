@@ -16,8 +16,8 @@ Name | Type | Description | Notes
 **bank_slip** | [**PostOrders200ResponseBankSlip**](PostOrders200ResponseBankSlip.md) |  | [optional] 
 **nu_pay** | [**PostOrders200ResponseNuPay**](PostOrders200ResponseNuPay.md) |  | [optional] 
 **pic_pay** | [**PostOrders200ResponsePicPay**](PostOrders200ResponsePicPay.md) |  | [optional] 
-**status** | **string** |  | 
-**payment_method** | **string** |  | 
+**status** | [**Status**](Status.md) |  | 
+**payment_method** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **payed_at** | **string** | Date and time when the order was paid (ISO 8601) | 
 **error_code** | **string** | Error code, if any | 
 **error_message** | **string** | Error message, if any | 

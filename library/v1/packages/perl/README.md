@@ -319,6 +319,7 @@ use WWW::OpenAPIClient::TransfersApi;
 
 To load the models:
 ```perl
+use WWW::OpenAPIClient::Object::AvailablePaymentMethods;
 use WWW::OpenAPIClient::Object::BankSlip;
 use WWW::OpenAPIClient::Object::BankSlipExpirationInDays;
 use WWW::OpenAPIClient::Object::CompleteCardData;
@@ -328,18 +329,19 @@ use WWW::OpenAPIClient::Object::CreditCardCard;
 use WWW::OpenAPIClient::Object::CreditCardInstallments;
 use WWW::OpenAPIClient::Object::Customer;
 use WWW::OpenAPIClient::Object::Customer1;
-use WWW::OpenAPIClient::Object::Customer2;
-use WWW::OpenAPIClient::Object::Customer2DocumentType;
 use WWW::OpenAPIClient::Object::CustomerAddress;
+use WWW::OpenAPIClient::Object::DocumentType;
 use WWW::OpenAPIClient::Object::Draft;
-use WWW::OpenAPIClient::Object::DraftAvailablePaymentMethodsInner;
 use WWW::OpenAPIClient::Object::DraftExpirationInSeconds;
+use WWW::OpenAPIClient::Object::Event;
 use WWW::OpenAPIClient::Object::MerchantInput;
 use WWW::OpenAPIClient::Object::NuPay;
 use WWW::OpenAPIClient::Object::NuPayNuPay;
+use WWW::OpenAPIClient::Object::PaymentMethod;
 use WWW::OpenAPIClient::Object::PicPay;
 use WWW::OpenAPIClient::Object::Pix;
 use WWW::OpenAPIClient::Object::PixExpirationInSeconds;
+use WWW::OpenAPIClient::Object::PixType;
 use WWW::OpenAPIClient::Object::PostCardTokenization200Response;
 use WWW::OpenAPIClient::Object::PostCardTokenizationRequest;
 use WWW::OpenAPIClient::Object::PostCardTokenizationRequestCustomer;
@@ -363,6 +365,7 @@ use WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayedAt;
 use WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayoutAccount;
 use WWW::OpenAPIClient::Object::PostWithdrawsRequest;
 use WWW::OpenAPIClient::Object::PostWithdrawsRequestPayoutAccount;
+use WWW::OpenAPIClient::Object::Status;
 use WWW::OpenAPIClient::Object::TokenizedCard;
 
 ````
@@ -381,6 +384,7 @@ use WWW::OpenAPIClient::OrdersApi;
 use WWW::OpenAPIClient::TransfersApi;
 
 # load the models
+use WWW::OpenAPIClient::Object::AvailablePaymentMethods;
 use WWW::OpenAPIClient::Object::BankSlip;
 use WWW::OpenAPIClient::Object::BankSlipExpirationInDays;
 use WWW::OpenAPIClient::Object::CompleteCardData;
@@ -390,18 +394,19 @@ use WWW::OpenAPIClient::Object::CreditCardCard;
 use WWW::OpenAPIClient::Object::CreditCardInstallments;
 use WWW::OpenAPIClient::Object::Customer;
 use WWW::OpenAPIClient::Object::Customer1;
-use WWW::OpenAPIClient::Object::Customer2;
-use WWW::OpenAPIClient::Object::Customer2DocumentType;
 use WWW::OpenAPIClient::Object::CustomerAddress;
+use WWW::OpenAPIClient::Object::DocumentType;
 use WWW::OpenAPIClient::Object::Draft;
-use WWW::OpenAPIClient::Object::DraftAvailablePaymentMethodsInner;
 use WWW::OpenAPIClient::Object::DraftExpirationInSeconds;
+use WWW::OpenAPIClient::Object::Event;
 use WWW::OpenAPIClient::Object::MerchantInput;
 use WWW::OpenAPIClient::Object::NuPay;
 use WWW::OpenAPIClient::Object::NuPayNuPay;
+use WWW::OpenAPIClient::Object::PaymentMethod;
 use WWW::OpenAPIClient::Object::PicPay;
 use WWW::OpenAPIClient::Object::Pix;
 use WWW::OpenAPIClient::Object::PixExpirationInSeconds;
+use WWW::OpenAPIClient::Object::PixType;
 use WWW::OpenAPIClient::Object::PostCardTokenization200Response;
 use WWW::OpenAPIClient::Object::PostCardTokenizationRequest;
 use WWW::OpenAPIClient::Object::PostCardTokenizationRequestCustomer;
@@ -425,6 +430,7 @@ use WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayedAt;
 use WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayoutAccount;
 use WWW::OpenAPIClient::Object::PostWithdrawsRequest;
 use WWW::OpenAPIClient::Object::PostWithdrawsRequestPayoutAccount;
+use WWW::OpenAPIClient::Object::Status;
 use WWW::OpenAPIClient::Object::TokenizedCard;
 
 # for displaying the API response data
@@ -471,6 +477,7 @@ Class | Method | HTTP request | Description
 
 
 # DOCUMENTATION FOR MODELS
+ - [WWW::OpenAPIClient::Object::AvailablePaymentMethods](docs/AvailablePaymentMethods.md)
  - [WWW::OpenAPIClient::Object::BankSlip](docs/BankSlip.md)
  - [WWW::OpenAPIClient::Object::BankSlipExpirationInDays](docs/BankSlipExpirationInDays.md)
  - [WWW::OpenAPIClient::Object::CompleteCardData](docs/CompleteCardData.md)
@@ -480,18 +487,19 @@ Class | Method | HTTP request | Description
  - [WWW::OpenAPIClient::Object::CreditCardInstallments](docs/CreditCardInstallments.md)
  - [WWW::OpenAPIClient::Object::Customer](docs/Customer.md)
  - [WWW::OpenAPIClient::Object::Customer1](docs/Customer1.md)
- - [WWW::OpenAPIClient::Object::Customer2](docs/Customer2.md)
- - [WWW::OpenAPIClient::Object::Customer2DocumentType](docs/Customer2DocumentType.md)
  - [WWW::OpenAPIClient::Object::CustomerAddress](docs/CustomerAddress.md)
+ - [WWW::OpenAPIClient::Object::DocumentType](docs/DocumentType.md)
  - [WWW::OpenAPIClient::Object::Draft](docs/Draft.md)
- - [WWW::OpenAPIClient::Object::DraftAvailablePaymentMethodsInner](docs/DraftAvailablePaymentMethodsInner.md)
  - [WWW::OpenAPIClient::Object::DraftExpirationInSeconds](docs/DraftExpirationInSeconds.md)
+ - [WWW::OpenAPIClient::Object::Event](docs/Event.md)
  - [WWW::OpenAPIClient::Object::MerchantInput](docs/MerchantInput.md)
  - [WWW::OpenAPIClient::Object::NuPay](docs/NuPay.md)
  - [WWW::OpenAPIClient::Object::NuPayNuPay](docs/NuPayNuPay.md)
+ - [WWW::OpenAPIClient::Object::PaymentMethod](docs/PaymentMethod.md)
  - [WWW::OpenAPIClient::Object::PicPay](docs/PicPay.md)
  - [WWW::OpenAPIClient::Object::Pix](docs/Pix.md)
  - [WWW::OpenAPIClient::Object::PixExpirationInSeconds](docs/PixExpirationInSeconds.md)
+ - [WWW::OpenAPIClient::Object::PixType](docs/PixType.md)
  - [WWW::OpenAPIClient::Object::PostCardTokenization200Response](docs/PostCardTokenization200Response.md)
  - [WWW::OpenAPIClient::Object::PostCardTokenizationRequest](docs/PostCardTokenizationRequest.md)
  - [WWW::OpenAPIClient::Object::PostCardTokenizationRequestCustomer](docs/PostCardTokenizationRequestCustomer.md)
@@ -515,6 +523,7 @@ Class | Method | HTTP request | Description
  - [WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayoutAccount](docs/PostWithdraws200ResponsePayoutAccount.md)
  - [WWW::OpenAPIClient::Object::PostWithdrawsRequest](docs/PostWithdrawsRequest.md)
  - [WWW::OpenAPIClient::Object::PostWithdrawsRequestPayoutAccount](docs/PostWithdrawsRequestPayoutAccount.md)
+ - [WWW::OpenAPIClient::Object::Status](docs/Status.md)
  - [WWW::OpenAPIClient::Object::TokenizedCard](docs/TokenizedCard.md)
 
 

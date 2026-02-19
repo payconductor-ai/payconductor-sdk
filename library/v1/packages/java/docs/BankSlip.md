@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**paymentMethod** | **String** |  |  |
+|**paymentMethod** | **PaymentMethod** |  |  |
 |**expirationInDays** | [**BankSlipExpirationInDays**](BankSlipExpirationInDays.md) |  |  [optional] |
 
 

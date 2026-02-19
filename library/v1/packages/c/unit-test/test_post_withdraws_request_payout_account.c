@@ -25,14 +25,14 @@ post_withdraws_request_payout_account_t* instantiate_post_withdraws_request_payo
       "0",
       "0",
       "0",
-      payconductor_api_post_withdraws_request_payout_account_PIXTYPE_"Cnpj"
+      payconductor_api_post_withdraws_request_payout_account__Cpf
     );
   } else {
     post_withdraws_request_payout_account = post_withdraws_request_payout_account_create(
       "0",
       "0",
       "0",
-      payconductor_api_post_withdraws_request_payout_account_PIXTYPE_"Cnpj"
+      payconductor_api_post_withdraws_request_payout_account__Cpf
     );
   }
 
