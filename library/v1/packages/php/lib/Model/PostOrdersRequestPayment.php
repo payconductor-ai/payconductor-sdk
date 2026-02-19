@@ -43,7 +43,7 @@ use \OpenAPI\Client\ObjectSerializer;
  */
 class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSerializable
 {
-    public const DISCRIMINATOR = null;
+    public const DISCRIMINATOR = 'payment_method';
 
     /**
       * The original name of the model.
@@ -295,6 +295,9 @@ class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('expiration_in_days', $data ?? [], null);
         $this->setIfExists('nu_pay', $data ?? [], null);
         $this->setIfExists('available_payment_methods', $data ?? [], null);
+
+        // Initialize discriminator property with the model name.
+        $this->container['payment_method'] = static::$openAPIModelName;
     }
 
     /**

@@ -34,20 +34,70 @@ namespace payconductor_sdk.Model
         /// Initializes a new instance of the <see cref="PostOrdersRequestPayment" /> class.
         /// </summary>
         /// <param name="pix"></param>
+        /// <param name="nuPay">nuPay</param>
+        public PostOrdersRequestPayment(Pix pix, NuPayNuPay nuPay)
+        {
+            Pix = pix;
+            NuPay = nuPay;
+            OnCreated();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostOrdersRequestPayment" /> class.
+        /// </summary>
         /// <param name="creditCard"></param>
+        /// <param name="nuPay">nuPay</param>
+        public PostOrdersRequestPayment(CreditCard creditCard, NuPayNuPay nuPay)
+        {
+            CreditCard = creditCard;
+            NuPay = nuPay;
+            OnCreated();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostOrdersRequestPayment" /> class.
+        /// </summary>
         /// <param name="bankSlip"></param>
+        /// <param name="nuPay">nuPay</param>
+        public PostOrdersRequestPayment(BankSlip bankSlip, NuPayNuPay nuPay)
+        {
+            BankSlip = bankSlip;
+            NuPay = nuPay;
+            OnCreated();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostOrdersRequestPayment" /> class.
+        /// </summary>
         /// <param name="nuPay1"></param>
+        /// <param name="nuPay">nuPay</param>
+        public PostOrdersRequestPayment(NuPay nuPay1, NuPayNuPay nuPay)
+        {
+            NuPay1 = nuPay1;
+            NuPay = nuPay;
+            OnCreated();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostOrdersRequestPayment" /> class.
+        /// </summary>
         /// <param name="picPay"></param>
+        /// <param name="nuPay">nuPay</param>
+        public PostOrdersRequestPayment(PicPay picPay, NuPayNuPay nuPay)
+        {
+            PicPay = picPay;
+            NuPay = nuPay;
+            OnCreated();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostOrdersRequestPayment" /> class.
+        /// </summary>
         /// <param name="draft"></param>
         /// <param name="nuPay">nuPay</param>
-        public PostOrdersRequestPayment(Option<Pix?> pix, Option<CreditCard?> creditCard, Option<BankSlip?> bankSlip, Option<NuPay?> nuPay1, Option<PicPay?> picPay, Option<Draft?> draft, NuPayNuPay nuPay)
+        public PostOrdersRequestPayment(Draft draft, NuPayNuPay nuPay)
         {
-            PixOption = pix;
-            CreditCardOption = creditCard;
-            BankSlipOption = bankSlip;
-            NuPay1Option = nuPay1;
-            PicPayOption = picPay;
-            DraftOption = draft;
+            Draft = draft;
             NuPay = nuPay;
             OnCreated();
         }
@@ -55,76 +105,34 @@ namespace payconductor_sdk.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of Pix
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Pix?> PixOption { get; private set; }
-
-        /// <summary>
         /// Gets or Sets Pix
         /// </summary>
-        public Pix? Pix { get { return this.PixOption; } set { this.PixOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of CreditCard
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<CreditCard?> CreditCardOption { get; private set; }
+        public Pix? Pix { get; set; }
 
         /// <summary>
         /// Gets or Sets CreditCard
         /// </summary>
-        public CreditCard? CreditCard { get { return this.CreditCardOption; } set { this.CreditCardOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of BankSlip
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<BankSlip?> BankSlipOption { get; private set; }
+        public CreditCard? CreditCard { get; set; }
 
         /// <summary>
         /// Gets or Sets BankSlip
         /// </summary>
-        public BankSlip? BankSlip { get { return this.BankSlipOption; } set { this.BankSlipOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of NuPay1
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<NuPay?> NuPay1Option { get; private set; }
+        public BankSlip? BankSlip { get; set; }
 
         /// <summary>
         /// Gets or Sets NuPay1
         /// </summary>
-        public NuPay? NuPay { get { return this.NuPay1Option; } set { this.NuPay1Option = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of PicPay
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<PicPay?> PicPayOption { get; private set; }
+        public NuPay? NuPay1 { get; set; }
 
         /// <summary>
         /// Gets or Sets PicPay
         /// </summary>
-        public PicPay? PicPay { get { return this.PicPayOption; } set { this.PicPayOption = new(value); } }
-
-        /// <summary>
-        /// Used to track the state of Draft
-        /// </summary>
-        [JsonIgnore]
-        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<Draft?> DraftOption { get; private set; }
+        public PicPay? PicPay { get; set; }
 
         /// <summary>
         /// Gets or Sets Draft
         /// </summary>
-        public Draft? Draft { get { return this.DraftOption; } set { this.DraftOption = new(value); } }
+        public Draft? Draft { get; set; }
 
         /// <summary>
         /// Gets or Sets NuPay
@@ -152,6 +160,16 @@ namespace payconductor_sdk.Model
         /// <returns>Validation Result</returns>
         IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
         {
+            return this.BaseValidate(validationContext);
+        }
+
+        /// <summary>
+        /// To validate all properties of the instance
+        /// </summary>
+        /// <param name="validationContext">Validation context</param>
+        /// <returns>Validation Result</returns>
+        protected IEnumerable<ValidationResult> BaseValidate(ValidationContext validationContext)
+        {
             yield break;
         }
     }
@@ -178,43 +196,63 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
+            Option<PaymentMethod?> paymentMethod = default;
             Option<NuPayNuPay?> nuPay = default;
 
-            Pix? pix = default;
-            CreditCard? creditCard = default;
-            BankSlip? bankSlip = default;
-            NuPay? nuPay1 = default;
-            PicPay? picPay = default;
-            Draft? draft = default;
+            BankSlip? bankSlip = null;
+            CreditCard? creditCard = null;
+            Draft? draft = null;
+            NuPay? nuPay = null;
+            PicPay? picPay = null;
+            Pix? pix = null;
 
-            Utf8JsonReader utf8JsonReaderAnyOf = utf8JsonReader;
-            while (utf8JsonReaderAnyOf.Read())
+            Utf8JsonReader utf8JsonReaderDiscriminator = utf8JsonReader;
+            while (utf8JsonReaderDiscriminator.Read())
             {
-                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReaderAnyOf.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReaderAnyOf.CurrentDepth)
+                if (startingTokenType == JsonTokenType.StartObject && utf8JsonReaderDiscriminator.TokenType == JsonTokenType.EndObject && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth)
                     break;
 
-                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReaderAnyOf.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReaderAnyOf.CurrentDepth)
+                if (startingTokenType == JsonTokenType.StartArray && utf8JsonReaderDiscriminator.TokenType == JsonTokenType.EndArray && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth)
                     break;
 
-                if (utf8JsonReaderAnyOf.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderAnyOf.CurrentDepth - 1)
+                if (utf8JsonReaderDiscriminator.TokenType == JsonTokenType.PropertyName && currentDepth == utf8JsonReaderDiscriminator.CurrentDepth - 1)
                 {
-                    Utf8JsonReader utf8JsonReaderPix = utf8JsonReader;
-                    ClientUtils.TryDeserialize<Pix?>(ref utf8JsonReaderPix, jsonSerializerOptions, out pix);
-
-                    Utf8JsonReader utf8JsonReaderCreditCard = utf8JsonReader;
-                    ClientUtils.TryDeserialize<CreditCard?>(ref utf8JsonReaderCreditCard, jsonSerializerOptions, out creditCard);
-
-                    Utf8JsonReader utf8JsonReaderBankSlip = utf8JsonReader;
-                    ClientUtils.TryDeserialize<BankSlip?>(ref utf8JsonReaderBankSlip, jsonSerializerOptions, out bankSlip);
-
-                    Utf8JsonReader utf8JsonReaderNuPay1 = utf8JsonReader;
-                    ClientUtils.TryDeserialize<NuPay?>(ref utf8JsonReaderNuPay1, jsonSerializerOptions, out nuPay1);
-
-                    Utf8JsonReader utf8JsonReaderPicPay = utf8JsonReader;
-                    ClientUtils.TryDeserialize<PicPay?>(ref utf8JsonReaderPicPay, jsonSerializerOptions, out picPay);
-
-                    Utf8JsonReader utf8JsonReaderDraft = utf8JsonReader;
-                    ClientUtils.TryDeserialize<Draft?>(ref utf8JsonReaderDraft, jsonSerializerOptions, out draft);
+                    string? localVarJsonPropertyName = utf8JsonReaderDiscriminator.GetString();
+                    utf8JsonReaderDiscriminator.Read();
+                    if (localVarJsonPropertyName?.Equals("paymentMethod") ?? false)
+                    {
+                        string? discriminator = utf8JsonReaderDiscriminator.GetString();
+                        if (discriminator?.Equals("BankSlip") ?? false)
+                        {
+                            Utf8JsonReader utf8JsonReaderBankSlip = utf8JsonReader;
+                            bankSlip = JsonSerializer.Deserialize<BankSlip>(ref utf8JsonReaderBankSlip, jsonSerializerOptions);
+                        }
+                        if (discriminator?.Equals("CreditCard") ?? false)
+                        {
+                            Utf8JsonReader utf8JsonReaderCreditCard = utf8JsonReader;
+                            creditCard = JsonSerializer.Deserialize<CreditCard>(ref utf8JsonReaderCreditCard, jsonSerializerOptions);
+                        }
+                        if (discriminator?.Equals("Draft") ?? false)
+                        {
+                            Utf8JsonReader utf8JsonReaderDraft = utf8JsonReader;
+                            draft = JsonSerializer.Deserialize<Draft>(ref utf8JsonReaderDraft, jsonSerializerOptions);
+                        }
+                        if (discriminator?.Equals("NuPay") ?? false)
+                        {
+                            Utf8JsonReader utf8JsonReaderNuPay = utf8JsonReader;
+                            nuPay = JsonSerializer.Deserialize<NuPay>(ref utf8JsonReaderNuPay, jsonSerializerOptions);
+                        }
+                        if (discriminator?.Equals("PicPay") ?? false)
+                        {
+                            Utf8JsonReader utf8JsonReaderPicPay = utf8JsonReader;
+                            picPay = JsonSerializer.Deserialize<PicPay>(ref utf8JsonReaderPicPay, jsonSerializerOptions);
+                        }
+                        if (discriminator?.Equals("Pix") ?? false)
+                        {
+                            Utf8JsonReader utf8JsonReaderPix = utf8JsonReader;
+                            pix = JsonSerializer.Deserialize<Pix>(ref utf8JsonReaderPix, jsonSerializerOptions);
+                        }
+                    }
                 }
             }
 
@@ -233,6 +271,11 @@ namespace payconductor_sdk.Model
 
                     switch (localVarJsonPropertyName)
                     {
+                        case "paymentMethod":
+                            string? paymentMethodRawValue = utf8JsonReader.GetString();
+                            if (paymentMethodRawValue != null)
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
+                            break;
                         case "nuPay":
                             nuPay = new Option<NuPayNuPay?>(JsonSerializer.Deserialize<NuPayNuPay>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
@@ -242,32 +285,37 @@ namespace payconductor_sdk.Model
                 }
             }
 
+            if (!paymentMethod.IsSet)
+                throw new ArgumentException("Property is required for class PostOrdersRequestPayment.", nameof(paymentMethod));
+
             if (!nuPay.IsSet)
                 throw new ArgumentException("Property is required for class PostOrdersRequestPayment.", nameof(nuPay));
+
+            if (paymentMethod.IsSet && paymentMethod.Value == null)
+                throw new ArgumentNullException(nameof(paymentMethod), "Property is not nullable for class PostOrdersRequestPayment.");
 
             if (nuPay.IsSet && nuPay.Value == null)
                 throw new ArgumentNullException(nameof(nuPay), "Property is not nullable for class PostOrdersRequestPayment.");
 
-            Option<Pix?> pixParsedValue = pix == null
-                ? default
-                : new Option<Pix?>(pix);
-            Option<CreditCard?> creditCardParsedValue = creditCard == null
-                ? default
-                : new Option<CreditCard?>(creditCard);
-            Option<BankSlip?> bankSlipParsedValue = bankSlip == null
-                ? default
-                : new Option<BankSlip?>(bankSlip);
-            Option<NuPay?> nuPay1ParsedValue = nuPay1 == null
-                ? default
-                : new Option<NuPay?>(nuPay1);
-            Option<PicPay?> picPayParsedValue = picPay == null
-                ? default
-                : new Option<PicPay?>(picPay);
-            Option<Draft?> draftParsedValue = draft == null
-                ? default
-                : new Option<Draft?>(draft);
+            if (bankSlip != null)
+                return new PostOrdersRequestPayment(bankSlip, nuPay.Value!);
 
-            return new PostOrdersRequestPayment(pixParsedValue, creditCardParsedValue, bankSlipParsedValue, nuPay1ParsedValue, picPayParsedValue, draftParsedValue, nuPay.Value!);
+            if (creditCard != null)
+                return new PostOrdersRequestPayment(creditCard, nuPay.Value!);
+
+            if (draft != null)
+                return new PostOrdersRequestPayment(draft, nuPay.Value!);
+
+            if (nuPay != null)
+                return new PostOrdersRequestPayment(nuPay, nuPay.Value!);
+
+            if (picPay != null)
+                return new PostOrdersRequestPayment(picPay, nuPay.Value!);
+
+            if (pix != null)
+                return new PostOrdersRequestPayment(pix, nuPay.Value!);
+
+            throw new JsonException();
         }
 
         /// <summary>
@@ -281,40 +329,40 @@ namespace payconductor_sdk.Model
         {
             writer.WriteStartObject();
 
-            if (postOrdersRequestPayment.PixOption.IsSet && postOrdersRequestPayment.PixOption.Value != null)
+            if (postOrdersRequestPayment.Pix != null)
             {
-                PixJsonConverter pixJsonConverter = (PixJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.PixOption.Value.GetType()));
-                pixJsonConverter.WriteProperties(writer, postOrdersRequestPayment.PixOption.Value, jsonSerializerOptions);
+                PixJsonConverter pixJsonConverter = (PixJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.Pix.GetType()));
+                pixJsonConverter.WriteProperties(writer, postOrdersRequestPayment.Pix, jsonSerializerOptions);
             }
 
-            if (postOrdersRequestPayment.CreditCardOption.IsSet && postOrdersRequestPayment.CreditCardOption.Value != null)
+            if (postOrdersRequestPayment.CreditCard != null)
             {
-                CreditCardJsonConverter creditCardJsonConverter = (CreditCardJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.CreditCardOption.Value.GetType()));
-                creditCardJsonConverter.WriteProperties(writer, postOrdersRequestPayment.CreditCardOption.Value, jsonSerializerOptions);
+                CreditCardJsonConverter creditCardJsonConverter = (CreditCardJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.CreditCard.GetType()));
+                creditCardJsonConverter.WriteProperties(writer, postOrdersRequestPayment.CreditCard, jsonSerializerOptions);
             }
 
-            if (postOrdersRequestPayment.BankSlipOption.IsSet && postOrdersRequestPayment.BankSlipOption.Value != null)
+            if (postOrdersRequestPayment.BankSlip != null)
             {
-                BankSlipJsonConverter bankSlipJsonConverter = (BankSlipJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.BankSlipOption.Value.GetType()));
-                bankSlipJsonConverter.WriteProperties(writer, postOrdersRequestPayment.BankSlipOption.Value, jsonSerializerOptions);
+                BankSlipJsonConverter bankSlipJsonConverter = (BankSlipJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.BankSlip.GetType()));
+                bankSlipJsonConverter.WriteProperties(writer, postOrdersRequestPayment.BankSlip, jsonSerializerOptions);
             }
 
-            if (postOrdersRequestPayment.NuPay1Option.IsSet && postOrdersRequestPayment.NuPay1Option.Value != null)
+            if (postOrdersRequestPayment.NuPay1 != null)
             {
-                NuPayJsonConverter nuPayJsonConverter = (NuPayJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.NuPay1Option.Value.GetType()));
-                nuPayJsonConverter.WriteProperties(writer, postOrdersRequestPayment.NuPay1Option.Value, jsonSerializerOptions);
+                NuPayJsonConverter nuPayJsonConverter = (NuPayJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.NuPay1.GetType()));
+                nuPayJsonConverter.WriteProperties(writer, postOrdersRequestPayment.NuPay1, jsonSerializerOptions);
             }
 
-            if (postOrdersRequestPayment.PicPayOption.IsSet && postOrdersRequestPayment.PicPayOption.Value != null)
+            if (postOrdersRequestPayment.PicPay != null)
             {
-                PicPayJsonConverter picPayJsonConverter = (PicPayJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.PicPayOption.Value.GetType()));
-                picPayJsonConverter.WriteProperties(writer, postOrdersRequestPayment.PicPayOption.Value, jsonSerializerOptions);
+                PicPayJsonConverter picPayJsonConverter = (PicPayJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.PicPay.GetType()));
+                picPayJsonConverter.WriteProperties(writer, postOrdersRequestPayment.PicPay, jsonSerializerOptions);
             }
 
-            if (postOrdersRequestPayment.DraftOption.IsSet && postOrdersRequestPayment.DraftOption.Value != null)
+            if (postOrdersRequestPayment.Draft != null)
             {
-                DraftJsonConverter draftJsonConverter = (DraftJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.DraftOption.Value.GetType()));
-                draftJsonConverter.WriteProperties(writer, postOrdersRequestPayment.DraftOption.Value, jsonSerializerOptions);
+                DraftJsonConverter draftJsonConverter = (DraftJsonConverter) jsonSerializerOptions.Converters.First(c => c.CanConvert(postOrdersRequestPayment.Draft.GetType()));
+                draftJsonConverter.WriteProperties(writer, postOrdersRequestPayment.Draft, jsonSerializerOptions);
             }
 
             WriteProperties(writer, postOrdersRequestPayment, jsonSerializerOptions);

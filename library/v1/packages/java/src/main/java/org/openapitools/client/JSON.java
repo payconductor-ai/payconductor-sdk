@@ -61,6 +61,21 @@ public class JSON {
     @SuppressWarnings("unchecked")
     public static GsonBuilder createGson() {
         GsonFireBuilder fireBuilder = new GsonFireBuilder()
+                .registerTypeSelector(org.openapitools.client.model.PostOrdersRequestPayment.class, new TypeSelector<org.openapitools.client.model.PostOrdersRequestPayment>() {
+                    @Override
+                    public Class<? extends org.openapitools.client.model.PostOrdersRequestPayment> getClassForElement(JsonElement readElement) {
+                        Map<String, Class> classByDiscriminatorValue = new HashMap<String, Class>();
+                        classByDiscriminatorValue.put("BankSlip", org.openapitools.client.model.BankSlip.class);
+                        classByDiscriminatorValue.put("CreditCard", org.openapitools.client.model.CreditCard.class);
+                        classByDiscriminatorValue.put("Draft", org.openapitools.client.model.Draft.class);
+                        classByDiscriminatorValue.put("NuPay", org.openapitools.client.model.NuPay.class);
+                        classByDiscriminatorValue.put("PicPay", org.openapitools.client.model.PicPay.class);
+                        classByDiscriminatorValue.put("Pix", org.openapitools.client.model.Pix.class);
+                        classByDiscriminatorValue.put("postOrders_request_payment", org.openapitools.client.model.PostOrdersRequestPayment.class);
+                        return getClassByDiscriminator(classByDiscriminatorValue,
+                                getDiscriminatorValue(readElement, "paymentMethod"));
+                    }
+          })
         ;
         GsonBuilder builder = fireBuilder.createGsonBuilder();
         return builder;

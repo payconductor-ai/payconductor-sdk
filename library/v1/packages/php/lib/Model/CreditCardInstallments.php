@@ -50,7 +50,7 @@ class CreditCardInstallments implements ModelInterface, ArrayAccess, \JsonSerial
       *
       * @var string
       */
-    protected static $openAPIModelName = 'Credit_Card_installments';
+    protected static $openAPIModelName = 'CreditCard_installments';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

@@ -49,7 +49,7 @@ class CreditCardCard implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'Credit_Card_card';
+    protected static $openAPIModelName = 'CreditCard_card';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

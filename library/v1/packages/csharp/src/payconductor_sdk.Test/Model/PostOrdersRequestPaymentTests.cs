@@ -54,6 +54,15 @@ namespace payconductor_sdk.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'PaymentMethod'
+        /// </summary>
+        [Fact]
+        public void PaymentMethodTest()
+        {
+            // TODO unit test for the property 'PaymentMethod'
+        }
+
+        /// <summary>
         /// Test the property 'NuPay'
         /// </summary>
         [Fact]

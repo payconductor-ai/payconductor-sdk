@@ -53,7 +53,7 @@ import org.openapitools.client.JSON;
 /**
  * Used to create an order without generating a real payment. Use to create orders that will be paid later
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T18:08:13.438905700-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class Draft {
   public static final String SERIALIZED_NAME_PAYMENT_METHOD = "paymentMethod";
   @SerializedName(SERIALIZED_NAME_PAYMENT_METHOD)

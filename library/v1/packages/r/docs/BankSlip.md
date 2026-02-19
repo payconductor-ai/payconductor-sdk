@@ -5,6 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [Enum: ] 
-**expirationInDays** | [**BankSlipExpirationInDays**](Bank_Slip_expirationInDays.md) |  | [optional] 
+**expirationInDays** | [**BankSlipExpirationInDays**](BankSlip_expirationInDays.md) |  | [optional] 
 
 

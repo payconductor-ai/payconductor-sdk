@@ -13,10 +13,10 @@ package payconductor_sdk
 import (
 	"encoding/json"
 	"fmt"
+	"gopkg.in/validator.v2"
 )
 
-
-// PostOrdersRequestPayment Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+// PostOrdersRequestPayment - Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
 type PostOrdersRequestPayment struct {
 	BankSlip *BankSlip
 	CreditCard *CreditCard
@@ -26,88 +26,170 @@ type PostOrdersRequestPayment struct {
 	Pix *Pix
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
+// BankSlipAsPostOrdersRequestPayment is a convenience function that returns BankSlip wrapped in PostOrdersRequestPayment
+func BankSlipAsPostOrdersRequestPayment(v *BankSlip) PostOrdersRequestPayment {
+	return PostOrdersRequestPayment{
+		BankSlip: v,
+	}
+}
+
+// CreditCardAsPostOrdersRequestPayment is a convenience function that returns CreditCard wrapped in PostOrdersRequestPayment
+func CreditCardAsPostOrdersRequestPayment(v *CreditCard) PostOrdersRequestPayment {
+	return PostOrdersRequestPayment{
+		CreditCard: v,
+	}
+}
+
+// DraftAsPostOrdersRequestPayment is a convenience function that returns Draft wrapped in PostOrdersRequestPayment
+func DraftAsPostOrdersRequestPayment(v *Draft) PostOrdersRequestPayment {
+	return PostOrdersRequestPayment{
+		Draft: v,
+	}
+}
+
+// NuPayAsPostOrdersRequestPayment is a convenience function that returns NuPay wrapped in PostOrdersRequestPayment
+func NuPayAsPostOrdersRequestPayment(v *NuPay) PostOrdersRequestPayment {
+	return PostOrdersRequestPayment{
+		NuPay: v,
+	}
+}
+
+// PicPayAsPostOrdersRequestPayment is a convenience function that returns PicPay wrapped in PostOrdersRequestPayment
+func PicPayAsPostOrdersRequestPayment(v *PicPay) PostOrdersRequestPayment {
+	return PostOrdersRequestPayment{
+		PicPay: v,
+	}
+}
+
+// PixAsPostOrdersRequestPayment is a convenience function that returns Pix wrapped in PostOrdersRequestPayment
+func PixAsPostOrdersRequestPayment(v *Pix) PostOrdersRequestPayment {
+	return PostOrdersRequestPayment{
+		Pix: v,
+	}
+}
+
+
+// Unmarshal JSON data into one of the pointers in the struct
 func (dst *PostOrdersRequestPayment) UnmarshalJSON(data []byte) error {
 	var err error
-	// try to unmarshal JSON data into BankSlip
-	err = json.Unmarshal(data, &dst.BankSlip);
+	match := 0
+	// try to unmarshal data into BankSlip
+	err = newStrictDecoder(data).Decode(&dst.BankSlip)
 	if err == nil {
 		jsonBankSlip, _ := json.Marshal(dst.BankSlip)
 		if string(jsonBankSlip) == "{}" { // empty struct
 			dst.BankSlip = nil
 		} else {
-			return nil // data stored in dst.BankSlip, return on the first match
+			if err = validator.Validate(dst.BankSlip); err != nil {
+				dst.BankSlip = nil
+			} else {
+				match++
+			}
 		}
 	} else {
 		dst.BankSlip = nil
 	}
 
-	// try to unmarshal JSON data into CreditCard
-	err = json.Unmarshal(data, &dst.CreditCard);
+	// try to unmarshal data into CreditCard
+	err = newStrictDecoder(data).Decode(&dst.CreditCard)
 	if err == nil {
 		jsonCreditCard, _ := json.Marshal(dst.CreditCard)
 		if string(jsonCreditCard) == "{}" { // empty struct
 			dst.CreditCard = nil
 		} else {
-			return nil // data stored in dst.CreditCard, return on the first match
+			if err = validator.Validate(dst.CreditCard); err != nil {
+				dst.CreditCard = nil
+			} else {
+				match++
+			}
 		}
 	} else {
 		dst.CreditCard = nil
 	}
 
-	// try to unmarshal JSON data into Draft
-	err = json.Unmarshal(data, &dst.Draft);
+	// try to unmarshal data into Draft
+	err = newStrictDecoder(data).Decode(&dst.Draft)
 	if err == nil {
 		jsonDraft, _ := json.Marshal(dst.Draft)
 		if string(jsonDraft) == "{}" { // empty struct
 			dst.Draft = nil
 		} else {
-			return nil // data stored in dst.Draft, return on the first match
+			if err = validator.Validate(dst.Draft); err != nil {
+				dst.Draft = nil
+			} else {
+				match++
+			}
 		}
 	} else {
 		dst.Draft = nil
 	}
 
-	// try to unmarshal JSON data into NuPay
-	err = json.Unmarshal(data, &dst.NuPay);
+	// try to unmarshal data into NuPay
+	err = newStrictDecoder(data).Decode(&dst.NuPay)
 	if err == nil {
 		jsonNuPay, _ := json.Marshal(dst.NuPay)
 		if string(jsonNuPay) == "{}" { // empty struct
 			dst.NuPay = nil
 		} else {
-			return nil // data stored in dst.NuPay, return on the first match
+			if err = validator.Validate(dst.NuPay); err != nil {
+				dst.NuPay = nil
+			} else {
+				match++
+			}
 		}
 	} else {
 		dst.NuPay = nil
 	}
 
-	// try to unmarshal JSON data into PicPay
-	err = json.Unmarshal(data, &dst.PicPay);
+	// try to unmarshal data into PicPay
+	err = newStrictDecoder(data).Decode(&dst.PicPay)
 	if err == nil {
 		jsonPicPay, _ := json.Marshal(dst.PicPay)
 		if string(jsonPicPay) == "{}" { // empty struct
 			dst.PicPay = nil
 		} else {
-			return nil // data stored in dst.PicPay, return on the first match
+			if err = validator.Validate(dst.PicPay); err != nil {
+				dst.PicPay = nil
+			} else {
+				match++
+			}
 		}
 	} else {
 		dst.PicPay = nil
 	}
 
-	// try to unmarshal JSON data into Pix
-	err = json.Unmarshal(data, &dst.Pix);
+	// try to unmarshal data into Pix
+	err = newStrictDecoder(data).Decode(&dst.Pix)
 	if err == nil {
 		jsonPix, _ := json.Marshal(dst.Pix)
 		if string(jsonPix) == "{}" { // empty struct
 			dst.Pix = nil
 		} else {
-			return nil // data stored in dst.Pix, return on the first match
+			if err = validator.Validate(dst.Pix); err != nil {
+				dst.Pix = nil
+			} else {
+				match++
+			}
 		}
 	} else {
 		dst.Pix = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PostOrdersRequestPayment)")
+	if match > 1 { // more than 1 match
+		// reset to nil
+		dst.BankSlip = nil
+		dst.CreditCard = nil
+		dst.Draft = nil
+		dst.NuPay = nil
+		dst.PicPay = nil
+		dst.Pix = nil
+
+		return fmt.Errorf("data matches more than one schema in oneOf(PostOrdersRequestPayment)")
+	} else if match == 1 {
+		return nil // exactly one match
+	} else { // no match
+		return fmt.Errorf("data failed to match schemas in oneOf(PostOrdersRequestPayment)")
+	}
 }
 
 // Marshal data from the first non-nil pointers in the struct to JSON
@@ -136,9 +218,71 @@ func (src PostOrdersRequestPayment) MarshalJSON() ([]byte, error) {
 		return json.Marshal(&src.Pix)
 	}
 
-	return nil, nil // no data in anyOf schemas
+	return nil, nil // no data in oneOf schemas
 }
 
+// Get the actual instance
+func (obj *PostOrdersRequestPayment) GetActualInstance() (interface{}) {
+	if obj == nil {
+		return nil
+	}
+	if obj.BankSlip != nil {
+		return obj.BankSlip
+	}
+
+	if obj.CreditCard != nil {
+		return obj.CreditCard
+	}
+
+	if obj.Draft != nil {
+		return obj.Draft
+	}
+
+	if obj.NuPay != nil {
+		return obj.NuPay
+	}
+
+	if obj.PicPay != nil {
+		return obj.PicPay
+	}
+
+	if obj.Pix != nil {
+		return obj.Pix
+	}
+
+	// all schemas are nil
+	return nil
+}
+
+// Get the actual instance value
+func (obj PostOrdersRequestPayment) GetActualInstanceValue() (interface{}) {
+	if obj.BankSlip != nil {
+		return *obj.BankSlip
+	}
+
+	if obj.CreditCard != nil {
+		return *obj.CreditCard
+	}
+
+	if obj.Draft != nil {
+		return *obj.Draft
+	}
+
+	if obj.NuPay != nil {
+		return *obj.NuPay
+	}
+
+	if obj.PicPay != nil {
+		return *obj.PicPay
+	}
+
+	if obj.Pix != nil {
+		return *obj.Pix
+	}
+
+	// all schemas are nil
+	return nil
+}
 
 type NullablePostOrdersRequestPayment struct {
 	value *PostOrdersRequestPayment

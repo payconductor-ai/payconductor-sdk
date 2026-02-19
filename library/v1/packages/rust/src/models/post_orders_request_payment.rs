@@ -12,41 +12,27 @@ use crate::models;
 use serde::{Deserialize, Serialize};
 
 /// PostOrdersRequestPayment : Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
-#[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
-pub struct PostOrdersRequestPayment {
-    #[serde(rename = "paymentMethod")]
-    pub payment_method: models::PaymentMethod,
-    #[serde(rename = "expirationInSeconds", skip_serializing_if = "Option::is_none")]
-    pub expiration_in_seconds: Option<Box<models::DraftExpirationInSeconds>>,
-    #[serde(rename = "card")]
-    pub card: Box<models::CreditCardCard>,
-    #[serde(rename = "installments")]
-    pub installments: Box<models::CreditCardInstallments>,
-    /// Text that will appear on the card statement (soft descriptor)
-    #[serde(rename = "softDescriptor", skip_serializing_if = "Option::is_none")]
-    pub soft_descriptor: Option<String>,
-    #[serde(rename = "expirationInDays", skip_serializing_if = "Option::is_none")]
-    pub expiration_in_days: Option<Box<models::BankSlipExpirationInDays>>,
-    #[serde(rename = "nuPay")]
-    pub nu_pay: Box<models::NuPayNuPay>,
-    /// Available payment methods for this order
-    #[serde(rename = "availablePaymentMethods", skip_serializing_if = "Option::is_none")]
-    pub available_payment_methods: Option<Vec<models::AvailablePaymentMethods>>,
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "paymentMethod")]
+pub enum PostOrdersRequestPayment {
+    #[serde(rename="Pix")]
+    Pix(Box<models::Pix>),
+    #[serde(rename="CreditCard")]
+    CreditCard(Box<models::CreditCard>),
+    #[serde(rename="BankSlip")]
+    BankSlip(Box<models::BankSlip>),
+    #[serde(rename="NuPay")]
+    NuPay(Box<models::NuPay>),
+    #[serde(rename="PicPay")]
+    PicPay(Box<models::PicPay>),
+    #[serde(rename="Draft")]
+    Draft(Box<models::Draft>),
 }
 
-impl PostOrdersRequestPayment {
-    /// Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
-    pub fn new(payment_method: models::PaymentMethod, card: models::CreditCardCard, installments: models::CreditCardInstallments, nu_pay: models::NuPayNuPay) -> PostOrdersRequestPayment {
-        PostOrdersRequestPayment {
-            payment_method,
-            expiration_in_seconds: None,
-            card: Box::new(card),
-            installments: Box::new(installments),
-            soft_descriptor: None,
-            expiration_in_days: None,
-            nu_pay: Box::new(nu_pay),
-            available_payment_methods: None,
-        }
+impl Default for PostOrdersRequestPayment {
+    fn default() -> Self {
+        Self::Pix(Default::default())
     }
 }
+
 

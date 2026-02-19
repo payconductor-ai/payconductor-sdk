@@ -647,6 +647,81 @@ components:
       - SepaDebit
       - GooglePay
       - Draft
+    Pix:
+      properties:
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethod"
+        expirationInSeconds:
+          $ref: "#/components/schemas/Pix_expirationInSeconds"
+      required:
+      - paymentMethod
+      title: Pix
+      type: object
+    CreditCard:
+      properties:
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethod"
+        card:
+          $ref: "#/components/schemas/CreditCard_card"
+        installments:
+          $ref: "#/components/schemas/CreditCard_installments"
+        softDescriptor:
+          description: Text that will appear on the card statement (soft descriptor)
+          maxLength: 22
+          minLength: 1
+          type: string
+      required:
+      - card
+      - installments
+      - paymentMethod
+      title: Credit Card
+      type: object
+    BankSlip:
+      properties:
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethod"
+        expirationInDays:
+          $ref: "#/components/schemas/BankSlip_expirationInDays"
+      required:
+      - paymentMethod
+      title: Bank Slip
+      type: object
+    NuPay:
+      properties:
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethod"
+        nuPay:
+          $ref: "#/components/schemas/NuPay_nuPay"
+      required:
+      - nuPay
+      - paymentMethod
+      title: NuPay
+      type: object
+    PicPay:
+      properties:
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethod"
+      required:
+      - paymentMethod
+      title: PicPay
+      type: object
+    Draft:
+      description: Used to create an order without generating a real payment. Use
+        to create orders that will be paid later
+      properties:
+        paymentMethod:
+          $ref: "#/components/schemas/PaymentMethod"
+        expirationInSeconds:
+          $ref: "#/components/schemas/Draft_expirationInSeconds"
+        availablePaymentMethods:
+          description: Available payment methods for this order
+          items:
+            $ref: "#/components/schemas/AvailablePaymentMethods"
+          type: array
+      required:
+      - paymentMethod
+      title: Draft
+      type: object
     Customer_address:
       description: Schema for creating a new address
       example:
@@ -790,213 +865,25 @@ components:
       - name
       title: MerchantInput
       type: object
-    Pix_expirationInSeconds:
-      anyOf:
-      - default: "0"
-        format: integer
-        type: string
-      - default: 3600
-        description: PIX expiration time in seconds
-        minimum: 3600
-        type: integer
-      default: 3600
-      description: PIX expiration time in seconds
-      minimum: 3600
-    Pix:
-      properties:
-        paymentMethod:
-          $ref: "#/components/schemas/PaymentMethod"
-        expirationInSeconds:
-          $ref: "#/components/schemas/Pix_expirationInSeconds"
-      required:
-      - paymentMethod
-      title: Pix
-      type: object
-    Tokenized_card:
-      properties:
-        firstSixCardNumber:
-          description: First 6 digits of the credit card
-          type: string
-        token:
-          description: Previously generated credit card token
-          type: string
-      required:
-      - token
-      title: Tokenized card
-      type: object
-    Complete_card_data_expiration:
-      properties:
-        month:
-          description: Card expiration month
-          maximum: 12
-          minimum: 1
-          type: number
-        year:
-          description: Card expiration year
-          maximum: 2046
-          minimum: 2025
-          type: number
-      required:
-      - month
-      - year
-      type: object
-    Complete_card_data:
-      properties:
-        cvv:
-          description: Card security code (CVV)
-          maxLength: 4
-          minLength: 3
-          type: string
-        expiration:
-          $ref: "#/components/schemas/Complete_card_data_expiration"
-        holderName:
-          description: Card holder name
-          type: string
-        number:
-          description: Credit card number
-          type: string
-      required:
-      - cvv
-      - expiration
-      - holderName
-      - number
-      title: Complete card data
-      type: object
-    Credit_Card_card:
-      anyOf:
-      - $ref: "#/components/schemas/Tokenized_card"
-      - $ref: "#/components/schemas/Complete_card_data"
-    Credit_Card_installments:
-      anyOf:
-      - default: "0"
-        format: integer
-        type: string
-      - default: 1
-        description: Number of installments
-        maximum: 12
-        minimum: 1
-        type: integer
-      default: 1
-      description: Number of installments
-      maximum: 12
-      minimum: 1
-    Credit_Card:
-      properties:
-        paymentMethod:
-          $ref: "#/components/schemas/PaymentMethod"
-        card:
-          $ref: "#/components/schemas/Credit_Card_card"
-        installments:
-          $ref: "#/components/schemas/Credit_Card_installments"
-        softDescriptor:
-          description: Text that will appear on the card statement (soft descriptor)
-          maxLength: 22
-          minLength: 1
-          type: string
-      required:
-      - card
-      - installments
-      - paymentMethod
-      title: Credit Card
-      type: object
-    Bank_Slip_expirationInDays:
-      anyOf:
-      - default: "0"
-        format: integer
-        type: string
-      - default: 7
-        description: Days until bank slip expires
-        minimum: 1
-        type: integer
-      default: 7
-      description: Days until bank slip expires
-      minimum: 1
-    Bank_Slip:
-      properties:
-        paymentMethod:
-          $ref: "#/components/schemas/PaymentMethod"
-        expirationInDays:
-          $ref: "#/components/schemas/Bank_Slip_expirationInDays"
-      required:
-      - paymentMethod
-      title: Bank Slip
-      type: object
-    NuPay_nuPay:
-      description: Specific data for NuPay payment
-      properties:
-        cancelUrl:
-          description: Payment cancellation URL
-          type: string
-        merchantName:
-          description: Merchant name
-          type: string
-        returnUrl:
-          description: Return URL after payment completion
-          type: string
-        storeName:
-          description: Store name
-          type: string
-      required:
-      - cancelUrl
-      - merchantName
-      - returnUrl
-      type: object
-    NuPay:
-      properties:
-        paymentMethod:
-          $ref: "#/components/schemas/PaymentMethod"
-        nuPay:
-          $ref: "#/components/schemas/NuPay_nuPay"
-      required:
-      - nuPay
-      - paymentMethod
-      title: NuPay
-      type: object
-    PicPay:
-      properties:
-        paymentMethod:
-          $ref: "#/components/schemas/PaymentMethod"
-      required:
-      - paymentMethod
-      title: PicPay
-      type: object
-    Draft_expirationInSeconds:
-      anyOf:
-      - default: "0"
-        format: integer
-        type: string
-      - default: 3600
-        description: Order expiration time in seconds
-        type: integer
-      default: 3600
-      description: Order expiration time in seconds
-    Draft:
-      description: Used to create an order without generating a real payment. Use
-        to create orders that will be paid later
-      properties:
-        paymentMethod:
-          $ref: "#/components/schemas/PaymentMethod"
-        expirationInSeconds:
-          $ref: "#/components/schemas/Draft_expirationInSeconds"
-        availablePaymentMethods:
-          description: Available payment methods for this order
-          items:
-            $ref: "#/components/schemas/AvailablePaymentMethods"
-          type: array
-      required:
-      - paymentMethod
-      title: Draft
-      type: object
     postOrders_request_payment:
-      anyOf:
+      description: "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay,\
+        \ etc...)"
+      discriminator:
+        mapping:
+          Pix: "#/components/schemas/Pix"
+          CreditCard: "#/components/schemas/CreditCard"
+          BankSlip: "#/components/schemas/BankSlip"
+          NuPay: "#/components/schemas/NuPay"
+          PicPay: "#/components/schemas/PicPay"
+          Draft: "#/components/schemas/Draft"
+        propertyName: paymentMethod
+      oneOf:
       - $ref: "#/components/schemas/Pix"
-      - $ref: "#/components/schemas/Credit_Card"
-      - $ref: "#/components/schemas/Bank_Slip"
+      - $ref: "#/components/schemas/CreditCard"
+      - $ref: "#/components/schemas/BankSlip"
       - $ref: "#/components/schemas/NuPay"
       - $ref: "#/components/schemas/PicPay"
       - $ref: "#/components/schemas/Draft"
-      description: "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay,\
-        \ etc...)"
     postOrders_request_session:
       description: "If externalSessionId or sessionId is provided and an existing\
         \ session exists, it will be updated with the new data. Otherwise, a new session\
@@ -1554,6 +1441,44 @@ components:
           type: string
       title: Customer
       type: object
+    Complete_card_data_expiration:
+      properties:
+        month:
+          description: Card expiration month
+          maximum: 12
+          minimum: 1
+          type: number
+        year:
+          description: Card expiration year
+          maximum: 2046
+          minimum: 2025
+          type: number
+      required:
+      - month
+      - year
+      type: object
+    Complete_card_data:
+      properties:
+        cvv:
+          description: Card security code (CVV)
+          maxLength: 4
+          minLength: 3
+          type: string
+        expiration:
+          $ref: "#/components/schemas/Complete_card_data_expiration"
+        holderName:
+          description: Card holder name
+          type: string
+        number:
+          description: Credit card number
+          type: string
+      required:
+      - cvv
+      - expiration
+      - holderName
+      - number
+      title: Complete card data
+      type: object
     postCard_tokenization_request_customer_anyOf:
       properties:
         id:
@@ -1598,6 +1523,90 @@ components:
       - customerId
       - token
       type: object
+    Pix_expirationInSeconds:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 3600
+        description: PIX expiration time in seconds
+        minimum: 3600
+        type: integer
+      default: 3600
+      description: PIX expiration time in seconds
+      minimum: 3600
+    Tokenized_card:
+      properties:
+        firstSixCardNumber:
+          description: First 6 digits of the credit card
+          type: string
+        token:
+          description: Previously generated credit card token
+          type: string
+      required:
+      - token
+      title: Tokenized card
+      type: object
+    CreditCard_card:
+      anyOf:
+      - $ref: "#/components/schemas/Tokenized_card"
+      - $ref: "#/components/schemas/Complete_card_data"
+    CreditCard_installments:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 1
+        description: Number of installments
+        maximum: 12
+        minimum: 1
+        type: integer
+      default: 1
+      description: Number of installments
+      maximum: 12
+      minimum: 1
+    BankSlip_expirationInDays:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 7
+        description: Days until bank slip expires
+        minimum: 1
+        type: integer
+      default: 7
+      description: Days until bank slip expires
+      minimum: 1
+    NuPay_nuPay:
+      description: Specific data for NuPay payment
+      properties:
+        cancelUrl:
+          description: Payment cancellation URL
+          type: string
+        merchantName:
+          description: Merchant name
+          type: string
+        returnUrl:
+          description: Return URL after payment completion
+          type: string
+        storeName:
+          description: Store name
+          type: string
+      required:
+      - cancelUrl
+      - merchantName
+      - returnUrl
+      type: object
+    Draft_expirationInSeconds:
+      anyOf:
+      - default: "0"
+        format: integer
+        type: string
+      - default: 3600
+        description: Order expiration time in seconds
+        type: integer
+      default: 3600
+      description: Order expiration time in seconds
   securitySchemes:
     basicAuth:
       description: "Use the format Authorization: Basic base64('client_id:client_secret')"

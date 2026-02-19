@@ -48,7 +48,7 @@ import org.openapitools.client.JSON;
 /**
  * Specific data for NuPay payment
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T18:08:13.438905700-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class NuPayNuPay {
   public static final String SERIALIZED_NAME_CANCEL_URL = "cancelUrl";
   @SerializedName(SERIALIZED_NAME_CANCEL_URL)

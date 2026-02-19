@@ -49,7 +49,7 @@ class BankSlip implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'Bank_Slip';
+    protected static $openAPIModelName = 'BankSlip';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

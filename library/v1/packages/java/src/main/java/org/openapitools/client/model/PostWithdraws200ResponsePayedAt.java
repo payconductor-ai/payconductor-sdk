@@ -54,7 +54,7 @@ import com.google.gson.JsonParseException;
 
 import org.openapitools.client.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T18:08:13.438905700-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostWithdraws200ResponsePayedAt extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(PostWithdraws200ResponsePayedAt.class.getName());
 

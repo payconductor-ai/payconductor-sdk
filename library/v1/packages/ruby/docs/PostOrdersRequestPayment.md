@@ -1,32 +1,91 @@
 # OpenapiClient::PostOrdersRequestPayment
 
-## Properties
+## Class instance methods
 
-| Name | Type | Description | Notes |
-| ---- | ---- | ----------- | ----- |
-| **payment_method** | [**PaymentMethod**](PaymentMethod.md) |  |  |
-| **expiration_in_seconds** | [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] |
-| **card** | [**CreditCardCard**](CreditCardCard.md) |  |  |
-| **installments** | [**CreditCardInstallments**](CreditCardInstallments.md) |  |  |
-| **soft_descriptor** | **String** | Text that will appear on the card statement (soft descriptor) | [optional] |
-| **expiration_in_days** | [**BankSlipExpirationInDays**](BankSlipExpirationInDays.md) |  | [optional] |
-| **nu_pay** | [**NuPayNuPay**](NuPayNuPay.md) |  |  |
-| **available_payment_methods** | [**Array&lt;AvailablePaymentMethods&gt;**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] |
+### `openapi_one_of`
 
-## Example
+Returns the list of classes defined in oneOf.
+
+#### Example
 
 ```ruby
 require 'openapi_client'
 
-instance = OpenapiClient::PostOrdersRequestPayment.new(
-  payment_method: null,
-  expiration_in_seconds: null,
-  card: null,
-  installments: null,
-  soft_descriptor: null,
-  expiration_in_days: null,
-  nu_pay: null,
-  available_payment_methods: null
-)
+OpenapiClient::PostOrdersRequestPayment.openapi_one_of
+# =>
+# [
+#   :'BankSlip',
+#   :'CreditCard',
+#   :'Draft',
+#   :'NuPay',
+#   :'PicPay',
+#   :'Pix'
+# ]
 ```
+
+### `openapi_discriminator_name`
+
+Returns the discriminator's property name.
+
+#### Example
+
+```ruby
+require 'openapi_client'
+
+OpenapiClient::PostOrdersRequestPayment.openapi_discriminator_name
+# => :'payment_method'
+```
+
+### `openapi_discriminator_name`
+
+Returns the discriminator's mapping.
+
+#### Example
+
+```ruby
+require 'openapi_client'
+
+OpenapiClient::PostOrdersRequestPayment.openapi_discriminator_mapping
+# =>
+# {
+#   :'BankSlip' => :'BankSlip',
+#   :'CreditCard' => :'CreditCard',
+#   :'Draft' => :'Draft',
+#   :'NuPay' => :'NuPay',
+#   :'PicPay' => :'PicPay',
+#   :'Pix' => :'Pix'
+# }
+```
+
+### build
+
+Find the appropriate object from the `openapi_one_of` list and casts the data into it.
+
+#### Example
+
+```ruby
+require 'openapi_client'
+
+OpenapiClient::PostOrdersRequestPayment.build(data)
+# => #<BankSlip:0x00007fdd4aab02a0>
+
+OpenapiClient::PostOrdersRequestPayment.build(data_that_doesnt_match)
+# => nil
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| **data** | **Mixed** | data to be matched against the list of oneOf items |
+
+#### Return type
+
+- `BankSlip`
+- `CreditCard`
+- `Draft`
+- `NuPay`
+- `PicPay`
+- `Pix`
+- `nil` (if no type matches)
 

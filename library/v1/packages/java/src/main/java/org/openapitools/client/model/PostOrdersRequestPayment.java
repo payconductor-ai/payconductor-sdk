@@ -72,7 +72,7 @@ import com.google.gson.JsonParseException;
 
 import org.openapitools.client.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T18:08:13.438905700-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(PostOrdersRequestPayment.class.getName());
 
@@ -135,7 +135,7 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         elementAdapter.write(out, element);
                         return;
                     }
-                    throw new IOException("Failed to serialize as the type doesn't match anyOf schemas: BankSlip, CreditCard, Draft, NuPay, PicPay, Pix");
+                    throw new IOException("Failed to serialize as the type doesn't match oneOf schemas: BankSlip, CreditCard, Draft, NuPay, PicPay, Pix");
                 }
 
                 @Override
@@ -143,6 +143,7 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                     Object deserialized = null;
                     JsonElement jsonElement = elementAdapter.read(in);
 
+                    int match = 0;
                     ArrayList<String> errorMessages = new ArrayList<>();
                     TypeAdapter actualAdapter = elementAdapter;
 
@@ -151,9 +152,8 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         // validate the JSON object to see if any exception is thrown
                         Pix.validateJsonElement(jsonElement);
                         actualAdapter = adapterPix;
-                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'Pix'");
                     } catch (Exception e) {
                         // deserialization failed, continue
                         errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Pix failed with `%s`.", e.getMessage()));
@@ -164,9 +164,8 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         // validate the JSON object to see if any exception is thrown
                         CreditCard.validateJsonElement(jsonElement);
                         actualAdapter = adapterCreditCard;
-                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'CreditCard'");
                     } catch (Exception e) {
                         // deserialization failed, continue
                         errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for CreditCard failed with `%s`.", e.getMessage()));
@@ -177,9 +176,8 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         // validate the JSON object to see if any exception is thrown
                         BankSlip.validateJsonElement(jsonElement);
                         actualAdapter = adapterBankSlip;
-                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'BankSlip'");
                     } catch (Exception e) {
                         // deserialization failed, continue
                         errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for BankSlip failed with `%s`.", e.getMessage()));
@@ -190,9 +188,8 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         // validate the JSON object to see if any exception is thrown
                         NuPay.validateJsonElement(jsonElement);
                         actualAdapter = adapterNuPay;
-                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'NuPay'");
                     } catch (Exception e) {
                         // deserialization failed, continue
                         errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for NuPay failed with `%s`.", e.getMessage()));
@@ -203,9 +200,8 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         // validate the JSON object to see if any exception is thrown
                         PicPay.validateJsonElement(jsonElement);
                         actualAdapter = adapterPicPay;
-                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'PicPay'");
                     } catch (Exception e) {
                         // deserialization failed, continue
                         errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for PicPay failed with `%s`.", e.getMessage()));
@@ -216,30 +212,35 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
                         // validate the JSON object to see if any exception is thrown
                         Draft.validateJsonElement(jsonElement);
                         actualAdapter = adapterDraft;
-                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
-                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
-                        return ret;
+                        match++;
+                        log.log(Level.FINER, "Input data matches schema 'Draft'");
                     } catch (Exception e) {
                         // deserialization failed, continue
                         errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Draft failed with `%s`.", e.getMessage()));
                         log.log(Level.FINER, "Input data does not match schema 'Draft'", e);
                     }
 
-                    throw new IOException(String.format(java.util.Locale.ROOT, "Failed deserialization for PostOrdersRequestPayment: no class matches result, expected at least 1. Detailed failure message for anyOf schemas: %s. JSON: %s", errorMessages, jsonElement.toString()));
+                    if (match == 1) {
+                        PostOrdersRequestPayment ret = new PostOrdersRequestPayment();
+                        ret.setActualInstance(actualAdapter.fromJsonTree(jsonElement));
+                        return ret;
+                    }
+
+                    throw new IOException(String.format(java.util.Locale.ROOT, "Failed deserialization for PostOrdersRequestPayment: %d classes match result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s", match, errorMessages, jsonElement.toString()));
                 }
             }.nullSafe();
         }
     }
 
-    // store a list of schema names defined in anyOf
+    // store a list of schema names defined in oneOf
     public static final Map<String, Class<?>> schemas = new HashMap<String, Class<?>>();
 
     public PostOrdersRequestPayment() {
-        super("anyOf", Boolean.FALSE);
+        super("oneOf", Boolean.FALSE);
     }
 
     public PostOrdersRequestPayment(Object o) {
-        super("anyOf", Boolean.FALSE);
+        super("oneOf", Boolean.FALSE);
         setActualInstance(o);
     }
 
@@ -258,11 +259,11 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
     }
 
     /**
-     * Set the instance that matches the anyOf child schema, check
-     * the instance parameter is valid against the anyOf child schemas:
+     * Set the instance that matches the oneOf child schema, check
+     * the instance parameter is valid against the oneOf child schemas:
      * BankSlip, CreditCard, Draft, NuPay, PicPay, Pix
      *
-     * It could be an instance of the 'anyOf' schemas.
+     * It could be an instance of the 'oneOf' schemas.
      */
     @Override
     public void setActualInstance(Object instance) {
@@ -384,12 +385,13 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
      * @throws IOException if the JSON Element is invalid with respect to PostOrdersRequestPayment
      */
     public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-        // validate anyOf schemas one by one
+        // validate oneOf schemas one by one
+        int validCount = 0;
         ArrayList<String> errorMessages = new ArrayList<>();
         // validate the json string with Pix
         try {
             Pix.validateJsonElement(jsonElement);
-            return;
+            validCount++;
         } catch (Exception e) {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Pix failed with `%s`.", e.getMessage()));
             // continue to the next one
@@ -397,7 +399,7 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
         // validate the json string with CreditCard
         try {
             CreditCard.validateJsonElement(jsonElement);
-            return;
+            validCount++;
         } catch (Exception e) {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for CreditCard failed with `%s`.", e.getMessage()));
             // continue to the next one
@@ -405,7 +407,7 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
         // validate the json string with BankSlip
         try {
             BankSlip.validateJsonElement(jsonElement);
-            return;
+            validCount++;
         } catch (Exception e) {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for BankSlip failed with `%s`.", e.getMessage()));
             // continue to the next one
@@ -413,7 +415,7 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
         // validate the json string with NuPay
         try {
             NuPay.validateJsonElement(jsonElement);
-            return;
+            validCount++;
         } catch (Exception e) {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for NuPay failed with `%s`.", e.getMessage()));
             // continue to the next one
@@ -421,7 +423,7 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
         // validate the json string with PicPay
         try {
             PicPay.validateJsonElement(jsonElement);
-            return;
+            validCount++;
         } catch (Exception e) {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for PicPay failed with `%s`.", e.getMessage()));
             // continue to the next one
@@ -429,12 +431,14 @@ public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
         // validate the json string with Draft
         try {
             Draft.validateJsonElement(jsonElement);
-            return;
+            validCount++;
         } catch (Exception e) {
             errorMessages.add(String.format(java.util.Locale.ROOT, "Deserialization for Draft failed with `%s`.", e.getMessage()));
             // continue to the next one
         }
-        throw new IOException(String.format(java.util.Locale.ROOT, "The JSON string is invalid for PostOrdersRequestPayment with anyOf schemas: BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. no class match the result, expected at least 1. Detailed failure message for anyOf schemas: %s. JSON: %s", errorMessages, jsonElement.toString()));
+        if (validCount != 1) {
+            throw new IOException(String.format(java.util.Locale.ROOT, "The JSON string is invalid for PostOrdersRequestPayment with oneOf schemas: BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. %d class(es) match the result, expected 1. Detailed failure message for oneOf schemas: %s. JSON: %s", validCount, errorMessages, jsonElement.toString()));
+        }
     }
 
     /**

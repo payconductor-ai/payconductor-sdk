@@ -15,13 +15,13 @@ PostOrdersRequestPayment <- R6::R6Class(
     actual_instance = NULL,
     #' @field actual_type the type of the object stored in this instance.
     actual_type = NULL,
-    #' @field any_of  a list of object types defined in the anyOf schema.
-    any_of = list("BankSlip", "CreditCard", "Draft", "NuPay", "PicPay", "Pix"),
+    #' @field one_of  a list of types defined in the oneOf schema.
+    one_of = list("BankSlip", "CreditCard", "Draft", "NuPay", "PicPay", "Pix"),
 
     #' @description
     #' Initialize a new PostOrdersRequestPayment.
     #'
-    #' @param instance an instance of the object defined in the anyOf schemas: "BankSlip", "CreditCard", "Draft", "NuPay", "PicPay", "Pix"
+    #' @param instance an instance of the object defined in the oneOf schemas: "BankSlip", "CreditCard", "Draft", "NuPay", "PicPay", "Pix"
     initialize = function(instance = NULL) {
       if (is.null(instance)) {
         # do nothing
@@ -44,14 +44,14 @@ PostOrdersRequestPayment <- R6::R6Class(
         self$actual_instance <- instance
         self$actual_type <- "Pix"
       } else {
-        stop(paste("Failed to initialize PostOrdersRequestPayment with anyOf schemas BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. Provided class name: ",
+        stop(paste("Failed to initialize PostOrdersRequestPayment with oneOf schemas BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. Provided class name: ",
                    get(class(instance)[[1]], pos = -1)$classname))
       }
     },
 
     #' @description
     #' Deserialize JSON string into an instance of PostOrdersRequestPayment.
-    #' An alias to the method `fromJSON`.
+    #' An alias to the method `fromJSON` .
     #'
     #' @param input The input JSON.
     #'
@@ -67,14 +67,18 @@ PostOrdersRequestPayment <- R6::R6Class(
     #'
     #' @return An instance of PostOrdersRequestPayment.
     fromJSON = function(input) {
+      matched <- 0 # match counter
+      matched_schemas <- list() #names of matched schemas
       error_messages <- list()
+      instance <- NULL
 
       `Pix_result` <- tryCatch({
           `Pix`$public_methods$validateJSON(input)
           `Pix_instance` <- `Pix`$new()
-          self$actual_instance <- `Pix_instance`$fromJSON(input)
-          self$actual_type <- "Pix"
-          return(self)
+          instance <- `Pix_instance`$fromJSON(input)
+          instance_type <- "Pix"
+          matched_schemas <- append(matched_schemas, "Pix")
+          matched <- matched + 1
         },
         error = function(err) err
       )
@@ -86,9 +90,10 @@ PostOrdersRequestPayment <- R6::R6Class(
       `CreditCard_result` <- tryCatch({
           `CreditCard`$public_methods$validateJSON(input)
           `CreditCard_instance` <- `CreditCard`$new()
-          self$actual_instance <- `CreditCard_instance`$fromJSON(input)
-          self$actual_type <- "CreditCard"
-          return(self)
+          instance <- `CreditCard_instance`$fromJSON(input)
+          instance_type <- "CreditCard"
+          matched_schemas <- append(matched_schemas, "CreditCard")
+          matched <- matched + 1
         },
         error = function(err) err
       )
@@ -100,9 +105,10 @@ PostOrdersRequestPayment <- R6::R6Class(
       `BankSlip_result` <- tryCatch({
           `BankSlip`$public_methods$validateJSON(input)
           `BankSlip_instance` <- `BankSlip`$new()
-          self$actual_instance <- `BankSlip_instance`$fromJSON(input)
-          self$actual_type <- "BankSlip"
-          return(self)
+          instance <- `BankSlip_instance`$fromJSON(input)
+          instance_type <- "BankSlip"
+          matched_schemas <- append(matched_schemas, "BankSlip")
+          matched <- matched + 1
         },
         error = function(err) err
       )
@@ -114,9 +120,10 @@ PostOrdersRequestPayment <- R6::R6Class(
       `NuPay_result` <- tryCatch({
           `NuPay`$public_methods$validateJSON(input)
           `NuPay_instance` <- `NuPay`$new()
-          self$actual_instance <- `NuPay_instance`$fromJSON(input)
-          self$actual_type <- "NuPay"
-          return(self)
+          instance <- `NuPay_instance`$fromJSON(input)
+          instance_type <- "NuPay"
+          matched_schemas <- append(matched_schemas, "NuPay")
+          matched <- matched + 1
         },
         error = function(err) err
       )
@@ -128,9 +135,10 @@ PostOrdersRequestPayment <- R6::R6Class(
       `PicPay_result` <- tryCatch({
           `PicPay`$public_methods$validateJSON(input)
           `PicPay_instance` <- `PicPay`$new()
-          self$actual_instance <- `PicPay_instance`$fromJSON(input)
-          self$actual_type <- "PicPay"
-          return(self)
+          instance <- `PicPay_instance`$fromJSON(input)
+          instance_type <- "PicPay"
+          matched_schemas <- append(matched_schemas, "PicPay")
+          matched <- matched + 1
         },
         error = function(err) err
       )
@@ -142,9 +150,10 @@ PostOrdersRequestPayment <- R6::R6Class(
       `Draft_result` <- tryCatch({
           `Draft`$public_methods$validateJSON(input)
           `Draft_instance` <- `Draft`$new()
-          self$actual_instance <- `Draft_instance`$fromJSON(input)
-          self$actual_type <- "Draft"
-          return(self)
+          instance <- `Draft_instance`$fromJSON(input)
+          instance_type <- "Draft"
+          matched_schemas <- append(matched_schemas, "Draft")
+          matched <- matched + 1
         },
         error = function(err) err
       )
@@ -153,9 +162,36 @@ PostOrdersRequestPayment <- R6::R6Class(
         error_messages <- append(error_messages, `Draft_result`["message"])
       }
 
-      # no match
-      stop(paste("No match found when deserializing the input into PostOrdersRequestPayment with anyOf schemas BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. Details: >>",
-                 paste(error_messages, collapse = " >> ")))
+      if (matched == 1) {
+        # successfully match exactly 1 schema specified in oneOf
+        self$actual_instance <- instance
+        self$actual_type <- instance_type
+      } else if (matched > 1) {
+        # more than 1 match
+        stop(paste("Multiple matches found when deserializing the input into PostOrdersRequestPayment with oneOf schemas BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. Matched schemas: ",
+                   paste(matched_schemas, collapse = ", ")))
+      } else {
+        # no match
+        stop(paste("No match found when deserializing the input into PostOrdersRequestPayment with oneOf schemas BankSlip, CreditCard, Draft, NuPay, PicPay, Pix. Details: >>",
+                   paste(error_messages, collapse = " >> ")))
+      }
+
+      self
+    },
+
+    #' @description
+    #' Serialize PostOrdersRequestPayment to JSON string.
+    #' 
+    #' @param ... Parameters passed to `jsonlite::toJSON`
+    #' @return JSON string representation of the PostOrdersRequestPayment.
+    toJSONString = function(...) {
+      simple <- self$toSimpleType()
+      if (!is.null(self$actual_instance)) {
+        json <- jsonlite::toJSON(simple, auto_unbox = TRUE, ...)
+        return(as.character(jsonlite::minify(json)))
+      } else {
+        return(NULL)
+      }
     },
 
     #' @description
@@ -173,18 +209,8 @@ PostOrdersRequestPayment <- R6::R6Class(
       if (!is.null(self$actual_instance)) {
         return(self$actual_instance$toSimpleType())
       } else {
-        NULL
+        return(NULL)
       }
-    },
-
-    #' @description
-    #' Serialize PostOrdersRequestPayment to JSON string.
-    #'
-    #' @param ... Parameters passed to `jsonlite::toJSON`
-    #' @return JSON string representation of the PostOrdersRequestPayment.
-    toJSONString = function(...) {
-      json <- jsonlite::toJSON(self$toSimpleType(), auto_unbox = TRUE, ...)
-      return(as.character(jsonlite::minify(json)))
     },
 
     #' @description
@@ -213,7 +239,7 @@ PostOrdersRequestPayment <- R6::R6Class(
       jsoncontent <- c(
         sprintf('"actual_instance": %s', if (is.null(self$actual_instance)) NULL else self$actual_instance$toJSONString()),
         sprintf('"actual_type": "%s"', self$actual_type),
-        sprintf('"any_of": "%s"', paste(unlist(self$any_of), collapse = ", "))
+        sprintf('"one_of": "%s"', paste(unlist(self$one_of), collapse = ", "))
       )
       jsoncontent <- paste(jsoncontent, collapse = ",")
       as.character(jsonlite::prettify(paste("{", jsoncontent, "}", sep = "")))

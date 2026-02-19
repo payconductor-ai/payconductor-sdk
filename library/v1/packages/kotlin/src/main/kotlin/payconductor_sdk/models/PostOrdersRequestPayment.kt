@@ -46,36 +46,26 @@ import com.squareup.moshi.JsonClass
  */
 
 
-data class PostOrdersRequestPayment (
+interface PostOrdersRequestPayment {
 
     @Json(name = "paymentMethod")
-    val paymentMethod: PaymentMethod,
-
+    val paymentMethod: PaymentMethod
     @Json(name = "card")
-    val card: CreditCardCard,
-
+    val card: CreditCardCard
     @Json(name = "installments")
-    val installments: CreditCardInstallments,
-
+    val installments: CreditCardInstallments
     @Json(name = "nuPay")
-    val nuPay: NuPayNuPay,
-
+    val nuPay: NuPayNuPay
     @Json(name = "expirationInSeconds")
-    val expirationInSeconds: DraftExpirationInSeconds? = null,
-
+    val expirationInSeconds: DraftExpirationInSeconds?
     /* Text that will appear on the card statement (soft descriptor) */
     @Json(name = "softDescriptor")
-    val softDescriptor: kotlin.String? = null,
-
+    val softDescriptor: kotlin.String?
     @Json(name = "expirationInDays")
-    val expirationInDays: BankSlipExpirationInDays? = null,
-
+    val expirationInDays: BankSlipExpirationInDays?
     /* Available payment methods for this order */
     @Json(name = "availablePaymentMethods")
-    val availablePaymentMethods: kotlin.collections.List<AvailablePaymentMethods>? = null
-
-) {
-
+    val availablePaymentMethods: kotlin.collections.List<AvailablePaymentMethods>?
 
 }
 

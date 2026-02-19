@@ -50,7 +50,7 @@ class BankSlipExpirationInDays implements ModelInterface, ArrayAccess, \JsonSeri
       *
       * @var string
       */
-    protected static $openAPIModelName = 'Bank_Slip_expirationInDays';
+    protected static $openAPIModelName = 'BankSlip_expirationInDays';
 
     /**
       * Array of property to type mappings. Used for (de)serialization

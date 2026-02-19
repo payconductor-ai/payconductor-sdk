@@ -2,7 +2,7 @@
 
 PayConductor API
 - API version: 1.0.0
-  - Build date: 2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]
+  - Build date: 2026-02-19T18:08:13.438905700-03:00[America/Sao_Paulo]
   - Generator version: 7.20.0
 
 PayConductor API Documentation.
