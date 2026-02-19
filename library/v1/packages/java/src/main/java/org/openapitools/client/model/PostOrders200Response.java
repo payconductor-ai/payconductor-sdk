@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.client.model.PaymentMethod;
 import org.openapitools.client.model.PostOrders200ResponseBankSlip;
 import org.openapitools.client.model.PostOrders200ResponseCreditCard;
 import org.openapitools.client.model.PostOrders200ResponseNuPay;
@@ -31,6 +32,7 @@ import org.openapitools.client.model.PostOrders200ResponseOrderItemsInner;
 import org.openapitools.client.model.PostOrders200ResponsePicPay;
 import org.openapitools.client.model.PostOrders200ResponsePix;
 import org.openapitools.client.model.PostOrders200ResponseSession;
+import org.openapitools.client.model.Status;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -59,7 +61,7 @@ import org.openapitools.client.JSON;
 /**
  * PostOrders200Response
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostOrders200Response {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -116,153 +118,15 @@ public class PostOrders200Response {
   @javax.annotation.Nullable
   private PostOrders200ResponseCreditCard creditCard;
 
-  /**
-   * Gets or Sets status
-   */
-  @JsonAdapter(StatusEnum.Adapter.class)
-  public enum StatusEnum {
-    GENERATING("Generating"),
-    
-    PENDING("Pending"),
-    
-    COMPLETED("Completed"),
-    
-    FAILED("Failed"),
-    
-    CANCELED("Canceled"),
-    
-    REFUNDING("Refunding"),
-    
-    REFUNDED("Refunded"),
-    
-    IN_DISPUTE("InDispute"),
-    
-    CHARGEBACK("Chargeback");
-
-    private String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static StatusEnum fromValue(String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<StatusEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final StatusEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public StatusEnum read(final JsonReader jsonReader) throws IOException {
-        String value =  jsonReader.nextString();
-        return StatusEnum.fromValue(value);
-      }
-    }
-
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      String value = jsonElement.getAsString();
-      StatusEnum.fromValue(value);
-    }
-  }
-
   public static final String SERIALIZED_NAME_STATUS = "status";
   @SerializedName(SERIALIZED_NAME_STATUS)
   @javax.annotation.Nonnull
-  private StatusEnum status;
-
-  /**
-   * Gets or Sets paymentMethod
-   */
-  @JsonAdapter(PaymentMethodEnum.Adapter.class)
-  public enum PaymentMethodEnum {
-    PIX("Pix"),
-    
-    CREDIT_CARD("CreditCard"),
-    
-    DEBIT_CARD("DebitCard"),
-    
-    BANK_SLIP("BankSlip"),
-    
-    CRYPTO("Crypto"),
-    
-    APPLE_PAY("ApplePay"),
-    
-    NU_PAY("NuPay"),
-    
-    PIC_PAY("PicPay"),
-    
-    AMAZON_PAY("AmazonPay"),
-    
-    SEPA_DEBIT("SepaDebit"),
-    
-    GOOGLE_PAY("GooglePay"),
-    
-    DRAFT("Draft");
-
-    private String value;
-
-    PaymentMethodEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static PaymentMethodEnum fromValue(String value) {
-      for (PaymentMethodEnum b : PaymentMethodEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<PaymentMethodEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final PaymentMethodEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public PaymentMethodEnum read(final JsonReader jsonReader) throws IOException {
-        String value =  jsonReader.nextString();
-        return PaymentMethodEnum.fromValue(value);
-      }
-    }
-
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      String value = jsonElement.getAsString();
-      PaymentMethodEnum.fromValue(value);
-    }
-  }
+  private Status status;
 
   public static final String SERIALIZED_NAME_PAYMENT_METHOD = "paymentMethod";
   @SerializedName(SERIALIZED_NAME_PAYMENT_METHOD)
   @javax.annotation.Nonnull
-  private PaymentMethodEnum paymentMethod;
+  private PaymentMethod paymentMethod;
 
   public static final String SERIALIZED_NAME_PAYED_AT = "payedAt";
   @SerializedName(SERIALIZED_NAME_PAYED_AT)
@@ -501,7 +365,7 @@ public class PostOrders200Response {
   }
 
 
-  public PostOrders200Response status(@javax.annotation.Nonnull StatusEnum status) {
+  public PostOrders200Response status(@javax.annotation.Nonnull Status status) {
     this.status = status;
     return this;
   }
@@ -511,16 +375,16 @@ public class PostOrders200Response {
    * @return status
    */
   @javax.annotation.Nonnull
-  public StatusEnum getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(@javax.annotation.Nonnull StatusEnum status) {
+  public void setStatus(@javax.annotation.Nonnull Status status) {
     this.status = status;
   }
 
 
-  public PostOrders200Response paymentMethod(@javax.annotation.Nonnull PaymentMethodEnum paymentMethod) {
+  public PostOrders200Response paymentMethod(@javax.annotation.Nonnull PaymentMethod paymentMethod) {
     this.paymentMethod = paymentMethod;
     return this;
   }
@@ -530,11 +394,11 @@ public class PostOrders200Response {
    * @return paymentMethod
    */
   @javax.annotation.Nonnull
-  public PaymentMethodEnum getPaymentMethod() {
+  public PaymentMethod getPaymentMethod() {
     return paymentMethod;
   }
 
-  public void setPaymentMethod(@javax.annotation.Nonnull PaymentMethodEnum paymentMethod) {
+  public void setPaymentMethod(@javax.annotation.Nonnull PaymentMethod paymentMethod) {
     this.paymentMethod = paymentMethod;
   }
 
@@ -797,16 +661,10 @@ public class PostOrders200Response {
       if (jsonObj.get("creditCard") != null && !jsonObj.get("creditCard").isJsonNull()) {
         PostOrders200ResponseCreditCard.validateJsonElement(jsonObj.get("creditCard"));
       }
-      if (!jsonObj.get("status").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
-      }
       // validate the required field `status`
-      StatusEnum.validateJsonElement(jsonObj.get("status"));
-      if (!jsonObj.get("paymentMethod").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `paymentMethod` to be a primitive type in the JSON string but got `%s`", jsonObj.get("paymentMethod").toString()));
-      }
+      Status.validateJsonElement(jsonObj.get("status"));
       // validate the required field `paymentMethod`
-      PaymentMethodEnum.validateJsonElement(jsonObj.get("paymentMethod"));
+      PaymentMethod.validateJsonElement(jsonObj.get("paymentMethod"));
       if ((jsonObj.get("payedAt") != null && !jsonObj.get("payedAt").isJsonNull()) && !jsonObj.get("payedAt").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `payedAt` to be a primitive type in the JSON string but got `%s`", jsonObj.get("payedAt").toString()));
       }

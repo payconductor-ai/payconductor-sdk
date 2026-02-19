@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import org.openapitools.client.model.BankSlipExpirationInDays;
+import org.openapitools.client.model.PaymentMethod;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,12 +50,12 @@ import org.openapitools.client.JSON;
 /**
  * BankSlip
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class BankSlip {
   public static final String SERIALIZED_NAME_PAYMENT_METHOD = "paymentMethod";
   @SerializedName(SERIALIZED_NAME_PAYMENT_METHOD)
   @javax.annotation.Nonnull
-  private String paymentMethod;
+  private PaymentMethod paymentMethod;
 
   public static final String SERIALIZED_NAME_EXPIRATION_IN_DAYS = "expirationInDays";
   @SerializedName(SERIALIZED_NAME_EXPIRATION_IN_DAYS)
@@ -64,7 +65,7 @@ public class BankSlip {
   public BankSlip() {
   }
 
-  public BankSlip paymentMethod(@javax.annotation.Nonnull String paymentMethod) {
+  public BankSlip paymentMethod(@javax.annotation.Nonnull PaymentMethod paymentMethod) {
     this.paymentMethod = paymentMethod;
     return this;
   }
@@ -74,11 +75,11 @@ public class BankSlip {
    * @return paymentMethod
    */
   @javax.annotation.Nonnull
-  public String getPaymentMethod() {
+  public PaymentMethod getPaymentMethod() {
     return paymentMethod;
   }
 
-  public void setPaymentMethod(@javax.annotation.Nonnull String paymentMethod) {
+  public void setPaymentMethod(@javax.annotation.Nonnull PaymentMethod paymentMethod) {
     this.paymentMethod = paymentMethod;
   }
 
@@ -182,9 +183,8 @@ public class BankSlip {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("paymentMethod").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `paymentMethod` to be a primitive type in the JSON string but got `%s`", jsonObj.get("paymentMethod").toString()));
-      }
+      // validate the required field `paymentMethod`
+      PaymentMethod.validateJsonElement(jsonObj.get("paymentMethod"));
       // validate the optional field `expirationInDays`
       if (jsonObj.get("expirationInDays") != null && !jsonObj.get("expirationInDays").isJsonNull()) {
         BankSlipExpirationInDays.validateJsonElement(jsonObj.get("expirationInDays"));

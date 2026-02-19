@@ -30,10 +30,12 @@ use Log::Any qw($log);
 use Date::Parse;
 use DateTime;
 
+use WWW::OpenAPIClient::Object::PaymentMethod;
 use WWW::OpenAPIClient::Object::PostOrders200ResponseBankSlip;
 use WWW::OpenAPIClient::Object::PostOrders200ResponseNuPay;
 use WWW::OpenAPIClient::Object::PostOrders200ResponsePicPay;
 use WWW::OpenAPIClient::Object::PostOrders200ResponsePix;
+use WWW::OpenAPIClient::Object::Status;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
 
@@ -280,14 +282,14 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'status' => {
-        datatype => 'string',
+        datatype => 'Status',
         base_name => 'status',
         description => '',
         format => '',
         read_only => '',
             },
     'payment_method' => {
-        datatype => 'string',
+        datatype => 'PaymentMethod',
         base_name => 'paymentMethod',
         description => '',
         format => '',
@@ -325,8 +327,8 @@ __PACKAGE__->openapi_types( {
     'bank_slip' => 'PostOrders200ResponseBankSlip',
     'nu_pay' => 'PostOrders200ResponseNuPay',
     'pic_pay' => 'PostOrders200ResponsePicPay',
-    'status' => 'string',
-    'payment_method' => 'string',
+    'status' => 'Status',
+    'payment_method' => 'PaymentMethod',
     'payed_at' => 'string',
     'error_code' => 'string',
     'error_message' => 'string'

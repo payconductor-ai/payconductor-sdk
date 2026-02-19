@@ -26,7 +26,7 @@ customer_t* instantiate_customer(int include_optional) {
        // false, not to have infinite recursion
       instantiate_customer_address(0),
       "a",
-      payconductor_api_customer_DOCUMENTTYPE_Cpf,
+      payconductor_api_customer__Cpf,
       "0",
       "0",
       "a"
@@ -35,7 +35,7 @@ customer_t* instantiate_customer(int include_optional) {
     customer = customer_create(
       NULL,
       "a",
-      payconductor_api_customer_DOCUMENTTYPE_Cpf,
+      payconductor_api_customer__Cpf,
       "0",
       "0",
       "a"

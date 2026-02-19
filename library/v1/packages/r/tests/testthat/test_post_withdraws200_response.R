@@ -46,8 +46,7 @@ test_that("costFee", {
 })
 
 test_that("status", {
-  # tests for the property `status` (character)
-  # Withdrawal status
+  # tests for the property `status` (Status)
 
   # uncomment below to test the property
   #expect_equal(model.instance$`status`, "EXPECTED_RESULT")

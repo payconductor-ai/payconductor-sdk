@@ -15,6 +15,7 @@
 
 package payconductor_sdk.models
 
+import payconductor_sdk.models.PaymentMethod
 import payconductor_sdk.models.PixExpirationInSeconds
 
 import com.squareup.moshi.Json
@@ -31,7 +32,7 @@ import com.squareup.moshi.JsonClass
 data class Pix (
 
     @Json(name = "paymentMethod")
-    val paymentMethod: kotlin.String,
+    val paymentMethod: PaymentMethod,
 
     @Json(name = "expirationInSeconds")
     val expirationInSeconds: PixExpirationInSeconds? = null

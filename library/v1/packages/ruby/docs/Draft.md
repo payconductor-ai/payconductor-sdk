@@ -4,9 +4,9 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **payment_method** | **String** |  |  |
+| **payment_method** | [**PaymentMethod**](PaymentMethod.md) |  |  |
 | **expiration_in_seconds** | [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] |
-| **available_payment_methods** | [**Array&lt;DraftAvailablePaymentMethodsInner&gt;**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order | [optional] |
+| **available_payment_methods** | [**Array&lt;AvailablePaymentMethods&gt;**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] |
 
 ## Example
 

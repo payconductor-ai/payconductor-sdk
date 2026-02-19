@@ -30,9 +30,9 @@ use Log::Any qw($log);
 use Date::Parse;
 use DateTime;
 
-use WWW::OpenAPIClient::Object::Customer2;
-use WWW::OpenAPIClient::Object::Customer2DocumentType;
+use WWW::OpenAPIClient::Object::Customer;
 use WWW::OpenAPIClient::Object::CustomerAddress;
+use WWW::OpenAPIClient::Object::DocumentType;
 use WWW::OpenAPIClient::Object::PostCardTokenizationRequestCustomerAnyOf;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
@@ -238,7 +238,7 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'document_type' => {
-        datatype => 'Customer2DocumentType',
+        datatype => 'DocumentType',
         base_name => 'documentType',
         description => '',
         format => '',
@@ -277,7 +277,7 @@ __PACKAGE__->method_documentation({
 __PACKAGE__->openapi_types( {
     'address' => 'CustomerAddress',
     'document_number' => 'string',
-    'document_type' => 'Customer2DocumentType',
+    'document_type' => 'DocumentType',
     'email' => 'string',
     'name' => 'string',
     'phone_number' => 'string',

@@ -4,9 +4,9 @@
 ## Properties
 | Name | Type | Description | Notes |
 | ------------ | ------------- | ------------- | ------------- |
-| **paymentMethod** | **kotlin.String** |  |  |
+| **paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  |  |
 | **expirationInSeconds** | [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  |  [optional] |
-| **availablePaymentMethods** | [**kotlin.collections.List&lt;DraftAvailablePaymentMethodsInner&gt;**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order |  [optional] |
+| **availablePaymentMethods** | [**kotlin.collections.List&lt;AvailablePaymentMethods&gt;**](AvailablePaymentMethods.md) | Available payment methods for this order |  [optional] |
 
 
 

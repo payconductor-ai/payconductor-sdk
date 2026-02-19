@@ -6,6 +6,8 @@
             [payconductor-sdk.specs.post-orders-200-response-nu-pay :refer :all]
             [payconductor-sdk.specs.post-orders-200-response-pic-pay :refer :all]
             [payconductor-sdk.specs.post-orders-200-response-credit-card :refer :all]
+            [payconductor-sdk.specs.status :refer :all]
+            [payconductor-sdk.specs.payment-method :refer :all]
             [payconductor-sdk.specs.post-orders-200-response-order-items-inner :refer :all]
             [payconductor-sdk.specs.post-orders-200-response-session :refer :all]
             )
@@ -25,8 +27,8 @@
    (ds/opt :nuPay) post-orders-200-response-nu-pay-spec
    (ds/opt :picPay) post-orders-200-response-pic-pay-spec
    (ds/opt :creditCard) post-orders-200-response-credit-card-spec
-   (ds/req :status) string?
-   (ds/req :paymentMethod) string?
+   (ds/req :status) status-spec
+   (ds/req :paymentMethod) payment-method-spec
    (ds/req :payedAt) string?
    (ds/req :errorCode) string?
    (ds/req :errorMessage) string?

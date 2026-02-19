@@ -21,7 +21,7 @@ var _ MappedNullable = &Pix{}
 
 // Pix struct for Pix
 type Pix struct {
-	PaymentMethod string `json:"paymentMethod"`
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
 	ExpirationInSeconds *PixExpirationInSeconds `json:"expirationInSeconds,omitempty"`
 }
 
@@ -31,7 +31,7 @@ type _Pix Pix
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPix(paymentMethod string) *Pix {
+func NewPix(paymentMethod PaymentMethod) *Pix {
 	this := Pix{}
 	this.PaymentMethod = paymentMethod
 	var expirationInSeconds PixExpirationInSeconds = 3600
@@ -50,9 +50,9 @@ func NewPixWithDefaults() *Pix {
 }
 
 // GetPaymentMethod returns the PaymentMethod field value
-func (o *Pix) GetPaymentMethod() string {
+func (o *Pix) GetPaymentMethod() PaymentMethod {
 	if o == nil {
-		var ret string
+		var ret PaymentMethod
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *Pix) GetPaymentMethod() string {
 
 // GetPaymentMethodOk returns a tuple with the PaymentMethod field value
 // and a boolean to check if the value has been set.
-func (o *Pix) GetPaymentMethodOk() (*string, bool) {
+func (o *Pix) GetPaymentMethodOk() (*PaymentMethod, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,7 +69,7 @@ func (o *Pix) GetPaymentMethodOk() (*string, bool) {
 }
 
 // SetPaymentMethod sets field value
-func (o *Pix) SetPaymentMethod(v string) {
+func (o *Pix) SetPaymentMethod(v PaymentMethod) {
 	o.PaymentMethod = v
 }
 

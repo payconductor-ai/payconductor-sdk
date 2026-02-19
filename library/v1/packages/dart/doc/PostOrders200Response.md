@@ -19,8 +19,8 @@ Name | Type | Description | Notes
 **nuPay** | [**PostOrders200ResponseNuPay**](PostOrders200ResponseNuPay.md) |  | [optional] 
 **picPay** | [**PostOrders200ResponsePicPay**](PostOrders200ResponsePicPay.md) |  | [optional] 
 **creditCard** | [**PostOrders200ResponseCreditCard**](PostOrders200ResponseCreditCard.md) |  | [optional] 
-**status** | **String** |  | 
-**paymentMethod** | **String** |  | 
+**status** | [**Status**](Status.md) |  | 
+**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **payedAt** | **String** | Date and time when the order was paid (ISO 8601) | 
 **errorCode** | **String** | Error code, if any | 
 **errorMessage** | **String** | Error message, if any | 

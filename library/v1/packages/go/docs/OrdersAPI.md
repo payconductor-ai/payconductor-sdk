@@ -176,7 +176,7 @@ import (
 )
 
 func main() {
-	postOrdersRequest := *openapiclient.NewPostOrdersRequest(float32(123), "ClientIp_example", *openapiclient.NewCustomer("DocumentNumber_example", "DocumentType_example", "Email_example", "Name_example"), float32(123), "ExternalId_example", *openapiclient.NewPostOrdersRequestPayment("PaymentMethod_example", *openapiclient.NewCreditCardCard("Token_example", "Cvv_example", *openapiclient.NewCompleteCardDataExpiration(float32(123), float32(123)), "HolderName_example", "Number_example"), *openapiclient.NewCreditCardInstallments(), *openapiclient.NewNuPayNuPay("CancelUrl_example", "MerchantName_example", "ReturnUrl_example")), float32(123), float32(123)) // PostOrdersRequest | 
+	postOrdersRequest := *openapiclient.NewPostOrdersRequest(float32(123), "ClientIp_example", *openapiclient.NewCustomer("DocumentNumber_example", openapiclient.DocumentType("Cpf"), "Email_example", "Name_example"), float32(123), "ExternalId_example", *openapiclient.NewPostOrdersRequestPayment(openapiclient.PaymentMethod("Pix"), *openapiclient.NewCreditCardCard("Token_example", "Cvv_example", *openapiclient.NewCompleteCardDataExpiration(float32(123), float32(123)), "HolderName_example", "Number_example"), *openapiclient.NewCreditCardInstallments(), *openapiclient.NewNuPayNuPay("CancelUrl_example", "MerchantName_example", "ReturnUrl_example")), float32(123), float32(123)) // PostOrdersRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -243,7 +243,7 @@ import (
 
 func main() {
 	id := "id_example" // string | 
-	postOrdersRequestPayment := *openapiclient.NewPostOrdersRequestPayment("PaymentMethod_example", *openapiclient.NewCreditCardCard("Token_example", "Cvv_example", *openapiclient.NewCompleteCardDataExpiration(float32(123), float32(123)), "HolderName_example", "Number_example"), *openapiclient.NewCreditCardInstallments(), *openapiclient.NewNuPayNuPay("CancelUrl_example", "MerchantName_example", "ReturnUrl_example")) // PostOrdersRequestPayment | Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+	postOrdersRequestPayment := *openapiclient.NewPostOrdersRequestPayment(openapiclient.PaymentMethod("Pix"), *openapiclient.NewCreditCardCard("Token_example", "Cvv_example", *openapiclient.NewCompleteCardDataExpiration(float32(123), float32(123)), "HolderName_example", "Number_example"), *openapiclient.NewCreditCardInstallments(), *openapiclient.NewNuPayNuPay("CancelUrl_example", "MerchantName_example", "ReturnUrl_example")) // PostOrdersRequestPayment | Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

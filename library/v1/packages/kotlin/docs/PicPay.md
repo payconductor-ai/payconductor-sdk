@@ -4,7 +4,7 @@
 ## Properties
 | Name | Type | Description | Notes |
 | ------------ | ------------- | ------------- | ------------- |
-| **paymentMethod** | **kotlin.String** |  |  |
+| **paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  |  |
 
 
 

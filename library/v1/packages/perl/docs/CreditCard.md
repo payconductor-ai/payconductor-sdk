@@ -8,7 +8,7 @@ use WWW::OpenAPIClient::Object::CreditCard;
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**payment_method** | **string** |  | 
+**payment_method** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **card** | [**CreditCardCard**](CreditCardCard.md) |  | 
 **installments** | [**CreditCardInstallments**](CreditCardInstallments.md) |  | 
 **soft_descriptor** | **string** | Text that will appear on the card statement (soft descriptor) | [optional] 

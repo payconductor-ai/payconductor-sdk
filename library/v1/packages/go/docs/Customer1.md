@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Address** | Pointer to [**CustomerAddress**](CustomerAddress.md) |  | [optional] 
 **DocumentNumber** | Pointer to **string** | Customer CPF or CNPJ without formatting | [optional] 
-**DocumentType** | Pointer to **string** |  | [optional] 
+**DocumentType** | Pointer to [**DocumentType**](DocumentType.md) |  | [optional] 
 **Email** | Pointer to **string** | Customer email | [optional] 
 **Name** | Pointer to **string** | Customer full name | [optional] 
 **PhoneNumber** | Pointer to **string** | Customer phone number in +55 DD 9XXXXXXXX format | [optional] 
@@ -82,20 +82,20 @@ HasDocumentNumber returns a boolean if a field has been set.
 
 ### GetDocumentType
 
-`func (o *Customer1) GetDocumentType() string`
+`func (o *Customer1) GetDocumentType() DocumentType`
 
 GetDocumentType returns the DocumentType field if non-nil, zero value otherwise.
 
 ### GetDocumentTypeOk
 
-`func (o *Customer1) GetDocumentTypeOk() (*string, bool)`
+`func (o *Customer1) GetDocumentTypeOk() (*DocumentType, bool)`
 
 GetDocumentTypeOk returns a tuple with the DocumentType field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDocumentType
 
-`func (o *Customer1) SetDocumentType(v string)`
+`func (o *Customer1) SetDocumentType(v DocumentType)`
 
 SetDocumentType sets DocumentType field to given value.
 

@@ -61,7 +61,7 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
         'owner_document' => 'string',
         'owner_name' => 'string',
         'pix_key' => 'string',
-        'pix_type' => 'string'
+        'pix_type' => '\OpenAPI\Client\Model\PixType'
     ];
 
     /**
@@ -252,27 +252,6 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
         return self::$openAPIModelName;
     }
 
-    public const PIX_TYPE_CPF = 'Cpf';
-    public const PIX_TYPE_CNPJ = 'Cnpj';
-    public const PIX_TYPE_EMAIL = 'Email';
-    public const PIX_TYPE_PHONE = 'Phone';
-    public const PIX_TYPE_RANDOM = 'Random';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getPixTypeAllowableValues()
-    {
-        return [
-            self::PIX_TYPE_CPF,
-            self::PIX_TYPE_CNPJ,
-            self::PIX_TYPE_EMAIL,
-            self::PIX_TYPE_PHONE,
-            self::PIX_TYPE_RANDOM,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -293,7 +272,7 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
         $this->setIfExists('owner_document', $data ?? [], null);
         $this->setIfExists('owner_name', $data ?? [], null);
         $this->setIfExists('pix_key', $data ?? [], null);
-        $this->setIfExists('pix_type', $data ?? [], 'Cpf');
+        $this->setIfExists('pix_type', $data ?? [], null);
     }
 
     /**
@@ -342,15 +321,6 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
         if ($this->container['pix_type'] === null) {
             $invalidProperties[] = "'pix_type' can't be null";
         }
-        $allowedValues = $this->getPixTypeAllowableValues();
-        if (!is_null($this->container['pix_type']) && !in_array($this->container['pix_type'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'pix_type', must be one of '%s'",
-                $this->container['pix_type'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         return $invalidProperties;
     }
 
@@ -482,7 +452,7 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
     /**
      * Gets pix_type
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\PixType
      */
     public function getPixType()
     {
@@ -492,7 +462,7 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
     /**
      * Sets pix_type
      *
-     * @param string $pix_type PIX key type
+     * @param \OpenAPI\Client\Model\PixType $pix_type pix_type
      *
      * @return self
      */
@@ -500,16 +470,6 @@ class PostWithdraws200ResponsePayoutAccount implements ModelInterface, ArrayAcce
     {
         if (is_null($pix_type)) {
             throw new \InvalidArgumentException('non-nullable pix_type cannot be null');
-        }
-        $allowedValues = $this->getPixTypeAllowableValues();
-        if (!in_array($pix_type, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'pix_type', must be one of '%s'",
-                    $pix_type,
-                    implode("', '", $allowedValues)
-                )
-            );
         }
         $this->container['pix_type'] = $pix_type;
 

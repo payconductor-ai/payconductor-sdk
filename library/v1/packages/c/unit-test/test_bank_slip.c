@@ -23,12 +23,12 @@ bank_slip_t* instantiate_bank_slip(int include_optional) {
   bank_slip_t* bank_slip = NULL;
   if (include_optional) {
     bank_slip = bank_slip_create(
-      "0",
+      payconductor_api_bank_slip__Pix,
       null
     );
   } else {
     bank_slip = bank_slip_create(
-      "0",
+      payconductor_api_bank_slip__Pix,
       null
     );
   }

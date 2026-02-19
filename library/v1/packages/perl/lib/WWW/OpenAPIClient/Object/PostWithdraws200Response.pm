@@ -32,6 +32,7 @@ use DateTime;
 
 use WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayedAt;
 use WWW::OpenAPIClient::Object::PostWithdraws200ResponsePayoutAccount;
+use WWW::OpenAPIClient::Object::Status;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
 
@@ -257,9 +258,9 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'status' => {
-        datatype => 'string',
+        datatype => 'Status',
         base_name => 'status',
-        description => 'Withdrawal status',
+        description => '',
         format => '',
         read_only => '',
             },
@@ -299,7 +300,7 @@ __PACKAGE__->openapi_types( {
     'external_integration_key' => 'string',
     'external_integration_id' => 'string',
     'cost_fee' => 'double',
-    'status' => 'string',
+    'status' => 'Status',
     'error_code' => 'string',
     'error_message' => 'string',
     'payed_at' => 'PostWithdraws200ResponsePayedAt',

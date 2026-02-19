@@ -12,7 +12,7 @@
 #' @field externalIntegrationKey Provider key used for the withdrawal character
 #' @field externalIntegrationId Withdrawal ID in the payment provider character
 #' @field costFee Cost fee applied to the withdrawal numeric
-#' @field status Withdrawal status character
+#' @field status  \link{Status}
 #' @field errorCode Error code, if any character
 #' @field errorMessage Descriptive error message, if any character
 #' @field payedAt  \link{PostWithdraws200ResponsePayedAt}
@@ -42,7 +42,7 @@ PostWithdraws200Response <- R6::R6Class(
     #' @param externalIntegrationKey Provider key used for the withdrawal
     #' @param externalIntegrationId Withdrawal ID in the payment provider
     #' @param costFee Cost fee applied to the withdrawal
-    #' @param status Withdrawal status
+    #' @param status status
     #' @param errorCode Error code, if any
     #' @param errorMessage Descriptive error message, if any
     #' @param payedAt payedAt
@@ -77,12 +77,10 @@ PostWithdraws200Response <- R6::R6Class(
         self$`costFee` <- `costFee`
       }
       if (!missing(`status`)) {
-        if (!(`status` %in% c("Pending", "Transferring", "Completed", "Failed"))) {
-          stop(paste("Error! \"", `status`, "\" cannot be assigned to `status`. Must be \"Pending\", \"Transferring\", \"Completed\", \"Failed\".", sep = ""))
+        if (!(`status` %in% c())) {
+          stop(paste("Error! \"", `status`, "\" cannot be assigned to `status`. Must be .", sep = ""))
         }
-        if (!(is.character(`status`) && length(`status`) == 1)) {
-          stop(paste("Error! Invalid data for `status`. Must be a string:", `status`))
-        }
+        stopifnot(R6::is.R6(`status`))
         self$`status` <- `status`
       }
       if (!missing(`errorCode`)) {
@@ -160,7 +158,7 @@ PostWithdraws200Response <- R6::R6Class(
       }
       if (!is.null(self$`status`)) {
         PostWithdraws200ResponseObject[["status"]] <-
-          self$`status`
+          self$extractSimpleType(self$`status`)
       }
       if (!is.null(self$`errorCode`)) {
         PostWithdraws200ResponseObject[["errorCode"]] <-
@@ -227,10 +225,9 @@ PostWithdraws200Response <- R6::R6Class(
         self$`costFee` <- this_object$`costFee`
       }
       if (!is.null(this_object$`status`)) {
-        if (!is.null(this_object$`status`) && !(this_object$`status` %in% c("Pending", "Transferring", "Completed", "Failed"))) {
-          stop(paste("Error! \"", this_object$`status`, "\" cannot be assigned to `status`. Must be \"Pending\", \"Transferring\", \"Completed\", \"Failed\".", sep = ""))
-        }
-        self$`status` <- this_object$`status`
+        `status_object` <- Status$new()
+        `status_object`$fromJSON(jsonlite::toJSON(this_object$`status`, auto_unbox = TRUE, digits = NA))
+        self$`status` <- `status_object`
       }
       if (!is.null(this_object$`errorCode`)) {
         self$`errorCode` <- this_object$`errorCode`
@@ -274,10 +271,7 @@ PostWithdraws200Response <- R6::R6Class(
       self$`externalIntegrationKey` <- this_object$`externalIntegrationKey`
       self$`externalIntegrationId` <- this_object$`externalIntegrationId`
       self$`costFee` <- this_object$`costFee`
-      if (!is.null(this_object$`status`) && !(this_object$`status` %in% c("Pending", "Transferring", "Completed", "Failed"))) {
-        stop(paste("Error! \"", this_object$`status`, "\" cannot be assigned to `status`. Must be \"Pending\", \"Transferring\", \"Completed\", \"Failed\".", sep = ""))
-      }
-      self$`status` <- this_object$`status`
+      self$`status` <- Status$new()$fromJSON(jsonlite::toJSON(this_object$`status`, auto_unbox = TRUE, digits = NA))
       self$`errorCode` <- this_object$`errorCode`
       self$`errorMessage` <- this_object$`errorMessage`
       self$`payedAt` <- PostWithdraws200ResponsePayedAt$new()$fromJSON(jsonlite::toJSON(this_object$`payedAt`, auto_unbox = TRUE, digits = NA))
@@ -330,9 +324,7 @@ PostWithdraws200Response <- R6::R6Class(
       }
       # check the required field `status`
       if (!is.null(input_json$`status`)) {
-        if (!(is.character(input_json$`status`) && length(input_json$`status`) == 1)) {
-          stop(paste("Error! Invalid data for `status`. Must be a string:", input_json$`status`))
-        }
+        stopifnot(R6::is.R6(input_json$`status`))
       } else {
         stop(paste("The JSON input `", input, "` is invalid for PostWithdraws200Response: the required field `status` is missing."))
       }

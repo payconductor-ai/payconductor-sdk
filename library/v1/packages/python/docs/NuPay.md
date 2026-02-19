@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**payment_method** | **str** |  | 
+**payment_method** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **nu_pay** | [**NuPayNuPay**](NuPayNuPay.md) |  | 
 
 ## Example

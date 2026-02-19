@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **ExternalIntegrationKey** | **string** | Provider key used for the withdrawal | 
 **ExternalIntegrationId** | **NullableString** | Withdrawal ID in the payment provider | 
 **CostFee** | **float32** | Cost fee applied to the withdrawal | 
-**Status** | **string** | Withdrawal status | [default to "Pending"]
+**Status** | [**Status**](Status.md) |  | 
 **ErrorCode** | **NullableString** | Error code, if any | 
 **ErrorMessage** | **NullableString** | Descriptive error message, if any | 
 **PayedAt** | [**NullablePostWithdraws200ResponsePayedAt**](PostWithdraws200ResponsePayedAt.md) |  | 
@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 
 ### NewPostWithdraws200Response
 
-`func NewPostWithdraws200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, costFee float32, status string, errorCode NullableString, errorMessage NullableString, payedAt NullablePostWithdraws200ResponsePayedAt, payoutAccount PostWithdraws200ResponsePayoutAccount, ) *PostWithdraws200Response`
+`func NewPostWithdraws200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, costFee float32, status Status, errorCode NullableString, errorMessage NullableString, payedAt NullablePostWithdraws200ResponsePayedAt, payoutAccount PostWithdraws200ResponsePayoutAccount, ) *PostWithdraws200Response`
 
 NewPostWithdraws200Response instantiates a new PostWithdraws200Response object
 This constructor will assign default values to properties that have it defined,
@@ -156,20 +156,20 @@ SetCostFee sets CostFee field to given value.
 
 ### GetStatus
 
-`func (o *PostWithdraws200Response) GetStatus() string`
+`func (o *PostWithdraws200Response) GetStatus() Status`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *PostWithdraws200Response) GetStatusOk() (*string, bool)`
+`func (o *PostWithdraws200Response) GetStatusOk() (*Status, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *PostWithdraws200Response) SetStatus(v string)`
+`func (o *PostWithdraws200Response) SetStatus(v Status)`
 
 SetStatus sets Status field to given value.
 

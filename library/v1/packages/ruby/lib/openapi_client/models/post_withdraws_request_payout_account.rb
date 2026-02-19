@@ -24,7 +24,6 @@ module OpenapiClient
     # PIX key for withdrawal
     attr_accessor :pix_key
 
-    # PIX key type
     attr_accessor :pix_type
 
     class EnumAttributeValidator
@@ -75,7 +74,7 @@ module OpenapiClient
         :'owner_document' => :'String',
         :'owner_name' => :'String',
         :'pix_key' => :'String',
-        :'pix_type' => :'String'
+        :'pix_type' => :'PixType'
       }
     end
 
@@ -122,7 +121,7 @@ module OpenapiClient
       if attributes.key?(:'pix_type')
         self.pix_type = attributes[:'pix_type']
       else
-        self.pix_type = 'Cnpj'
+        self.pix_type = nil
       end
     end
 
@@ -158,8 +157,6 @@ module OpenapiClient
       return false if @owner_name.nil?
       return false if @pix_key.nil?
       return false if @pix_type.nil?
-      pix_type_validator = EnumAttributeValidator.new('String', ["Cnpj", "Cpf", "Email", "Phone", "Random"])
-      return false unless pix_type_validator.valid?(@pix_type)
       true
     end
 
@@ -193,13 +190,13 @@ module OpenapiClient
       @pix_key = pix_key
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] pix_type Object to be assigned
+    # Custom attribute writer method with validation
+    # @param [Object] pix_type Value to be assigned
     def pix_type=(pix_type)
-      validator = EnumAttributeValidator.new('String', ["Cnpj", "Cpf", "Email", "Phone", "Random"])
-      unless validator.valid?(pix_type)
-        fail ArgumentError, "invalid value for \"pix_type\", must be one of #{validator.allowable_values}."
+      if pix_type.nil?
+        fail ArgumentError, 'pix_type cannot be nil'
       end
+
       @pix_type = pix_type
     end
 

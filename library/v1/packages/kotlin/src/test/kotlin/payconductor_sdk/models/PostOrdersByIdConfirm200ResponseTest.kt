@@ -19,10 +19,12 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.PostOrdersByIdConfirm200Response
+import payconductor_sdk.models.PaymentMethod
 import payconductor_sdk.models.PostOrders200ResponseBankSlip
 import payconductor_sdk.models.PostOrders200ResponseNuPay
 import payconductor_sdk.models.PostOrders200ResponsePicPay
 import payconductor_sdk.models.PostOrders200ResponsePix
+import payconductor_sdk.models.Status
 
 class PostOrdersByIdConfirm200ResponseTest : ShouldSpec() {
     init {

@@ -20,7 +20,7 @@ pub struct Customer {
     #[serde(rename = "documentNumber")]
     pub document_number: String,
     #[serde(rename = "documentType")]
-    pub document_type: DocumentType,
+    pub document_type: models::DocumentType,
     /// Customer email
     #[serde(rename = "email")]
     pub email: String,
@@ -34,7 +34,7 @@ pub struct Customer {
 
 impl Customer {
     /// Schema for creating a new customer
-    pub fn new(document_number: String, document_type: DocumentType, email: String, name: String) -> Customer {
+    pub fn new(document_number: String, document_type: models::DocumentType, email: String, name: String) -> Customer {
         Customer {
             address: None,
             document_number,
@@ -43,20 +43,6 @@ impl Customer {
             name,
             phone_number: None,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum DocumentType {
-    #[serde(rename = "Cpf")]
-    Cpf,
-    #[serde(rename = "Cnpj")]
-    Cnpj,
-}
-
-impl Default for DocumentType {
-    fn default() -> DocumentType {
-        Self::Cpf
     }
 }
 

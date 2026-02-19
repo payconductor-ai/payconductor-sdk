@@ -4,9 +4,26 @@
 #include "post_orders_request_payment.h"
 
 
+char* post_orders_request_payment_available_payment_methods_ToString(payconductor_api_post_orders_request_payment__e available_payment_methods) {
+    char *available_payment_methodsArray[] =  { "NULL", "Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft" };
+    return available_payment_methodsArray[available_payment_methods - 1];
+}
+
+payconductor_api_post_orders_request_payment__e post_orders_request_payment_available_payment_methods_FromString(char* available_payment_methods) {
+    int stringToReturn = 0;
+    char *available_payment_methodsArray[] =  { "NULL", "Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft" };
+    size_t sizeofArray = sizeof(available_payment_methodsArray) / sizeof(available_payment_methodsArray[0]);
+    while(stringToReturn < sizeofArray) {
+        if(strcmp(available_payment_methods, available_payment_methodsArray[stringToReturn]) == 0) {
+            return stringToReturn + 1;
+        }
+        stringToReturn++;
+    }
+    return 0;
+}
 
 static post_orders_request_payment_t *post_orders_request_payment_create_internal(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     draft_expiration_in_seconds_t *expiration_in_seconds,
     credit_card_card_t *card,
     credit_card_installments_t *installments,
@@ -33,7 +50,7 @@ static post_orders_request_payment_t *post_orders_request_payment_create_interna
 }
 
 __attribute__((deprecated)) post_orders_request_payment_t *post_orders_request_payment_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     draft_expiration_in_seconds_t *expiration_in_seconds,
     credit_card_card_t *card,
     credit_card_installments_t *installments,
@@ -63,10 +80,6 @@ void post_orders_request_payment_free(post_orders_request_payment_t *post_orders
         return ;
     }
     listEntry_t *listEntry;
-    if (post_orders_request_payment->payment_method) {
-        free(post_orders_request_payment->payment_method);
-        post_orders_request_payment->payment_method = NULL;
-    }
     if (post_orders_request_payment->expiration_in_seconds) {
         draft_expiration_in_seconds_free(post_orders_request_payment->expiration_in_seconds);
         post_orders_request_payment->expiration_in_seconds = NULL;
@@ -93,7 +106,7 @@ void post_orders_request_payment_free(post_orders_request_payment_t *post_orders
     }
     if (post_orders_request_payment->available_payment_methods) {
         list_ForEach(listEntry, post_orders_request_payment->available_payment_methods) {
-            draft_available_payment_methods_inner_free(listEntry->data);
+            available_payment_methods_free(listEntry->data);
         }
         list_freeList(post_orders_request_payment->available_payment_methods);
         post_orders_request_payment->available_payment_methods = NULL;
@@ -105,11 +118,16 @@ cJSON *post_orders_request_payment_convertToJSON(post_orders_request_payment_t *
     cJSON *item = cJSON_CreateObject();
 
     // post_orders_request_payment->payment_method
-    if (!post_orders_request_payment->payment_method) {
+    if (payconductor_api_payment_method__NULL == post_orders_request_payment->payment_method) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "paymentMethod", post_orders_request_payment->payment_method) == NULL) {
-    goto fail; //String
+    cJSON *payment_method_local_JSON = payment_method_convertToJSON(post_orders_request_payment->payment_method);
+    if(payment_method_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "paymentMethod", payment_method_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -190,7 +208,7 @@ cJSON *post_orders_request_payment_convertToJSON(post_orders_request_payment_t *
 
 
     // post_orders_request_payment->available_payment_methods
-    if(post_orders_request_payment->available_payment_methods) {
+    if(post_orders_request_payment->available_payment_methods != payconductor_api_list_AVAILABLEPAYMENTMETHODS_NULL) {
     cJSON *available_payment_methods = cJSON_AddArrayToObject(item, "availablePaymentMethods");
     if(available_payment_methods == NULL) {
     goto fail; //nonprimitive container
@@ -199,7 +217,7 @@ cJSON *post_orders_request_payment_convertToJSON(post_orders_request_payment_t *
     listEntry_t *available_payment_methodsListEntry;
     if (post_orders_request_payment->available_payment_methods) {
     list_ForEach(available_payment_methodsListEntry, post_orders_request_payment->available_payment_methods) {
-    cJSON *itemLocal = draft_available_payment_methods_inner_convertToJSON(available_payment_methodsListEntry->data);
+    cJSON *itemLocal = available_payment_methods_convertToJSON((payconductor_api_post_orders_request_payment__e)available_payment_methodsListEntry->data);
     if(itemLocal == NULL) {
     goto fail;
     }
@@ -219,6 +237,9 @@ fail:
 post_orders_request_payment_t *post_orders_request_payment_parseFromJSON(cJSON *post_orders_request_paymentJSON){
 
     post_orders_request_payment_t *post_orders_request_payment_local_var = NULL;
+
+    // define the local variable for post_orders_request_payment->payment_method
+    payconductor_api_payment_method__e payment_method_local_nonprim = 0;
 
     // define the local variable for post_orders_request_payment->expiration_in_seconds
     draft_expiration_in_seconds_t *expiration_in_seconds_local_nonprim = NULL;
@@ -248,10 +269,7 @@ post_orders_request_payment_t *post_orders_request_payment_parseFromJSON(cJSON *
     }
 
     
-    if(!cJSON_IsString(payment_method))
-    {
-    goto end; //String
-    }
+    payment_method_local_nonprim = payment_method_parseFromJSON(payment_method); //custom
 
     // post_orders_request_payment->expiration_in_seconds
     cJSON *expiration_in_seconds = cJSON_GetObjectItemCaseSensitive(post_orders_request_paymentJSON, "expirationInSeconds");
@@ -337,15 +355,15 @@ post_orders_request_payment_t *post_orders_request_payment_parseFromJSON(cJSON *
         if(!cJSON_IsObject(available_payment_methods_local_nonprimitive)){
             goto end;
         }
-        draft_available_payment_methods_inner_t *available_payment_methodsItem = draft_available_payment_methods_inner_parseFromJSON(available_payment_methods_local_nonprimitive);
+        post_orders_request_payment_available_payment_methods_e available_payment_methodsItem = available_payment_methods_parseFromJSON(available_payment_methods_local_nonprimitive);
 
-        list_addElement(available_payment_methodsList, available_payment_methodsItem);
+        list_addElement(available_payment_methodsList, (void *)available_payment_methodsItem);
     }
     }
 
 
     post_orders_request_payment_local_var = post_orders_request_payment_create_internal (
-        strdup(payment_method->valuestring),
+        payment_method_local_nonprim,
         expiration_in_seconds ? expiration_in_seconds_local_nonprim : NULL,
         card_local_nonprim,
         installments_local_nonprim,
@@ -357,6 +375,9 @@ post_orders_request_payment_t *post_orders_request_payment_parseFromJSON(cJSON *
 
     return post_orders_request_payment_local_var;
 end:
+    if (payment_method_local_nonprim) {
+        payment_method_local_nonprim = 0;
+    }
     if (expiration_in_seconds_local_nonprim) {
         draft_expiration_in_seconds_free(expiration_in_seconds_local_nonprim);
         expiration_in_seconds_local_nonprim = NULL;
@@ -380,7 +401,7 @@ end:
     if (available_payment_methodsList) {
         listEntry_t *listEntry = NULL;
         list_ForEach(listEntry, available_payment_methodsList) {
-            draft_available_payment_methods_inner_free(listEntry->data);
+            available_payment_methods_free(listEntry->data);
             listEntry->data = NULL;
         }
         list_freeList(available_payment_methodsList);

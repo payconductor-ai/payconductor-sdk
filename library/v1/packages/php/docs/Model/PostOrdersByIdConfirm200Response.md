@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **bank_slip** | [**\OpenAPI\Client\Model\PostOrders200ResponseBankSlip**](PostOrders200ResponseBankSlip.md) |  | [optional]
 **nu_pay** | [**\OpenAPI\Client\Model\PostOrders200ResponseNuPay**](PostOrders200ResponseNuPay.md) |  | [optional]
 **pic_pay** | [**\OpenAPI\Client\Model\PostOrders200ResponsePicPay**](PostOrders200ResponsePicPay.md) |  | [optional]
-**status** | **string** |  |
-**payment_method** | **string** |  |
+**status** | [**\OpenAPI\Client\Model\Status**](Status.md) |  |
+**payment_method** | [**\OpenAPI\Client\Model\PaymentMethod**](PaymentMethod.md) |  |
 **payed_at** | **string** | Date and time when the order was paid (ISO 8601) |
 **error_code** | **string** | Error code, if any |
 **error_message** | **string** | Error message, if any |

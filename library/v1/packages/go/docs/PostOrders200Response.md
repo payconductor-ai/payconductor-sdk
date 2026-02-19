@@ -15,8 +15,8 @@ Name | Type | Description | Notes
 **NuPay** | Pointer to [**PostOrders200ResponseNuPay**](PostOrders200ResponseNuPay.md) |  | [optional] 
 **PicPay** | Pointer to [**PostOrders200ResponsePicPay**](PostOrders200ResponsePicPay.md) |  | [optional] 
 **CreditCard** | Pointer to [**PostOrders200ResponseCreditCard**](PostOrders200ResponseCreditCard.md) |  | [optional] 
-**Status** | **string** |  | 
-**PaymentMethod** | **string** |  | 
+**Status** | [**Status**](Status.md) |  | 
+**PaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **PayedAt** | **NullableString** | Date and time when the order was paid (ISO 8601) | 
 **ErrorCode** | **NullableString** | Error code, if any | 
 **ErrorMessage** | **NullableString** | Error message, if any | 
@@ -27,7 +27,7 @@ Name | Type | Description | Notes
 
 ### NewPostOrders200Response
 
-`func NewPostOrders200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, amount float32, costFee float32, status string, paymentMethod string, payedAt NullableString, errorCode NullableString, errorMessage NullableString, orderItems []PostOrders200ResponseOrderItemsInner, ) *PostOrders200Response`
+`func NewPostOrders200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, amount float32, costFee float32, status Status, paymentMethod PaymentMethod, payedAt NullableString, errorCode NullableString, errorMessage NullableString, orderItems []PostOrders200ResponseOrderItemsInner, ) *PostOrders200Response`
 
 NewPostOrders200Response instantiates a new PostOrders200Response object
 This constructor will assign default values to properties that have it defined,
@@ -309,40 +309,40 @@ HasCreditCard returns a boolean if a field has been set.
 
 ### GetStatus
 
-`func (o *PostOrders200Response) GetStatus() string`
+`func (o *PostOrders200Response) GetStatus() Status`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *PostOrders200Response) GetStatusOk() (*string, bool)`
+`func (o *PostOrders200Response) GetStatusOk() (*Status, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *PostOrders200Response) SetStatus(v string)`
+`func (o *PostOrders200Response) SetStatus(v Status)`
 
 SetStatus sets Status field to given value.
 
 
 ### GetPaymentMethod
 
-`func (o *PostOrders200Response) GetPaymentMethod() string`
+`func (o *PostOrders200Response) GetPaymentMethod() PaymentMethod`
 
 GetPaymentMethod returns the PaymentMethod field if non-nil, zero value otherwise.
 
 ### GetPaymentMethodOk
 
-`func (o *PostOrders200Response) GetPaymentMethodOk() (*string, bool)`
+`func (o *PostOrders200Response) GetPaymentMethodOk() (*PaymentMethod, bool)`
 
 GetPaymentMethodOk returns a tuple with the PaymentMethod field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPaymentMethod
 
-`func (o *PostOrders200Response) SetPaymentMethod(v string)`
+`func (o *PostOrders200Response) SetPaymentMethod(v PaymentMethod)`
 
 SetPaymentMethod sets PaymentMethod field to given value.
 

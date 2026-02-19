@@ -19,8 +19,9 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.Draft
-import payconductor_sdk.models.DraftAvailablePaymentMethodsInner
+import payconductor_sdk.models.AvailablePaymentMethods
 import payconductor_sdk.models.DraftExpirationInSeconds
+import payconductor_sdk.models.PaymentMethod
 
 class DraftTest : ShouldSpec() {
     init {

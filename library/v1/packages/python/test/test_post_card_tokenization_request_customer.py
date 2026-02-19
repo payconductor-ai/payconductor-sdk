@@ -44,7 +44,7 @@ class TestPostCardTokenizationRequestCustomer(unittest.TestCase):
                     street = '', 
                     zip_code = '', ),
                 document_number = '48072888001528',
-                document_type = None,
+                document_type = 'Cpf',
                 email = '',
                 name = '',
                 phone_number = '+48 07 88800152',
@@ -53,7 +53,7 @@ class TestPostCardTokenizationRequestCustomer(unittest.TestCase):
         else:
             return PostCardTokenizationRequestCustomer(
                 document_number = '48072888001528',
-                document_type = None,
+                document_type = 'Cpf',
                 email = '',
                 name = '',
                 id = '',

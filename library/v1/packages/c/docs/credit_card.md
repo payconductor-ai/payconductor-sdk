@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**payment_method** | **char \*** |  | 
+**payment_method** | **payment_method_t \*** |  | 
 **card** | [**credit_card_card_t**](credit_card_card.md) \* |  | 
 **installments** | [**credit_card_installments_t**](credit_card_installments.md) \* |  | 
 **soft_descriptor** | **char \*** | Text that will appear on the card statement (soft descriptor) | [optional] 

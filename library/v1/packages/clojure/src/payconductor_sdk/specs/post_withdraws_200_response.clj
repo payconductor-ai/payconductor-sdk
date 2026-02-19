@@ -1,6 +1,7 @@
 (ns payconductor-sdk.specs.post-withdraws-200-response
   (:require [clojure.spec.alpha :as s]
             [spec-tools.data-spec :as ds]
+            [payconductor-sdk.specs.status :refer :all]
             [payconductor-sdk.specs.post-withdraws-200-response-payed-at :refer :all]
             [payconductor-sdk.specs.post-withdraws-200-response-payout-account :refer :all]
             )
@@ -14,7 +15,7 @@
    (ds/req :externalIntegrationKey) string?
    (ds/req :externalIntegrationId) string?
    (ds/req :costFee) float?
-   (ds/req :status) string?
+   (ds/req :status) status-spec
    (ds/req :errorCode) string?
    (ds/req :errorMessage) string?
    (ds/req :payedAt) post-withdraws-200-response-payed-at-spec

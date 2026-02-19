@@ -16,23 +16,23 @@ PostCardTokenizationRequestCustomer <- R6::R6Class(
     #' @field actual_type the type of the object stored in this instance.
     actual_type = NULL,
     #' @field any_of  a list of object types defined in the anyOf schema.
-    any_of = list("Customer2", "PostCardTokenizationRequestCustomerAnyOf"),
+    any_of = list("Customer", "PostCardTokenizationRequestCustomerAnyOf"),
 
     #' @description
     #' Initialize a new PostCardTokenizationRequestCustomer.
     #'
-    #' @param instance an instance of the object defined in the anyOf schemas: "Customer2", "PostCardTokenizationRequestCustomerAnyOf"
+    #' @param instance an instance of the object defined in the anyOf schemas: "Customer", "PostCardTokenizationRequestCustomerAnyOf"
     initialize = function(instance = NULL) {
       if (is.null(instance)) {
         # do nothing
-      } else if (get(class(instance)[[1]], pos = -1)$classname ==  "Customer2") {
+      } else if (get(class(instance)[[1]], pos = -1)$classname ==  "Customer") {
         self$actual_instance <- instance
-        self$actual_type <- "Customer2"
+        self$actual_type <- "Customer"
       } else if (get(class(instance)[[1]], pos = -1)$classname ==  "PostCardTokenizationRequestCustomerAnyOf") {
         self$actual_instance <- instance
         self$actual_type <- "PostCardTokenizationRequestCustomerAnyOf"
       } else {
-        stop(paste("Failed to initialize PostCardTokenizationRequestCustomer with anyOf schemas Customer2, PostCardTokenizationRequestCustomerAnyOf. Provided class name: ",
+        stop(paste("Failed to initialize PostCardTokenizationRequestCustomer with anyOf schemas Customer, PostCardTokenizationRequestCustomerAnyOf. Provided class name: ",
                    get(class(instance)[[1]], pos = -1)$classname))
       }
     },
@@ -57,18 +57,18 @@ PostCardTokenizationRequestCustomer <- R6::R6Class(
     fromJSON = function(input) {
       error_messages <- list()
 
-      `Customer2_result` <- tryCatch({
-          `Customer2`$public_methods$validateJSON(input)
-          `Customer2_instance` <- `Customer2`$new()
-          self$actual_instance <- `Customer2_instance`$fromJSON(input)
-          self$actual_type <- "Customer2"
+      `Customer_result` <- tryCatch({
+          `Customer`$public_methods$validateJSON(input)
+          `Customer_instance` <- `Customer`$new()
+          self$actual_instance <- `Customer_instance`$fromJSON(input)
+          self$actual_type <- "Customer"
           return(self)
         },
         error = function(err) err
       )
 
-      if (!is.null(`Customer2_result`["error"])) {
-        error_messages <- append(error_messages, `Customer2_result`["message"])
+      if (!is.null(`Customer_result`["error"])) {
+        error_messages <- append(error_messages, `Customer_result`["message"])
       }
 
       `PostCardTokenizationRequestCustomerAnyOf_result` <- tryCatch({
@@ -86,7 +86,7 @@ PostCardTokenizationRequestCustomer <- R6::R6Class(
       }
 
       # no match
-      stop(paste("No match found when deserializing the input into PostCardTokenizationRequestCustomer with anyOf schemas Customer2, PostCardTokenizationRequestCustomerAnyOf. Details: >>",
+      stop(paste("No match found when deserializing the input into PostCardTokenizationRequestCustomer with anyOf schemas Customer, PostCardTokenizationRequestCustomerAnyOf. Details: >>",
                  paste(error_messages, collapse = " >> ")))
     },
 

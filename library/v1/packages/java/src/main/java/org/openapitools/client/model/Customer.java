@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import org.openapitools.client.model.CustomerAddress;
+import org.openapitools.client.model.DocumentType;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,7 +50,7 @@ import org.openapitools.client.JSON;
 /**
  * Schema for creating a new customer
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class Customer {
   public static final String SERIALIZED_NAME_ADDRESS = "address";
   @SerializedName(SERIALIZED_NAME_ADDRESS)
@@ -61,62 +62,10 @@ public class Customer {
   @javax.annotation.Nonnull
   private String documentNumber;
 
-  /**
-   * Gets or Sets documentType
-   */
-  @JsonAdapter(DocumentTypeEnum.Adapter.class)
-  public enum DocumentTypeEnum {
-    CPF("Cpf"),
-    
-    CNPJ("Cnpj");
-
-    private String value;
-
-    DocumentTypeEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static DocumentTypeEnum fromValue(String value) {
-      for (DocumentTypeEnum b : DocumentTypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<DocumentTypeEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final DocumentTypeEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public DocumentTypeEnum read(final JsonReader jsonReader) throws IOException {
-        String value =  jsonReader.nextString();
-        return DocumentTypeEnum.fromValue(value);
-      }
-    }
-
-    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      String value = jsonElement.getAsString();
-      DocumentTypeEnum.fromValue(value);
-    }
-  }
-
   public static final String SERIALIZED_NAME_DOCUMENT_TYPE = "documentType";
   @SerializedName(SERIALIZED_NAME_DOCUMENT_TYPE)
   @javax.annotation.Nonnull
-  private DocumentTypeEnum documentType;
+  private DocumentType documentType;
 
   public static final String SERIALIZED_NAME_EMAIL = "email";
   @SerializedName(SERIALIZED_NAME_EMAIL)
@@ -174,7 +123,7 @@ public class Customer {
   }
 
 
-  public Customer documentType(@javax.annotation.Nonnull DocumentTypeEnum documentType) {
+  public Customer documentType(@javax.annotation.Nonnull DocumentType documentType) {
     this.documentType = documentType;
     return this;
   }
@@ -184,11 +133,11 @@ public class Customer {
    * @return documentType
    */
   @javax.annotation.Nonnull
-  public DocumentTypeEnum getDocumentType() {
+  public DocumentType getDocumentType() {
     return documentType;
   }
 
-  public void setDocumentType(@javax.annotation.Nonnull DocumentTypeEnum documentType) {
+  public void setDocumentType(@javax.annotation.Nonnull DocumentType documentType) {
     this.documentType = documentType;
   }
 
@@ -345,11 +294,8 @@ public class Customer {
       if (!jsonObj.get("documentNumber").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `documentNumber` to be a primitive type in the JSON string but got `%s`", jsonObj.get("documentNumber").toString()));
       }
-      if (!jsonObj.get("documentType").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `documentType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("documentType").toString()));
-      }
       // validate the required field `documentType`
-      DocumentTypeEnum.validateJsonElement(jsonObj.get("documentType"));
+      DocumentType.validateJsonElement(jsonObj.get("documentType"));
       if (!jsonObj.get("email").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
       }

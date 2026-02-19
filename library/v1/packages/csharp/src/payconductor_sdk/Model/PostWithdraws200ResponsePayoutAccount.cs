@@ -37,9 +37,9 @@ namespace payconductor_sdk.Model
         /// <param name="ownerDocument">Account holder document (CPF or CNPJ)</param>
         /// <param name="ownerName">Account holder name</param>
         /// <param name="pixKey">PIX key used for the withdrawal</param>
-        /// <param name="pixType">PIX key type (default to PixTypeEnum.Cpf)</param>
+        /// <param name="pixType">pixType</param>
         [JsonConstructor]
-        public PostWithdraws200ResponsePayoutAccount(string id, string ownerDocument, string ownerName, string pixKey, PixTypeEnum pixType = PixTypeEnum.Cpf)
+        public PostWithdraws200ResponsePayoutAccount(string id, string ownerDocument, string ownerName, string pixKey, PixType pixType)
         {
             Id = id;
             OwnerDocument = ownerDocument;
@@ -52,120 +52,10 @@ namespace payconductor_sdk.Model
         partial void OnCreated();
 
         /// <summary>
-        /// PIX key type
+        /// Gets or Sets PixType
         /// </summary>
-        /// <value>PIX key type</value>
-        public enum PixTypeEnum
-        {
-            /// <summary>
-            /// Enum Cpf for value: Cpf
-            /// </summary>
-            Cpf = 1,
-
-            /// <summary>
-            /// Enum Cnpj for value: Cnpj
-            /// </summary>
-            Cnpj = 2,
-
-            /// <summary>
-            /// Enum Email for value: Email
-            /// </summary>
-            Email = 3,
-
-            /// <summary>
-            /// Enum Phone for value: Phone
-            /// </summary>
-            Phone = 4,
-
-            /// <summary>
-            /// Enum Random for value: Random
-            /// </summary>
-            Random = 5
-        }
-
-        /// <summary>
-        /// Returns a <see cref="PixTypeEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static PixTypeEnum PixTypeEnumFromString(string value)
-        {
-            if (value.Equals("Cpf"))
-                return PixTypeEnum.Cpf;
-
-            if (value.Equals("Cnpj"))
-                return PixTypeEnum.Cnpj;
-
-            if (value.Equals("Email"))
-                return PixTypeEnum.Email;
-
-            if (value.Equals("Phone"))
-                return PixTypeEnum.Phone;
-
-            if (value.Equals("Random"))
-                return PixTypeEnum.Random;
-
-            throw new NotImplementedException($"Could not convert value to type PixTypeEnum: '{value}'");
-        }
-
-        /// <summary>
-        /// Returns a <see cref="PixTypeEnum"/>
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static PixTypeEnum? PixTypeEnumFromStringOrDefault(string value)
-        {
-            if (value.Equals("Cpf"))
-                return PixTypeEnum.Cpf;
-
-            if (value.Equals("Cnpj"))
-                return PixTypeEnum.Cnpj;
-
-            if (value.Equals("Email"))
-                return PixTypeEnum.Email;
-
-            if (value.Equals("Phone"))
-                return PixTypeEnum.Phone;
-
-            if (value.Equals("Random"))
-                return PixTypeEnum.Random;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="PixTypeEnum"/> to the json value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static string PixTypeEnumToJsonValue(PixTypeEnum value)
-        {
-            if (value == PixTypeEnum.Cpf)
-                return "Cpf";
-
-            if (value == PixTypeEnum.Cnpj)
-                return "Cnpj";
-
-            if (value == PixTypeEnum.Email)
-                return "Email";
-
-            if (value == PixTypeEnum.Phone)
-                return "Phone";
-
-            if (value == PixTypeEnum.Random)
-                return "Random";
-
-            throw new NotImplementedException($"Value could not be handled: '{value}'");
-        }
-
-        /// <summary>
-        /// PIX key type
-        /// </summary>
-        /// <value>PIX key type</value>
         [JsonPropertyName("pixType")]
-        public PixTypeEnum PixType { get; set; }
+        public PixType PixType { get; set; }
 
         /// <summary>
         /// Unique payment account identifier
@@ -259,7 +149,7 @@ namespace payconductor_sdk.Model
             Option<string?> ownerDocument = default;
             Option<string?> ownerName = default;
             Option<string?> pixKey = default;
-            Option<PostWithdraws200ResponsePayoutAccount.PixTypeEnum?> pixType = default;
+            Option<PixType?> pixType = default;
 
             while (utf8JsonReader.Read())
             {
@@ -291,7 +181,7 @@ namespace payconductor_sdk.Model
                         case "pixType":
                             string? pixTypeRawValue = utf8JsonReader.GetString();
                             if (pixTypeRawValue != null)
-                                pixType = new Option<PostWithdraws200ResponsePayoutAccount.PixTypeEnum?>(PostWithdraws200ResponsePayoutAccount.PixTypeEnumFromStringOrDefault(pixTypeRawValue));
+                                pixType = new Option<PixType?>(PixTypeValueConverter.FromStringOrDefault(pixTypeRawValue));
                             break;
                         default:
                             break;
@@ -376,7 +266,7 @@ namespace payconductor_sdk.Model
 
             writer.WriteString("pixKey", postWithdraws200ResponsePayoutAccount.PixKey);
 
-            var pixTypeRawValue = PostWithdraws200ResponsePayoutAccount.PixTypeEnumToJsonValue(postWithdraws200ResponsePayoutAccount.PixType);
+            var pixTypeRawValue = PixTypeValueConverter.ToJsonValue(postWithdraws200ResponsePayoutAccount.PixType);
             writer.WriteString("pixType", pixTypeRawValue);
         }
     }

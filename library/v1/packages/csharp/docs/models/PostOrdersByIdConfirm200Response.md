@@ -7,8 +7,8 @@ Name | Type | Description | Notes
 **Id** | **string** | Order ID in the system | 
 **Amount** | **decimal** | Total order amount | 
 **CostFee** | **decimal** | Cost fee applied to the order | 
-**Status** | **string** |  | 
-**PaymentMethod** | **string** |  | 
+**Status** | **Status** |  | 
+**PaymentMethod** | **PaymentMethod** |  | 
 **ExternalId** | **string** | External order ID (provided by your integration) | 
 **Pix** | [**PostOrders200ResponsePix**](PostOrders200ResponsePix.md) |  | [optional] 
 **BankSlip** | [**PostOrders200ResponseBankSlip**](PostOrders200ResponseBankSlip.md) |  | [optional] 

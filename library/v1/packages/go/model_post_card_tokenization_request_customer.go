@@ -18,24 +18,24 @@ import (
 
 // PostCardTokenizationRequestCustomer struct for PostCardTokenizationRequestCustomer
 type PostCardTokenizationRequestCustomer struct {
-	Customer2 *Customer2
+	Customer *Customer
 	PostCardTokenizationRequestCustomerAnyOf *PostCardTokenizationRequestCustomerAnyOf
 }
 
 // Unmarshal JSON data into any of the pointers in the struct
 func (dst *PostCardTokenizationRequestCustomer) UnmarshalJSON(data []byte) error {
 	var err error
-	// try to unmarshal JSON data into Customer2
-	err = json.Unmarshal(data, &dst.Customer2);
+	// try to unmarshal JSON data into Customer
+	err = json.Unmarshal(data, &dst.Customer);
 	if err == nil {
-		jsonCustomer2, _ := json.Marshal(dst.Customer2)
-		if string(jsonCustomer2) == "{}" { // empty struct
-			dst.Customer2 = nil
+		jsonCustomer, _ := json.Marshal(dst.Customer)
+		if string(jsonCustomer) == "{}" { // empty struct
+			dst.Customer = nil
 		} else {
-			return nil // data stored in dst.Customer2, return on the first match
+			return nil // data stored in dst.Customer, return on the first match
 		}
 	} else {
-		dst.Customer2 = nil
+		dst.Customer = nil
 	}
 
 	// try to unmarshal JSON data into PostCardTokenizationRequestCustomerAnyOf
@@ -56,8 +56,8 @@ func (dst *PostCardTokenizationRequestCustomer) UnmarshalJSON(data []byte) error
 
 // Marshal data from the first non-nil pointers in the struct to JSON
 func (src PostCardTokenizationRequestCustomer) MarshalJSON() ([]byte, error) {
-	if src.Customer2 != nil {
-		return json.Marshal(&src.Customer2)
+	if src.Customer != nil {
+		return json.Marshal(&src.Customer)
 	}
 
 	if src.PostCardTokenizationRequestCustomerAnyOf != nil {

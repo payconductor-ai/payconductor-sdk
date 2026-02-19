@@ -20,7 +20,7 @@ defmodule PayConductorAPI.Model.PostCardTokenizationRequestCustomer do
   @type t :: %__MODULE__{
     :address => PayConductorAPI.Model.CustomerAddress.t | nil,
     :documentNumber => String.t,
-    :documentType => PayConductorAPI.Model.Customer2DocumentType.t,
+    :documentType => PayConductorAPI.Model.DocumentType.t,
     :email => String.t,
     :name => String.t,
     :phoneNumber => String.t | nil,
@@ -32,7 +32,7 @@ defmodule PayConductorAPI.Model.PostCardTokenizationRequestCustomer do
   def decode(value) do
     value
      |> Deserializer.deserialize(:address, :struct, PayConductorAPI.Model.CustomerAddress)
-     |> Deserializer.deserialize(:documentType, :struct, PayConductorAPI.Model.Customer2DocumentType)
+     |> Deserializer.deserialize(:documentType, :struct, PayConductorAPI.Model.DocumentType)
   end
 end
 

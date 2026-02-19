@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from payconductor_sdk.models.payment_method import PaymentMethod
 from payconductor_sdk.models.pix_expiration_in_seconds import PixExpirationInSeconds
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,7 +28,7 @@ class Pix(BaseModel):
     """
     Pix
     """ # noqa: E501
-    payment_method: StrictStr = Field(alias="paymentMethod")
+    payment_method: PaymentMethod = Field(alias="paymentMethod")
     expiration_in_seconds: Optional[PixExpirationInSeconds] = Field(default=None, alias="expirationInSeconds")
     __properties: ClassVar[List[str]] = ["paymentMethod", "expirationInSeconds"]
 

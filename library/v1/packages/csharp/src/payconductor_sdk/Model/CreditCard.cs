@@ -38,7 +38,7 @@ namespace payconductor_sdk.Model
         /// <param name="installments">installments</param>
         /// <param name="softDescriptor">Text that will appear on the card statement (soft descriptor)</param>
         [JsonConstructor]
-        public CreditCard(string paymentMethod, CreditCardCard card, CreditCardInstallments installments, Option<string?> softDescriptor = default)
+        public CreditCard(PaymentMethod paymentMethod, CreditCardCard card, CreditCardInstallments installments, Option<string?> softDescriptor = default)
         {
             PaymentMethod = paymentMethod;
             Card = card;
@@ -53,7 +53,7 @@ namespace payconductor_sdk.Model
         /// Gets or Sets PaymentMethod
         /// </summary>
         [JsonPropertyName("paymentMethod")]
-        public string PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// Gets or Sets Card
@@ -142,7 +142,7 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> paymentMethod = default;
+            Option<PaymentMethod?> paymentMethod = default;
             Option<CreditCardCard?> card = default;
             Option<CreditCardInstallments?> installments = default;
             Option<string?> softDescriptor = default;
@@ -163,7 +163,9 @@ namespace payconductor_sdk.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "paymentMethod":
-                            paymentMethod = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? paymentMethodRawValue = utf8JsonReader.GetString();
+                            if (paymentMethodRawValue != null)
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
                             break;
                         case "card":
                             card = new Option<CreditCardCard?>(JsonSerializer.Deserialize<CreditCardCard>(ref utf8JsonReader, jsonSerializerOptions)!);
@@ -201,7 +203,7 @@ namespace payconductor_sdk.Model
             if (softDescriptor.IsSet && softDescriptor.Value == null)
                 throw new ArgumentNullException(nameof(softDescriptor), "Property is not nullable for class CreditCard.");
 
-            return new CreditCard(paymentMethod.Value!, card.Value!, installments.Value!, softDescriptor);
+            return new CreditCard(paymentMethod.Value!.Value!, card.Value!, installments.Value!, softDescriptor);
         }
 
         /// <summary>
@@ -228,9 +230,6 @@ namespace payconductor_sdk.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, CreditCard creditCard, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (creditCard.PaymentMethod == null)
-                throw new ArgumentNullException(nameof(creditCard.PaymentMethod), "Property is required for class CreditCard.");
-
             if (creditCard.Card == null)
                 throw new ArgumentNullException(nameof(creditCard.Card), "Property is required for class CreditCard.");
 
@@ -240,7 +239,8 @@ namespace payconductor_sdk.Model
             if (creditCard.SoftDescriptorOption.IsSet && creditCard.SoftDescriptor == null)
                 throw new ArgumentNullException(nameof(creditCard.SoftDescriptor), "Property is required for class CreditCard.");
 
-            writer.WriteString("paymentMethod", creditCard.PaymentMethod);
+            var paymentMethodRawValue = PaymentMethodValueConverter.ToJsonValue(creditCard.PaymentMethod);
+            writer.WriteString("paymentMethod", paymentMethodRawValue);
 
             writer.WritePropertyName("card");
             JsonSerializer.Serialize(writer, creditCard.Card, jsonSerializerOptions);

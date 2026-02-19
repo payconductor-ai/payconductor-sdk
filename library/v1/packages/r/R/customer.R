@@ -9,7 +9,7 @@
 #' @format An \code{R6Class} generator object
 #' @field address  \link{CustomerAddress} [optional]
 #' @field documentNumber Customer CPF or CNPJ without formatting character
-#' @field documentType  character
+#' @field documentType  \link{DocumentType}
 #' @field email Customer email character
 #' @field name Customer full name character
 #' @field phoneNumber Customer phone number in +55 DD 9XXXXXXXX format character [optional]
@@ -44,12 +44,10 @@ Customer <- R6::R6Class(
         self$`documentNumber` <- `documentNumber`
       }
       if (!missing(`documentType`)) {
-        if (!(`documentType` %in% c("Cpf", "Cnpj"))) {
-          stop(paste("Error! \"", `documentType`, "\" cannot be assigned to `documentType`. Must be \"Cpf\", \"Cnpj\".", sep = ""))
+        if (!(`documentType` %in% c())) {
+          stop(paste("Error! \"", `documentType`, "\" cannot be assigned to `documentType`. Must be .", sep = ""))
         }
-        if (!(is.character(`documentType`) && length(`documentType`) == 1)) {
-          stop(paste("Error! Invalid data for `documentType`. Must be a string:", `documentType`))
-        }
+        stopifnot(R6::is.R6(`documentType`))
         self$`documentType` <- `documentType`
       }
       if (!missing(`email`)) {
@@ -117,7 +115,7 @@ Customer <- R6::R6Class(
       }
       if (!is.null(self$`documentType`)) {
         CustomerObject[["documentType"]] <-
-          self$`documentType`
+          self$extractSimpleType(self$`documentType`)
       }
       if (!is.null(self$`email`)) {
         CustomerObject[["email"]] <-
@@ -173,10 +171,9 @@ Customer <- R6::R6Class(
         self$`documentNumber` <- this_object$`documentNumber`
       }
       if (!is.null(this_object$`documentType`)) {
-        if (!is.null(this_object$`documentType`) && !(this_object$`documentType` %in% c("Cpf", "Cnpj"))) {
-          stop(paste("Error! \"", this_object$`documentType`, "\" cannot be assigned to `documentType`. Must be \"Cpf\", \"Cnpj\".", sep = ""))
-        }
-        self$`documentType` <- this_object$`documentType`
+        `documenttype_object` <- DocumentType$new()
+        `documenttype_object`$fromJSON(jsonlite::toJSON(this_object$`documentType`, auto_unbox = TRUE, digits = NA))
+        self$`documentType` <- `documenttype_object`
       }
       if (!is.null(this_object$`email`)) {
         self$`email` <- this_object$`email`
@@ -210,10 +207,7 @@ Customer <- R6::R6Class(
       this_object <- jsonlite::fromJSON(input_json)
       self$`address` <- CustomerAddress$new()$fromJSON(jsonlite::toJSON(this_object$`address`, auto_unbox = TRUE, digits = NA))
       self$`documentNumber` <- this_object$`documentNumber`
-      if (!is.null(this_object$`documentType`) && !(this_object$`documentType` %in% c("Cpf", "Cnpj"))) {
-        stop(paste("Error! \"", this_object$`documentType`, "\" cannot be assigned to `documentType`. Must be \"Cpf\", \"Cnpj\".", sep = ""))
-      }
-      self$`documentType` <- this_object$`documentType`
+      self$`documentType` <- DocumentType$new()$fromJSON(jsonlite::toJSON(this_object$`documentType`, auto_unbox = TRUE, digits = NA))
       self$`email` <- this_object$`email`
       self$`name` <- this_object$`name`
       self$`phoneNumber` <- this_object$`phoneNumber`
@@ -236,9 +230,7 @@ Customer <- R6::R6Class(
       }
       # check the required field `documentType`
       if (!is.null(input_json$`documentType`)) {
-        if (!(is.character(input_json$`documentType`) && length(input_json$`documentType`) == 1)) {
-          stop(paste("Error! Invalid data for `documentType`. Must be a string:", input_json$`documentType`))
-        }
+        stopifnot(R6::is.R6(input_json$`documentType`))
       } else {
         stop(paste("The JSON input `", input, "` is invalid for Customer: the required field `documentType` is missing."))
       }

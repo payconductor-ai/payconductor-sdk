@@ -4,7 +4,7 @@
 
 | Name | Type | Description | Notes |
 | ---- | ---- | ----------- | ----- |
-| **payment_method** | **String** |  |  |
+| **payment_method** | [**PaymentMethod**](PaymentMethod.md) |  |  |
 | **card** | [**CreditCardCard**](CreditCardCard.md) |  |  |
 | **installments** | [**CreditCardInstallments**](CreditCardInstallments.md) |  |  |
 | **soft_descriptor** | **String** | Text that will appear on the card statement (soft descriptor) | [optional] |

@@ -8,7 +8,7 @@
 static post_card_tokenization_request_customer_t *post_card_tokenization_request_customer_create_internal(
     customer_address_t *address,
     char *document_number,
-    customer_2_document_type_t *document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number,
@@ -33,7 +33,7 @@ static post_card_tokenization_request_customer_t *post_card_tokenization_request
 __attribute__((deprecated)) post_card_tokenization_request_customer_t *post_card_tokenization_request_customer_create(
     customer_address_t *address,
     char *document_number,
-    customer_2_document_type_t *document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number,
@@ -66,10 +66,6 @@ void post_card_tokenization_request_customer_free(post_card_tokenization_request
     if (post_card_tokenization_request_customer->document_number) {
         free(post_card_tokenization_request_customer->document_number);
         post_card_tokenization_request_customer->document_number = NULL;
-    }
-    if (post_card_tokenization_request_customer->document_type) {
-        customer_2_document_type_free(post_card_tokenization_request_customer->document_type);
-        post_card_tokenization_request_customer->document_type = NULL;
     }
     if (post_card_tokenization_request_customer->email) {
         free(post_card_tokenization_request_customer->email);
@@ -116,16 +112,16 @@ cJSON *post_card_tokenization_request_customer_convertToJSON(post_card_tokenizat
 
 
     // post_card_tokenization_request_customer->document_type
-    if (!post_card_tokenization_request_customer->document_type) {
+    if (payconductor_api_document_type__NULL == post_card_tokenization_request_customer->document_type) {
         goto fail;
     }
-    cJSON *document_type_local_JSON = customer_2_document_type_convertToJSON(post_card_tokenization_request_customer->document_type);
+    cJSON *document_type_local_JSON = document_type_convertToJSON(post_card_tokenization_request_customer->document_type);
     if(document_type_local_JSON == NULL) {
-    goto fail; //model
+        goto fail; // custom
     }
     cJSON_AddItemToObject(item, "documentType", document_type_local_JSON);
     if(item->child == NULL) {
-    goto fail;
+        goto fail;
     }
 
 
@@ -179,7 +175,7 @@ post_card_tokenization_request_customer_t *post_card_tokenization_request_custom
     customer_address_t *address_local_nonprim = NULL;
 
     // define the local variable for post_card_tokenization_request_customer->document_type
-    customer_2_document_type_t *document_type_local_nonprim = NULL;
+    payconductor_api_document_type__e document_type_local_nonprim = 0;
 
     // post_card_tokenization_request_customer->address
     cJSON *address = cJSON_GetObjectItemCaseSensitive(post_card_tokenization_request_customerJSON, "address");
@@ -215,7 +211,7 @@ post_card_tokenization_request_customer_t *post_card_tokenization_request_custom
     }
 
     
-    document_type_local_nonprim = customer_2_document_type_parseFromJSON(document_type); //nonprimitive
+    document_type_local_nonprim = document_type_parseFromJSON(document_type); //custom
 
     // post_card_tokenization_request_customer->email
     cJSON *email = cJSON_GetObjectItemCaseSensitive(post_card_tokenization_request_customerJSON, "email");
@@ -292,8 +288,7 @@ end:
         address_local_nonprim = NULL;
     }
     if (document_type_local_nonprim) {
-        customer_2_document_type_free(document_type_local_nonprim);
-        document_type_local_nonprim = NULL;
+        document_type_local_nonprim = 0;
     }
     return NULL;
 

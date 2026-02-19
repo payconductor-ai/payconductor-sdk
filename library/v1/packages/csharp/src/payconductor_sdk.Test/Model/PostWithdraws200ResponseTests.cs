@@ -81,6 +81,15 @@ namespace payconductor_sdk.Test.Model
         }
 
         /// <summary>
+        /// Test the property 'Status'
+        /// </summary>
+        [Fact]
+        public void StatusTest()
+        {
+            // TODO unit test for the property 'Status'
+        }
+
+        /// <summary>
         /// Test the property 'PayoutAccount'
         /// </summary>
         [Fact]
@@ -105,15 +114,6 @@ namespace payconductor_sdk.Test.Model
         public void ExternalIntegrationIdTest()
         {
             // TODO unit test for the property 'ExternalIntegrationId'
-        }
-
-        /// <summary>
-        /// Test the property 'Status'
-        /// </summary>
-        [Fact]
-        public void StatusTest()
-        {
-            // TODO unit test for the property 'Status'
         }
 
         /// <summary>

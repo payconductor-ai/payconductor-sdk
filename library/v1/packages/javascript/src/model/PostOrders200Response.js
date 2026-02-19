@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import PaymentMethod from './PaymentMethod';
 import PostOrders200ResponseBankSlip from './PostOrders200ResponseBankSlip';
 import PostOrders200ResponseCreditCard from './PostOrders200ResponseCreditCard';
 import PostOrders200ResponseNuPay from './PostOrders200ResponseNuPay';
@@ -19,6 +20,7 @@ import PostOrders200ResponseOrderItemsInner from './PostOrders200ResponseOrderIt
 import PostOrders200ResponsePicPay from './PostOrders200ResponsePicPay';
 import PostOrders200ResponsePix from './PostOrders200ResponsePix';
 import PostOrders200ResponseSession from './PostOrders200ResponseSession';
+import Status from './Status';
 
 /**
  * The PostOrders200Response model module.
@@ -35,8 +37,8 @@ class PostOrders200Response {
      * @param externalIntegrationId {String} Order ID in the payment provider
      * @param amount {Number} Total order amount
      * @param costFee {Number} Cost fee applied to the order
-     * @param status {module:model/PostOrders200Response.StatusEnum} 
-     * @param paymentMethod {module:model/PostOrders200Response.PaymentMethodEnum} 
+     * @param status {module:model/Status} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      * @param payedAt {String} Date and time when the order was paid (ISO 8601)
      * @param errorCode {String} Error code, if any
      * @param errorMessage {String} Error message, if any
@@ -112,10 +114,10 @@ class PostOrders200Response {
                 obj['creditCard'] = PostOrders200ResponseCreditCard.constructFromObject(data['creditCard']);
             }
             if (data.hasOwnProperty('status')) {
-                obj['status'] = ApiClient.convertToType(data['status'], 'String');
+                obj['status'] = Status.constructFromObject(data['status']);
             }
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
             if (data.hasOwnProperty('payedAt')) {
                 obj['payedAt'] = ApiClient.convertToType(data['payedAt'], 'String');
@@ -183,14 +185,6 @@ class PostOrders200Response {
         // validate the optional field `creditCard`
         if (data['creditCard']) { // data not null
           PostOrders200ResponseCreditCard.validateJSON(data['creditCard']);
-        }
-        // ensure the json data is a string
-        if (data['status'] && !(typeof data['status'] === 'string' || data['status'] instanceof String)) {
-            throw new Error("Expected the field `status` to be a primitive type in the JSON string but got " + data['status']);
-        }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
         }
         // ensure the json data is a string
         if (data['payedAt'] && !(typeof data['payedAt'] === 'string' || data['payedAt'] instanceof String)) {
@@ -289,12 +283,12 @@ PostOrders200Response.prototype['picPay'] = undefined;
 PostOrders200Response.prototype['creditCard'] = undefined;
 
 /**
- * @member {module:model/PostOrders200Response.StatusEnum} status
+ * @member {module:model/Status} status
  */
 PostOrders200Response.prototype['status'] = undefined;
 
 /**
- * @member {module:model/PostOrders200Response.PaymentMethodEnum} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 PostOrders200Response.prototype['paymentMethod'] = undefined;
 
@@ -328,150 +322,6 @@ PostOrders200Response.prototype['session'] = undefined;
 
 
 
-
-
-/**
- * Allowed values for the <code>status</code> property.
- * @enum {String}
- * @readonly
- */
-PostOrders200Response['StatusEnum'] = {
-
-    /**
-     * value: "Generating"
-     * @const
-     */
-    "Generating": "Generating",
-
-    /**
-     * value: "Pending"
-     * @const
-     */
-    "Pending": "Pending",
-
-    /**
-     * value: "Completed"
-     * @const
-     */
-    "Completed": "Completed",
-
-    /**
-     * value: "Failed"
-     * @const
-     */
-    "Failed": "Failed",
-
-    /**
-     * value: "Canceled"
-     * @const
-     */
-    "Canceled": "Canceled",
-
-    /**
-     * value: "Refunding"
-     * @const
-     */
-    "Refunding": "Refunding",
-
-    /**
-     * value: "Refunded"
-     * @const
-     */
-    "Refunded": "Refunded",
-
-    /**
-     * value: "InDispute"
-     * @const
-     */
-    "InDispute": "InDispute",
-
-    /**
-     * value: "Chargeback"
-     * @const
-     */
-    "Chargeback": "Chargeback"
-};
-
-
-/**
- * Allowed values for the <code>paymentMethod</code> property.
- * @enum {String}
- * @readonly
- */
-PostOrders200Response['PaymentMethodEnum'] = {
-
-    /**
-     * value: "Pix"
-     * @const
-     */
-    "Pix": "Pix",
-
-    /**
-     * value: "CreditCard"
-     * @const
-     */
-    "CreditCard": "CreditCard",
-
-    /**
-     * value: "DebitCard"
-     * @const
-     */
-    "DebitCard": "DebitCard",
-
-    /**
-     * value: "BankSlip"
-     * @const
-     */
-    "BankSlip": "BankSlip",
-
-    /**
-     * value: "Crypto"
-     * @const
-     */
-    "Crypto": "Crypto",
-
-    /**
-     * value: "ApplePay"
-     * @const
-     */
-    "ApplePay": "ApplePay",
-
-    /**
-     * value: "NuPay"
-     * @const
-     */
-    "NuPay": "NuPay",
-
-    /**
-     * value: "PicPay"
-     * @const
-     */
-    "PicPay": "PicPay",
-
-    /**
-     * value: "AmazonPay"
-     * @const
-     */
-    "AmazonPay": "AmazonPay",
-
-    /**
-     * value: "SepaDebit"
-     * @const
-     */
-    "SepaDebit": "SepaDebit",
-
-    /**
-     * value: "GooglePay"
-     * @const
-     */
-    "GooglePay": "GooglePay",
-
-    /**
-     * value: "Draft"
-     * @const
-     */
-    "Draft": "Draft"
-};
 
 
 

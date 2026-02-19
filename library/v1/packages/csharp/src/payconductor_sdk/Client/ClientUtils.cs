@@ -112,24 +112,18 @@ namespace payconductor_sdk.Client
                 return boolean
                     ? "true"
                     : "false";
-            if (obj is Customer.DocumentTypeEnum customerDocumentTypeEnum)
-                return Customer.DocumentTypeEnumToJsonValue(customerDocumentTypeEnum);
-            if (obj is Customer1.DocumentTypeEnum customer1DocumentTypeEnum)
-                return Customer1.DocumentTypeEnumToJsonValue(customer1DocumentTypeEnum);
-            if (obj is PostOrders200Response.StatusEnum postOrders200ResponseStatusEnum)
-                return PostOrders200Response.StatusEnumToJsonValue(postOrders200ResponseStatusEnum);
-            if (obj is PostOrders200Response.PaymentMethodEnum postOrders200ResponsePaymentMethodEnum)
-                return PostOrders200Response.PaymentMethodEnumToJsonValue(postOrders200ResponsePaymentMethodEnum);
-            if (obj is PostOrdersByIdConfirm200Response.StatusEnum postOrdersByIdConfirm200ResponseStatusEnum)
-                return PostOrdersByIdConfirm200Response.StatusEnumToJsonValue(postOrdersByIdConfirm200ResponseStatusEnum);
-            if (obj is PostOrdersByIdConfirm200Response.PaymentMethodEnum postOrdersByIdConfirm200ResponsePaymentMethodEnum)
-                return PostOrdersByIdConfirm200Response.PaymentMethodEnumToJsonValue(postOrdersByIdConfirm200ResponsePaymentMethodEnum);
-            if (obj is PostWithdraws200Response.StatusEnum postWithdraws200ResponseStatusEnum)
-                return PostWithdraws200Response.StatusEnumToJsonValue(postWithdraws200ResponseStatusEnum);
-            if (obj is PostWithdraws200ResponsePayoutAccount.PixTypeEnum postWithdraws200ResponsePayoutAccountPixTypeEnum)
-                return PostWithdraws200ResponsePayoutAccount.PixTypeEnumToJsonValue(postWithdraws200ResponsePayoutAccountPixTypeEnum);
-            if (obj is PostWithdrawsRequestPayoutAccount.PixTypeEnum postWithdrawsRequestPayoutAccountPixTypeEnum)
-                return PostWithdrawsRequestPayoutAccount.PixTypeEnumToJsonValue(postWithdrawsRequestPayoutAccountPixTypeEnum);
+            if (obj is AvailablePaymentMethods availablePaymentMethods)
+                return AvailablePaymentMethodsValueConverter.ToJsonValue(availablePaymentMethods);
+            if (obj is DocumentType documentType)
+                return DocumentTypeValueConverter.ToJsonValue(documentType);
+            if (obj is Event varEvent)
+                return EventValueConverter.ToJsonValue(varEvent);
+            if (obj is PaymentMethod paymentMethod)
+                return PaymentMethodValueConverter.ToJsonValue(paymentMethod);
+            if (obj is PixType pixType)
+                return PixTypeValueConverter.ToJsonValue(pixType);
+            if (obj is Status status)
+                return StatusValueConverter.ToJsonValue(status);
             if (obj is ICollection collection)
             {
                 List<string?> entries = new();

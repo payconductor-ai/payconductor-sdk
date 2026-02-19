@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **bankSlip** | [**PostOrders200ResponseBankSlip**](postOrders_200_response_bankSlip.md) |  | [optional] 
 **nuPay** | [**PostOrders200ResponseNuPay**](postOrders_200_response_nuPay.md) |  | [optional] 
 **picPay** | [**PostOrders200ResponsePicPay**](postOrders_200_response_picPay.md) |  | [optional] 
-**status** | **character** |  | [Enum: [Generating, Pending, Completed, Failed, Canceled, Refunding, Refunded, InDispute, Chargeback]] 
-**paymentMethod** | **character** |  | [Enum: [Pix, CreditCard, DebitCard, BankSlip, Crypto, ApplePay, NuPay, PicPay, AmazonPay, SepaDebit, GooglePay, Draft]] 
+**status** | [**Status**](Status.md) |  | [Enum: ] 
+**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [Enum: ] 
 **payedAt** | **character** | Date and time when the order was paid (ISO 8601) | 
 **errorCode** | **character** | Error code, if any | 
 **errorMessage** | **character** | Error message, if any | 

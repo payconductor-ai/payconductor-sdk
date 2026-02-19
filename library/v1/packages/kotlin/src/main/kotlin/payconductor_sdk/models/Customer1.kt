@@ -16,6 +16,7 @@
 package payconductor_sdk.models
 
 import payconductor_sdk.models.CustomerAddress
+import payconductor_sdk.models.DocumentType
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -42,7 +43,7 @@ data class Customer1 (
     val documentNumber: kotlin.String? = null,
 
     @Json(name = "documentType")
-    val documentType: Customer1.DocumentType? = null,
+    val documentType: DocumentType? = null,
 
     /* Customer email */
     @Json(name = "email")
@@ -58,16 +59,6 @@ data class Customer1 (
 
 ) {
 
-    /**
-     * 
-     *
-     * Values: Cpf,Cnpj
-     */
-    @JsonClass(generateAdapter = false)
-    enum class DocumentType(val value: kotlin.String) {
-        @Json(name = "Cpf") Cpf("Cpf"),
-        @Json(name = "Cnpj") Cnpj("Cnpj");
-    }
 
 }
 

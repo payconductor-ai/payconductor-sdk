@@ -13,6 +13,7 @@
 
 import ApiClient from '../ApiClient';
 import NuPayNuPay from './NuPayNuPay';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * The NuPay model module.
@@ -23,7 +24,7 @@ class NuPay {
     /**
      * Constructs a new <code>NuPay</code>.
      * @alias module:model/NuPay
-     * @param paymentMethod {String} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      * @param nuPay {module:model/NuPayNuPay} 
      */
     constructor(paymentMethod, nuPay) { 
@@ -53,7 +54,7 @@ class NuPay {
             obj = obj || new NuPay();
 
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
             if (data.hasOwnProperty('nuPay')) {
                 obj['nuPay'] = NuPayNuPay.constructFromObject(data['nuPay']);
@@ -74,10 +75,6 @@ class NuPay {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
-        }
         // validate the optional field `nuPay`
         if (data['nuPay']) { // data not null
           NuPayNuPay.validateJSON(data['nuPay']);
@@ -92,7 +89,7 @@ class NuPay {
 NuPay.RequiredProperties = ["paymentMethod", "nuPay"];
 
 /**
- * @member {String} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 NuPay.prototype['paymentMethod'] = undefined;
 

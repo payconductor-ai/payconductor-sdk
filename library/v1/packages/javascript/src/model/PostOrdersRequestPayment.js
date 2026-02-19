@@ -12,16 +12,17 @@
  */
 
 import ApiClient from '../ApiClient';
+import AvailablePaymentMethods from './AvailablePaymentMethods';
 import BankSlip from './BankSlip';
 import BankSlipExpirationInDays from './BankSlipExpirationInDays';
 import CreditCard from './CreditCard';
 import CreditCardCard from './CreditCardCard';
 import CreditCardInstallments from './CreditCardInstallments';
 import Draft from './Draft';
-import DraftAvailablePaymentMethodsInner from './DraftAvailablePaymentMethodsInner';
 import DraftExpirationInSeconds from './DraftExpirationInSeconds';
 import NuPay from './NuPay';
 import NuPayNuPay from './NuPayNuPay';
+import PaymentMethod from './PaymentMethod';
 import PicPay from './PicPay';
 import Pix from './Pix';
 // TODO: add anyof model support

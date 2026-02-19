@@ -144,7 +144,7 @@ OpenapiClient.configure do |config|
 end
 
 api_instance = OpenapiClient::CardTokenizationApi.new
-post_card_tokenization_request = OpenapiClient::PostCardTokenizationRequest.new({card: OpenapiClient::CompleteCardData.new({cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), save_card: false, customer: OpenapiClient::PostCardTokenizationRequestCustomer.new({document_number: 'document_number_example', document_type: OpenapiClient::Customer2DocumentType.new, email: 'email_example', name: 'name_example', id: 'id_example'})}) # PostCardTokenizationRequest | Data for creating a customer card
+post_card_tokenization_request = OpenapiClient::PostCardTokenizationRequest.new({card: OpenapiClient::CompleteCardData.new({cvv: 'cvv_example', expiration: OpenapiClient::CompleteCardDataExpiration.new({month: 3.56, year: 3.56}), holder_name: 'holder_name_example', number: 'number_example'}), save_card: false, customer: OpenapiClient::PostCardTokenizationRequestCustomer.new({document_number: 'document_number_example', document_type: OpenapiClient::DocumentType::Cpf, email: 'email_example', name: 'name_example', id: 'id_example'})}) # PostCardTokenizationRequest | Data for creating a customer card
 
 begin
   #Tokenize card
@@ -179,6 +179,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation for Models
 
+ - [OpenapiClient::AvailablePaymentMethods](docs/AvailablePaymentMethods.md)
  - [OpenapiClient::BankSlip](docs/BankSlip.md)
  - [OpenapiClient::BankSlipExpirationInDays](docs/BankSlipExpirationInDays.md)
  - [OpenapiClient::CompleteCardData](docs/CompleteCardData.md)
@@ -188,18 +189,19 @@ Class | Method | HTTP request | Description
  - [OpenapiClient::CreditCardInstallments](docs/CreditCardInstallments.md)
  - [OpenapiClient::Customer](docs/Customer.md)
  - [OpenapiClient::Customer1](docs/Customer1.md)
- - [OpenapiClient::Customer2](docs/Customer2.md)
- - [OpenapiClient::Customer2DocumentType](docs/Customer2DocumentType.md)
  - [OpenapiClient::CustomerAddress](docs/CustomerAddress.md)
+ - [OpenapiClient::DocumentType](docs/DocumentType.md)
  - [OpenapiClient::Draft](docs/Draft.md)
- - [OpenapiClient::DraftAvailablePaymentMethodsInner](docs/DraftAvailablePaymentMethodsInner.md)
  - [OpenapiClient::DraftExpirationInSeconds](docs/DraftExpirationInSeconds.md)
+ - [OpenapiClient::Event](docs/Event.md)
  - [OpenapiClient::MerchantInput](docs/MerchantInput.md)
  - [OpenapiClient::NuPay](docs/NuPay.md)
  - [OpenapiClient::NuPayNuPay](docs/NuPayNuPay.md)
+ - [OpenapiClient::PaymentMethod](docs/PaymentMethod.md)
  - [OpenapiClient::PicPay](docs/PicPay.md)
  - [OpenapiClient::Pix](docs/Pix.md)
  - [OpenapiClient::PixExpirationInSeconds](docs/PixExpirationInSeconds.md)
+ - [OpenapiClient::PixType](docs/PixType.md)
  - [OpenapiClient::PostCardTokenization200Response](docs/PostCardTokenization200Response.md)
  - [OpenapiClient::PostCardTokenizationRequest](docs/PostCardTokenizationRequest.md)
  - [OpenapiClient::PostCardTokenizationRequestCustomer](docs/PostCardTokenizationRequestCustomer.md)
@@ -223,6 +225,7 @@ Class | Method | HTTP request | Description
  - [OpenapiClient::PostWithdraws200ResponsePayoutAccount](docs/PostWithdraws200ResponsePayoutAccount.md)
  - [OpenapiClient::PostWithdrawsRequest](docs/PostWithdrawsRequest.md)
  - [OpenapiClient::PostWithdrawsRequestPayoutAccount](docs/PostWithdrawsRequestPayoutAccount.md)
+ - [OpenapiClient::Status](docs/Status.md)
  - [OpenapiClient::TokenizedCard](docs/TokenizedCard.md)
 
 

@@ -29,7 +29,7 @@ import (
 )
 
 func main() {
-	postCardTokenizationRequest := *openapiclient.NewPostCardTokenizationRequest(*openapiclient.NewCompleteCardData("Cvv_example", *openapiclient.NewCompleteCardDataExpiration(float32(123), float32(123)), "HolderName_example", "Number_example"), false, *openapiclient.NewPostCardTokenizationRequestCustomer("DocumentNumber_example", *openapiclient.NewCustomer2DocumentType(), "Email_example", "Name_example", "Id_example")) // PostCardTokenizationRequest | Data for creating a customer card
+	postCardTokenizationRequest := *openapiclient.NewPostCardTokenizationRequest(*openapiclient.NewCompleteCardData("Cvv_example", *openapiclient.NewCompleteCardDataExpiration(float32(123), float32(123)), "HolderName_example", "Number_example"), false, *openapiclient.NewPostCardTokenizationRequestCustomer("DocumentNumber_example", openapiclient.DocumentType("Cpf"), "Email_example", "Name_example", "Id_example")) // PostCardTokenizationRequest | Data for creating a customer card
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

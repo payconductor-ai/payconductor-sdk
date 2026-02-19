@@ -30,7 +30,6 @@ module OpenapiClient
     # Cost fee applied to the withdrawal
     attr_accessor :cost_fee
 
-    # Withdrawal status
     attr_accessor :status
 
     # Error code, if any
@@ -99,7 +98,7 @@ module OpenapiClient
         :'external_integration_key' => :'String',
         :'external_integration_id' => :'String',
         :'cost_fee' => :'Float',
-        :'status' => :'String',
+        :'status' => :'Status',
         :'error_code' => :'String',
         :'error_message' => :'String',
         :'payed_at' => :'PostWithdraws200ResponsePayedAt',
@@ -167,7 +166,7 @@ module OpenapiClient
       if attributes.key?(:'status')
         self.status = attributes[:'status']
       else
-        self.status = 'Pending'
+        self.status = nil
       end
 
       if attributes.key?(:'error_code')
@@ -231,8 +230,6 @@ module OpenapiClient
       return false if @external_integration_key.nil?
       return false if @cost_fee.nil?
       return false if @status.nil?
-      status_validator = EnumAttributeValidator.new('String', ["Pending", "Transferring", "Completed", "Failed"])
-      return false unless status_validator.valid?(@status)
       return false if @payout_account.nil?
       true
     end
@@ -267,13 +264,13 @@ module OpenapiClient
       @cost_fee = cost_fee
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] status Object to be assigned
+    # Custom attribute writer method with validation
+    # @param [Object] status Value to be assigned
     def status=(status)
-      validator = EnumAttributeValidator.new('String', ["Pending", "Transferring", "Completed", "Failed"])
-      unless validator.valid?(status)
-        fail ArgumentError, "invalid value for \"status\", must be one of #{validator.allowable_values}."
+      if status.nil?
+        fail ArgumentError, 'status cannot be nil'
       end
+
       @status = status
     end
 

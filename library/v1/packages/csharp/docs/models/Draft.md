@@ -5,9 +5,9 @@ Used to create an order without generating a real payment. Use to create orders 
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PaymentMethod** | **string** |  | 
+**PaymentMethod** | **PaymentMethod** |  | 
 **ExpirationInSeconds** | [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] 
-**AvailablePaymentMethods** | [**List&lt;DraftAvailablePaymentMethodsInner&gt;**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order | [optional] 
+**AvailablePaymentMethods** | [**List&lt;AvailablePaymentMethods&gt;**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

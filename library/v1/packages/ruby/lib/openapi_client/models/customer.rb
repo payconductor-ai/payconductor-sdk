@@ -81,7 +81,7 @@ module OpenapiClient
       {
         :'address' => :'CustomerAddress',
         :'document_number' => :'String',
-        :'document_type' => :'String',
+        :'document_type' => :'DocumentType',
         :'email' => :'String',
         :'name' => :'String',
         :'phone_number' => :'String'
@@ -184,8 +184,6 @@ module OpenapiClient
       return false if @document_number.nil?
       return false if @document_number !~ Regexp.new(/^\d{11}$|^\d{14}$/)
       return false if @document_type.nil?
-      document_type_validator = EnumAttributeValidator.new('String', ["Cpf", "Cnpj"])
-      return false unless document_type_validator.valid?(@document_type)
       return false if @email.nil?
       return false if @name.nil?
       return false if !@phone_number.nil? && @phone_number !~ Regexp.new(/^\+(\d{1,2}) (\d{2}) (\d{8,9})$/)
@@ -207,13 +205,13 @@ module OpenapiClient
       @document_number = document_number
     end
 
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] document_type Object to be assigned
+    # Custom attribute writer method with validation
+    # @param [Object] document_type Value to be assigned
     def document_type=(document_type)
-      validator = EnumAttributeValidator.new('String', ["Cpf", "Cnpj"])
-      unless validator.valid?(document_type)
-        fail ArgumentError, "invalid value for \"document_type\", must be one of #{validator.allowable_values}."
+      if document_type.nil?
+        fail ArgumentError, 'document_type cannot be nil'
       end
+
       @document_type = document_type
     end
 

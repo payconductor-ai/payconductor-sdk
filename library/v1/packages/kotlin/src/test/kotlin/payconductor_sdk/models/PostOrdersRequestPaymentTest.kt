@@ -19,16 +19,17 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.PostOrdersRequestPayment
+import payconductor_sdk.models.AvailablePaymentMethods
 import payconductor_sdk.models.BankSlip
 import payconductor_sdk.models.BankSlipExpirationInDays
 import payconductor_sdk.models.CreditCard
 import payconductor_sdk.models.CreditCardCard
 import payconductor_sdk.models.CreditCardInstallments
 import payconductor_sdk.models.Draft
-import payconductor_sdk.models.DraftAvailablePaymentMethodsInner
 import payconductor_sdk.models.DraftExpirationInSeconds
 import payconductor_sdk.models.NuPay
 import payconductor_sdk.models.NuPayNuPay
+import payconductor_sdk.models.PaymentMethod
 import payconductor_sdk.models.PicPay
 import payconductor_sdk.models.Pix
 

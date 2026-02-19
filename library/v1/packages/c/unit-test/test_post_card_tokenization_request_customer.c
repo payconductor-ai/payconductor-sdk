@@ -17,7 +17,6 @@
 post_card_tokenization_request_customer_t* instantiate_post_card_tokenization_request_customer(int include_optional);
 
 #include "test_customer_address.c"
-#include "test_customer_2_document_type.c"
 
 
 post_card_tokenization_request_customer_t* instantiate_post_card_tokenization_request_customer(int include_optional) {
@@ -27,7 +26,7 @@ post_card_tokenization_request_customer_t* instantiate_post_card_tokenization_re
        // false, not to have infinite recursion
       instantiate_customer_address(0),
       "a",
-      null,
+      payconductor_api_post_card_tokenization_request_customer__Cpf,
       "0",
       "0",
       "a",
@@ -37,7 +36,7 @@ post_card_tokenization_request_customer_t* instantiate_post_card_tokenization_re
     post_card_tokenization_request_customer = post_card_tokenization_request_customer_create(
       NULL,
       "a",
-      null,
+      payconductor_api_post_card_tokenization_request_customer__Cpf,
       "0",
       "0",
       "a",

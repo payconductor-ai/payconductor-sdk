@@ -4,20 +4,20 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PaymentMethod** | **string** |  | 
+**PaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **ExpirationInSeconds** | Pointer to [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] [default to 3600]
 **Card** | [**CreditCardCard**](CreditCardCard.md) |  | 
 **Installments** | [**CreditCardInstallments**](CreditCardInstallments.md) |  | [default to 1]
 **SoftDescriptor** | Pointer to **string** | Text that will appear on the card statement (soft descriptor) | [optional] 
 **ExpirationInDays** | Pointer to [**BankSlipExpirationInDays**](BankSlipExpirationInDays.md) |  | [optional] [default to 7]
 **NuPay** | [**NuPayNuPay**](NuPayNuPay.md) |  | 
-**AvailablePaymentMethods** | Pointer to [**[]DraftAvailablePaymentMethodsInner**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order | [optional] 
+**AvailablePaymentMethods** | Pointer to [**[]AvailablePaymentMethods**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] 
 
 ## Methods
 
 ### NewPostOrdersRequestPayment
 
-`func NewPostOrdersRequestPayment(paymentMethod string, card CreditCardCard, installments CreditCardInstallments, nuPay NuPayNuPay, ) *PostOrdersRequestPayment`
+`func NewPostOrdersRequestPayment(paymentMethod PaymentMethod, card CreditCardCard, installments CreditCardInstallments, nuPay NuPayNuPay, ) *PostOrdersRequestPayment`
 
 NewPostOrdersRequestPayment instantiates a new PostOrdersRequestPayment object
 This constructor will assign default values to properties that have it defined,
@@ -34,20 +34,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetPaymentMethod
 
-`func (o *PostOrdersRequestPayment) GetPaymentMethod() string`
+`func (o *PostOrdersRequestPayment) GetPaymentMethod() PaymentMethod`
 
 GetPaymentMethod returns the PaymentMethod field if non-nil, zero value otherwise.
 
 ### GetPaymentMethodOk
 
-`func (o *PostOrdersRequestPayment) GetPaymentMethodOk() (*string, bool)`
+`func (o *PostOrdersRequestPayment) GetPaymentMethodOk() (*PaymentMethod, bool)`
 
 GetPaymentMethodOk returns a tuple with the PaymentMethod field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPaymentMethod
 
-`func (o *PostOrdersRequestPayment) SetPaymentMethod(v string)`
+`func (o *PostOrdersRequestPayment) SetPaymentMethod(v PaymentMethod)`
 
 SetPaymentMethod sets PaymentMethod field to given value.
 
@@ -189,20 +189,20 @@ SetNuPay sets NuPay field to given value.
 
 ### GetAvailablePaymentMethods
 
-`func (o *PostOrdersRequestPayment) GetAvailablePaymentMethods() []DraftAvailablePaymentMethodsInner`
+`func (o *PostOrdersRequestPayment) GetAvailablePaymentMethods() []AvailablePaymentMethods`
 
 GetAvailablePaymentMethods returns the AvailablePaymentMethods field if non-nil, zero value otherwise.
 
 ### GetAvailablePaymentMethodsOk
 
-`func (o *PostOrdersRequestPayment) GetAvailablePaymentMethodsOk() (*[]DraftAvailablePaymentMethodsInner, bool)`
+`func (o *PostOrdersRequestPayment) GetAvailablePaymentMethodsOk() (*[]AvailablePaymentMethods, bool)`
 
 GetAvailablePaymentMethodsOk returns a tuple with the AvailablePaymentMethods field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAvailablePaymentMethods
 
-`func (o *PostOrdersRequestPayment) SetAvailablePaymentMethods(v []DraftAvailablePaymentMethodsInner)`
+`func (o *PostOrdersRequestPayment) SetAvailablePaymentMethods(v []AvailablePaymentMethods)`
 
 SetAvailablePaymentMethods sets AvailablePaymentMethods field to given value.
 

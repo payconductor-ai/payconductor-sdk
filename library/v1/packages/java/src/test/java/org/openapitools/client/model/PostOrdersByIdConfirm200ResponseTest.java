@@ -21,10 +21,12 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import org.openapitools.client.model.PaymentMethod;
 import org.openapitools.client.model.PostOrders200ResponseBankSlip;
 import org.openapitools.client.model.PostOrders200ResponseNuPay;
 import org.openapitools.client.model.PostOrders200ResponsePicPay;
 import org.openapitools.client.model.PostOrders200ResponsePix;
+import org.openapitools.client.model.Status;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

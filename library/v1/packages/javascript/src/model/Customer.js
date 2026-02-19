@@ -13,6 +13,7 @@
 
 import ApiClient from '../ApiClient';
 import CustomerAddress from './CustomerAddress';
+import DocumentType from './DocumentType';
 
 /**
  * The Customer model module.
@@ -25,7 +26,7 @@ class Customer {
      * Schema for creating a new customer
      * @alias module:model/Customer
      * @param documentNumber {String} Customer CPF or CNPJ without formatting
-     * @param documentType {module:model/Customer.DocumentTypeEnum} 
+     * @param documentType {module:model/DocumentType} 
      * @param email {String} Customer email
      * @param name {String} Customer full name
      */
@@ -64,7 +65,7 @@ class Customer {
                 obj['documentNumber'] = ApiClient.convertToType(data['documentNumber'], 'String');
             }
             if (data.hasOwnProperty('documentType')) {
-                obj['documentType'] = ApiClient.convertToType(data['documentType'], 'String');
+                obj['documentType'] = DocumentType.constructFromObject(data['documentType']);
             }
             if (data.hasOwnProperty('email')) {
                 obj['email'] = ApiClient.convertToType(data['email'], 'String');
@@ -100,10 +101,6 @@ class Customer {
             throw new Error("Expected the field `documentNumber` to be a primitive type in the JSON string but got " + data['documentNumber']);
         }
         // ensure the json data is a string
-        if (data['documentType'] && !(typeof data['documentType'] === 'string' || data['documentType'] instanceof String)) {
-            throw new Error("Expected the field `documentType` to be a primitive type in the JSON string but got " + data['documentType']);
-        }
-        // ensure the json data is a string
         if (data['email'] && !(typeof data['email'] === 'string' || data['email'] instanceof String)) {
             throw new Error("Expected the field `email` to be a primitive type in the JSON string but got " + data['email']);
         }
@@ -136,7 +133,7 @@ Customer.prototype['address'] = undefined;
 Customer.prototype['documentNumber'] = undefined;
 
 /**
- * @member {module:model/Customer.DocumentTypeEnum} documentType
+ * @member {module:model/DocumentType} documentType
  */
 Customer.prototype['documentType'] = undefined;
 
@@ -160,27 +157,6 @@ Customer.prototype['phoneNumber'] = undefined;
 
 
 
-
-
-/**
- * Allowed values for the <code>documentType</code> property.
- * @enum {String}
- * @readonly
- */
-Customer['DocumentTypeEnum'] = {
-
-    /**
-     * value: "Cpf"
-     * @const
-     */
-    "Cpf": "Cpf",
-
-    /**
-     * value: "Cnpj"
-     * @const
-     */
-    "Cnpj": "Cnpj"
-};
 
 
 

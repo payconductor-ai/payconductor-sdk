@@ -13,7 +13,7 @@ defmodule PayConductorAPI.Model.Pix do
   ]
 
   @type t :: %__MODULE__{
-    :paymentMethod => String.t,
+    :paymentMethod => PayConductorAPI.Model.PaymentMethod.t,
     :expirationInSeconds => PayConductorAPI.Model.PixExpirationInSeconds.t | nil
   }
 
@@ -21,6 +21,7 @@ defmodule PayConductorAPI.Model.Pix do
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:paymentMethod, :struct, PayConductorAPI.Model.PaymentMethod)
      |> Deserializer.deserialize(:expirationInSeconds, :struct, PayConductorAPI.Model.PixExpirationInSeconds)
   end
 end

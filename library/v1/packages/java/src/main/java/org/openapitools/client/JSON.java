@@ -105,11 +105,8 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.CreditCardInstallments.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.Customer.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.Customer1.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.Customer2.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.Customer2DocumentType.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.CustomerAddress.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.Draft.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.DraftAvailablePaymentMethodsInner.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.DraftExpirationInSeconds.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.MerchantInput.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new org.openapitools.client.model.NuPay.CustomTypeAdapterFactory());

@@ -18,7 +18,7 @@ void main() {
       // TODO
     });
 
-    // String documentType
+    // DocumentType documentType
     test('to test the property `documentType`', () async {
       // TODO
     });

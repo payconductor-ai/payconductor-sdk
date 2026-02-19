@@ -23,16 +23,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.openapitools.client.model.AvailablePaymentMethods;
 import org.openapitools.client.model.BankSlip;
 import org.openapitools.client.model.BankSlipExpirationInDays;
 import org.openapitools.client.model.CreditCard;
 import org.openapitools.client.model.CreditCardCard;
 import org.openapitools.client.model.CreditCardInstallments;
 import org.openapitools.client.model.Draft;
-import org.openapitools.client.model.DraftAvailablePaymentMethodsInner;
 import org.openapitools.client.model.DraftExpirationInSeconds;
 import org.openapitools.client.model.NuPay;
 import org.openapitools.client.model.NuPayNuPay;
+import org.openapitools.client.model.PaymentMethod;
 import org.openapitools.client.model.PicPay;
 import org.openapitools.client.model.Pix;
 
@@ -71,7 +72,7 @@ import com.google.gson.JsonParseException;
 
 import org.openapitools.client.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T15:56:58.588866-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T17:11:03.448741500-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class PostOrdersRequestPayment extends AbstractOpenApiSchema {
     private static final Logger log = Logger.getLogger(PostOrdersRequestPayment.class.getName());
 

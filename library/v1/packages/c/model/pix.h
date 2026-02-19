@@ -15,19 +15,20 @@
 
 typedef struct pix_t pix_t;
 
+#include "payment_method.h"
 #include "pix_expiration_in_seconds.h"
 
 
 
 typedef struct pix_t {
-    char *payment_method; // string
+    payconductor_api_payment_method__e payment_method; //referenced enum
     struct pix_expiration_in_seconds_t *expiration_in_seconds; //model
 
     int _library_owned; // Is the library responsible for freeing this object?
 } pix_t;
 
 __attribute__((deprecated)) pix_t *pix_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     pix_expiration_in_seconds_t *expiration_in_seconds
 );
 

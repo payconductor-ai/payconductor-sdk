@@ -14,13 +14,13 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NuPay {
     #[serde(rename = "paymentMethod")]
-    pub payment_method: String,
+    pub payment_method: models::PaymentMethod,
     #[serde(rename = "nuPay")]
     pub nu_pay: Box<models::NuPayNuPay>,
 }
 
 impl NuPay {
-    pub fn new(payment_method: String, nu_pay: models::NuPayNuPay) -> NuPay {
+    pub fn new(payment_method: models::PaymentMethod, nu_pay: models::NuPayNuPay) -> NuPay {
         NuPay {
             payment_method,
             nu_pay: Box::new(nu_pay),

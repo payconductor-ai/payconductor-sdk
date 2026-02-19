@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import PixType from './PixType';
 
 /**
  * The PostWithdraws200ResponsePayoutAccount model module.
@@ -26,7 +27,7 @@ class PostWithdraws200ResponsePayoutAccount {
      * @param ownerDocument {String} Account holder document (CPF or CNPJ)
      * @param ownerName {String} Account holder name
      * @param pixKey {String} PIX key used for the withdrawal
-     * @param pixType {module:model/PostWithdraws200ResponsePayoutAccount.PixTypeEnum} PIX key type
+     * @param pixType {module:model/PixType} 
      */
     constructor(id, ownerDocument, ownerName, pixKey, pixType) { 
         
@@ -43,7 +44,7 @@ class PostWithdraws200ResponsePayoutAccount {
         obj['ownerDocument'] = ownerDocument;
         obj['ownerName'] = ownerName;
         obj['pixKey'] = pixKey;
-        obj['pixType'] = pixType || 'Cpf';
+        obj['pixType'] = pixType;
     }
 
     /**
@@ -70,7 +71,7 @@ class PostWithdraws200ResponsePayoutAccount {
                 obj['pixKey'] = ApiClient.convertToType(data['pixKey'], 'String');
             }
             if (data.hasOwnProperty('pixType')) {
-                obj['pixType'] = ApiClient.convertToType(data['pixType'], 'String');
+                obj['pixType'] = PixType.constructFromObject(data['pixType']);
             }
         }
         return obj;
@@ -103,10 +104,6 @@ class PostWithdraws200ResponsePayoutAccount {
         // ensure the json data is a string
         if (data['pixKey'] && !(typeof data['pixKey'] === 'string' || data['pixKey'] instanceof String)) {
             throw new Error("Expected the field `pixKey` to be a primitive type in the JSON string but got " + data['pixKey']);
-        }
-        // ensure the json data is a string
-        if (data['pixType'] && !(typeof data['pixType'] === 'string' || data['pixType'] instanceof String)) {
-            throw new Error("Expected the field `pixType` to be a primitive type in the JSON string but got " + data['pixType']);
         }
 
         return true;
@@ -142,53 +139,12 @@ PostWithdraws200ResponsePayoutAccount.prototype['ownerName'] = undefined;
 PostWithdraws200ResponsePayoutAccount.prototype['pixKey'] = undefined;
 
 /**
- * PIX key type
- * @member {module:model/PostWithdraws200ResponsePayoutAccount.PixTypeEnum} pixType
- * @default 'Cpf'
+ * @member {module:model/PixType} pixType
  */
-PostWithdraws200ResponsePayoutAccount.prototype['pixType'] = 'Cpf';
+PostWithdraws200ResponsePayoutAccount.prototype['pixType'] = undefined;
 
 
 
-
-
-/**
- * Allowed values for the <code>pixType</code> property.
- * @enum {String}
- * @readonly
- */
-PostWithdraws200ResponsePayoutAccount['PixTypeEnum'] = {
-
-    /**
-     * value: "Cpf"
-     * @const
-     */
-    "Cpf": "Cpf",
-
-    /**
-     * value: "Cnpj"
-     * @const
-     */
-    "Cnpj": "Cnpj",
-
-    /**
-     * value: "Email"
-     * @const
-     */
-    "Email": "Email",
-
-    /**
-     * value: "Phone"
-     * @const
-     */
-    "Phone": "Phone",
-
-    /**
-     * value: "Random"
-     * @const
-     */
-    "Random": "Random"
-};
 
 
 

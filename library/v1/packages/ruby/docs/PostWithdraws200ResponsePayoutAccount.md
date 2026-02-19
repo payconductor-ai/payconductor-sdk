@@ -8,7 +8,7 @@
 | **owner_document** | **String** | Account holder document (CPF or CNPJ) |  |
 | **owner_name** | **String** | Account holder name |  |
 | **pix_key** | **String** | PIX key used for the withdrawal |  |
-| **pix_type** | **String** | PIX key type | [default to &#39;Cpf&#39;] |
+| **pix_type** | [**PixType**](PixType.md) |  |  |
 
 ## Example
 

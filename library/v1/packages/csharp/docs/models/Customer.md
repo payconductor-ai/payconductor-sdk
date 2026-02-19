@@ -6,7 +6,7 @@ Schema for creating a new customer
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **DocumentNumber** | **string** | Customer CPF or CNPJ without formatting | 
-**DocumentType** | **string** |  | 
+**DocumentType** | **DocumentType** |  | 
 **Email** | **string** | Customer email | 
 **Name** | **string** | Customer full name | 
 **Address** | [**CustomerAddress**](CustomerAddress.md) |  | [optional] 

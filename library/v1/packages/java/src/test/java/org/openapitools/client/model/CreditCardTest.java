@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import org.openapitools.client.model.CreditCardCard;
 import org.openapitools.client.model.CreditCardInstallments;
+import org.openapitools.client.model.PaymentMethod;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

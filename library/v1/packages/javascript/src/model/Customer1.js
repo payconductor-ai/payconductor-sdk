@@ -13,6 +13,7 @@
 
 import ApiClient from '../ApiClient';
 import CustomerAddress from './CustomerAddress';
+import DocumentType from './DocumentType';
 
 /**
  * The Customer1 model module.
@@ -56,7 +57,7 @@ class Customer1 {
                 obj['documentNumber'] = ApiClient.convertToType(data['documentNumber'], 'String');
             }
             if (data.hasOwnProperty('documentType')) {
-                obj['documentType'] = ApiClient.convertToType(data['documentType'], 'String');
+                obj['documentType'] = DocumentType.constructFromObject(data['documentType']);
             }
             if (data.hasOwnProperty('email')) {
                 obj['email'] = ApiClient.convertToType(data['email'], 'String');
@@ -84,10 +85,6 @@ class Customer1 {
         // ensure the json data is a string
         if (data['documentNumber'] && !(typeof data['documentNumber'] === 'string' || data['documentNumber'] instanceof String)) {
             throw new Error("Expected the field `documentNumber` to be a primitive type in the JSON string but got " + data['documentNumber']);
-        }
-        // ensure the json data is a string
-        if (data['documentType'] && !(typeof data['documentType'] === 'string' || data['documentType'] instanceof String)) {
-            throw new Error("Expected the field `documentType` to be a primitive type in the JSON string but got " + data['documentType']);
         }
         // ensure the json data is a string
         if (data['email'] && !(typeof data['email'] === 'string' || data['email'] instanceof String)) {
@@ -122,7 +119,7 @@ Customer1.prototype['address'] = undefined;
 Customer1.prototype['documentNumber'] = undefined;
 
 /**
- * @member {module:model/Customer1.DocumentTypeEnum} documentType
+ * @member {module:model/DocumentType} documentType
  */
 Customer1.prototype['documentType'] = undefined;
 
@@ -146,27 +143,6 @@ Customer1.prototype['phoneNumber'] = undefined;
 
 
 
-
-
-/**
- * Allowed values for the <code>documentType</code> property.
- * @enum {String}
- * @readonly
- */
-Customer1['DocumentTypeEnum'] = {
-
-    /**
-     * value: "Cpf"
-     * @const
-     */
-    "Cpf": "Cpf",
-
-    /**
-     * value: "Cnpj"
-     * @const
-     */
-    "Cnpj": "Cnpj"
-};
 
 
 

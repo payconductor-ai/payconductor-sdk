@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_collection/built_collection.dart';
+import 'package:openapi/src/model/pix_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -16,7 +16,7 @@ part 'post_withdraws200_response_payout_account.g.dart';
 /// * [ownerDocument] - Account holder document (CPF or CNPJ)
 /// * [ownerName] - Account holder name
 /// * [pixKey] - PIX key used for the withdrawal
-/// * [pixType] - PIX key type
+/// * [pixType] 
 @BuiltValue()
 abstract class PostWithdraws200ResponsePayoutAccount implements Built<PostWithdraws200ResponsePayoutAccount, PostWithdraws200ResponsePayoutAccountBuilder> {
   /// Unique payment account identifier
@@ -35,9 +35,8 @@ abstract class PostWithdraws200ResponsePayoutAccount implements Built<PostWithdr
   @BuiltValueField(wireName: r'pixKey')
   String get pixKey;
 
-  /// PIX key type
   @BuiltValueField(wireName: r'pixType')
-  PostWithdraws200ResponsePayoutAccountPixTypeEnum get pixType;
+  PixType get pixType;
   // enum pixTypeEnum {  Cpf,  Cnpj,  Email,  Phone,  Random,  };
 
   PostWithdraws200ResponsePayoutAccount._();
@@ -45,8 +44,7 @@ abstract class PostWithdraws200ResponsePayoutAccount implements Built<PostWithdr
   factory PostWithdraws200ResponsePayoutAccount([void updates(PostWithdraws200ResponsePayoutAccountBuilder b)]) = _$PostWithdraws200ResponsePayoutAccount;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(PostWithdraws200ResponsePayoutAccountBuilder b) => b
-      ..pixType = PostWithdraws200ResponsePayoutAccountPixTypeEnum.valueOf('Cpf');
+  static void _defaults(PostWithdraws200ResponsePayoutAccountBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<PostWithdraws200ResponsePayoutAccount> get serializer => _$PostWithdraws200ResponsePayoutAccountSerializer();
@@ -87,7 +85,7 @@ class _$PostWithdraws200ResponsePayoutAccountSerializer implements PrimitiveSeri
     yield r'pixType';
     yield serializers.serialize(
       object.pixType,
-      specifiedType: const FullType(PostWithdraws200ResponsePayoutAccountPixTypeEnum),
+      specifiedType: const FullType(PixType),
     );
   }
 
@@ -143,8 +141,8 @@ class _$PostWithdraws200ResponsePayoutAccountSerializer implements PrimitiveSeri
         case r'pixType':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(PostWithdraws200ResponsePayoutAccountPixTypeEnum),
-          ) as PostWithdraws200ResponsePayoutAccountPixTypeEnum;
+            specifiedType: const FullType(PixType),
+          ) as PixType;
           result.pixType = valueDes;
           break;
         default:
@@ -174,31 +172,5 @@ class _$PostWithdraws200ResponsePayoutAccountSerializer implements PrimitiveSeri
     );
     return result.build();
   }
-}
-
-class PostWithdraws200ResponsePayoutAccountPixTypeEnum extends EnumClass {
-
-  /// PIX key type
-  @BuiltValueEnumConst(wireName: r'Cpf')
-  static const PostWithdraws200ResponsePayoutAccountPixTypeEnum cpf = _$postWithdraws200ResponsePayoutAccountPixTypeEnum_cpf;
-  /// PIX key type
-  @BuiltValueEnumConst(wireName: r'Cnpj')
-  static const PostWithdraws200ResponsePayoutAccountPixTypeEnum cnpj = _$postWithdraws200ResponsePayoutAccountPixTypeEnum_cnpj;
-  /// PIX key type
-  @BuiltValueEnumConst(wireName: r'Email')
-  static const PostWithdraws200ResponsePayoutAccountPixTypeEnum email = _$postWithdraws200ResponsePayoutAccountPixTypeEnum_email;
-  /// PIX key type
-  @BuiltValueEnumConst(wireName: r'Phone')
-  static const PostWithdraws200ResponsePayoutAccountPixTypeEnum phone = _$postWithdraws200ResponsePayoutAccountPixTypeEnum_phone;
-  /// PIX key type
-  @BuiltValueEnumConst(wireName: r'Random')
-  static const PostWithdraws200ResponsePayoutAccountPixTypeEnum random = _$postWithdraws200ResponsePayoutAccountPixTypeEnum_random;
-
-  static Serializer<PostWithdraws200ResponsePayoutAccountPixTypeEnum> get serializer => _$postWithdraws200ResponsePayoutAccountPixTypeEnumSerializer;
-
-  const PostWithdraws200ResponsePayoutAccountPixTypeEnum._(String name): super(name);
-
-  static BuiltSet<PostWithdraws200ResponsePayoutAccountPixTypeEnum> get values => _$postWithdraws200ResponsePayoutAccountPixTypeEnumValues;
-  static PostWithdraws200ResponsePayoutAccountPixTypeEnum valueOf(String name) => _$postWithdraws200ResponsePayoutAccountPixTypeEnumValueOf(name);
 }
 

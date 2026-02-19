@@ -19,9 +19,9 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.PostCardTokenizationRequestCustomer
-import payconductor_sdk.models.Customer2
-import payconductor_sdk.models.Customer2DocumentType
+import payconductor_sdk.models.Customer
 import payconductor_sdk.models.CustomerAddress
+import payconductor_sdk.models.DocumentType
 import payconductor_sdk.models.PostCardTokenizationRequestCustomerAnyOf
 
 class PostCardTokenizationRequestCustomerTest : ShouldSpec() {

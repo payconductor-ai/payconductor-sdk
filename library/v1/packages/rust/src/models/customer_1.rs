@@ -20,7 +20,7 @@ pub struct Customer1 {
     #[serde(rename = "documentNumber", skip_serializing_if = "Option::is_none")]
     pub document_number: Option<String>,
     #[serde(rename = "documentType", skip_serializing_if = "Option::is_none")]
-    pub document_type: Option<DocumentType>,
+    pub document_type: Option<models::DocumentType>,
     /// Customer email
     #[serde(rename = "email", skip_serializing_if = "Option::is_none")]
     pub email: Option<String>,
@@ -43,20 +43,6 @@ impl Customer1 {
             name: None,
             phone_number: None,
         }
-    }
-}
-/// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum DocumentType {
-    #[serde(rename = "Cpf")]
-    Cpf,
-    #[serde(rename = "Cnpj")]
-    Cnpj,
-}
-
-impl Default for DocumentType {
-    fn default() -> DocumentType {
-        Self::Cpf
     }
 }
 

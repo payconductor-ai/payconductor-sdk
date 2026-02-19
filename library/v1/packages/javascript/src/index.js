@@ -13,6 +13,7 @@
 
 
 import ApiClient from './ApiClient';
+import AvailablePaymentMethods from './model/AvailablePaymentMethods';
 import BankSlip from './model/BankSlip';
 import BankSlipExpirationInDays from './model/BankSlipExpirationInDays';
 import CompleteCardData from './model/CompleteCardData';
@@ -22,18 +23,19 @@ import CreditCardCard from './model/CreditCardCard';
 import CreditCardInstallments from './model/CreditCardInstallments';
 import Customer from './model/Customer';
 import Customer1 from './model/Customer1';
-import Customer2 from './model/Customer2';
-import Customer2DocumentType from './model/Customer2DocumentType';
 import CustomerAddress from './model/CustomerAddress';
+import DocumentType from './model/DocumentType';
 import Draft from './model/Draft';
-import DraftAvailablePaymentMethodsInner from './model/DraftAvailablePaymentMethodsInner';
 import DraftExpirationInSeconds from './model/DraftExpirationInSeconds';
+import Event from './model/Event';
 import MerchantInput from './model/MerchantInput';
 import NuPay from './model/NuPay';
 import NuPayNuPay from './model/NuPayNuPay';
+import PaymentMethod from './model/PaymentMethod';
 import PicPay from './model/PicPay';
 import Pix from './model/Pix';
 import PixExpirationInSeconds from './model/PixExpirationInSeconds';
+import PixType from './model/PixType';
 import PostCardTokenization200Response from './model/PostCardTokenization200Response';
 import PostCardTokenizationRequest from './model/PostCardTokenizationRequest';
 import PostCardTokenizationRequestCustomer from './model/PostCardTokenizationRequestCustomer';
@@ -57,6 +59,7 @@ import PostWithdraws200ResponsePayedAt from './model/PostWithdraws200ResponsePay
 import PostWithdraws200ResponsePayoutAccount from './model/PostWithdraws200ResponsePayoutAccount';
 import PostWithdrawsRequest from './model/PostWithdrawsRequest';
 import PostWithdrawsRequestPayoutAccount from './model/PostWithdrawsRequestPayoutAccount';
+import Status from './model/Status';
 import TokenizedCard from './model/TokenizedCard';
 import CardTokenizationApi from './api/CardTokenizationApi';
 import CustomersApi from './api/CustomersApi';
@@ -101,6 +104,12 @@ export {
      * @property {module:ApiClient}
      */
     ApiClient,
+
+    /**
+     * The AvailablePaymentMethods model constructor.
+     * @property {module:model/AvailablePaymentMethods}
+     */
+    AvailablePaymentMethods,
 
     /**
      * The BankSlip model constructor.
@@ -157,22 +166,16 @@ export {
     Customer1,
 
     /**
-     * The Customer2 model constructor.
-     * @property {module:model/Customer2}
-     */
-    Customer2,
-
-    /**
-     * The Customer2DocumentType model constructor.
-     * @property {module:model/Customer2DocumentType}
-     */
-    Customer2DocumentType,
-
-    /**
      * The CustomerAddress model constructor.
      * @property {module:model/CustomerAddress}
      */
     CustomerAddress,
+
+    /**
+     * The DocumentType model constructor.
+     * @property {module:model/DocumentType}
+     */
+    DocumentType,
 
     /**
      * The Draft model constructor.
@@ -181,16 +184,16 @@ export {
     Draft,
 
     /**
-     * The DraftAvailablePaymentMethodsInner model constructor.
-     * @property {module:model/DraftAvailablePaymentMethodsInner}
-     */
-    DraftAvailablePaymentMethodsInner,
-
-    /**
      * The DraftExpirationInSeconds model constructor.
      * @property {module:model/DraftExpirationInSeconds}
      */
     DraftExpirationInSeconds,
+
+    /**
+     * The Event model constructor.
+     * @property {module:model/Event}
+     */
+    Event,
 
     /**
      * The MerchantInput model constructor.
@@ -211,6 +214,12 @@ export {
     NuPayNuPay,
 
     /**
+     * The PaymentMethod model constructor.
+     * @property {module:model/PaymentMethod}
+     */
+    PaymentMethod,
+
+    /**
      * The PicPay model constructor.
      * @property {module:model/PicPay}
      */
@@ -227,6 +236,12 @@ export {
      * @property {module:model/PixExpirationInSeconds}
      */
     PixExpirationInSeconds,
+
+    /**
+     * The PixType model constructor.
+     * @property {module:model/PixType}
+     */
+    PixType,
 
     /**
      * The PostCardTokenization200Response model constructor.
@@ -365,6 +380,12 @@ export {
      * @property {module:model/PostWithdrawsRequestPayoutAccount}
      */
     PostWithdrawsRequestPayoutAccount,
+
+    /**
+     * The Status model constructor.
+     * @property {module:model/Status}
+     */
+    Status,
 
     /**
      * The TokenizedCard model constructor.

@@ -14,17 +14,18 @@ defmodule PayConductorAPI.Model.Draft do
   ]
 
   @type t :: %__MODULE__{
-    :paymentMethod => String.t,
+    :paymentMethod => PayConductorAPI.Model.PaymentMethod.t,
     :expirationInSeconds => PayConductorAPI.Model.DraftExpirationInSeconds.t | nil,
-    :availablePaymentMethods => [PayConductorAPI.Model.DraftAvailablePaymentMethodsInner.t] | nil
+    :availablePaymentMethods => [PayConductorAPI.Model.AvailablePaymentMethods.t] | nil
   }
 
   alias PayConductorAPI.Deserializer
 
   def decode(value) do
     value
+     |> Deserializer.deserialize(:paymentMethod, :struct, PayConductorAPI.Model.PaymentMethod)
      |> Deserializer.deserialize(:expirationInSeconds, :struct, PayConductorAPI.Model.DraftExpirationInSeconds)
-     |> Deserializer.deserialize(:availablePaymentMethods, :list, PayConductorAPI.Model.DraftAvailablePaymentMethodsInner)
+     |> Deserializer.deserialize(:availablePaymentMethods, :list, PayConductorAPI.Model.AvailablePaymentMethods)
   end
 end
 

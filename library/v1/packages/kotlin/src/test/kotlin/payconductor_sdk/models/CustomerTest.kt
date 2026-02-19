@@ -20,6 +20,7 @@ import io.kotlintest.specs.ShouldSpec
 
 import payconductor_sdk.models.Customer
 import payconductor_sdk.models.CustomerAddress
+import payconductor_sdk.models.DocumentType
 
 class CustomerTest : ShouldSpec() {
     init {

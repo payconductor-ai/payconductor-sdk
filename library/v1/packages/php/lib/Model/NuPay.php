@@ -57,7 +57,7 @@ class NuPay implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'payment_method' => 'string',
+        'payment_method' => '\OpenAPI\Client\Model\PaymentMethod',
         'nu_pay' => '\OpenAPI\Client\Model\NuPayNuPay'
     ];
 
@@ -305,7 +305,7 @@ class NuPay implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets payment_method
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\PaymentMethod
      */
     public function getPaymentMethod()
     {
@@ -315,7 +315,7 @@ class NuPay implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets payment_method
      *
-     * @param string $payment_method payment_method
+     * @param \OpenAPI\Client\Model\PaymentMethod $payment_method payment_method
      *
      * @return self
      */

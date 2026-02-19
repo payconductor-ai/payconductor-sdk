@@ -16,18 +16,19 @@
 typedef struct nu_pay_t nu_pay_t;
 
 #include "nu_pay_nu_pay.h"
+#include "payment_method.h"
 
 
 
 typedef struct nu_pay_t {
-    char *payment_method; // string
+    payconductor_api_payment_method__e payment_method; //referenced enum
     struct nu_pay_nu_pay_t *nu_pay; //model
 
     int _library_owned; // Is the library responsible for freeing this object?
 } nu_pay_t;
 
 __attribute__((deprecated)) nu_pay_t *nu_pay_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     nu_pay_nu_pay_t *nu_pay
 );
 

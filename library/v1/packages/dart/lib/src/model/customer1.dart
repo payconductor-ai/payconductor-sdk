@@ -4,7 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:openapi/src/model/customer_address.dart';
-import 'package:built_collection/built_collection.dart';
+import 'package:openapi/src/model/document_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -29,7 +29,7 @@ abstract class Customer1 implements Built<Customer1, Customer1Builder> {
   String? get documentNumber;
 
   @BuiltValueField(wireName: r'documentType')
-  Customer1DocumentTypeEnum? get documentType;
+  DocumentType? get documentType;
   // enum documentTypeEnum {  Cpf,  Cnpj,  };
 
   /// Customer email
@@ -85,7 +85,7 @@ class _$Customer1Serializer implements PrimitiveSerializer<Customer1> {
       yield r'documentType';
       yield serializers.serialize(
         object.documentType,
-        specifiedType: const FullType(Customer1DocumentTypeEnum),
+        specifiedType: const FullType(DocumentType),
       );
     }
     if (object.email != null) {
@@ -149,8 +149,8 @@ class _$Customer1Serializer implements PrimitiveSerializer<Customer1> {
         case r'documentType':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(Customer1DocumentTypeEnum),
-          ) as Customer1DocumentTypeEnum;
+            specifiedType: const FullType(DocumentType),
+          ) as DocumentType;
           result.documentType = valueDes;
           break;
         case r'email':
@@ -201,20 +201,5 @@ class _$Customer1Serializer implements PrimitiveSerializer<Customer1> {
     );
     return result.build();
   }
-}
-
-class Customer1DocumentTypeEnum extends EnumClass {
-
-  @BuiltValueEnumConst(wireName: r'Cpf')
-  static const Customer1DocumentTypeEnum cpf = _$customer1DocumentTypeEnum_cpf;
-  @BuiltValueEnumConst(wireName: r'Cnpj')
-  static const Customer1DocumentTypeEnum cnpj = _$customer1DocumentTypeEnum_cnpj;
-
-  static Serializer<Customer1DocumentTypeEnum> get serializer => _$customer1DocumentTypeEnumSerializer;
-
-  const Customer1DocumentTypeEnum._(String name): super(name);
-
-  static BuiltSet<Customer1DocumentTypeEnum> get values => _$customer1DocumentTypeEnumValues;
-  static Customer1DocumentTypeEnum valueOf(String name) => _$customer1DocumentTypeEnumValueOf(name);
 }
 

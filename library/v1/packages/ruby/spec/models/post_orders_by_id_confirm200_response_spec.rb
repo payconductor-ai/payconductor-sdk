@@ -78,20 +78,12 @@ describe OpenapiClient::PostOrdersByIdConfirm200Response do
   describe 'test attribute "status"' do
     it 'should work' do
       # assertion here. ref: https://rspec.info/features/3-12/rspec-expectations/built-in-matchers/
-      # validator = Petstore::EnumTest::EnumAttributeValidator.new('String', ["Generating", "Pending", "Completed", "Failed", "Canceled", "Refunding", "Refunded", "InDispute", "Chargeback"])
-      # validator.allowable_values.each do |value|
-      #   expect { instance.status = value }.not_to raise_error
-      # end
     end
   end
 
   describe 'test attribute "payment_method"' do
     it 'should work' do
       # assertion here. ref: https://rspec.info/features/3-12/rspec-expectations/built-in-matchers/
-      # validator = Petstore::EnumTest::EnumAttributeValidator.new('String', ["Pix", "CreditCard", "DebitCard", "BankSlip", "Crypto", "ApplePay", "NuPay", "PicPay", "AmazonPay", "SepaDebit", "GooglePay", "Draft"])
-      # validator.allowable_values.each do |value|
-      #   expect { instance.payment_method = value }.not_to raise_error
-      # end
     end
   end
 

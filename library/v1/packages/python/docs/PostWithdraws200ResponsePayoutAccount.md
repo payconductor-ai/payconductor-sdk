@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **owner_document** | **str** | Account holder document (CPF or CNPJ) | 
 **owner_name** | **str** | Account holder name | 
 **pix_key** | **str** | PIX key used for the withdrawal | 
-**pix_type** | **str** | PIX key type | [default to 'Cpf']
+**pix_type** | [**PixType**](PixType.md) |  | 
 
 ## Example
 

@@ -68,12 +68,12 @@ void main() {
       // TODO
     });
 
-    // String status
+    // Status status
     test('to test the property `status`', () async {
       // TODO
     });
 
-    // String paymentMethod
+    // PaymentMethod paymentMethod
     test('to test the property `paymentMethod`', () async {
       // TODO
     });

@@ -4,30 +4,13 @@
 #include "post_withdraws_200_response_payout_account.h"
 
 
-char* post_withdraws_200_response_payout_account_pix_type_ToString(payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_type) {
-    char* pix_typeArray[] =  { "NULL", "Cpf", "Cnpj", "Email", "Phone", "Random" };
-    return pix_typeArray[pix_type];
-}
-
-payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e post_withdraws_200_response_payout_account_pix_type_FromString(char* pix_type){
-    int stringToReturn = 0;
-    char *pix_typeArray[] =  { "NULL", "Cpf", "Cnpj", "Email", "Phone", "Random" };
-    size_t sizeofArray = sizeof(pix_typeArray) / sizeof(pix_typeArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(pix_type, pix_typeArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 static post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout_account_create_internal(
     char *id,
     char *owner_document,
     char *owner_name,
     char *pix_key,
-    payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_type
+    payconductor_api_pix_type__e pix_type
     ) {
     post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout_account_local_var = malloc(sizeof(post_withdraws_200_response_payout_account_t));
     if (!post_withdraws_200_response_payout_account_local_var) {
@@ -48,7 +31,7 @@ __attribute__((deprecated)) post_withdraws_200_response_payout_account_t *post_w
     char *owner_document,
     char *owner_name,
     char *pix_key,
-    payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_type
+    payconductor_api_pix_type__e pix_type
     ) {
     return post_withdraws_200_response_payout_account_create_internal (
         id,
@@ -127,12 +110,16 @@ cJSON *post_withdraws_200_response_payout_account_convertToJSON(post_withdraws_2
 
 
     // post_withdraws_200_response_payout_account->pix_type
-    if (payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_NULL == post_withdraws_200_response_payout_account->pix_type) {
+    if (payconductor_api_pix_type__NULL == post_withdraws_200_response_payout_account->pix_type) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "pixType", post_withdraws_200_response_payout_account_pix_type_ToString(post_withdraws_200_response_payout_account->pix_type)) == NULL)
-    {
-    goto fail; //Enum
+    cJSON *pix_type_local_JSON = pix_type_convertToJSON(post_withdraws_200_response_payout_account->pix_type);
+    if(pix_type_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "pixType", pix_type_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
     return item;
@@ -146,6 +133,9 @@ fail:
 post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout_account_parseFromJSON(cJSON *post_withdraws_200_response_payout_accountJSON){
 
     post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout_account_local_var = NULL;
+
+    // define the local variable for post_withdraws_200_response_payout_account->pix_type
+    payconductor_api_pix_type__e pix_type_local_nonprim = 0;
 
     // post_withdraws_200_response_payout_account->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(post_withdraws_200_response_payout_accountJSON, "id");
@@ -216,13 +206,8 @@ post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout
         goto end;
     }
 
-    payconductor_api_post_withdraws_200_response_payout_account_PIXTYPE_e pix_typeVariable;
     
-    if(!cJSON_IsString(pix_type))
-    {
-    goto end; //Enum
-    }
-    pix_typeVariable = post_withdraws_200_response_payout_account_pix_type_FromString(pix_type->valuestring);
+    pix_type_local_nonprim = pix_type_parseFromJSON(pix_type); //custom
 
 
     post_withdraws_200_response_payout_account_local_var = post_withdraws_200_response_payout_account_create_internal (
@@ -230,11 +215,14 @@ post_withdraws_200_response_payout_account_t *post_withdraws_200_response_payout
         strdup(owner_document->valuestring),
         strdup(owner_name->valuestring),
         strdup(pix_key->valuestring),
-        pix_typeVariable
+        pix_type_local_nonprim
         );
 
     return post_withdraws_200_response_payout_account_local_var;
 end:
+    if (pix_type_local_nonprim) {
+        pix_type_local_nonprim = 0;
+    }
     return NULL;
 
 }

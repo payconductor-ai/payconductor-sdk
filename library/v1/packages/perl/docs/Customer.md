@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **address** | [**CustomerAddress**](CustomerAddress.md) |  | [optional] 
 **document_number** | **string** | Customer CPF or CNPJ without formatting | 
-**document_type** | **string** |  | 
+**document_type** | [**DocumentType**](DocumentType.md) |  | 
 **email** | **string** | Customer email | 
 **name** | **string** | Customer full name | 
 **phone_number** | **string** | Customer phone number in +55 DD 9XXXXXXXX format | [optional] 

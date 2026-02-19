@@ -30,8 +30,7 @@ test_that("pixKey", {
 })
 
 test_that("pixType", {
-  # tests for the property `pixType` (character)
-  # PIX key type
+  # tests for the property `pixType` (PixType)
 
   # uncomment below to test the property
   #expect_equal(model.instance$`pixType`, "EXPECTED_RESULT")

@@ -50,7 +50,7 @@
 #' ####################  PostWithdraws  ####################
 #'
 #' library(payconductor_sdk)
-#' var_post_withdraws_request <- postWithdraws_request$new(123, postWithdraws_request_payoutAccount$new("ownerDocument_example", "ownerName_example", "pixKey_example", "Cnpj"), "externalId_example", MerchantInput$new("document_example", "email_example", "name_example")) # PostWithdrawsRequest | 
+#' var_post_withdraws_request <- postWithdraws_request$new(123, postWithdraws_request_payoutAccount$new("ownerDocument_example", "ownerName_example", "pixKey_example", PixType$new()), "externalId_example", MerchantInput$new("document_example", "email_example", "name_example")) # PostWithdrawsRequest | 
 #'
 #' #Create withdrawal
 #' api_instance <- TransfersApi$new()

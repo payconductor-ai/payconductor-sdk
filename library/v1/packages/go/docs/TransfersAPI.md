@@ -172,7 +172,7 @@ import (
 )
 
 func main() {
-	postWithdrawsRequest := *openapiclient.NewPostWithdrawsRequest(float32(123), *openapiclient.NewPostWithdrawsRequestPayoutAccount("OwnerDocument_example", "OwnerName_example", "PixKey_example", "PixType_example")) // PostWithdrawsRequest | 
+	postWithdrawsRequest := *openapiclient.NewPostWithdrawsRequest(float32(123), *openapiclient.NewPostWithdrawsRequestPayoutAccount("OwnerDocument_example", "OwnerName_example", "PixKey_example", openapiclient.PixType("Cpf"))) // PostWithdrawsRequest | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

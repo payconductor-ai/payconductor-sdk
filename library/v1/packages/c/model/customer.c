@@ -4,28 +4,11 @@
 #include "customer.h"
 
 
-char* customer_document_type_ToString(payconductor_api_customer_DOCUMENTTYPE_e document_type) {
-    char* document_typeArray[] =  { "NULL", "Cpf", "Cnpj" };
-    return document_typeArray[document_type];
-}
-
-payconductor_api_customer_DOCUMENTTYPE_e customer_document_type_FromString(char* document_type){
-    int stringToReturn = 0;
-    char *document_typeArray[] =  { "NULL", "Cpf", "Cnpj" };
-    size_t sizeofArray = sizeof(document_typeArray) / sizeof(document_typeArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(document_type, document_typeArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 static customer_t *customer_create_internal(
     customer_address_t *address,
     char *document_number,
-    payconductor_api_customer_DOCUMENTTYPE_e document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number
@@ -48,7 +31,7 @@ static customer_t *customer_create_internal(
 __attribute__((deprecated)) customer_t *customer_create(
     customer_address_t *address,
     char *document_number,
-    payconductor_api_customer_DOCUMENTTYPE_e document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number
@@ -121,12 +104,16 @@ cJSON *customer_convertToJSON(customer_t *customer) {
 
 
     // customer->document_type
-    if (payconductor_api_customer_DOCUMENTTYPE_NULL == customer->document_type) {
+    if (payconductor_api_document_type__NULL == customer->document_type) {
         goto fail;
     }
-    if(cJSON_AddStringToObject(item, "documentType", customer_document_type_ToString(customer->document_type)) == NULL)
-    {
-    goto fail; //Enum
+    cJSON *document_type_local_JSON = document_type_convertToJSON(customer->document_type);
+    if(document_type_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "documentType", document_type_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
 
 
@@ -170,6 +157,9 @@ customer_t *customer_parseFromJSON(cJSON *customerJSON){
     // define the local variable for customer->address
     customer_address_t *address_local_nonprim = NULL;
 
+    // define the local variable for customer->document_type
+    payconductor_api_document_type__e document_type_local_nonprim = 0;
+
     // customer->address
     cJSON *address = cJSON_GetObjectItemCaseSensitive(customerJSON, "address");
     if (cJSON_IsNull(address)) {
@@ -203,13 +193,8 @@ customer_t *customer_parseFromJSON(cJSON *customerJSON){
         goto end;
     }
 
-    payconductor_api_customer_DOCUMENTTYPE_e document_typeVariable;
     
-    if(!cJSON_IsString(document_type))
-    {
-    goto end; //Enum
-    }
-    document_typeVariable = customer_document_type_FromString(document_type->valuestring);
+    document_type_local_nonprim = document_type_parseFromJSON(document_type); //custom
 
     // customer->email
     cJSON *email = cJSON_GetObjectItemCaseSensitive(customerJSON, "email");
@@ -257,7 +242,7 @@ customer_t *customer_parseFromJSON(cJSON *customerJSON){
     customer_local_var = customer_create_internal (
         address ? address_local_nonprim : NULL,
         strdup(document_number->valuestring),
-        document_typeVariable,
+        document_type_local_nonprim,
         strdup(email->valuestring),
         strdup(name->valuestring),
         phone_number && !cJSON_IsNull(phone_number) ? strdup(phone_number->valuestring) : NULL
@@ -268,6 +253,9 @@ end:
     if (address_local_nonprim) {
         customer_address_free(address_local_nonprim);
         address_local_nonprim = NULL;
+    }
+    if (document_type_local_nonprim) {
+        document_type_local_nonprim = 0;
     }
     return NULL;
 

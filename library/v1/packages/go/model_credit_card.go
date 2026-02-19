@@ -21,7 +21,7 @@ var _ MappedNullable = &CreditCard{}
 
 // CreditCard struct for CreditCard
 type CreditCard struct {
-	PaymentMethod string `json:"paymentMethod"`
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
 	Card CreditCardCard `json:"card"`
 	Installments CreditCardInstallments `json:"installments"`
 	// Text that will appear on the card statement (soft descriptor)
@@ -34,7 +34,7 @@ type _CreditCard CreditCard
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCreditCard(paymentMethod string, card CreditCardCard, installments CreditCardInstallments) *CreditCard {
+func NewCreditCard(paymentMethod PaymentMethod, card CreditCardCard, installments CreditCardInstallments) *CreditCard {
 	this := CreditCard{}
 	this.PaymentMethod = paymentMethod
 	this.Card = card
@@ -53,9 +53,9 @@ func NewCreditCardWithDefaults() *CreditCard {
 }
 
 // GetPaymentMethod returns the PaymentMethod field value
-func (o *CreditCard) GetPaymentMethod() string {
+func (o *CreditCard) GetPaymentMethod() PaymentMethod {
 	if o == nil {
-		var ret string
+		var ret PaymentMethod
 		return ret
 	}
 
@@ -64,7 +64,7 @@ func (o *CreditCard) GetPaymentMethod() string {
 
 // GetPaymentMethodOk returns a tuple with the PaymentMethod field value
 // and a boolean to check if the value has been set.
-func (o *CreditCard) GetPaymentMethodOk() (*string, bool) {
+func (o *CreditCard) GetPaymentMethodOk() (*PaymentMethod, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -72,7 +72,7 @@ func (o *CreditCard) GetPaymentMethodOk() (*string, bool) {
 }
 
 // SetPaymentMethod sets field value
-func (o *CreditCard) SetPaymentMethod(v string) {
+func (o *CreditCard) SetPaymentMethod(v PaymentMethod) {
 	o.PaymentMethod = v
 }
 

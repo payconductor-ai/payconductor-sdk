@@ -21,7 +21,7 @@ test_that("documentNumber", {
 })
 
 test_that("documentType", {
-  # tests for the property `documentType` (character)
+  # tests for the property `documentType` (DocumentType)
 
   # uncomment below to test the property
   #expect_equal(model.instance$`documentType`, "EXPECTED_RESULT")

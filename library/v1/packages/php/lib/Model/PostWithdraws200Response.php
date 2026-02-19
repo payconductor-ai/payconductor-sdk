@@ -62,7 +62,7 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
         'external_integration_key' => 'string',
         'external_integration_id' => 'string',
         'cost_fee' => 'float',
-        'status' => 'string',
+        'status' => '\OpenAPI\Client\Model\Status',
         'error_code' => 'string',
         'error_message' => 'string',
         'payed_at' => '\OpenAPI\Client\Model\PostWithdraws200ResponsePayedAt',
@@ -282,25 +282,6 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
         return self::$openAPIModelName;
     }
 
-    public const STATUS_PENDING = 'Pending';
-    public const STATUS_TRANSFERRING = 'Transferring';
-    public const STATUS_COMPLETED = 'Completed';
-    public const STATUS_FAILED = 'Failed';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getStatusAllowableValues()
-    {
-        return [
-            self::STATUS_PENDING,
-            self::STATUS_TRANSFERRING,
-            self::STATUS_COMPLETED,
-            self::STATUS_FAILED,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -322,7 +303,7 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
         $this->setIfExists('external_integration_key', $data ?? [], null);
         $this->setIfExists('external_integration_id', $data ?? [], null);
         $this->setIfExists('cost_fee', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], 'Pending');
+        $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('error_code', $data ?? [], null);
         $this->setIfExists('error_message', $data ?? [], null);
         $this->setIfExists('payed_at', $data ?? [], null);
@@ -374,15 +355,6 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
         if ($this->container['status'] === null) {
             $invalidProperties[] = "'status' can't be null";
         }
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!is_null($this->container['status']) && !in_array($this->container['status'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'status', must be one of '%s'",
-                $this->container['status'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         if ($this->container['error_code'] === null && !$this->isNullableSetToNull('error_code')) {
             $invalidProperties[] = "'error_code' can't be null";
         }
@@ -562,7 +534,7 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets status
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\Status
      */
     public function getStatus()
     {
@@ -572,7 +544,7 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets status
      *
-     * @param string $status Withdrawal status
+     * @param \OpenAPI\Client\Model\Status $status status
      *
      * @return self
      */
@@ -580,16 +552,6 @@ class PostWithdraws200Response implements ModelInterface, ArrayAccess, \JsonSeri
     {
         if (is_null($status)) {
             throw new \InvalidArgumentException('non-nullable status cannot be null');
-        }
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!in_array($status, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'status', must be one of '%s'",
-                    $status,
-                    implode("', '", $allowedValues)
-                )
-            );
         }
         $this->container['status'] = $status;
 

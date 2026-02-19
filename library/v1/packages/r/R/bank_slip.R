@@ -7,7 +7,7 @@
 #' @title BankSlip
 #' @description BankSlip Class
 #' @format An \code{R6Class} generator object
-#' @field paymentMethod  character
+#' @field paymentMethod  \link{PaymentMethod}
 #' @field expirationInDays  \link{BankSlipExpirationInDays} [optional]
 #' @importFrom R6 R6Class
 #' @importFrom jsonlite fromJSON toJSON
@@ -26,9 +26,10 @@ BankSlip <- R6::R6Class(
     #' @param ... Other optional arguments.
     initialize = function(`paymentMethod`, `expirationInDays` = NULL, ...) {
       if (!missing(`paymentMethod`)) {
-        if (!(is.character(`paymentMethod`) && length(`paymentMethod`) == 1)) {
-          stop(paste("Error! Invalid data for `paymentMethod`. Must be a string:", `paymentMethod`))
+        if (!(`paymentMethod` %in% c())) {
+          stop(paste("Error! \"", `paymentMethod`, "\" cannot be assigned to `paymentMethod`. Must be .", sep = ""))
         }
+        stopifnot(R6::is.R6(`paymentMethod`))
         self$`paymentMethod` <- `paymentMethod`
       }
       if (!is.null(`expirationInDays`)) {
@@ -70,7 +71,7 @@ BankSlip <- R6::R6Class(
       BankSlipObject <- list()
       if (!is.null(self$`paymentMethod`)) {
         BankSlipObject[["paymentMethod"]] <-
-          self$`paymentMethod`
+          self$extractSimpleType(self$`paymentMethod`)
       }
       if (!is.null(self$`expirationInDays`)) {
         BankSlipObject[["expirationInDays"]] <-
@@ -110,7 +111,9 @@ BankSlip <- R6::R6Class(
     fromJSON = function(input_json) {
       this_object <- jsonlite::fromJSON(input_json)
       if (!is.null(this_object$`paymentMethod`)) {
-        self$`paymentMethod` <- this_object$`paymentMethod`
+        `paymentmethod_object` <- PaymentMethod$new()
+        `paymentmethod_object`$fromJSON(jsonlite::toJSON(this_object$`paymentMethod`, auto_unbox = TRUE, digits = NA))
+        self$`paymentMethod` <- `paymentmethod_object`
       }
       if (!is.null(this_object$`expirationInDays`)) {
         `expirationindays_object` <- BankSlipExpirationInDays$new()
@@ -138,7 +141,7 @@ BankSlip <- R6::R6Class(
     #' @return the instance of BankSlip
     fromJSONString = function(input_json) {
       this_object <- jsonlite::fromJSON(input_json)
-      self$`paymentMethod` <- this_object$`paymentMethod`
+      self$`paymentMethod` <- PaymentMethod$new()$fromJSON(jsonlite::toJSON(this_object$`paymentMethod`, auto_unbox = TRUE, digits = NA))
       self$`expirationInDays` <- BankSlipExpirationInDays$new()$fromJSON(jsonlite::toJSON(this_object$`expirationInDays`, auto_unbox = TRUE, digits = NA))
       self
     },
@@ -151,9 +154,7 @@ BankSlip <- R6::R6Class(
       input_json <- jsonlite::fromJSON(input)
       # check the required field `paymentMethod`
       if (!is.null(input_json$`paymentMethod`)) {
-        if (!(is.character(input_json$`paymentMethod`) && length(input_json$`paymentMethod`) == 1)) {
-          stop(paste("Error! Invalid data for `paymentMethod`. Must be a string:", input_json$`paymentMethod`))
-        }
+        stopifnot(R6::is.R6(input_json$`paymentMethod`))
       } else {
         stop(paste("The JSON input `", input, "` is invalid for BankSlip: the required field `paymentMethod` is missing."))
       }

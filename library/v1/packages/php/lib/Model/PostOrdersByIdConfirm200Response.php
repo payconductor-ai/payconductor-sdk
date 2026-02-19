@@ -65,8 +65,8 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
         'bank_slip' => '\OpenAPI\Client\Model\PostOrders200ResponseBankSlip',
         'nu_pay' => '\OpenAPI\Client\Model\PostOrders200ResponseNuPay',
         'pic_pay' => '\OpenAPI\Client\Model\PostOrders200ResponsePicPay',
-        'status' => 'string',
-        'payment_method' => 'string',
+        'status' => '\OpenAPI\Client\Model\Status',
+        'payment_method' => '\OpenAPI\Client\Model\PaymentMethod',
         'payed_at' => 'string',
         'error_code' => 'string',
         'error_message' => 'string'
@@ -300,70 +300,6 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
         return self::$openAPIModelName;
     }
 
-    public const STATUS_GENERATING = 'Generating';
-    public const STATUS_PENDING = 'Pending';
-    public const STATUS_COMPLETED = 'Completed';
-    public const STATUS_FAILED = 'Failed';
-    public const STATUS_CANCELED = 'Canceled';
-    public const STATUS_REFUNDING = 'Refunding';
-    public const STATUS_REFUNDED = 'Refunded';
-    public const STATUS_IN_DISPUTE = 'InDispute';
-    public const STATUS_CHARGEBACK = 'Chargeback';
-    public const PAYMENT_METHOD_PIX = 'Pix';
-    public const PAYMENT_METHOD_CREDIT_CARD = 'CreditCard';
-    public const PAYMENT_METHOD_DEBIT_CARD = 'DebitCard';
-    public const PAYMENT_METHOD_BANK_SLIP = 'BankSlip';
-    public const PAYMENT_METHOD_CRYPTO = 'Crypto';
-    public const PAYMENT_METHOD_APPLE_PAY = 'ApplePay';
-    public const PAYMENT_METHOD_NU_PAY = 'NuPay';
-    public const PAYMENT_METHOD_PIC_PAY = 'PicPay';
-    public const PAYMENT_METHOD_AMAZON_PAY = 'AmazonPay';
-    public const PAYMENT_METHOD_SEPA_DEBIT = 'SepaDebit';
-    public const PAYMENT_METHOD_GOOGLE_PAY = 'GooglePay';
-    public const PAYMENT_METHOD_DRAFT = 'Draft';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getStatusAllowableValues()
-    {
-        return [
-            self::STATUS_GENERATING,
-            self::STATUS_PENDING,
-            self::STATUS_COMPLETED,
-            self::STATUS_FAILED,
-            self::STATUS_CANCELED,
-            self::STATUS_REFUNDING,
-            self::STATUS_REFUNDED,
-            self::STATUS_IN_DISPUTE,
-            self::STATUS_CHARGEBACK,
-        ];
-    }
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getPaymentMethodAllowableValues()
-    {
-        return [
-            self::PAYMENT_METHOD_PIX,
-            self::PAYMENT_METHOD_CREDIT_CARD,
-            self::PAYMENT_METHOD_DEBIT_CARD,
-            self::PAYMENT_METHOD_BANK_SLIP,
-            self::PAYMENT_METHOD_CRYPTO,
-            self::PAYMENT_METHOD_APPLE_PAY,
-            self::PAYMENT_METHOD_NU_PAY,
-            self::PAYMENT_METHOD_PIC_PAY,
-            self::PAYMENT_METHOD_AMAZON_PAY,
-            self::PAYMENT_METHOD_SEPA_DEBIT,
-            self::PAYMENT_METHOD_GOOGLE_PAY,
-            self::PAYMENT_METHOD_DRAFT,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -437,27 +373,9 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
         if ($this->container['status'] === null) {
             $invalidProperties[] = "'status' can't be null";
         }
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!is_null($this->container['status']) && !in_array($this->container['status'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'status', must be one of '%s'",
-                $this->container['status'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         if ($this->container['payment_method'] === null) {
             $invalidProperties[] = "'payment_method' can't be null";
         }
-        $allowedValues = $this->getPaymentMethodAllowableValues();
-        if (!is_null($this->container['payment_method']) && !in_array($this->container['payment_method'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'payment_method', must be one of '%s'",
-                $this->container['payment_method'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         if ($this->container['payed_at'] === null && !$this->isNullableSetToNull('payed_at')) {
             $invalidProperties[] = "'payed_at' can't be null";
         }
@@ -708,7 +626,7 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
     /**
      * Gets status
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\Status
      */
     public function getStatus()
     {
@@ -718,7 +636,7 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
     /**
      * Sets status
      *
-     * @param string $status status
+     * @param \OpenAPI\Client\Model\Status $status status
      *
      * @return self
      */
@@ -726,16 +644,6 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
     {
         if (is_null($status)) {
             throw new \InvalidArgumentException('non-nullable status cannot be null');
-        }
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!in_array($status, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'status', must be one of '%s'",
-                    $status,
-                    implode("', '", $allowedValues)
-                )
-            );
         }
         $this->container['status'] = $status;
 
@@ -745,7 +653,7 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
     /**
      * Gets payment_method
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\PaymentMethod
      */
     public function getPaymentMethod()
     {
@@ -755,7 +663,7 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
     /**
      * Sets payment_method
      *
-     * @param string $payment_method payment_method
+     * @param \OpenAPI\Client\Model\PaymentMethod $payment_method payment_method
      *
      * @return self
      */
@@ -763,16 +671,6 @@ class PostOrdersByIdConfirm200Response implements ModelInterface, ArrayAccess, \
     {
         if (is_null($payment_method)) {
             throw new \InvalidArgumentException('non-nullable payment_method cannot be null');
-        }
-        $allowedValues = $this->getPaymentMethodAllowableValues();
-        if (!in_array($payment_method, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'payment_method', must be one of '%s'",
-                    $payment_method,
-                    implode("', '", $allowedValues)
-                )
-            );
         }
         $this->container['payment_method'] = $payment_method;
 

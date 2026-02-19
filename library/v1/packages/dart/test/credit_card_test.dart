@@ -7,7 +7,7 @@ void main() {
   // TODO add properties to the builder and call build()
 
   group(CreditCard, () {
-    // String paymentMethod
+    // PaymentMethod paymentMethod
     test('to test the property `paymentMethod`', () async {
       // TODO
     });

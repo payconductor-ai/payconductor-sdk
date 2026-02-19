@@ -14,13 +14,13 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Pix {
     #[serde(rename = "paymentMethod")]
-    pub payment_method: String,
+    pub payment_method: models::PaymentMethod,
     #[serde(rename = "expirationInSeconds", skip_serializing_if = "Option::is_none")]
     pub expiration_in_seconds: Option<Box<models::PixExpirationInSeconds>>,
 }
 
 impl Pix {
-    pub fn new(payment_method: String) -> Pix {
+    pub fn new(payment_method: models::PaymentMethod) -> Pix {
         Pix {
             payment_method,
             expiration_in_seconds: None,

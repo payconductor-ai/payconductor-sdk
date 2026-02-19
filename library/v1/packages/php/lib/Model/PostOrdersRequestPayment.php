@@ -58,14 +58,14 @@ class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSeri
       * @var string[]
       */
     protected static $openAPITypes = [
-        'payment_method' => 'string',
+        'payment_method' => '\OpenAPI\Client\Model\PaymentMethod',
         'expiration_in_seconds' => '\OpenAPI\Client\Model\DraftExpirationInSeconds',
         'card' => '\OpenAPI\Client\Model\CreditCardCard',
         'installments' => '\OpenAPI\Client\Model\CreditCardInstallments',
         'soft_descriptor' => 'string',
         'expiration_in_days' => '\OpenAPI\Client\Model\BankSlipExpirationInDays',
         'nu_pay' => '\OpenAPI\Client\Model\NuPayNuPay',
-        'available_payment_methods' => '\OpenAPI\Client\Model\DraftAvailablePaymentMethodsInner[]'
+        'available_payment_methods' => '\OpenAPI\Client\Model\AvailablePaymentMethods[]'
     ];
 
     /**
@@ -362,7 +362,7 @@ class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets payment_method
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\PaymentMethod
      */
     public function getPaymentMethod()
     {
@@ -372,7 +372,7 @@ class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets payment_method
      *
-     * @param string $payment_method payment_method
+     * @param \OpenAPI\Client\Model\PaymentMethod $payment_method payment_method
      *
      * @return self
      */
@@ -558,7 +558,7 @@ class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets available_payment_methods
      *
-     * @return \OpenAPI\Client\Model\DraftAvailablePaymentMethodsInner[]|null
+     * @return \OpenAPI\Client\Model\AvailablePaymentMethods[]|null
      */
     public function getAvailablePaymentMethods()
     {
@@ -568,7 +568,7 @@ class PostOrdersRequestPayment implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets available_payment_methods
      *
-     * @param \OpenAPI\Client\Model\DraftAvailablePaymentMethodsInner[]|null $available_payment_methods Available payment methods for this order
+     * @param \OpenAPI\Client\Model\AvailablePaymentMethods[]|null $available_payment_methods Available payment methods for this order
      *
      * @return self
      */

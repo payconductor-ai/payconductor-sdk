@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_collection/built_collection.dart';
+import 'package:openapi/src/model/status.dart';
 import 'package:openapi/src/model/post_withdraws200_response_payout_account.dart';
 import 'package:openapi/src/model/post_withdraws200_response_payed_at.dart';
 import 'package:built_value/built_value.dart';
@@ -19,7 +19,7 @@ part 'post_withdraws200_response.g.dart';
 /// * [externalIntegrationKey] - Provider key used for the withdrawal
 /// * [externalIntegrationId] - Withdrawal ID in the payment provider
 /// * [costFee] - Cost fee applied to the withdrawal
-/// * [status] - Withdrawal status
+/// * [status] 
 /// * [errorCode] - Error code, if any
 /// * [errorMessage] - Descriptive error message, if any
 /// * [payedAt] 
@@ -46,10 +46,9 @@ abstract class PostWithdraws200Response implements Built<PostWithdraws200Respons
   @BuiltValueField(wireName: r'costFee')
   num get costFee;
 
-  /// Withdrawal status
   @BuiltValueField(wireName: r'status')
-  PostWithdraws200ResponseStatusEnum get status;
-  // enum statusEnum {  Pending,  Transferring,  Completed,  Failed,  };
+  Status get status;
+  // enum statusEnum {  Generating,  Pending,  Completed,  Failed,  Canceled,  Refunding,  Refunded,  InDispute,  Chargeback,  Transferring,  };
 
   /// Error code, if any
   @BuiltValueField(wireName: r'errorCode')
@@ -70,8 +69,7 @@ abstract class PostWithdraws200Response implements Built<PostWithdraws200Respons
   factory PostWithdraws200Response([void updates(PostWithdraws200ResponseBuilder b)]) = _$PostWithdraws200Response;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(PostWithdraws200ResponseBuilder b) => b
-      ..status = PostWithdraws200ResponseStatusEnum.valueOf('Pending');
+  static void _defaults(PostWithdraws200ResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
   static Serializer<PostWithdraws200Response> get serializer => _$PostWithdraws200ResponseSerializer();
@@ -117,7 +115,7 @@ class _$PostWithdraws200ResponseSerializer implements PrimitiveSerializer<PostWi
     yield r'status';
     yield serializers.serialize(
       object.status,
-      specifiedType: const FullType(PostWithdraws200ResponseStatusEnum),
+      specifiedType: const FullType(Status),
     );
     yield r'errorCode';
     yield object.errorCode == null ? null : serializers.serialize(
@@ -202,8 +200,8 @@ class _$PostWithdraws200ResponseSerializer implements PrimitiveSerializer<PostWi
         case r'status':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(PostWithdraws200ResponseStatusEnum),
-          ) as PostWithdraws200ResponseStatusEnum;
+            specifiedType: const FullType(Status),
+          ) as Status;
           result.status = valueDes;
           break;
         case r'errorCode':
@@ -264,28 +262,5 @@ class _$PostWithdraws200ResponseSerializer implements PrimitiveSerializer<PostWi
     );
     return result.build();
   }
-}
-
-class PostWithdraws200ResponseStatusEnum extends EnumClass {
-
-  /// Withdrawal status
-  @BuiltValueEnumConst(wireName: r'Pending')
-  static const PostWithdraws200ResponseStatusEnum pending = _$postWithdraws200ResponseStatusEnum_pending;
-  /// Withdrawal status
-  @BuiltValueEnumConst(wireName: r'Transferring')
-  static const PostWithdraws200ResponseStatusEnum transferring = _$postWithdraws200ResponseStatusEnum_transferring;
-  /// Withdrawal status
-  @BuiltValueEnumConst(wireName: r'Completed')
-  static const PostWithdraws200ResponseStatusEnum completed = _$postWithdraws200ResponseStatusEnum_completed;
-  /// Withdrawal status
-  @BuiltValueEnumConst(wireName: r'Failed')
-  static const PostWithdraws200ResponseStatusEnum failed = _$postWithdraws200ResponseStatusEnum_failed;
-
-  static Serializer<PostWithdraws200ResponseStatusEnum> get serializer => _$postWithdraws200ResponseStatusEnumSerializer;
-
-  const PostWithdraws200ResponseStatusEnum._(String name): super(name);
-
-  static BuiltSet<PostWithdraws200ResponseStatusEnum> get values => _$postWithdraws200ResponseStatusEnumValues;
-  static PostWithdraws200ResponseStatusEnum valueOf(String name) => _$postWithdraws200ResponseStatusEnumValueOf(name);
 }
 

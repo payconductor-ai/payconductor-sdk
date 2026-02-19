@@ -52,7 +52,7 @@
 #'
 #' library(payconductor_sdk)
 #' var_id <- "id_example" # character | 
-#' var_customer1 <- Customer_1$new(Customer_address$new("city_example", "country_example", "neighborhood_example", "number_example", "state_example", "street_example", "zipCode_example"), "documentNumber_example", "Cpf", "email_example", "name_example", "phoneNumber_example") # Customer1 | Schema for creating a new customer
+#' var_customer1 <- Customer_1$new(Customer_address$new("city_example", "country_example", "neighborhood_example", "number_example", "state_example", "street_example", "zipCode_example"), "documentNumber_example", DocumentType$new(), "email_example", "name_example", "phoneNumber_example") # Customer1 | Schema for creating a new customer
 #'
 #' #Update customer data
 #' api_instance <- CustomersApi$new()
@@ -67,7 +67,7 @@
 #' ####################  PostCustomers  ####################
 #'
 #' library(payconductor_sdk)
-#' var_customer <- Customer$new("documentNumber_example", "Cpf", "email_example", "name_example", Customer_address$new("city_example", "country_example", "neighborhood_example", "number_example", "state_example", "street_example", "zipCode_example"), "phoneNumber_example") # Customer | Schema for creating a new customer
+#' var_customer <- Customer$new("documentNumber_example", DocumentType$new(), "email_example", "name_example", Customer_address$new("city_example", "country_example", "neighborhood_example", "number_example", "state_example", "street_example", "zipCode_example"), "phoneNumber_example") # Customer | Schema for creating a new customer
 #'
 #' #Create new customer
 #' api_instance <- CustomersApi$new()

@@ -17,11 +17,12 @@ typedef struct credit_card_t credit_card_t;
 
 #include "credit_card_card.h"
 #include "credit_card_installments.h"
+#include "payment_method.h"
 
 
 
 typedef struct credit_card_t {
-    char *payment_method; // string
+    payconductor_api_payment_method__e payment_method; //referenced enum
     struct credit_card_card_t *card; //model
     struct credit_card_installments_t *installments; //model
     char *soft_descriptor; // string
@@ -30,7 +31,7 @@ typedef struct credit_card_t {
 } credit_card_t;
 
 __attribute__((deprecated)) credit_card_t *credit_card_create(
-    char *payment_method,
+    payconductor_api_payment_method__e payment_method,
     credit_card_card_t *card,
     credit_card_installments_t *installments,
     char *soft_descriptor

@@ -12,8 +12,8 @@
  */
 
 import ApiClient from '../ApiClient';
-import Customer2 from './Customer2';
-import Customer2DocumentType from './Customer2DocumentType';
+import Customer from './Customer';
 import CustomerAddress from './CustomerAddress';
+import DocumentType from './DocumentType';
 import PostCardTokenizationRequestCustomerAnyOf from './PostCardTokenizationRequestCustomerAnyOf';
 // TODO: add anyof model support

@@ -31,8 +31,7 @@ type PostWithdraws200Response struct {
 	ExternalIntegrationId NullableString `json:"externalIntegrationId"`
 	// Cost fee applied to the withdrawal
 	CostFee float32 `json:"costFee"`
-	// Withdrawal status
-	Status string `json:"status"`
+	Status Status `json:"status"`
 	// Error code, if any
 	ErrorCode NullableString `json:"errorCode"`
 	// Descriptive error message, if any
@@ -47,7 +46,7 @@ type _PostWithdraws200Response PostWithdraws200Response
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPostWithdraws200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, costFee float32, status string, errorCode NullableString, errorMessage NullableString, payedAt NullablePostWithdraws200ResponsePayedAt, payoutAccount PostWithdraws200ResponsePayoutAccount) *PostWithdraws200Response {
+func NewPostWithdraws200Response(id string, externalId NullableString, externalIntegrationKey string, externalIntegrationId NullableString, costFee float32, status Status, errorCode NullableString, errorMessage NullableString, payedAt NullablePostWithdraws200ResponsePayedAt, payoutAccount PostWithdraws200ResponsePayoutAccount) *PostWithdraws200Response {
 	this := PostWithdraws200Response{}
 	this.Id = id
 	this.ExternalId = externalId
@@ -67,8 +66,6 @@ func NewPostWithdraws200Response(id string, externalId NullableString, externalI
 // but it doesn't guarantee that properties required by API are set
 func NewPostWithdraws200ResponseWithDefaults() *PostWithdraws200Response {
 	this := PostWithdraws200Response{}
-	var status string = "Pending"
-	this.Status = status
 	return &this
 }
 
@@ -197,9 +194,9 @@ func (o *PostWithdraws200Response) SetCostFee(v float32) {
 }
 
 // GetStatus returns the Status field value
-func (o *PostWithdraws200Response) GetStatus() string {
+func (o *PostWithdraws200Response) GetStatus() Status {
 	if o == nil {
-		var ret string
+		var ret Status
 		return ret
 	}
 
@@ -208,7 +205,7 @@ func (o *PostWithdraws200Response) GetStatus() string {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *PostWithdraws200Response) GetStatusOk() (*string, bool) {
+func (o *PostWithdraws200Response) GetStatusOk() (*Status, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -216,7 +213,7 @@ func (o *PostWithdraws200Response) GetStatusOk() (*string, bool) {
 }
 
 // SetStatus sets field value
-func (o *PostWithdraws200Response) SetStatus(v string) {
+func (o *PostWithdraws200Response) SetStatus(v Status) {
 	o.Status = v
 }
 

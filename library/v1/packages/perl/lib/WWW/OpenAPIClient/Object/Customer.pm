@@ -31,6 +31,7 @@ use Date::Parse;
 use DateTime;
 
 use WWW::OpenAPIClient::Object::CustomerAddress;
+use WWW::OpenAPIClient::Object::DocumentType;
 
 use base ("Class::Accessor", "Class::Data::Inheritable");
 
@@ -235,7 +236,7 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'document_type' => {
-        datatype => 'string',
+        datatype => 'DocumentType',
         base_name => 'documentType',
         description => '',
         format => '',
@@ -267,7 +268,7 @@ __PACKAGE__->method_documentation({
 __PACKAGE__->openapi_types( {
     'address' => 'CustomerAddress',
     'document_number' => 'string',
-    'document_type' => 'string',
+    'document_type' => 'DocumentType',
     'email' => 'string',
     'name' => 'string',
     'phone_number' => 'string'

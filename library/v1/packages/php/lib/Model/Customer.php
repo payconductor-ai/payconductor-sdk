@@ -60,7 +60,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'address' => '\OpenAPI\Client\Model\CustomerAddress',
         'document_number' => 'string',
-        'document_type' => 'string',
+        'document_type' => '\OpenAPI\Client\Model\DocumentType',
         'email' => 'string',
         'name' => 'string',
         'phone_number' => 'string'
@@ -259,21 +259,6 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    public const DOCUMENT_TYPE_CPF = 'Cpf';
-    public const DOCUMENT_TYPE_CNPJ = 'Cnpj';
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getDocumentTypeAllowableValues()
-    {
-        return [
-            self::DOCUMENT_TYPE_CPF,
-            self::DOCUMENT_TYPE_CNPJ,
-        ];
-    }
 
     /**
      * Associative array for storing property values
@@ -335,15 +320,6 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['document_type'] === null) {
             $invalidProperties[] = "'document_type' can't be null";
         }
-        $allowedValues = $this->getDocumentTypeAllowableValues();
-        if (!is_null($this->container['document_type']) && !in_array($this->container['document_type'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'document_type', must be one of '%s'",
-                $this->container['document_type'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         if ($this->container['email'] === null) {
             $invalidProperties[] = "'email' can't be null";
         }
@@ -431,7 +407,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets document_type
      *
-     * @return string
+     * @return \OpenAPI\Client\Model\DocumentType
      */
     public function getDocumentType()
     {
@@ -441,7 +417,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets document_type
      *
-     * @param string $document_type document_type
+     * @param \OpenAPI\Client\Model\DocumentType $document_type document_type
      *
      * @return self
      */
@@ -449,16 +425,6 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         if (is_null($document_type)) {
             throw new \InvalidArgumentException('non-nullable document_type cannot be null');
-        }
-        $allowedValues = $this->getDocumentTypeAllowableValues();
-        if (!in_array($document_type, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'document_type', must be one of '%s'",
-                    $document_type,
-                    implode("', '", $allowedValues)
-                )
-            );
         }
         $this->container['document_type'] = $document_type;
 

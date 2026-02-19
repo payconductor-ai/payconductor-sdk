@@ -18,7 +18,7 @@ void main() {
       // TODO
     });
 
-    // Customer2DocumentType documentType
+    // DocumentType documentType
     test('to test the property `documentType`', () async {
       // TODO
     });

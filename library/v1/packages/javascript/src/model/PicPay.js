@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import PaymentMethod from './PaymentMethod';
 
 /**
  * The PicPay model module.
@@ -22,7 +23,7 @@ class PicPay {
     /**
      * Constructs a new <code>PicPay</code>.
      * @alias module:model/PicPay
-     * @param paymentMethod {String} 
+     * @param paymentMethod {module:model/PaymentMethod} 
      */
     constructor(paymentMethod) { 
         
@@ -50,7 +51,7 @@ class PicPay {
             obj = obj || new PicPay();
 
             if (data.hasOwnProperty('paymentMethod')) {
-                obj['paymentMethod'] = ApiClient.convertToType(data['paymentMethod'], 'String');
+                obj['paymentMethod'] = PaymentMethod.constructFromObject(data['paymentMethod']);
             }
         }
         return obj;
@@ -68,10 +69,6 @@ class PicPay {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // ensure the json data is a string
-        if (data['paymentMethod'] && !(typeof data['paymentMethod'] === 'string' || data['paymentMethod'] instanceof String)) {
-            throw new Error("Expected the field `paymentMethod` to be a primitive type in the JSON string but got " + data['paymentMethod']);
-        }
 
         return true;
     }
@@ -82,7 +79,7 @@ class PicPay {
 PicPay.RequiredProperties = ["paymentMethod"];
 
 /**
- * @member {String} paymentMethod
+ * @member {module:model/PaymentMethod} paymentMethod
  */
 PicPay.prototype['paymentMethod'] = undefined;
 

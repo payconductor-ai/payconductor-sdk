@@ -35,7 +35,7 @@ namespace payconductor_sdk.Model
         /// </summary>
         /// <param name="paymentMethod">paymentMethod</param>
         [JsonConstructor]
-        public PicPay(string paymentMethod)
+        public PicPay(PaymentMethod paymentMethod)
         {
             PaymentMethod = paymentMethod;
             OnCreated();
@@ -47,7 +47,7 @@ namespace payconductor_sdk.Model
         /// Gets or Sets PaymentMethod
         /// </summary>
         [JsonPropertyName("paymentMethod")]
-        public string PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -95,7 +95,7 @@ namespace payconductor_sdk.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> paymentMethod = default;
+            Option<PaymentMethod?> paymentMethod = default;
 
             while (utf8JsonReader.Read())
             {
@@ -113,7 +113,9 @@ namespace payconductor_sdk.Model
                     switch (localVarJsonPropertyName)
                     {
                         case "paymentMethod":
-                            paymentMethod = new Option<string?>(utf8JsonReader.GetString()!);
+                            string? paymentMethodRawValue = utf8JsonReader.GetString();
+                            if (paymentMethodRawValue != null)
+                                paymentMethod = new Option<PaymentMethod?>(PaymentMethodValueConverter.FromStringOrDefault(paymentMethodRawValue));
                             break;
                         default:
                             break;
@@ -127,7 +129,7 @@ namespace payconductor_sdk.Model
             if (paymentMethod.IsSet && paymentMethod.Value == null)
                 throw new ArgumentNullException(nameof(paymentMethod), "Property is not nullable for class PicPay.");
 
-            return new PicPay(paymentMethod.Value!);
+            return new PicPay(paymentMethod.Value!.Value!);
         }
 
         /// <summary>
@@ -154,10 +156,8 @@ namespace payconductor_sdk.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, PicPay picPay, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (picPay.PaymentMethod == null)
-                throw new ArgumentNullException(nameof(picPay.PaymentMethod), "Property is required for class PicPay.");
-
-            writer.WriteString("paymentMethod", picPay.PaymentMethod);
+            var paymentMethodRawValue = PaymentMethodValueConverter.ToJsonValue(picPay.PaymentMethod);
+            writer.WriteString("paymentMethod", paymentMethodRawValue);
         }
     }
 }

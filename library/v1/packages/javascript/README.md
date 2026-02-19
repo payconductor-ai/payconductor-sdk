@@ -222,6 +222,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation for Models
 
+ - [PayconductorSdk.AvailablePaymentMethods](docs/AvailablePaymentMethods.md)
  - [PayconductorSdk.BankSlip](docs/BankSlip.md)
  - [PayconductorSdk.BankSlipExpirationInDays](docs/BankSlipExpirationInDays.md)
  - [PayconductorSdk.CompleteCardData](docs/CompleteCardData.md)
@@ -231,18 +232,19 @@ Class | Method | HTTP request | Description
  - [PayconductorSdk.CreditCardInstallments](docs/CreditCardInstallments.md)
  - [PayconductorSdk.Customer](docs/Customer.md)
  - [PayconductorSdk.Customer1](docs/Customer1.md)
- - [PayconductorSdk.Customer2](docs/Customer2.md)
- - [PayconductorSdk.Customer2DocumentType](docs/Customer2DocumentType.md)
  - [PayconductorSdk.CustomerAddress](docs/CustomerAddress.md)
+ - [PayconductorSdk.DocumentType](docs/DocumentType.md)
  - [PayconductorSdk.Draft](docs/Draft.md)
- - [PayconductorSdk.DraftAvailablePaymentMethodsInner](docs/DraftAvailablePaymentMethodsInner.md)
  - [PayconductorSdk.DraftExpirationInSeconds](docs/DraftExpirationInSeconds.md)
+ - [PayconductorSdk.Event](docs/Event.md)
  - [PayconductorSdk.MerchantInput](docs/MerchantInput.md)
  - [PayconductorSdk.NuPay](docs/NuPay.md)
  - [PayconductorSdk.NuPayNuPay](docs/NuPayNuPay.md)
+ - [PayconductorSdk.PaymentMethod](docs/PaymentMethod.md)
  - [PayconductorSdk.PicPay](docs/PicPay.md)
  - [PayconductorSdk.Pix](docs/Pix.md)
  - [PayconductorSdk.PixExpirationInSeconds](docs/PixExpirationInSeconds.md)
+ - [PayconductorSdk.PixType](docs/PixType.md)
  - [PayconductorSdk.PostCardTokenization200Response](docs/PostCardTokenization200Response.md)
  - [PayconductorSdk.PostCardTokenizationRequest](docs/PostCardTokenizationRequest.md)
  - [PayconductorSdk.PostCardTokenizationRequestCustomer](docs/PostCardTokenizationRequestCustomer.md)
@@ -266,6 +268,7 @@ Class | Method | HTTP request | Description
  - [PayconductorSdk.PostWithdraws200ResponsePayoutAccount](docs/PostWithdraws200ResponsePayoutAccount.md)
  - [PayconductorSdk.PostWithdrawsRequest](docs/PostWithdrawsRequest.md)
  - [PayconductorSdk.PostWithdrawsRequestPayoutAccount](docs/PostWithdrawsRequestPayoutAccount.md)
+ - [PayconductorSdk.Status](docs/Status.md)
  - [PayconductorSdk.TokenizedCard](docs/TokenizedCard.md)
 
 

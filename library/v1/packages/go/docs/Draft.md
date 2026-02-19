@@ -4,15 +4,15 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PaymentMethod** | **string** |  | 
+**PaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **ExpirationInSeconds** | Pointer to [**DraftExpirationInSeconds**](DraftExpirationInSeconds.md) |  | [optional] [default to 3600]
-**AvailablePaymentMethods** | Pointer to [**[]DraftAvailablePaymentMethodsInner**](DraftAvailablePaymentMethodsInner.md) | Available payment methods for this order | [optional] 
+**AvailablePaymentMethods** | Pointer to [**[]AvailablePaymentMethods**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] 
 
 ## Methods
 
 ### NewDraft
 
-`func NewDraft(paymentMethod string, ) *Draft`
+`func NewDraft(paymentMethod PaymentMethod, ) *Draft`
 
 NewDraft instantiates a new Draft object
 This constructor will assign default values to properties that have it defined,
@@ -29,20 +29,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetPaymentMethod
 
-`func (o *Draft) GetPaymentMethod() string`
+`func (o *Draft) GetPaymentMethod() PaymentMethod`
 
 GetPaymentMethod returns the PaymentMethod field if non-nil, zero value otherwise.
 
 ### GetPaymentMethodOk
 
-`func (o *Draft) GetPaymentMethodOk() (*string, bool)`
+`func (o *Draft) GetPaymentMethodOk() (*PaymentMethod, bool)`
 
 GetPaymentMethodOk returns a tuple with the PaymentMethod field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPaymentMethod
 
-`func (o *Draft) SetPaymentMethod(v string)`
+`func (o *Draft) SetPaymentMethod(v PaymentMethod)`
 
 SetPaymentMethod sets PaymentMethod field to given value.
 
@@ -74,20 +74,20 @@ HasExpirationInSeconds returns a boolean if a field has been set.
 
 ### GetAvailablePaymentMethods
 
-`func (o *Draft) GetAvailablePaymentMethods() []DraftAvailablePaymentMethodsInner`
+`func (o *Draft) GetAvailablePaymentMethods() []AvailablePaymentMethods`
 
 GetAvailablePaymentMethods returns the AvailablePaymentMethods field if non-nil, zero value otherwise.
 
 ### GetAvailablePaymentMethodsOk
 
-`func (o *Draft) GetAvailablePaymentMethodsOk() (*[]DraftAvailablePaymentMethodsInner, bool)`
+`func (o *Draft) GetAvailablePaymentMethodsOk() (*[]AvailablePaymentMethods, bool)`
 
 GetAvailablePaymentMethodsOk returns a tuple with the AvailablePaymentMethods field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAvailablePaymentMethods
 
-`func (o *Draft) SetAvailablePaymentMethods(v []DraftAvailablePaymentMethodsInner)`
+`func (o *Draft) SetAvailablePaymentMethods(v []AvailablePaymentMethods)`
 
 SetAvailablePaymentMethods sets AvailablePaymentMethods field to given value.
 

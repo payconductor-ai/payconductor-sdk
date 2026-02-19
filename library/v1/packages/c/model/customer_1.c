@@ -4,28 +4,11 @@
 #include "customer_1.h"
 
 
-char* customer_1_document_type_ToString(payconductor_api_customer_1_DOCUMENTTYPE_e document_type) {
-    char* document_typeArray[] =  { "NULL", "Cpf", "Cnpj" };
-    return document_typeArray[document_type];
-}
-
-payconductor_api_customer_1_DOCUMENTTYPE_e customer_1_document_type_FromString(char* document_type){
-    int stringToReturn = 0;
-    char *document_typeArray[] =  { "NULL", "Cpf", "Cnpj" };
-    size_t sizeofArray = sizeof(document_typeArray) / sizeof(document_typeArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(document_type, document_typeArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 static customer_1_t *customer_1_create_internal(
     customer_address_t *address,
     char *document_number,
-    payconductor_api_customer_1_DOCUMENTTYPE_e document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number
@@ -48,7 +31,7 @@ static customer_1_t *customer_1_create_internal(
 __attribute__((deprecated)) customer_1_t *customer_1_create(
     customer_address_t *address,
     char *document_number,
-    payconductor_api_customer_1_DOCUMENTTYPE_e document_type,
+    payconductor_api_document_type__e document_type,
     char *email,
     char *name,
     char *phone_number
@@ -120,10 +103,14 @@ cJSON *customer_1_convertToJSON(customer_1_t *customer_1) {
 
 
     // customer_1->document_type
-    if(customer_1->document_type != payconductor_api_customer_1_DOCUMENTTYPE_NULL) {
-    if(cJSON_AddStringToObject(item, "documentType", customer_1_document_type_ToString(customer_1->document_type)) == NULL)
-    {
-    goto fail; //Enum
+    if(customer_1->document_type != payconductor_api_document_type__NULL) {
+    cJSON *document_type_local_JSON = document_type_convertToJSON(customer_1->document_type);
+    if(document_type_local_JSON == NULL) {
+        goto fail; // custom
+    }
+    cJSON_AddItemToObject(item, "documentType", document_type_local_JSON);
+    if(item->child == NULL) {
+        goto fail;
     }
     }
 
@@ -166,6 +153,9 @@ customer_1_t *customer_1_parseFromJSON(cJSON *customer_1JSON){
     // define the local variable for customer_1->address
     customer_address_t *address_local_nonprim = NULL;
 
+    // define the local variable for customer_1->document_type
+    payconductor_api_document_type__e document_type_local_nonprim = 0;
+
     // customer_1->address
     cJSON *address = cJSON_GetObjectItemCaseSensitive(customer_1JSON, "address");
     if (cJSON_IsNull(address)) {
@@ -192,13 +182,8 @@ customer_1_t *customer_1_parseFromJSON(cJSON *customer_1JSON){
     if (cJSON_IsNull(document_type)) {
         document_type = NULL;
     }
-    payconductor_api_customer_1_DOCUMENTTYPE_e document_typeVariable;
     if (document_type) { 
-    if(!cJSON_IsString(document_type))
-    {
-    goto end; //Enum
-    }
-    document_typeVariable = customer_1_document_type_FromString(document_type->valuestring);
+    document_type_local_nonprim = document_type_parseFromJSON(document_type); //custom
     }
 
     // customer_1->email
@@ -241,7 +226,7 @@ customer_1_t *customer_1_parseFromJSON(cJSON *customer_1JSON){
     customer_1_local_var = customer_1_create_internal (
         address ? address_local_nonprim : NULL,
         document_number && !cJSON_IsNull(document_number) ? strdup(document_number->valuestring) : NULL,
-        document_type ? document_typeVariable : payconductor_api_customer_1_DOCUMENTTYPE_NULL,
+        document_type ? document_type_local_nonprim : 0,
         email && !cJSON_IsNull(email) ? strdup(email->valuestring) : NULL,
         name && !cJSON_IsNull(name) ? strdup(name->valuestring) : NULL,
         phone_number && !cJSON_IsNull(phone_number) ? strdup(phone_number->valuestring) : NULL
@@ -252,6 +237,9 @@ end:
     if (address_local_nonprim) {
         customer_address_free(address_local_nonprim);
         address_local_nonprim = NULL;
+    }
+    if (document_type_local_nonprim) {
+        document_type_local_nonprim = 0;
     }
     return NULL;
 

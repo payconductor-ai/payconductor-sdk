@@ -32,8 +32,8 @@ defmodule PayConductorAPI.Model.PostOrdersByIdConfirm200Response do
     :bankSlip => PayConductorAPI.Model.PostOrders200ResponseBankSlip.t | nil,
     :nuPay => PayConductorAPI.Model.PostOrders200ResponseNuPay.t | nil,
     :picPay => PayConductorAPI.Model.PostOrders200ResponsePicPay.t | nil,
-    :status => String.t,
-    :paymentMethod => String.t,
+    :status => PayConductorAPI.Model.Status.t,
+    :paymentMethod => PayConductorAPI.Model.PaymentMethod.t,
     :payedAt => String.t | nil,
     :errorCode => String.t | nil,
     :errorMessage => String.t | nil
@@ -47,6 +47,8 @@ defmodule PayConductorAPI.Model.PostOrdersByIdConfirm200Response do
      |> Deserializer.deserialize(:bankSlip, :struct, PayConductorAPI.Model.PostOrders200ResponseBankSlip)
      |> Deserializer.deserialize(:nuPay, :struct, PayConductorAPI.Model.PostOrders200ResponseNuPay)
      |> Deserializer.deserialize(:picPay, :struct, PayConductorAPI.Model.PostOrders200ResponsePicPay)
+     |> Deserializer.deserialize(:status, :struct, PayConductorAPI.Model.Status)
+     |> Deserializer.deserialize(:paymentMethod, :struct, PayConductorAPI.Model.PaymentMethod)
   end
 end
 

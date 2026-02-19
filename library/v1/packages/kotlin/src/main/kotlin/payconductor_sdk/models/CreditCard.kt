@@ -17,6 +17,7 @@ package payconductor_sdk.models
 
 import payconductor_sdk.models.CreditCardCard
 import payconductor_sdk.models.CreditCardInstallments
+import payconductor_sdk.models.PaymentMethod
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -34,7 +35,7 @@ import com.squareup.moshi.JsonClass
 data class CreditCard (
 
     @Json(name = "paymentMethod")
-    val paymentMethod: kotlin.String,
+    val paymentMethod: PaymentMethod,
 
     @Json(name = "card")
     val card: CreditCardCard,

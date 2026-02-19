@@ -521,6 +521,132 @@ paths:
       - application/json
 components:
   schemas:
+    Event:
+      enum:
+      - OrderCreated
+      - OrderPending
+      - OrderCompleted
+      - OrderFailed
+      - OrderRefunded
+      - OrderChargeback
+      - WithdrawCreated
+      - WithdrawCompleted
+      - WithdrawFailed
+      - WithdrawTransferring
+      type: string
+      x-enum-varnames:
+      - OrderCreated
+      - OrderPending
+      - OrderCompleted
+      - OrderFailed
+      - OrderRefunded
+      - OrderChargeback
+      - WithdrawCreated
+      - WithdrawCompleted
+      - WithdrawFailed
+      - WithdrawTransferring
+    Status:
+      enum:
+      - Generating
+      - Pending
+      - Completed
+      - Failed
+      - Canceled
+      - Refunding
+      - Refunded
+      - InDispute
+      - Chargeback
+      - Transferring
+      type: string
+      x-enum-varnames:
+      - Generating
+      - Pending
+      - Completed
+      - Failed
+      - Canceled
+      - Refunding
+      - Refunded
+      - InDispute
+      - Chargeback
+      - Transferring
+    PaymentMethod:
+      enum:
+      - Pix
+      - CreditCard
+      - DebitCard
+      - BankSlip
+      - Crypto
+      - ApplePay
+      - NuPay
+      - PicPay
+      - AmazonPay
+      - SepaDebit
+      - GooglePay
+      - Draft
+      type: string
+      x-enum-varnames:
+      - Pix
+      - CreditCard
+      - DebitCard
+      - BankSlip
+      - Crypto
+      - ApplePay
+      - NuPay
+      - PicPay
+      - AmazonPay
+      - SepaDebit
+      - GooglePay
+      - Draft
+    PixType:
+      enum:
+      - Cpf
+      - Cnpj
+      - Email
+      - Phone
+      - Random
+      type: string
+      x-enum-varnames:
+      - Cpf
+      - Cnpj
+      - Email
+      - Phone
+      - Random
+    DocumentType:
+      enum:
+      - Cpf
+      - Cnpj
+      type: string
+      x-enum-varnames:
+      - Cpf
+      - Cnpj
+    AvailablePaymentMethods:
+      enum:
+      - Pix
+      - CreditCard
+      - DebitCard
+      - BankSlip
+      - Crypto
+      - ApplePay
+      - NuPay
+      - PicPay
+      - AmazonPay
+      - SepaDebit
+      - GooglePay
+      - Draft
+      type: string
+      x-enum-varnames:
+      - Pix
+      - CreditCard
+      - DebitCard
+      - BankSlip
+      - Crypto
+      - ApplePay
+      - NuPay
+      - PicPay
+      - AmazonPay
+      - SepaDebit
+      - GooglePay
+      - Draft
     Customer_address:
       description: Schema for creating a new address
       example:
@@ -592,10 +718,7 @@ components:
           pattern: "^\\d{11}$|^\\d{14}$"
           type: string
         documentType:
-          enum:
-          - Cpf
-          - Cnpj
-          type: string
+          $ref: "#/components/schemas/DocumentType"
         email:
           description: Customer email
           format: email
@@ -682,7 +805,7 @@ components:
     Pix:
       properties:
         paymentMethod:
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         expirationInSeconds:
           $ref: "#/components/schemas/Pix_expirationInSeconds"
       required:
@@ -760,7 +883,7 @@ components:
     Credit_Card:
       properties:
         paymentMethod:
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         card:
           $ref: "#/components/schemas/Credit_Card_card"
         installments:
@@ -791,7 +914,7 @@ components:
     Bank_Slip:
       properties:
         paymentMethod:
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         expirationInDays:
           $ref: "#/components/schemas/Bank_Slip_expirationInDays"
       required:
@@ -821,7 +944,7 @@ components:
     NuPay:
       properties:
         paymentMethod:
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         nuPay:
           $ref: "#/components/schemas/NuPay_nuPay"
       required:
@@ -832,7 +955,7 @@ components:
     PicPay:
       properties:
         paymentMethod:
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
       required:
       - paymentMethod
       title: PicPay
@@ -847,32 +970,18 @@ components:
         type: integer
       default: 3600
       description: Order expiration time in seconds
-    Draft_availablePaymentMethods_inner:
-      anyOf:
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
-      - type: string
     Draft:
       description: Used to create an order without generating a real payment. Use
         to create orders that will be paid later
       properties:
         paymentMethod:
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         expirationInSeconds:
           $ref: "#/components/schemas/Draft_expirationInSeconds"
         availablePaymentMethods:
           description: Available payment methods for this order
           items:
-            $ref: "#/components/schemas/Draft_availablePaymentMethods_inner"
+            $ref: "#/components/schemas/AvailablePaymentMethods"
           type: array
       required:
       - paymentMethod
@@ -1173,32 +1282,9 @@ components:
         creditCard:
           $ref: "#/components/schemas/postOrders_200_response_creditCard"
         status:
-          enum:
-          - Generating
-          - Pending
-          - Completed
-          - Failed
-          - Canceled
-          - Refunding
-          - Refunded
-          - InDispute
-          - Chargeback
-          type: string
+          $ref: "#/components/schemas/Status"
         paymentMethod:
-          enum:
-          - Pix
-          - CreditCard
-          - DebitCard
-          - BankSlip
-          - Crypto
-          - ApplePay
-          - NuPay
-          - PicPay
-          - AmazonPay
-          - SepaDebit
-          - GooglePay
-          - Draft
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         payedAt:
           description: Date and time when the order was paid (ISO 8601)
           nullable: true
@@ -1278,32 +1364,9 @@ components:
         picPay:
           $ref: "#/components/schemas/postOrders_200_response_picPay"
         status:
-          enum:
-          - Generating
-          - Pending
-          - Completed
-          - Failed
-          - Canceled
-          - Refunding
-          - Refunded
-          - InDispute
-          - Chargeback
-          type: string
+          $ref: "#/components/schemas/Status"
         paymentMethod:
-          enum:
-          - Pix
-          - CreditCard
-          - DebitCard
-          - BankSlip
-          - Crypto
-          - ApplePay
-          - NuPay
-          - PicPay
-          - AmazonPay
-          - SepaDebit
-          - GooglePay
-          - Draft
-          type: string
+          $ref: "#/components/schemas/PaymentMethod"
         payedAt:
           description: Date and time when the order was paid (ISO 8601)
           nullable: true
@@ -1339,15 +1402,7 @@ components:
           description: PIX key for withdrawal
           type: string
         pixType:
-          default: Cnpj
-          description: PIX key type
-          enum:
-          - Cnpj
-          - Cpf
-          - Email
-          - Phone
-          - Random
-          type: string
+          $ref: "#/components/schemas/PixType"
       required:
       - ownerDocument
       - ownerName
@@ -1405,15 +1460,7 @@ components:
           description: PIX key used for the withdrawal
           type: string
         pixType:
-          default: Cpf
-          description: PIX key type
-          enum:
-          - Cpf
-          - Cnpj
-          - Email
-          - Phone
-          - Random
-          type: string
+          $ref: "#/components/schemas/PixType"
       required:
       - id
       - ownerDocument
@@ -1438,7 +1485,7 @@ components:
           pixKey: pixKey
         id: id
         externalIntegrationKey: externalIntegrationKey
-        status: Pending
+        status: Generating
       properties:
         id:
           description: Unique withdrawal identifier
@@ -1458,14 +1505,7 @@ components:
           description: Cost fee applied to the withdrawal
           type: number
         status:
-          default: Pending
-          description: Withdrawal status
-          enum:
-          - Pending
-          - Transferring
-          - Completed
-          - Failed
-          type: string
+          $ref: "#/components/schemas/Status"
         errorCode:
           description: "Error code, if any"
           nullable: true
@@ -1500,10 +1540,7 @@ components:
           pattern: "^\\d{11}$|^\\d{14}$"
           type: string
         documentType:
-          enum:
-          - Cpf
-          - Cnpj
-          type: string
+          $ref: "#/components/schemas/DocumentType"
         email:
           description: Customer email
           format: email
@@ -1515,40 +1552,6 @@ components:
           description: Customer phone number in +55 DD 9XXXXXXXX format
           pattern: "^\\+(\\d{1,2}) (\\d{2}) (\\d{8,9})$"
           type: string
-      title: Customer
-      type: object
-    Customer_2_documentType:
-      anyOf:
-      - type: string
-      - type: string
-      description: "Document type: Cpf or Cnpj"
-    Customer_2:
-      description: Schema for creating a new customer
-      properties:
-        address:
-          $ref: "#/components/schemas/Customer_address"
-        documentNumber:
-          description: Customer CPF or CNPJ without formatting
-          pattern: "^\\d{11}$|^\\d{14}$"
-          type: string
-        documentType:
-          $ref: "#/components/schemas/Customer_2_documentType"
-        email:
-          description: Customer email
-          format: email
-          type: string
-        name:
-          description: Customer full name
-          type: string
-        phoneNumber:
-          description: Customer phone number in +55 DD 9XXXXXXXX format
-          pattern: "^\\+(\\d{1,2}) (\\d{2}) (\\d{8,9})$"
-          type: string
-      required:
-      - documentNumber
-      - documentType
-      - email
-      - name
       title: Customer
       type: object
     postCard_tokenization_request_customer_anyOf:
@@ -1561,7 +1564,7 @@ components:
       type: object
     postCard_tokenization_request_customer:
       anyOf:
-      - $ref: "#/components/schemas/Customer_2"
+      - $ref: "#/components/schemas/Customer"
       - $ref: "#/components/schemas/postCard_tokenization_request_customer_anyOf"
     postCard_tokenization_request:
       additionalProperties: false

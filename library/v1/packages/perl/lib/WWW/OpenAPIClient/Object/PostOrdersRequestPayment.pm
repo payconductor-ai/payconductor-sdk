@@ -30,16 +30,17 @@ use Log::Any qw($log);
 use Date::Parse;
 use DateTime;
 
+use WWW::OpenAPIClient::Object::AvailablePaymentMethods;
 use WWW::OpenAPIClient::Object::BankSlip;
 use WWW::OpenAPIClient::Object::BankSlipExpirationInDays;
 use WWW::OpenAPIClient::Object::CreditCard;
 use WWW::OpenAPIClient::Object::CreditCardCard;
 use WWW::OpenAPIClient::Object::CreditCardInstallments;
 use WWW::OpenAPIClient::Object::Draft;
-use WWW::OpenAPIClient::Object::DraftAvailablePaymentMethodsInner;
 use WWW::OpenAPIClient::Object::DraftExpirationInSeconds;
 use WWW::OpenAPIClient::Object::NuPay;
 use WWW::OpenAPIClient::Object::NuPayNuPay;
+use WWW::OpenAPIClient::Object::PaymentMethod;
 use WWW::OpenAPIClient::Object::PicPay;
 use WWW::OpenAPIClient::Object::Pix;
 
@@ -232,7 +233,7 @@ __PACKAGE__->class_documentation({description => 'Payment data for the order (Pi
 
 __PACKAGE__->method_documentation({
     'payment_method' => {
-        datatype => 'string',
+        datatype => 'PaymentMethod',
         base_name => 'paymentMethod',
         description => '',
         format => '',
@@ -281,7 +282,7 @@ __PACKAGE__->method_documentation({
         read_only => '',
             },
     'available_payment_methods' => {
-        datatype => 'ARRAY[DraftAvailablePaymentMethodsInner]',
+        datatype => 'ARRAY[AvailablePaymentMethods]',
         base_name => 'availablePaymentMethods',
         description => 'Available payment methods for this order',
         format => '',
@@ -290,14 +291,14 @@ __PACKAGE__->method_documentation({
 });
 
 __PACKAGE__->openapi_types( {
-    'payment_method' => 'string',
+    'payment_method' => 'PaymentMethod',
     'expiration_in_seconds' => 'DraftExpirationInSeconds',
     'card' => 'CreditCardCard',
     'installments' => 'CreditCardInstallments',
     'soft_descriptor' => 'string',
     'expiration_in_days' => 'BankSlipExpirationInDays',
     'nu_pay' => 'NuPayNuPay',
-    'available_payment_methods' => 'ARRAY[DraftAvailablePaymentMethodsInner]'
+    'available_payment_methods' => 'ARRAY[AvailablePaymentMethods]'
 } );
 
 __PACKAGE__->attribute_map( {

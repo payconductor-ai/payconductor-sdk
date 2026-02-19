@@ -17,12 +17,14 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from payconductor_sdk.models.payment_method import PaymentMethod
 from payconductor_sdk.models.post_orders200_response_bank_slip import PostOrders200ResponseBankSlip
 from payconductor_sdk.models.post_orders200_response_nu_pay import PostOrders200ResponseNuPay
 from payconductor_sdk.models.post_orders200_response_pic_pay import PostOrders200ResponsePicPay
 from payconductor_sdk.models.post_orders200_response_pix import PostOrders200ResponsePix
+from payconductor_sdk.models.status import Status
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -38,26 +40,12 @@ class PostOrdersByIdConfirm200Response(BaseModel):
     bank_slip: Optional[PostOrders200ResponseBankSlip] = Field(default=None, alias="bankSlip")
     nu_pay: Optional[PostOrders200ResponseNuPay] = Field(default=None, alias="nuPay")
     pic_pay: Optional[PostOrders200ResponsePicPay] = Field(default=None, alias="picPay")
-    status: StrictStr
-    payment_method: StrictStr = Field(alias="paymentMethod")
+    status: Status
+    payment_method: PaymentMethod = Field(alias="paymentMethod")
     payed_at: Optional[StrictStr] = Field(description="Date and time when the order was paid (ISO 8601)", alias="payedAt")
     error_code: Optional[StrictStr] = Field(description="Error code, if any", alias="errorCode")
     error_message: Optional[StrictStr] = Field(description="Error message, if any", alias="errorMessage")
     __properties: ClassVar[List[str]] = ["id", "externalId", "amount", "costFee", "pix", "bankSlip", "nuPay", "picPay", "status", "paymentMethod", "payedAt", "errorCode", "errorMessage"]
-
-    @field_validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['Generating', 'Pending', 'Completed', 'Failed', 'Canceled', 'Refunding', 'Refunded', 'InDispute', 'Chargeback']):
-            raise ValueError("must be one of enum values ('Generating', 'Pending', 'Completed', 'Failed', 'Canceled', 'Refunding', 'Refunded', 'InDispute', 'Chargeback')")
-        return value
-
-    @field_validator('payment_method')
-    def payment_method_validate_enum(cls, value):
-        """Validates the enum"""
-        if value not in set(['Pix', 'CreditCard', 'DebitCard', 'BankSlip', 'Crypto', 'ApplePay', 'NuPay', 'PicPay', 'AmazonPay', 'SepaDebit', 'GooglePay', 'Draft']):
-            raise ValueError("must be one of enum values ('Pix', 'CreditCard', 'DebitCard', 'BankSlip', 'Crypto', 'ApplePay', 'NuPay', 'PicPay', 'AmazonPay', 'SepaDebit', 'GooglePay', 'Draft')")
-        return value
 
     model_config = ConfigDict(
         populate_by_name=True,

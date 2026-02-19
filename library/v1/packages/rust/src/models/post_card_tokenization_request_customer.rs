@@ -19,7 +19,7 @@ pub struct PostCardTokenizationRequestCustomer {
     #[serde(rename = "documentNumber")]
     pub document_number: String,
     #[serde(rename = "documentType")]
-    pub document_type: Box<models::Customer2DocumentType>,
+    pub document_type: models::DocumentType,
     /// Customer email
     #[serde(rename = "email")]
     pub email: String,
@@ -35,11 +35,11 @@ pub struct PostCardTokenizationRequestCustomer {
 }
 
 impl PostCardTokenizationRequestCustomer {
-    pub fn new(document_number: String, document_type: models::Customer2DocumentType, email: String, name: String, id: String) -> PostCardTokenizationRequestCustomer {
+    pub fn new(document_number: String, document_type: models::DocumentType, email: String, name: String, id: String) -> PostCardTokenizationRequestCustomer {
         PostCardTokenizationRequestCustomer {
             address: None,
             document_number,
-            document_type: Box::new(document_type),
+            document_type,
             email,
             name,
             phone_number: None,

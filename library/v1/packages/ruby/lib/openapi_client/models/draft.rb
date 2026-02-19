@@ -23,6 +23,28 @@ module OpenapiClient
     # Available payment methods for this order
     attr_accessor :available_payment_methods
 
+    class EnumAttributeValidator
+      attr_reader :datatype
+      attr_reader :allowable_values
+
+      def initialize(datatype, allowable_values)
+        @allowable_values = allowable_values.map do |value|
+          case datatype.to_s
+          when /Integer/i
+            value.to_i
+          when /Float/i
+            value.to_f
+          else
+            value
+          end
+        end
+      end
+
+      def valid?(value)
+        !value || allowable_values.include?(value)
+      end
+    end
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
@@ -45,9 +67,9 @@ module OpenapiClient
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'payment_method' => :'String',
+        :'payment_method' => :'PaymentMethod',
         :'expiration_in_seconds' => :'DraftExpirationInSeconds',
-        :'available_payment_methods' => :'Array<DraftAvailablePaymentMethodsInner>'
+        :'available_payment_methods' => :'Array<AvailablePaymentMethods>'
       }
     end
 

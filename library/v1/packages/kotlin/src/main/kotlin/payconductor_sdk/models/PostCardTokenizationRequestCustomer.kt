@@ -15,9 +15,9 @@
 
 package payconductor_sdk.models
 
-import payconductor_sdk.models.Customer2
-import payconductor_sdk.models.Customer2DocumentType
+import payconductor_sdk.models.Customer
 import payconductor_sdk.models.CustomerAddress
+import payconductor_sdk.models.DocumentType
 import payconductor_sdk.models.PostCardTokenizationRequestCustomerAnyOf
 
 import com.squareup.moshi.Json
@@ -43,7 +43,7 @@ data class PostCardTokenizationRequestCustomer (
     val documentNumber: kotlin.String,
 
     @Json(name = "documentType")
-    val documentType: Customer2DocumentType,
+    val documentType: DocumentType,
 
     /* Customer email */
     @Json(name = "email")

@@ -21,7 +21,7 @@ var _ MappedNullable = &BankSlip{}
 
 // BankSlip struct for BankSlip
 type BankSlip struct {
-	PaymentMethod string `json:"paymentMethod"`
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
 	ExpirationInDays *BankSlipExpirationInDays `json:"expirationInDays,omitempty"`
 }
 
@@ -31,7 +31,7 @@ type _BankSlip BankSlip
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBankSlip(paymentMethod string) *BankSlip {
+func NewBankSlip(paymentMethod PaymentMethod) *BankSlip {
 	this := BankSlip{}
 	this.PaymentMethod = paymentMethod
 	var expirationInDays BankSlipExpirationInDays = 7
@@ -50,9 +50,9 @@ func NewBankSlipWithDefaults() *BankSlip {
 }
 
 // GetPaymentMethod returns the PaymentMethod field value
-func (o *BankSlip) GetPaymentMethod() string {
+func (o *BankSlip) GetPaymentMethod() PaymentMethod {
 	if o == nil {
-		var ret string
+		var ret PaymentMethod
 		return ret
 	}
 
@@ -61,7 +61,7 @@ func (o *BankSlip) GetPaymentMethod() string {
 
 // GetPaymentMethodOk returns a tuple with the PaymentMethod field value
 // and a boolean to check if the value has been set.
-func (o *BankSlip) GetPaymentMethodOk() (*string, bool) {
+func (o *BankSlip) GetPaymentMethodOk() (*PaymentMethod, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -69,7 +69,7 @@ func (o *BankSlip) GetPaymentMethodOk() (*string, bool) {
 }
 
 // SetPaymentMethod sets field value
-func (o *BankSlip) SetPaymentMethod(v string) {
+func (o *BankSlip) SetPaymentMethod(v PaymentMethod) {
 	o.PaymentMethod = v
 }
 

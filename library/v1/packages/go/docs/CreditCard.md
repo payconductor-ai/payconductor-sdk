@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**PaymentMethod** | **string** |  | 
+**PaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | 
 **Card** | [**CreditCardCard**](CreditCardCard.md) |  | 
 **Installments** | [**CreditCardInstallments**](CreditCardInstallments.md) |  | [default to 1]
 **SoftDescriptor** | Pointer to **string** | Text that will appear on the card statement (soft descriptor) | [optional] 
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 
 ### NewCreditCard
 
-`func NewCreditCard(paymentMethod string, card CreditCardCard, installments CreditCardInstallments, ) *CreditCard`
+`func NewCreditCard(paymentMethod PaymentMethod, card CreditCardCard, installments CreditCardInstallments, ) *CreditCard`
 
 NewCreditCard instantiates a new CreditCard object
 This constructor will assign default values to properties that have it defined,
@@ -30,20 +30,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetPaymentMethod
 
-`func (o *CreditCard) GetPaymentMethod() string`
+`func (o *CreditCard) GetPaymentMethod() PaymentMethod`
 
 GetPaymentMethod returns the PaymentMethod field if non-nil, zero value otherwise.
 
 ### GetPaymentMethodOk
 
-`func (o *CreditCard) GetPaymentMethodOk() (*string, bool)`
+`func (o *CreditCard) GetPaymentMethodOk() (*PaymentMethod, bool)`
 
 GetPaymentMethodOk returns a tuple with the PaymentMethod field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetPaymentMethod
 
-`func (o *CreditCard) SetPaymentMethod(v string)`
+`func (o *CreditCard) SetPaymentMethod(v PaymentMethod)`
 
 SetPaymentMethod sets PaymentMethod field to given value.
 
