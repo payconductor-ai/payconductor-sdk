@@ -636,25 +636,10 @@ export interface PostOrdersRequestItemsInner {
     'unitPrice': number;
 }
 /**
+ * @type PostOrdersRequestPayment
  * Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
  */
-export interface PostOrdersRequestPayment {
-    'paymentMethod': PaymentMethod;
-    'expirationInSeconds'?: DraftExpirationInSeconds;
-    'card': CreditCardCard;
-    'installments': CreditCardInstallments;
-    /**
-     * Text that will appear on the card statement (soft descriptor)
-     */
-    'softDescriptor'?: string;
-    'expirationInDays'?: BankSlipExpirationInDays;
-    'nuPay': NuPayNuPay;
-    /**
-     * Available payment methods for this order
-     */
-    'availablePaymentMethods'?: Array<AvailablePaymentMethods>;
-}
-
+export type PostOrdersRequestPayment = { paymentMethod: 'BankSlip' } & BankSlip | { paymentMethod: 'CreditCard' } & CreditCard | { paymentMethod: 'Draft' } & Draft | { paymentMethod: 'NuPay' } & NuPay | { paymentMethod: 'PicPay' } & PicPay | { paymentMethod: 'Pix' } & Pix;
 
 /**
  * If externalSessionId or sessionId is provided and an existing session exists, it will be updated with the new data. Otherwise, a new session will be created.

@@ -1347,7 +1347,8 @@
                   },
                   "payment": {
                     "description": "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)",
-                    "anyOf": [
+                    "noValidate": true,
+                    "oneOf": [
                       {
                         "$ref": "#/components/schemas/Pix"
                       },
@@ -1367,7 +1368,6 @@
                         "$ref": "#/components/schemas/Draft"
                       }
                     ],
-                    "noValidate": true,
                     "discriminator": {
                       "propertyName": "paymentMethod",
                       "mapping": {
@@ -1948,7 +1948,8 @@
             "application/json": {
               "schema": {
                 "description": "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)",
-                "anyOf": [
+                "noValidate": true,
+                "oneOf": [
                   {
                     "$ref": "#/components/schemas/Pix"
                   },
@@ -1968,7 +1969,6 @@
                     "$ref": "#/components/schemas/Draft"
                   }
                 ],
-                "noValidate": true,
                 "discriminator": {
                   "propertyName": "paymentMethod",
                   "mapping": {
@@ -3257,8 +3257,7 @@
                   "card",
                   "saveCard",
                   "customer"
-                ],
-                "additionalProperties": false
+                ]
               }
             }
           },
@@ -3291,8 +3290,7 @@
                     "customerId",
                     "token"
                   ],
-                  "noValidate": true,
-                  "additionalProperties": false
+                  "noValidate": true
                 }
               }
             }

@@ -261,6 +261,10 @@ const patchOpenApi = (data: any): any => {
       return { $ref: `#/components/schemas/${schemaName}` };
     });
 
+    // typescript-axios only generates a proper union type for oneOf + discriminator.
+    // anyOf with discriminator gets merged into a flat interface instead.
+    node.oneOf = node.anyOf;
+    delete node.anyOf;
     node.discriminator = { propertyName: discriminatorKey, mapping };
   };
 
@@ -309,7 +313,7 @@ const generateSdk = async (version: string, languages: string[]) => {
       "-g", langConfig.generator,
       "-o", langConfig.outputDir,
       "--skip-validate-spec",
-      "--additional-properties=packageName=payconductor_sdk,projectName=payconductor-sdk,npmName=payconductor-sdk,npmRepository=https://github.com/payconductor-ai/payconductor-sdk.git,legacyDiscriminatorBehavior=false",
+      "--additional-properties=packageName=payconductor_sdk,projectName=payconductor-sdk,npmName=payconductor-sdk,npmRepository=https://github.com/payconductor-ai/payconductor-sdk.git",
     ]);
 
     await proc.exited;
