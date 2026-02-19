@@ -1500,113 +1500,9 @@ paths:
                     - true
                     - false
                 customer:
-                  anyOf:
-                    - description: Schema for creating a new customer
-                      title: Customer
-                      type: object
-                      properties:
-                        address:
-                          description: Schema for creating a new address
-                          type: object
-                          properties:
-                            city:
-                              description: City name
-                              type: string
-                              examples:
-                                - São Paulo
-                                - Rio de Janeiro
-                            country:
-                              description: Country code in ISO 3166-1 alpha-2 format
-                              type: string
-                              default: BR
-                              examples:
-                                - BR
-                                - US
-                              maxLength: 2
-                              minLength: 2
-                            neighborhood:
-                              description: Neighborhood name
-                              type: string
-                              examples:
-                                - Downtown
-                                - Jardins
-                            number:
-                              description: Address number
-                              type: string
-                              examples:
-                                - '1000'
-                                - '150'
-                            state:
-                              description: State code in ISO 3166-2 format
-                              type: string
-                              examples:
-                                - SP
-                                - RJ
-                              maxLength: 2
-                              minLength: 2
-                            street:
-                              description: Street name
-                              type: string
-                              examples:
-                                - Av. Paulista
-                                - Rua das Flores
-                            zipCode:
-                              description: ZIP code without formatting
-                              type: string
-                              examples:
-                                - '01311200'
-                                - '20040002'
-                          required:
-                            - city
-                            - country
-                            - neighborhood
-                            - number
-                            - state
-                            - street
-                            - zipCode
-                          title: Customer address
-                        documentNumber:
-                          description: Customer CPF or CNPJ without formatting
-                          type: string
-                          examples:
-                            - '12345678909'
-                            - '12345678000195'
-                          pattern: '^\d{11}$|^\d{14}$'
-                        documentType:
-                          $ref: '#/components/schemas/DocumentType'
-                        email:
-                          description: Customer email
-                          type: string
-                          format: email
-                          examples:
-                            - customer@example.com
-                        name:
-                          description: Customer full name
-                          type: string
-                          examples:
-                            - John Doe
-                        phoneNumber:
-                          description: Customer phone number in +55 DD 9XXXXXXXX format
-                          type: string
-                          error: 'Invalid phone number format. Expected format: +55 DD 9XXXXXXXX'
-                          examples:
-                            - +55 11 987654321
-                          pattern: '^\+(\d{1,2}) (\d{2}) (\d{8,9})$'
-                      required:
-                        - documentNumber
-                        - documentType
-                        - email
-                        - name
-                    - type: object
-                      properties:
-                        id:
-                          description: ID do cliente existente
-                          type: string
-                          examples:
-                            - cmjizheco00002v6o7q72knwb
-                      required:
-                        - id
-              additionalProperties: false
+                  oneOf:
+                    - $ref: '#/components/schemas/Customer'
+                    - $ref: '#/components/schemas/CustomerVariant1'
               required:
                 - card
                 - saveCard
@@ -1629,7 +1525,6 @@ paths:
                     type: string
                     examples:
                       - card_019b4cb6-bc0b-730b-81e2-5a9eaa22975a
-                additionalProperties: false
                 noValidate: true
                 required:
                   - customerId
@@ -1764,6 +1659,68 @@ components:
         - SepaDebit
         - GooglePay
         - Draft
+    TokenizedCard:
+      type: object
+      properties:
+        firstSixCardNumber:
+          description: First 6 digits of the credit card
+          type: string
+          examples:
+            - '411111'
+        token:
+          description: Previously generated credit card token
+          type: string
+      required:
+        - token
+      title: Tokenized card
+    CompleteCardData:
+      type: object
+      properties:
+        cvv:
+          description: Card security code (CVV)
+          type: string
+          examples:
+            - '123'
+            - '1234'
+          maxLength: 4
+          minLength: 3
+        expiration:
+          type: object
+          properties:
+            month:
+              description: Card expiration month
+              type: number
+              examples:
+                - 1
+                - 12
+              maximum: 12
+              minimum: 1
+            year:
+              description: Card expiration year
+              type: number
+              examples:
+                - 2030
+              maximum: 2046
+              minimum: 2025
+          required:
+            - month
+            - year
+        holderName:
+          description: Card holder name
+          type: string
+          examples:
+            - JOHN DOE
+        number:
+          description: Credit card number
+          type: string
+          examples:
+            - '4242424242424242'
+      required:
+        - cvv
+        - expiration
+        - holderName
+        - number
+      title: Complete card data
     Pix:
       type: object
       properties:
@@ -1771,18 +1728,8 @@ components:
           $ref: '#/components/schemas/PaymentMethod'
         expirationInSeconds:
           description: PIX expiration time in seconds
+          type: integer
           default: 3600
-          anyOf:
-            - format: integer
-              default: 0
-              type: string
-            - default: 3600
-              description: PIX expiration time in seconds
-              examples:
-                - 3600
-                - 86400
-              minimum: 3600
-              type: integer
           examples:
             - 3600
             - 86400
@@ -1796,79 +1743,13 @@ components:
         paymentMethod:
           $ref: '#/components/schemas/PaymentMethod'
         card:
-          anyOf:
-            - title: Tokenized card
-              type: object
-              properties:
-                firstSixCardNumber:
-                  description: First 6 digits of the credit card
-                  type: string
-                  examples:
-                    - '411111'
-                token:
-                  description: Previously generated credit card token
-                  type: string
-              required:
-                - token
-            - title: Complete card data
-              type: object
-              properties:
-                cvv:
-                  description: Card security code (CVV)
-                  type: string
-                  examples:
-                    - '123'
-                    - '1234'
-                  maxLength: 4
-                  minLength: 3
-                expiration:
-                  type: object
-                  properties:
-                    month:
-                      description: Card expiration month
-                      type: number
-                      examples:
-                        - 1
-                        - 12
-                      maximum: 12
-                      minimum: 1
-                    year:
-                      description: Card expiration year
-                      type: number
-                      examples:
-                        - 2030
-                      maximum: 2046
-                      minimum: 2025
-                  required:
-                    - month
-                    - year
-                holderName:
-                  description: Card holder name
-                  type: string
-                  examples:
-                    - JOHN DOE
-                number:
-                  description: Credit card number
-                  type: string
-                  examples:
-                    - '4242424242424242'
-              required:
-                - cvv
-                - expiration
-                - holderName
-                - number
+          oneOf:
+            - $ref: '#/components/schemas/TokenizedCard'
+            - $ref: '#/components/schemas/CompleteCardData'
         installments:
           description: Number of installments
+          type: integer
           default: 1
-          anyOf:
-            - format: integer
-              default: 0
-              type: string
-            - default: 1
-              description: Number of installments
-              maximum: 12
-              minimum: 1
-              type: integer
           maximum: 12
           minimum: 1
         softDescriptor:
@@ -1890,19 +1771,8 @@ components:
           $ref: '#/components/schemas/PaymentMethod'
         expirationInDays:
           description: Days until bank slip expires
+          type: integer
           default: 7
-          anyOf:
-            - format: integer
-              default: 0
-              type: string
-            - default: 7
-              description: Days until bank slip expires
-              examples:
-                - 3
-                - 7
-                - 15
-              minimum: 1
-              type: integer
           examples:
             - 3
             - 7
@@ -1964,17 +1834,8 @@ components:
           $ref: '#/components/schemas/PaymentMethod'
         expirationInSeconds:
           description: Order expiration time in seconds
+          type: integer
           default: 3600
-          anyOf:
-            - format: integer
-              default: 0
-              type: string
-            - default: 3600
-              description: Order expiration time in seconds
-              examples:
-                - 3600
-                - 86400
-              type: integer
           examples:
             - 3600
             - 86400
@@ -1986,6 +1847,113 @@ components:
       required:
         - paymentMethod
       title: Draft
+    Customer:
+      description: Schema for creating a new customer
+      type: object
+      properties:
+        address:
+          description: Schema for creating a new address
+          type: object
+          properties:
+            city:
+              description: City name
+              type: string
+              examples:
+                - São Paulo
+                - Rio de Janeiro
+            country:
+              description: Country code in ISO 3166-1 alpha-2 format
+              type: string
+              default: BR
+              examples:
+                - BR
+                - US
+              maxLength: 2
+              minLength: 2
+            neighborhood:
+              description: Neighborhood name
+              type: string
+              examples:
+                - Downtown
+                - Jardins
+            number:
+              description: Address number
+              type: string
+              examples:
+                - '1000'
+                - '150'
+            state:
+              description: State code in ISO 3166-2 format
+              type: string
+              examples:
+                - SP
+                - RJ
+              maxLength: 2
+              minLength: 2
+            street:
+              description: Street name
+              type: string
+              examples:
+                - Av. Paulista
+                - Rua das Flores
+            zipCode:
+              description: ZIP code without formatting
+              type: string
+              examples:
+                - '01311200'
+                - '20040002'
+          required:
+            - city
+            - country
+            - neighborhood
+            - number
+            - state
+            - street
+            - zipCode
+          title: Customer address
+        documentNumber:
+          description: Customer CPF or CNPJ without formatting
+          type: string
+          examples:
+            - '12345678909'
+            - '12345678000195'
+          pattern: '^\d{11}$|^\d{14}$'
+        documentType:
+          $ref: '#/components/schemas/DocumentType'
+        email:
+          description: Customer email
+          type: string
+          format: email
+          examples:
+            - customer@example.com
+        name:
+          description: Customer full name
+          type: string
+          examples:
+            - John Doe
+        phoneNumber:
+          description: Customer phone number in +55 DD 9XXXXXXXX format
+          type: string
+          error: 'Invalid phone number format. Expected format: +55 DD 9XXXXXXXX'
+          examples:
+            - +55 11 987654321
+          pattern: '^\+(\d{1,2}) (\d{2}) (\d{8,9})$'
+      required:
+        - documentNumber
+        - documentType
+        - email
+        - name
+      title: Customer
+    CustomerVariant1:
+      type: object
+      properties:
+        id:
+          description: ID do cliente existente
+          type: string
+          examples:
+            - cmjizheco00002v6o7q72knwb
+      required:
+        - id
   securitySchemes:
     basicAuth:
       description: 'Use the format Authorization: Basic base64(''client_id:client_secret'')'

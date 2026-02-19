@@ -1,11 +1,5 @@
 #!/usr/bin/env bun
 
-/**
- * Two commands:
- *   bun run sdk download   — fetch the OpenAPI JSON, patch enum types, save as JSON + YAML
- *   bun run sdk generate   — run openapi-generator-cli for selected languages
- */
-
 const enquirer = require("enquirer");
 const rimraf = require("rimraf");
 
@@ -42,8 +36,9 @@ const VERSIONS: Record<string, {
 //#region Helpers
 const toPascalCase = (key: string) => key.charAt(0).toUpperCase() + key.slice(1);
 
-// OpenAPI structural keywords that don't represent domain property names.
-// Using these as schema names would be meaningless, but we still recurse into them.
+const titleToSchemaName = (title: string): string =>
+  title.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join("");
+
 const SKIP_AS_ENUM_NAME = new Set([
   "items", "properties", "schema", "schemas", "components", "paths",
   "webhooks", "info", "servers", "tags", "security", "parameters",
@@ -51,25 +46,32 @@ const SKIP_AS_ENUM_NAME = new Set([
   "allOf", "oneOf", "anyOf", "not",
 ]);
 
-// Discriminated-union pattern: anyOf branches where each has type:string and a const value.
-// openapi-generator doesn't infer an enum from this pattern without explicit $refs.
 const isConstStringAnyOf = (node: any): boolean =>
-    Array.isArray(node?.anyOf) &&
-    node.anyOf.length > 1 &&
-    node.anyOf.every((item: any) => item.type === "string" && typeof item.const === "string");
+  Array.isArray(node?.anyOf) &&
+  node.anyOf.length > 1 &&
+  node.anyOf.every((item: any) => item.type === "string" && typeof item.const === "string");
 
-// Standard inline string enum pattern.
 const isStringEnum = (node: any): boolean =>
-    node?.type === "string" &&
-    Array.isArray(node?.enum) &&
-    node.enum.every((v: any) => typeof v === "string");
+  node?.type === "string" &&
+  Array.isArray(node?.enum) &&
+  node.enum.every((v: any) => typeof v === "string");
 
-// Single const inside a discriminated union branch. Each branch contributes one value;
-// the collect pass merges all occurrences of the same property key into one combined enum.
 const isSingleConst = (node: any): boolean =>
-    node?.type === "string" && typeof node?.const === "string";
+  node?.type === "string" && typeof node?.const === "string";
 
-// x-enum-varnames keeps member names equal to wire values for consistent serialization.
+const isNumericCoercionAnyOf = (node: any): boolean =>
+  Array.isArray(node?.anyOf) &&
+  node.anyOf.length === 2 &&
+  node.anyOf.some((b: any) => (b.type === "integer" || b.type === "number") && !b.format) &&
+  node.anyOf.some((b: any) => b.type === "string" && b.format === "integer");
+
+const isObjectUnionAnyOf = (node: any): boolean =>
+  Array.isArray(node?.anyOf) &&
+  node.anyOf.length >= 2 &&
+  node.anyOf.every(
+    (b: any) => b["$ref"] !== undefined || (b.type === "object" && b.properties !== undefined)
+  );
+
 const buildEnumSchema = (values: string[]) => ({
   type: "string",
   enum: values,
@@ -78,20 +80,6 @@ const buildEnumSchema = (values: string[]) => ({
 //#endregion
 
 //#region Patcher
-/**
- * Lifts all inline string enums into components/schemas and replaces them with $refs.
- *
- * Three inline patterns are handled:
- *   1. anyOf const-union  — { anyOf: [{ type: string, const: A }, { type: string, const: B }] }
- *   2. Plain string enum  — { type: string, enum: [A, B, C] }
- *   3. Single const       — { type: string, const: A } (appears per-branch in discriminated unions)
- *
- * Pass 1 (collect): walk the doc, accumulate enum values per property key into a registry.
- *   Multiple occurrences of the same key across branches merge into one Set.
- *
- * Pass 2 (replace): walk again, swap every matched inline node with a $ref.
- *   components/schemas is skipped to avoid circular self-references.
- */
 const patchOpenApi = (data: any): any => {
   data.components ??= {};
   data.components.schemas ??= {};
@@ -103,9 +91,6 @@ const patchOpenApi = (data: any): any => {
     for (const v of values) enumRegistry.get(name)!.add(v);
   };
 
-  // --- Pass 1: Collect ---
-  // SKIP_AS_ENUM_NAME only controls whether a key becomes a schema name — we always recurse.
-  // An early-return on skip would miss nested single-const nodes inside structural keys.
   const collect = (node: any) => {
     if (Array.isArray(node)) { node.forEach(collect); return; }
     if (typeof node !== "object" || node === null) return;
@@ -129,9 +114,7 @@ const patchOpenApi = (data: any): any => {
         collect(child);
       } else if (isSingleConst(child)) {
         registerValues(name, [child.const as string]);
-        // leaf — no recursion needed
       } else {
-        // Array whose items are a const-union enum.
         if (child.type === "array" && isConstStringAnyOf(child.items)) {
           registerValues(name, (child.items as any).anyOf.map((i: any) => i.const as string));
         }
@@ -148,7 +131,6 @@ const patchOpenApi = (data: any): any => {
     data.components.schemas[name] = buildEnumSchema([...values]);
   }
 
-  // --- Pass 2: Replace ---
   const replace = (node: any, insideSchemas = false): any => {
     if (Array.isArray(node)) return node.map((n) => replace(n, insideSchemas));
     if (typeof node !== "object" || node === null) return node;
@@ -158,25 +140,24 @@ const patchOpenApi = (data: any): any => {
       const child = node[key];
       if (typeof child !== "object" || child === null) continue;
 
-      // Don't touch components/schemas — we wrote those, modifying them creates circular $refs.
       const enteringSchemas =
-          key === "schemas" &&
-          Object.keys(node).some((k) => ["securitySchemes", "schemas", "parameters"].includes(k));
+        key === "schemas" &&
+        Object.keys(node).some((k) => ["securitySchemes", "schemas", "parameters"].includes(k));
       if (enteringSchemas) {
         node[key] = replace(child, true);
         continue;
       }
 
       if (SKIP_AS_ENUM_NAME.has(key)) {
-        // Replace array items that are a const-union by finding the matching registered schema.
         if (key === "items" && (isConstStringAnyOf(child) || isStringEnum(child))) {
           const nodeSet = new Set(
-              isConstStringAnyOf(child)
-                  ? child.anyOf.map((i: any) => i.const as string)
-                  : (child.enum as string[])
+            isConstStringAnyOf(child)
+              ? child.anyOf.map((i: any) => i.const as string)
+              : (child.enum as string[])
           );
           const match = [...enumRegistry.entries()].find(
-              ([, values]) => values.size === nodeSet.size && [...nodeSet].every((v) => values.has(String(v)))
+            ([, values]) =>
+              values.size === nodeSet.size && [...nodeSet].every((v) => values.has(String(v)))
           );
           if (match) { node[key] = { $ref: `#/components/schemas/${match[0]}` }; continue; }
         }
@@ -211,52 +192,74 @@ const patchOpenApi = (data: any): any => {
 
   const patched = replace(data);
 
-  // --- Pass 3: Discriminator ---
-  // openapi-generator merges all anyOf branches into one flat interface when there's no
-  // discriminator. Adding `discriminator.propertyName` tells the generator to emit a proper
-  // union type. It also requires every branch to be a $ref (not inline), so we promote each
-  // branch to a named schema in components/schemas using the branch's `title` as the name.
-  const addDiscriminators = (node: any) => {
-    if (Array.isArray(node)) { node.forEach(addDiscriminators); return; }
+  const addDiscriminators = (node: any, contextKey = "") => {
+    if (Array.isArray(node)) { node.forEach(n => addDiscriminators(n, contextKey)); return; }
     if (typeof node !== "object" || node === null) return;
 
     for (const key of Object.keys(node)) {
       const child = node[key];
-      if (typeof child === "object" && child !== null) addDiscriminators(child);
+      if (typeof child !== "object" || child === null) continue;
+
+      if (isNumericCoercionAnyOf(child)) {
+        const { anyOf, ...rest } = child;
+        const numBranch = anyOf.find((b: any) => b.type === "integer" || b.type === "number");
+        node[key] = { ...rest, ...numBranch };
+        continue;
+      }
+
+      addDiscriminators(child, key);
     }
 
-    if (!Array.isArray(node.anyOf)) return;
+    if (!isObjectUnionAnyOf(node)) return;
+
     const branches = node.anyOf as any[];
-    if (!branches.every((b: any) => b.type === "object" && b.properties)) return;
+    const inlineBranches = branches.filter((b: any) => !b["$ref"]);
 
-    // Find a property that every branch has as a $ref — that's the discriminator key.
-    const candidateKeys = Object.keys(branches[0].properties);
-    const discriminatorKey = candidateKeys.find((k) =>
-        branches.every((b: any) => b.properties[k]?.["$ref"] !== undefined)
-    );
-    if (!discriminatorKey) return;
+    const discriminatorKey =
+      inlineBranches.length > 0
+        ? Object.keys(inlineBranches[0].properties ?? {}).find((k) =>
+            inlineBranches.every((b: any) => b.properties?.[k]?.["$ref"] !== undefined)
+          )
+        : undefined;
 
-    // Promote each branch to a named schema. Name comes from `title`, falling back to
-    // the const value of the discriminator property, then a generated index-based name.
     const mapping: Record<string, string> = {};
-    node.anyOf = branches.map((branch: any, i: number) => {
-      if (branch["$ref"]) return branch;
-      const constVal = branch.properties[discriminatorKey]?.const as string | undefined;
-      const schemaName = branch.title
-          ? (branch.title as string).replace(/\s+/g, "")
-          : constVal ?? `${toPascalCase(discriminatorKey)}Variant${i}`;
 
-      patched.components.schemas[schemaName] = branch;
-      // title == wire value in this spec, so schemaName doubles as the mapping key.
-      mapping[schemaName] = `#/components/schemas/${schemaName}`;
-      return { $ref: `#/components/schemas/${schemaName}` };
+    node.anyOf = branches.map((branch: any, i: number) => {
+      if (branch["$ref"]) {
+        if (discriminatorKey) {
+          const refName = branch["$ref"].split("/").pop()!;
+          mapping[refName] = branch["$ref"];
+        }
+        return branch;
+      }
+
+      const title = branch.title as string | undefined;
+      const schemaName = title
+        ? titleToSchemaName(title)
+        : (branch.properties?.[discriminatorKey ?? ""]?.const as string | undefined)
+          ?? `${toPascalCase(contextKey)}Variant${i}`;
+
+      if (!patched.components.schemas[schemaName]) {
+        patched.components.schemas[schemaName] = branch;
+      }
+
+      const ref = `#/components/schemas/${schemaName}`;
+
+      if (discriminatorKey) {
+        const constVal = branch.properties?.[discriminatorKey]?.const as string | undefined;
+        mapping[constVal ?? schemaName] = ref;
+      }
+
+      return { $ref: ref };
     });
 
-    // typescript-axios only generates a proper union type for oneOf + discriminator.
-    // anyOf with discriminator gets merged into a flat interface instead.
+    // typescript-axios only emits a union type for oneOf, not anyOf.
     node.oneOf = node.anyOf;
     delete node.anyOf;
-    node.discriminator = { propertyName: discriminatorKey, mapping };
+
+    if (discriminatorKey && Object.keys(mapping).length > 0) {
+      node.discriminator = { propertyName: discriminatorKey, mapping };
+    }
   };
 
   addDiscriminators(patched);

@@ -726,6 +726,90 @@
           "Draft"
         ]
       },
+      "TokenizedCard": {
+        "title": "Tokenized card",
+        "type": "object",
+        "properties": {
+          "firstSixCardNumber": {
+            "description": "First 6 digits of the credit card",
+            "examples": [
+              "411111"
+            ],
+            "type": "string"
+          },
+          "token": {
+            "description": "Previously generated credit card token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "CompleteCardData": {
+        "title": "Complete card data",
+        "type": "object",
+        "properties": {
+          "cvv": {
+            "description": "Card security code (CVV)",
+            "examples": [
+              "123",
+              "1234"
+            ],
+            "maxLength": 4,
+            "minLength": 3,
+            "type": "string"
+          },
+          "expiration": {
+            "type": "object",
+            "properties": {
+              "month": {
+                "description": "Card expiration month",
+                "examples": [
+                  1,
+                  12
+                ],
+                "maximum": 12,
+                "minimum": 1,
+                "type": "number"
+              },
+              "year": {
+                "description": "Card expiration year",
+                "examples": [
+                  2030
+                ],
+                "maximum": 2046,
+                "minimum": 2025,
+                "type": "number"
+              }
+            },
+            "required": [
+              "month",
+              "year"
+            ]
+          },
+          "holderName": {
+            "description": "Card holder name",
+            "examples": [
+              "JOHN DOE"
+            ],
+            "type": "string"
+          },
+          "number": {
+            "description": "Credit card number",
+            "examples": [
+              "4242424242424242"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "cvv",
+          "expiration",
+          "holderName",
+          "number"
+        ]
+      },
       "Pix": {
         "title": "Pix",
         "type": "object",
@@ -741,23 +825,7 @@
               86400
             ],
             "minimum": 3600,
-            "anyOf": [
-              {
-                "format": "integer",
-                "default": 0,
-                "type": "string"
-              },
-              {
-                "default": 3600,
-                "description": "PIX expiration time in seconds",
-                "examples": [
-                  3600,
-                  86400
-                ],
-                "minimum": 3600,
-                "type": "integer"
-              }
-            ]
+            "type": "integer"
           }
         },
         "required": [
@@ -772,90 +840,12 @@
             "$ref": "#/components/schemas/PaymentMethod"
           },
           "card": {
-            "anyOf": [
+            "oneOf": [
               {
-                "title": "Tokenized card",
-                "type": "object",
-                "properties": {
-                  "firstSixCardNumber": {
-                    "description": "First 6 digits of the credit card",
-                    "examples": [
-                      "411111"
-                    ],
-                    "type": "string"
-                  },
-                  "token": {
-                    "description": "Previously generated credit card token",
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "token"
-                ]
+                "$ref": "#/components/schemas/TokenizedCard"
               },
               {
-                "title": "Complete card data",
-                "type": "object",
-                "properties": {
-                  "cvv": {
-                    "description": "Card security code (CVV)",
-                    "examples": [
-                      "123",
-                      "1234"
-                    ],
-                    "maxLength": 4,
-                    "minLength": 3,
-                    "type": "string"
-                  },
-                  "expiration": {
-                    "type": "object",
-                    "properties": {
-                      "month": {
-                        "description": "Card expiration month",
-                        "examples": [
-                          1,
-                          12
-                        ],
-                        "maximum": 12,
-                        "minimum": 1,
-                        "type": "number"
-                      },
-                      "year": {
-                        "description": "Card expiration year",
-                        "examples": [
-                          2030
-                        ],
-                        "maximum": 2046,
-                        "minimum": 2025,
-                        "type": "number"
-                      }
-                    },
-                    "required": [
-                      "month",
-                      "year"
-                    ]
-                  },
-                  "holderName": {
-                    "description": "Card holder name",
-                    "examples": [
-                      "JOHN DOE"
-                    ],
-                    "type": "string"
-                  },
-                  "number": {
-                    "description": "Credit card number",
-                    "examples": [
-                      "4242424242424242"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "cvv",
-                  "expiration",
-                  "holderName",
-                  "number"
-                ]
+                "$ref": "#/components/schemas/CompleteCardData"
               }
             ]
           },
@@ -864,20 +854,7 @@
             "description": "Number of installments",
             "maximum": 12,
             "minimum": 1,
-            "anyOf": [
-              {
-                "format": "integer",
-                "default": 0,
-                "type": "string"
-              },
-              {
-                "default": 1,
-                "description": "Number of installments",
-                "maximum": 12,
-                "minimum": 1,
-                "type": "integer"
-              }
-            ]
+            "type": "integer"
           },
           "softDescriptor": {
             "description": "Text that will appear on the card statement (soft descriptor)",
@@ -911,24 +888,7 @@
               15
             ],
             "minimum": 1,
-            "anyOf": [
-              {
-                "format": "integer",
-                "default": 0,
-                "type": "string"
-              },
-              {
-                "default": 7,
-                "description": "Days until bank slip expires",
-                "examples": [
-                  3,
-                  7,
-                  15
-                ],
-                "minimum": 1,
-                "type": "integer"
-              }
-            ]
+            "type": "integer"
           }
         },
         "required": [
@@ -1014,22 +974,7 @@
               3600,
               86400
             ],
-            "anyOf": [
-              {
-                "format": "integer",
-                "default": 0,
-                "type": "string"
-              },
-              {
-                "default": 3600,
-                "description": "Order expiration time in seconds",
-                "examples": [
-                  3600,
-                  86400
-                ],
-                "type": "integer"
-              }
-            ]
+            "type": "integer"
           },
           "availablePaymentMethods": {
             "description": "Available payment methods for this order",
@@ -1041,6 +986,147 @@
         },
         "required": [
           "paymentMethod"
+        ]
+      },
+      "Customer": {
+        "description": "Schema for creating a new customer",
+        "title": "Customer",
+        "type": "object",
+        "properties": {
+          "address": {
+            "description": "Schema for creating a new address",
+            "title": "Customer address",
+            "type": "object",
+            "properties": {
+              "city": {
+                "description": "City name",
+                "examples": [
+                  "São Paulo",
+                  "Rio de Janeiro"
+                ],
+                "type": "string"
+              },
+              "country": {
+                "default": "BR",
+                "description": "Country code in ISO 3166-1 alpha-2 format",
+                "examples": [
+                  "BR",
+                  "US"
+                ],
+                "maxLength": 2,
+                "minLength": 2,
+                "type": "string"
+              },
+              "neighborhood": {
+                "description": "Neighborhood name",
+                "examples": [
+                  "Downtown",
+                  "Jardins"
+                ],
+                "type": "string"
+              },
+              "number": {
+                "description": "Address number",
+                "examples": [
+                  "1000",
+                  "150"
+                ],
+                "type": "string"
+              },
+              "state": {
+                "description": "State code in ISO 3166-2 format",
+                "examples": [
+                  "SP",
+                  "RJ"
+                ],
+                "maxLength": 2,
+                "minLength": 2,
+                "type": "string"
+              },
+              "street": {
+                "description": "Street name",
+                "examples": [
+                  "Av. Paulista",
+                  "Rua das Flores"
+                ],
+                "type": "string"
+              },
+              "zipCode": {
+                "description": "ZIP code without formatting",
+                "examples": [
+                  "01311200",
+                  "20040002"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "city",
+              "country",
+              "neighborhood",
+              "number",
+              "state",
+              "street",
+              "zipCode"
+            ]
+          },
+          "documentNumber": {
+            "description": "Customer CPF or CNPJ without formatting",
+            "examples": [
+              "12345678909",
+              "12345678000195"
+            ],
+            "pattern": "^\\d{11}$|^\\d{14}$",
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          },
+          "email": {
+            "description": "Customer email",
+            "examples": [
+              "customer@example.com"
+            ],
+            "format": "email",
+            "type": "string"
+          },
+          "name": {
+            "description": "Customer full name",
+            "examples": [
+              "John Doe"
+            ],
+            "type": "string"
+          },
+          "phoneNumber": {
+            "description": "Customer phone number in +55 DD 9XXXXXXXX format",
+            "examples": [
+              "+55 11 987654321"
+            ],
+            "error": "Invalid phone number format. Expected format: +55 DD 9XXXXXXXX",
+            "pattern": "^\\+(\\d{1,2}) (\\d{2}) (\\d{8,9})$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "documentNumber",
+          "documentType",
+          "email",
+          "name"
+        ]
+      },
+      "CustomerVariant1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "ID do cliente existente",
+            "examples": [
+              "cmjizheco00002v6o7q72knwb"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
         ]
       }
     }
@@ -3108,147 +3194,12 @@
                     "type": "boolean"
                   },
                   "customer": {
-                    "anyOf": [
+                    "oneOf": [
                       {
-                        "description": "Schema for creating a new customer",
-                        "title": "Customer",
-                        "type": "object",
-                        "properties": {
-                          "address": {
-                            "description": "Schema for creating a new address",
-                            "title": "Customer address",
-                            "type": "object",
-                            "properties": {
-                              "city": {
-                                "description": "City name",
-                                "examples": [
-                                  "São Paulo",
-                                  "Rio de Janeiro"
-                                ],
-                                "type": "string"
-                              },
-                              "country": {
-                                "default": "BR",
-                                "description": "Country code in ISO 3166-1 alpha-2 format",
-                                "examples": [
-                                  "BR",
-                                  "US"
-                                ],
-                                "maxLength": 2,
-                                "minLength": 2,
-                                "type": "string"
-                              },
-                              "neighborhood": {
-                                "description": "Neighborhood name",
-                                "examples": [
-                                  "Downtown",
-                                  "Jardins"
-                                ],
-                                "type": "string"
-                              },
-                              "number": {
-                                "description": "Address number",
-                                "examples": [
-                                  "1000",
-                                  "150"
-                                ],
-                                "type": "string"
-                              },
-                              "state": {
-                                "description": "State code in ISO 3166-2 format",
-                                "examples": [
-                                  "SP",
-                                  "RJ"
-                                ],
-                                "maxLength": 2,
-                                "minLength": 2,
-                                "type": "string"
-                              },
-                              "street": {
-                                "description": "Street name",
-                                "examples": [
-                                  "Av. Paulista",
-                                  "Rua das Flores"
-                                ],
-                                "type": "string"
-                              },
-                              "zipCode": {
-                                "description": "ZIP code without formatting",
-                                "examples": [
-                                  "01311200",
-                                  "20040002"
-                                ],
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "city",
-                              "country",
-                              "neighborhood",
-                              "number",
-                              "state",
-                              "street",
-                              "zipCode"
-                            ]
-                          },
-                          "documentNumber": {
-                            "description": "Customer CPF or CNPJ without formatting",
-                            "examples": [
-                              "12345678909",
-                              "12345678000195"
-                            ],
-                            "pattern": "^\\d{11}$|^\\d{14}$",
-                            "type": "string"
-                          },
-                          "documentType": {
-                            "$ref": "#/components/schemas/DocumentType"
-                          },
-                          "email": {
-                            "description": "Customer email",
-                            "examples": [
-                              "customer@example.com"
-                            ],
-                            "format": "email",
-                            "type": "string"
-                          },
-                          "name": {
-                            "description": "Customer full name",
-                            "examples": [
-                              "John Doe"
-                            ],
-                            "type": "string"
-                          },
-                          "phoneNumber": {
-                            "description": "Customer phone number in +55 DD 9XXXXXXXX format",
-                            "examples": [
-                              "+55 11 987654321"
-                            ],
-                            "error": "Invalid phone number format. Expected format: +55 DD 9XXXXXXXX",
-                            "pattern": "^\\+(\\d{1,2}) (\\d{2}) (\\d{8,9})$",
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "documentNumber",
-                          "documentType",
-                          "email",
-                          "name"
-                        ]
+                        "$ref": "#/components/schemas/Customer"
                       },
                       {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "description": "ID do cliente existente",
-                            "examples": [
-                              "cmjizheco00002v6o7q72knwb"
-                            ],
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id"
-                        ]
+                        "$ref": "#/components/schemas/CustomerVariant1"
                       }
                     ]
                   }
@@ -3257,8 +3208,7 @@
                   "card",
                   "saveCard",
                   "customer"
-                ],
-                "additionalProperties": false
+                ]
               }
             }
           },
@@ -3291,8 +3241,7 @@
                     "customerId",
                     "token"
                   ],
-                  "noValidate": true,
-                  "additionalProperties": false
+                  "noValidate": true
                 }
               }
             }
