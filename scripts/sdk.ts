@@ -53,9 +53,8 @@ const SKIP_AS_ENUM_NAME = new Set([
   "allOf", "oneOf", "anyOf", "not",
 ]);
 
-// Matches the discriminated-union pattern the spec uses for array item types:
-//   availablePaymentMethods.items: { anyOf: [{ type: string, const: Pix }, ...] }
-// openapi-generator doesn't resolve this into a typed enum on its own.
+// Matches discriminated-union const arrays: { anyOf: [{ type: string, const: X }, ...] }
+// openapi-generator doesn't infer a shared enum type from this pattern.
 const isConstStringAnyOf = (node: any): boolean =>
     Array.isArray(node?.anyOf) &&
     node.anyOf.length > 1 &&
@@ -68,9 +67,8 @@ const isStringEnum = (node: any): boolean =>
     Array.isArray(node?.enum) &&
     node.enum.every((v: any) => typeof v === "string");
 
-// Matches a single const value inside a discriminated union branch:
-//   payment.anyOf[0].properties.paymentMethod: { type: string, const: Pix }
-// Each branch has its own const. The collect pass merges all of them into one enum.
+// Matches a single const inside discriminated union branches.
+// Each branch contributes one value; the collect pass merges them into one enum.
 const isSingleConst = (node: any): boolean =>
     node?.type === "string" && typeof node?.const === "string";
 
@@ -85,20 +83,18 @@ const buildEnumSchema = (values: string[]) => ({
 
 //#region Patcher
 /**
- * Lifts all inline string enums into components/schemas and replaces them with $refs.
+ * Lifts inline string enums into components/schemas and replaces them with $refs.
  *
- * Three inline patterns are handled:
+ * Patterns handled:
  *   1. anyOf const-union  — { anyOf: [{ type: string, const: A }, { type: string, const: B }] }
  *   2. Plain string enum  — { type: string, enum: [A, B, C] }
- *   3. Single const       — { type: string, const: A } (appears per-branch in discriminated unions)
+ *   3. Single const       — { type: string, const: A } (per-branch in discriminated unions)
  *
- * Pass 1 (collect): walk the doc, accumulate enum values per property key into a registry.
- *   Multiple occurrences of the same key (e.g. `paymentMethod: { const: "Pix" }` and
- *   `paymentMethod: { const: "CreditCard" }` in separate anyOf branches) merge into one Set.
+ * Pass 1: Collect — walk the doc, accumulate enum values per property key.
+ *   Multiple occurrences of the same key across branches merge into one set.
  *
- * Pass 2 (replace): walk again, swap every matched inline node with a $ref.
- *   components/schemas is skipped to prevent the freshly-written schemas from
- *   being overwritten with circular self-references.
+ * Pass 2: Replace — swap matched nodes with $refs, skipping components/schemas
+ *   to avoid circular self-references.
  */
 const patchOpenApi = (data: any): any => {
   data.components ??= {};
@@ -113,8 +109,7 @@ const patchOpenApi = (data: any): any => {
 
   // --- Pass 1: Collect ---
   // SKIP_AS_ENUM_NAME only controls whether a key becomes a schema name — we always recurse.
-  // A previous early-return-on-skip approach caused isSingleConst nodes nested inside
-  // `properties` to never be reached, breaking paymentMethod collection.
+  // Early-return on skip would prevent reaching nested isSingleConst nodes inside structural keys.
   const collect = (node: any) => {
     if (Array.isArray(node)) { node.forEach(collect); return; }
     if (typeof node !== "object" || node === null) return;
