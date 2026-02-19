@@ -42,10 +42,8 @@ const VERSIONS: Record<string, {
 //#region Helpers
 const toPascalCase = (key: string) => key.charAt(0).toUpperCase() + key.slice(1);
 
-// OpenAPI structural keywords that appear as property keys in the document but
-// don't represent domain fields. We never want to create a schema named "Items"
-// or "Properties" — but we still need to recurse into their values to find real
-// domain enums nested inside them.
+// OpenAPI structural keywords that don't represent domain property names.
+// Using these as schema names would be meaningless, but we still recurse into them.
 const SKIP_AS_ENUM_NAME = new Set([
   "items", "properties", "schema", "schemas", "components", "paths",
   "webhooks", "info", "servers", "tags", "security", "parameters",
@@ -53,29 +51,25 @@ const SKIP_AS_ENUM_NAME = new Set([
   "allOf", "oneOf", "anyOf", "not",
 ]);
 
-// Matches the discriminated-union pattern the spec uses for array item types:
-//   availablePaymentMethods.items: { anyOf: [{ type: string, const: Pix }, ...] }
-// openapi-generator doesn't resolve this into a typed enum on its own.
+// Discriminated-union pattern: anyOf branches where each has type:string and a const value.
+// openapi-generator doesn't infer an enum from this pattern without explicit $refs.
 const isConstStringAnyOf = (node: any): boolean =>
     Array.isArray(node?.anyOf) &&
     node.anyOf.length > 1 &&
     node.anyOf.every((item: any) => item.type === "string" && typeof item.const === "string");
 
-// Matches a regular inline enum the spec uses for status fields and similar:
-//   status: { type: string, enum: [Pending, Completed, Failed] }
+// Standard inline string enum pattern.
 const isStringEnum = (node: any): boolean =>
     node?.type === "string" &&
     Array.isArray(node?.enum) &&
     node.enum.every((v: any) => typeof v === "string");
 
-// Matches a single const value inside a discriminated union branch:
-//   payment.anyOf[0].properties.paymentMethod: { type: string, const: Pix }
-// Each branch has its own const. The collect pass merges all of them into one enum.
+// Single const inside a discriminated union branch. Each branch contributes one value;
+// the collect pass merges all occurrences of the same property key into one combined enum.
 const isSingleConst = (node: any): boolean =>
     node?.type === "string" && typeof node?.const === "string";
 
-// x-enum-varnames keeps member names equal to the wire value (Pix, CreditCard, …)
-// so there's no mismatch between what you write in code and what gets serialized.
+// x-enum-varnames keeps member names equal to wire values for consistent serialization.
 const buildEnumSchema = (values: string[]) => ({
   type: "string",
   enum: values,
@@ -93,12 +87,10 @@ const buildEnumSchema = (values: string[]) => ({
  *   3. Single const       — { type: string, const: A } (appears per-branch in discriminated unions)
  *
  * Pass 1 (collect): walk the doc, accumulate enum values per property key into a registry.
- *   Multiple occurrences of the same key (e.g. `paymentMethod: { const: "Pix" }` and
- *   `paymentMethod: { const: "CreditCard" }` in separate anyOf branches) merge into one Set.
+ *   Multiple occurrences of the same key across branches merge into one Set.
  *
  * Pass 2 (replace): walk again, swap every matched inline node with a $ref.
- *   components/schemas is skipped to prevent the freshly-written schemas from
- *   being overwritten with circular self-references.
+ *   components/schemas is skipped to avoid circular self-references.
  */
 const patchOpenApi = (data: any): any => {
   data.components ??= {};
@@ -113,8 +105,7 @@ const patchOpenApi = (data: any): any => {
 
   // --- Pass 1: Collect ---
   // SKIP_AS_ENUM_NAME only controls whether a key becomes a schema name — we always recurse.
-  // A previous early-return-on-skip approach caused isSingleConst nodes nested inside
-  // `properties` to never be reached, breaking paymentMethod collection.
+  // An early-return on skip would miss nested single-const nodes inside structural keys.
   const collect = (node: any) => {
     if (Array.isArray(node)) { node.forEach(collect); return; }
     if (typeof node !== "object" || node === null) return;
