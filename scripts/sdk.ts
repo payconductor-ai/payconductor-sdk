@@ -1,20 +1,9 @@
 #!/usr/bin/env bun
 
 /**
- * SDK Generator Script
- *
- * This script automates two tasks:
- *
- *   1. `download` — Fetches the OpenAPI JSON from the live API, runs a patch
- *      step to fix enum typing issues (see `patchOpenApi`), saves the result
- *      as both JSON and YAML.
- *
- *   2. `generate` — Takes the patched YAML and calls openapi-generator-cli to
- *      produce client SDKs for one or more programming languages.
- *
- * Usage:
- *   bun run sdk download     # Download and patch the OpenAPI spec
- *   bun run sdk generate     # Generate SDKs from the patched spec
+ * Two commands:
+ *   bun run sdk download   — fetch the OpenAPI JSON, patch enum types, save as JSON + YAML
+ *   bun run sdk generate   — run openapi-generator-cli for selected languages
  */
 
 const enquirer = require("enquirer");
@@ -51,162 +40,70 @@ const VERSIONS: Record<string, {
 //#endregion
 
 //#region Helpers
-/**
- * Converts a camelCase or PascalCase string to SCREAMING_SNAKE_CASE.
- * Used for `x-enum-varnames` so generators emit descriptive member names.
- *
- * Examples:
- *   "CreditCard" -> "CREDIT_CARD"
- *   "Pix"        -> "PIX"
- */
-const toScreamingSnake = (s: string) =>
-    s.replace(/([A-Z])/g, "_$1").toUpperCase().replace(/^_/, "");
+const toPascalCase = (key: string) => key.charAt(0).toUpperCase() + key.slice(1);
 
-/**
- * Capitalises the first character of a property key to form a PascalCase
- * schema name used in components/schemas.
- *
- * Examples:
- *   "paymentMethod" -> "PaymentMethod"
- *   "status"        -> "Status"
- */
-const toPascalCase = (key: string) =>
-    key.charAt(0).toUpperCase() + key.slice(1);
-
-/**
- * Keys that are OpenAPI structural keywords and must NOT be used as enum
- * schema names. We still recurse INTO nodes under these keys — we just
- * don't register the key itself as a schema name.
- *
- * For example: `items` is a keyword for array element schemas, so we should
- * never create a schema called `Items`. But the VALUE under `items` might be
- * a const-string anyOf that we do want to replace with a $ref — so we must
- * still recurse into it.
- */
+// OpenAPI structural keywords that appear as property keys in the document but
+// don't represent domain fields. We never want to create a schema named "Items"
+// or "Properties" — but we still need to recurse into their values to find real
+// domain enums nested inside them.
 const SKIP_AS_ENUM_NAME = new Set([
-  "items",
-  "properties",
-  "schema",
-  "schemas",
-  "components",
-  "paths",
-  "webhooks",
-  "info",
-  "servers",
-  "tags",
-  "security",
-  "parameters",
-  "responses",
-  "requestBody",
-  "content",
-  "headers",
-  "default",
-  "required",
-  "allOf",
-  "oneOf",
-  "anyOf",
-  "not",
+  "items", "properties", "schema", "schemas", "components", "paths",
+  "webhooks", "info", "servers", "tags", "security", "parameters",
+  "responses", "requestBody", "content", "headers", "default", "required",
+  "allOf", "oneOf", "anyOf", "not",
 ]);
 
-/**
- * Returns true when a node is an anyOf where every branch is a const string.
- *
- * Example in the spec:
- *   anyOf:
- *     - { type: string, const: Pix }
- *     - { type: string, const: CreditCard }
- *
- * openapi-generator cannot resolve this pattern into a typed enum on its own.
- */
+// Matches the discriminated-union pattern the spec uses for array item types:
+//   availablePaymentMethods.items: { anyOf: [{ type: string, const: Pix }, ...] }
+// openapi-generator doesn't resolve this into a typed enum on its own.
 const isConstStringAnyOf = (node: any): boolean =>
     Array.isArray(node?.anyOf) &&
     node.anyOf.length > 1 &&
-    node.anyOf.every(
-        (item: any) => item.type === "string" && typeof item.const === "string"
-    );
+    node.anyOf.every((item: any) => item.type === "string" && typeof item.const === "string");
 
-/**
- * Returns true when a node is a plain string enum.
- *
- * Example:
- *   type: string
- *   enum: [Pending, Completed, Failed]
- */
+// Matches a regular inline enum the spec uses for status fields and similar:
+//   status: { type: string, enum: [Pending, Completed, Failed] }
 const isStringEnum = (node: any): boolean =>
     node?.type === "string" &&
     Array.isArray(node?.enum) &&
     node.enum.every((v: any) => typeof v === "string");
 
-/**
- * Builds the enum schema object written into components/schemas.
- *
- * - `enum` is the standard OpenAPI field every generator understands.
- * - `x-enum-varnames` is a widely-supported extension that makes generators
- *   emit descriptive identifiers (e.g. CREDIT_CARD) instead of raw strings.
- */
+// Matches a single const value inside a discriminated union branch:
+//   payment.anyOf[0].properties.paymentMethod: { type: string, const: Pix }
+// Each branch has its own const. The collect pass merges all of them into one enum.
+const isSingleConst = (node: any): boolean =>
+    node?.type === "string" && typeof node?.const === "string";
+
+// x-enum-varnames keeps member names equal to the wire value (Pix, CreditCard, …)
+// so there's no mismatch between what you write in code and what gets serialized.
 const buildEnumSchema = (values: string[]) => ({
   type: "string",
   enum: values,
-  "x-enum-varnames": values.map(toScreamingSnake),
+  "x-enum-varnames": values,
 });
 //#endregion
 
 //#region Patcher
 /**
- * Patches the raw OpenAPI document in two passes so that openapi-generator
- * produces properly typed enums instead of plain `string` fields.
+ * Lifts all inline string enums into components/schemas and replaces them with $refs.
  *
- * THE PROBLEM
+ * Three inline patterns are handled:
+ *   1. anyOf const-union  — { anyOf: [{ type: string, const: A }, { type: string, const: B }] }
+ *   2. Plain string enum  — { type: string, enum: [A, B, C] }
+ *   3. Single const       — { type: string, const: A } (appears per-branch in discriminated unions)
  *
- * The spec defines string-typed discriminated fields in two ways that
- * openapi-generator handles poorly:
+ * Pass 1 (collect): walk the doc, accumulate enum values per property key into a registry.
+ *   Multiple occurrences of the same key (e.g. `paymentMethod: { const: "Pix" }` and
+ *   `paymentMethod: { const: "CreditCard" }` in separate anyOf branches) merge into one Set.
  *
- *   1. anyOf const unions — used for `paymentMethod`, webhook `status`, and
- *      inline array item schemas like `availablePaymentMethods.items`.
- *      The generator falls back to `object`, losing all type information.
- *
- *   2. Inline string enums — used for `status`, `documentType`, `pixType`.
- *      The generator creates anonymous, non-reusable duplicates.
- *
- * THE SOLUTION
- *
- *   Pass 1 – Collect
- *     Walk the entire document (except components/schemas which we're about
- *     to write). For each property whose VALUE is a const-string anyOf or a
- *     plain string enum, record the values under the property key name — BUT
- *     only when the key is not an OpenAPI structural keyword. Keys in
- *     SKIP_AS_ENUM_NAME are still recursed into; we just don't use the key
- *     itself as the schema name.
- *
- *     Special case — inline array item schemas:
- *     When a node directly IS a const-string anyOf (i.e. the parent key is
- *     `items`), we collect it under a name derived from the grandparent
- *     property key (e.g. `availablePaymentMethods` → `AvailablePaymentMethods`).
- *     This is handled by passing an optional `parentName` through the recursion.
- *
- *   Pass 2 – Replace
- *     Walk again (skipping components/schemas to prevent circular $ref loops).
- *     Wherever a matching inline definition is found, swap it for a $ref.
- *     For array `items` nodes that directly match, replace the whole `items`
- *     value rather than a named property inside it.
- *
- * SKIP DURING REPLACEMENT
- *
- * Without this guard the replace pass would visit the freshly-written schemas,
- * find that they match isStringEnum, and overwrite them with:
- *
- *   Status: { $ref: '#/components/schemas/Status' }  ← circular self-reference
- *
- * The generator would then crash or produce empty models.
+ * Pass 2 (replace): walk again, swap every matched inline node with a $ref.
+ *   components/schemas is skipped to prevent the freshly-written schemas from
+ *   being overwritten with circular self-references.
  */
 const patchOpenApi = (data: any): any => {
   data.components ??= {};
   data.components.schemas ??= {};
 
-  /**
-   * Registry: PascalCase schema name → set of string enum values.
-   * Using a Set deduplicates values found in multiple locations.
-   */
   const enumRegistry = new Map<string, Set<string>>();
 
   const registerValues = (name: string, values: string[]) => {
@@ -215,118 +112,102 @@ const patchOpenApi = (data: any): any => {
   };
 
   // --- Pass 1: Collect ---
-  const collect = (node: any, parentName?: string) => {
-    if (Array.isArray(node)) { node.forEach((n) => collect(n, parentName)); return; }
+  // SKIP_AS_ENUM_NAME only controls whether a key becomes a schema name — we always recurse.
+  // A previous early-return-on-skip approach caused isSingleConst nodes nested inside
+  // `properties` to never be reached, breaking paymentMethod collection.
+  const collect = (node: any) => {
+    if (Array.isArray(node)) { node.forEach(collect); return; }
     if (typeof node !== "object" || node === null) return;
-
-    // If this node itself is an enum pattern (happens when the parent key is
-    // `items`), register it under the name derived from the grandparent key.
-    if (parentName && !SKIP_AS_ENUM_NAME.has(parentName.toLowerCase())) {
-      if (isConstStringAnyOf(node)) {
-        registerValues(toPascalCase(parentName), node.anyOf.map((i: any) => i.const as string));
-        return; // no need to recurse further into this node
-      }
-      if (isStringEnum(node)) {
-        registerValues(toPascalCase(parentName), node.enum as string[]);
-        return;
-      }
-    }
 
     for (const key of Object.keys(node)) {
       const child = node[key];
       if (typeof child !== "object" || child === null) continue;
 
-      if (!SKIP_AS_ENUM_NAME.has(key)) {
-        // This key is a domain property — check if its value is an enum pattern.
-        if (isConstStringAnyOf(child)) {
-          registerValues(toPascalCase(key), child.anyOf.map((i: any) => i.const as string));
-          // Still recurse in case there are nested enums inside (e.g. objects with more properties).
-          collect(child, key);
-          continue;
-        }
-        if (isStringEnum(child)) {
-          registerValues(toPascalCase(key), child.enum as string[]);
-          collect(child, key);
-          continue;
-        }
+      if (SKIP_AS_ENUM_NAME.has(key)) {
+        collect(child);
+        continue;
       }
 
-      // Recurse into all nodes regardless, passing the current key as
-      // parentName so that direct-value patterns (like array `items`) are
-      // caught in the next level.
-      collect(child, key);
+      const name = toPascalCase(key);
+
+      if (isConstStringAnyOf(child)) {
+        registerValues(name, child.anyOf.map((i: any) => i.const as string));
+        collect(child);
+      } else if (isStringEnum(child)) {
+        registerValues(name, child.enum as string[]);
+        collect(child);
+      } else if (isSingleConst(child)) {
+        registerValues(name, [child.const as string]);
+        // leaf — no recursion needed
+      } else {
+        // Array whose items are a const-union enum.
+        if (child.type === "array" && isConstStringAnyOf(child.items)) {
+          registerValues(name, (child.items as any).anyOf.map((i: any) => i.const as string));
+        }
+        collect(child);
+      }
     }
   };
 
-  // Collect from the full document except components/schemas (which we write).
   const { schemas: _ignored, ...otherComponents } = data.components;
   collect({ ...data, components: { ...otherComponents } });
 
-  // Write collected enums into components/schemas (skip trivial single values).
   for (const [name, values] of enumRegistry) {
     if (values.size < 2) continue;
     data.components.schemas[name] = buildEnumSchema([...values]);
   }
 
-  // --- Pass 2: Replace inline definitions with $ref ---
+  // --- Pass 2: Replace ---
   const replace = (node: any, insideSchemas = false): any => {
     if (Array.isArray(node)) return node.map((n) => replace(n, insideSchemas));
     if (typeof node !== "object" || node === null) return node;
-
-    // Never modify anything already inside components/schemas — those are the
-    // canonical definitions we just wrote; replacing them would create circular
-    // self-referencing $refs that break the generator.
     if (insideSchemas) return node;
 
     for (const key of Object.keys(node)) {
       const child = node[key];
       if (typeof child !== "object" || child === null) continue;
 
-      // Detect entry into the components/schemas subtree.
+      // Don't touch components/schemas — we wrote those, modifying them creates circular $refs.
       const enteringSchemas =
           key === "schemas" &&
-          Object.keys(node).some((k) =>
-              ["securitySchemes", "schemas", "parameters"].includes(k)
-          );
-
+          Object.keys(node).some((k) => ["securitySchemes", "schemas", "parameters"].includes(k));
       if (enteringSchemas) {
         node[key] = replace(child, true);
         continue;
       }
 
-      // For `items` (array element schema): if its value directly matches an
-      // enum pattern, replace it with the $ref derived from the parent key.
-      // We can't use `items` itself as a schema name, so we look it up by
-      // the name that was registered during collect (parentName).
-      if (key === "items" && (isConstStringAnyOf(child) || isStringEnum(child))) {
-        // Find a registered schema whose values match this node's values.
-        const nodeValues = isConstStringAnyOf(child)
-            ? child.anyOf.map((i: any) => i.const as string)
-            : (child.enum as string[]);
-        const nodeSet = new Set(nodeValues);
-
-        const matchingSchema = [...enumRegistry.entries()].find(([, values]) => {
-          if (values.size !== nodeSet.size) return false;
-          return [...nodeSet].every((v) => values.has(String(v)));
-        });
-
-        if (matchingSchema) {
-          node[key] = { $ref: `#/components/schemas/${matchingSchema[0]}` };
-          continue;
+      if (SKIP_AS_ENUM_NAME.has(key)) {
+        // Replace array items that are a const-union by finding the matching registered schema.
+        if (key === "items" && (isConstStringAnyOf(child) || isStringEnum(child))) {
+          const nodeSet = new Set(
+              isConstStringAnyOf(child)
+                  ? child.anyOf.map((i: any) => i.const as string)
+                  : (child.enum as string[])
+          );
+          const match = [...enumRegistry.entries()].find(
+              ([, values]) => values.size === nodeSet.size && [...nodeSet].every((v) => values.has(String(v)))
+          );
+          if (match) { node[key] = { $ref: `#/components/schemas/${match[0]}` }; continue; }
         }
+        node[key] = replace(child, false);
+        continue;
       }
 
-      if (!SKIP_AS_ENUM_NAME.has(key)) {
-        const name = toPascalCase(key);
-        const registered = enumRegistry.get(name);
+      const name = toPascalCase(key);
+      const registered = enumRegistry.get(name);
 
-        if (
-            registered &&
-            registered.size >= 2 &&
-            (isConstStringAnyOf(child) || isStringEnum(child))
-        ) {
-          // Swap the inline definition for a reference to the shared schema.
+      if (registered && registered.size >= 2) {
+        if (isConstStringAnyOf(child) || isStringEnum(child)) {
           node[key] = { $ref: `#/components/schemas/${name}` };
+          continue;
+        }
+        if (isSingleConst(child) && registered.has(child.const as string)) {
+          node[key] = { $ref: `#/components/schemas/${name}` };
+          continue;
+        }
+        if (child.type === "array" && isConstStringAnyOf(child.items)) {
+          child.items = { $ref: `#/components/schemas/${name}` };
+          node[key] = replace(child, false);
           continue;
         }
       }
@@ -342,11 +223,6 @@ const patchOpenApi = (data: any): any => {
 //#endregion
 
 //#region Commands
-/**
- * Downloads the OpenAPI spec for a given version, applies the enum patch, and
- * saves the result as both JSON (for inspection) and YAML (consumed by the
- * generator, since openapi-format normalises and sorts the document).
- */
 const downloadOpenApi = async (version: string) => {
   const config = VERSIONS[version];
   const outputJson = `library/${version}/src/openapi.json`;
@@ -357,7 +233,7 @@ const downloadOpenApi = async (version: string) => {
   const response = await fetch(config!.apiUrl);
   let data: any = await response.json();
 
-  console.log("Patching OpenAPI schema (lifting enums to components/schemas)...");
+  console.log("Patching OpenAPI schema...");
   data = patchOpenApi(data);
 
   const addedSchemas = Object.keys(data.components.schemas);
@@ -366,18 +242,10 @@ const downloadOpenApi = async (version: string) => {
   await Bun.write(outputJson, JSON.stringify(data, null, 2));
   console.log(`Saved to ${outputJson}`);
 
-  // openapi-format normalises field ordering and removes redundant whitespace,
-  // producing a clean YAML file that is easier to diff and review.
   await Bun.spawn(["bunx", "openapi-format", outputJson, "-o", outputYaml]);
   console.log(`Formatted to ${outputYaml}`);
 };
 
-/**
- * Runs openapi-generator-cli for each selected language.
- *
- * The output directory is wiped before each generation run so that removed or
- * renamed operations don't leave stale files behind.
- */
 const generateSdk = async (version: string, languages: string[]) => {
   const config = VERSIONS[version]!;
   const openapiFile = `library/${version}/src/openapi.yaml`;
@@ -386,8 +254,6 @@ const generateSdk = async (version: string, languages: string[]) => {
     const langConfig = config.languages[lang]!;
 
     console.log(`\n--- Generating ${lang} ---`);
-
-    // Clean the output directory to avoid accumulating outdated generated files.
     rimraf.sync(langConfig.outputDir);
 
     const proc = await Bun.spawn([
@@ -436,7 +302,6 @@ const run = async () => {
     });
 
     const langKeys = Object.keys(VERSIONS[version]!.languages);
-
     console.log("\nUse space to select, enter to confirm\n");
 
     const languages = await enquirer.multiselect({

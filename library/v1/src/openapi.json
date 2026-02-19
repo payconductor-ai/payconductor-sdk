@@ -16,21 +16,7 @@
                 "type": "object",
                 "properties": {
                   "event": {
-                    "default": "OrderCreated",
-                    "description": "Webhook event name",
-                    "examples": [
-                      "OrderCreated",
-                      "OrderCompleted"
-                    ],
-                    "type": "string",
-                    "enum": [
-                      "OrderCreated",
-                      "OrderPending",
-                      "OrderCompleted",
-                      "OrderFailed",
-                      "OrderRefunded",
-                      "OrderChargeback"
-                    ]
+                    "$ref": "#/components/schemas/Event"
                   },
                   "payload": {
                     "type": "object",
@@ -213,106 +199,10 @@
                         }
                       },
                       "status": {
-                        "description": "Order status",
-                        "examples": [
-                          "Pending",
-                          "Completed"
-                        ],
-                        "anyOf": [
-                          {
-                            "const": "Generating",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Pending",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Completed",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Failed",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Canceled",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Refunding",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Refunded",
-                            "type": "string"
-                          },
-                          {
-                            "const": "InDispute",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Chargeback",
-                            "type": "string"
-                          }
-                        ]
+                        "$ref": "#/components/schemas/Status"
                       },
                       "paymentMethod": {
-                        "description": "Payment method used in the order",
-                        "examples": [
-                          "Pix",
-                          "CreditCard"
-                        ],
-                        "anyOf": [
-                          {
-                            "const": "Pix",
-                            "type": "string"
-                          },
-                          {
-                            "const": "CreditCard",
-                            "type": "string"
-                          },
-                          {
-                            "const": "DebitCard",
-                            "type": "string"
-                          },
-                          {
-                            "const": "BankSlip",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Crypto",
-                            "type": "string"
-                          },
-                          {
-                            "const": "ApplePay",
-                            "type": "string"
-                          },
-                          {
-                            "const": "NuPay",
-                            "type": "string"
-                          },
-                          {
-                            "const": "PicPay",
-                            "type": "string"
-                          },
-                          {
-                            "const": "AmazonPay",
-                            "type": "string"
-                          },
-                          {
-                            "const": "SepaDebit",
-                            "type": "string"
-                          },
-                          {
-                            "const": "GooglePay",
-                            "type": "string"
-                          },
-                          {
-                            "const": "Draft",
-                            "type": "string"
-                          }
-                        ]
+                        "$ref": "#/components/schemas/PaymentMethod"
                       },
                       "payedAt": {
                         "anyOf": [
@@ -487,19 +377,7 @@
                 "type": "object",
                 "properties": {
                   "event": {
-                    "default": "WithdrawCreated",
-                    "description": "Webhook event name",
-                    "examples": [
-                      "WithdrawCreated",
-                      "WithdrawCompleted"
-                    ],
-                    "type": "string",
-                    "enum": [
-                      "WithdrawCreated",
-                      "WithdrawCompleted",
-                      "WithdrawFailed",
-                      "WithdrawTransferring"
-                    ]
+                    "$ref": "#/components/schemas/Event"
                   },
                   "payload": {
                     "type": "object",
@@ -556,19 +434,7 @@
                         "type": "number"
                       },
                       "status": {
-                        "default": "Pending",
-                        "description": "Withdrawal status",
-                        "examples": [
-                          "Pending",
-                          "Completed"
-                        ],
-                        "type": "string",
-                        "enum": [
-                          "Pending",
-                          "Transferring",
-                          "Completed",
-                          "Failed"
-                        ]
+                        "$ref": "#/components/schemas/Status"
                       },
                       "errorCode": {
                         "anyOf": [
@@ -669,20 +535,7 @@
                             "type": "string"
                           },
                           "pixType": {
-                            "default": "Cpf",
-                            "description": "PIX key type",
-                            "examples": [
-                              "Email",
-                              "Cpf"
-                            ],
-                            "type": "string",
-                            "enum": [
-                              "Cpf",
-                              "Cnpj",
-                              "Email",
-                              "Phone",
-                              "Random"
-                            ]
+                            "$ref": "#/components/schemas/PixType"
                           }
                         },
                         "required": [
@@ -728,7 +581,152 @@
         "type": "http"
       }
     },
-    "schemas": {}
+    "schemas": {
+      "Event": {
+        "type": "string",
+        "enum": [
+          "OrderCreated",
+          "OrderPending",
+          "OrderCompleted",
+          "OrderFailed",
+          "OrderRefunded",
+          "OrderChargeback",
+          "WithdrawCreated",
+          "WithdrawCompleted",
+          "WithdrawFailed",
+          "WithdrawTransferring"
+        ],
+        "x-enum-varnames": [
+          "OrderCreated",
+          "OrderPending",
+          "OrderCompleted",
+          "OrderFailed",
+          "OrderRefunded",
+          "OrderChargeback",
+          "WithdrawCreated",
+          "WithdrawCompleted",
+          "WithdrawFailed",
+          "WithdrawTransferring"
+        ]
+      },
+      "Status": {
+        "type": "string",
+        "enum": [
+          "Generating",
+          "Pending",
+          "Completed",
+          "Failed",
+          "Canceled",
+          "Refunding",
+          "Refunded",
+          "InDispute",
+          "Chargeback",
+          "Transferring"
+        ],
+        "x-enum-varnames": [
+          "Generating",
+          "Pending",
+          "Completed",
+          "Failed",
+          "Canceled",
+          "Refunding",
+          "Refunded",
+          "InDispute",
+          "Chargeback",
+          "Transferring"
+        ]
+      },
+      "PaymentMethod": {
+        "type": "string",
+        "enum": [
+          "Pix",
+          "CreditCard",
+          "DebitCard",
+          "BankSlip",
+          "Crypto",
+          "ApplePay",
+          "NuPay",
+          "PicPay",
+          "AmazonPay",
+          "SepaDebit",
+          "GooglePay",
+          "Draft"
+        ],
+        "x-enum-varnames": [
+          "Pix",
+          "CreditCard",
+          "DebitCard",
+          "BankSlip",
+          "Crypto",
+          "ApplePay",
+          "NuPay",
+          "PicPay",
+          "AmazonPay",
+          "SepaDebit",
+          "GooglePay",
+          "Draft"
+        ]
+      },
+      "PixType": {
+        "type": "string",
+        "enum": [
+          "Cpf",
+          "Cnpj",
+          "Email",
+          "Phone",
+          "Random"
+        ],
+        "x-enum-varnames": [
+          "Cpf",
+          "Cnpj",
+          "Email",
+          "Phone",
+          "Random"
+        ]
+      },
+      "DocumentType": {
+        "type": "string",
+        "enum": [
+          "Cpf",
+          "Cnpj"
+        ],
+        "x-enum-varnames": [
+          "Cpf",
+          "Cnpj"
+        ]
+      },
+      "AvailablePaymentMethods": {
+        "type": "string",
+        "enum": [
+          "Pix",
+          "CreditCard",
+          "DebitCard",
+          "BankSlip",
+          "Crypto",
+          "ApplePay",
+          "NuPay",
+          "PicPay",
+          "AmazonPay",
+          "SepaDebit",
+          "GooglePay",
+          "Draft"
+        ],
+        "x-enum-varnames": [
+          "Pix",
+          "CreditCard",
+          "DebitCard",
+          "BankSlip",
+          "Crypto",
+          "ApplePay",
+          "NuPay",
+          "PicPay",
+          "AmazonPay",
+          "SepaDebit",
+          "GooglePay",
+          "Draft"
+        ]
+      }
+    }
   },
   "info": {
     "title": "PayConductor API",
@@ -878,11 +876,7 @@
                         "type": "string"
                       },
                       "documentType": {
-                        "type": "string",
-                        "enum": [
-                          "Cpf",
-                          "Cnpj"
-                        ]
+                        "$ref": "#/components/schemas/DocumentType"
                       },
                       "email": {
                         "description": "Customer email",
@@ -1042,8 +1036,7 @@
                         "type": "object",
                         "properties": {
                           "paymentMethod": {
-                            "const": "Pix",
-                            "type": "string"
+                            "$ref": "#/components/schemas/PaymentMethod"
                           },
                           "expirationInSeconds": {
                             "default": 3600,
@@ -1081,8 +1074,7 @@
                         "type": "object",
                         "properties": {
                           "paymentMethod": {
-                            "const": "CreditCard",
-                            "type": "string"
+                            "$ref": "#/components/schemas/PaymentMethod"
                           },
                           "card": {
                             "anyOf": [
@@ -1213,8 +1205,7 @@
                         "type": "object",
                         "properties": {
                           "paymentMethod": {
-                            "const": "BankSlip",
-                            "type": "string"
+                            "$ref": "#/components/schemas/PaymentMethod"
                           },
                           "expirationInDays": {
                             "default": 7,
@@ -1254,8 +1245,7 @@
                         "type": "object",
                         "properties": {
                           "paymentMethod": {
-                            "const": "NuPay",
-                            "type": "string"
+                            "$ref": "#/components/schemas/PaymentMethod"
                           },
                           "nuPay": {
                             "description": "Specific data for NuPay payment",
@@ -1307,8 +1297,7 @@
                         "type": "object",
                         "properties": {
                           "paymentMethod": {
-                            "const": "PicPay",
-                            "type": "string"
+                            "$ref": "#/components/schemas/PaymentMethod"
                           }
                         },
                         "required": [
@@ -1321,8 +1310,7 @@
                         "type": "object",
                         "properties": {
                           "paymentMethod": {
-                            "const": "Draft",
-                            "type": "string"
+                            "$ref": "#/components/schemas/PaymentMethod"
                           },
                           "expirationInSeconds": {
                             "default": 3600,
@@ -1352,56 +1340,7 @@
                             "description": "Available payment methods for this order",
                             "type": "array",
                             "items": {
-                              "anyOf": [
-                                {
-                                  "const": "Pix",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "CreditCard",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "DebitCard",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "BankSlip",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "Crypto",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "ApplePay",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "NuPay",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "PicPay",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "AmazonPay",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "SepaDebit",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "GooglePay",
-                                  "type": "string"
-                                },
-                                {
-                                  "const": "Draft",
-                                  "type": "string"
-                                }
-                              ]
+                              "$ref": "#/components/schemas/AvailablePaymentMethods"
                             }
                           }
                         },
@@ -1673,35 +1612,10 @@
                       }
                     },
                     "status": {
-                      "type": "string",
-                      "enum": [
-                        "Generating",
-                        "Pending",
-                        "Completed",
-                        "Failed",
-                        "Canceled",
-                        "Refunding",
-                        "Refunded",
-                        "InDispute",
-                        "Chargeback"
-                      ]
+                      "$ref": "#/components/schemas/Status"
                     },
                     "paymentMethod": {
-                      "type": "string",
-                      "enum": [
-                        "Pix",
-                        "CreditCard",
-                        "DebitCard",
-                        "BankSlip",
-                        "Crypto",
-                        "ApplePay",
-                        "NuPay",
-                        "PicPay",
-                        "AmazonPay",
-                        "SepaDebit",
-                        "GooglePay",
-                        "Draft"
-                      ]
+                      "$ref": "#/components/schemas/PaymentMethod"
                     },
                     "payedAt": {
                       "anyOf": [
@@ -2011,8 +1925,7 @@
                     "type": "object",
                     "properties": {
                       "paymentMethod": {
-                        "const": "Pix",
-                        "type": "string"
+                        "$ref": "#/components/schemas/PaymentMethod"
                       },
                       "expirationInSeconds": {
                         "default": 3600,
@@ -2050,8 +1963,7 @@
                     "type": "object",
                     "properties": {
                       "paymentMethod": {
-                        "const": "CreditCard",
-                        "type": "string"
+                        "$ref": "#/components/schemas/PaymentMethod"
                       },
                       "card": {
                         "anyOf": [
@@ -2182,8 +2094,7 @@
                     "type": "object",
                     "properties": {
                       "paymentMethod": {
-                        "const": "BankSlip",
-                        "type": "string"
+                        "$ref": "#/components/schemas/PaymentMethod"
                       },
                       "expirationInDays": {
                         "default": 7,
@@ -2223,8 +2134,7 @@
                     "type": "object",
                     "properties": {
                       "paymentMethod": {
-                        "const": "NuPay",
-                        "type": "string"
+                        "$ref": "#/components/schemas/PaymentMethod"
                       },
                       "nuPay": {
                         "description": "Specific data for NuPay payment",
@@ -2276,8 +2186,7 @@
                     "type": "object",
                     "properties": {
                       "paymentMethod": {
-                        "const": "PicPay",
-                        "type": "string"
+                        "$ref": "#/components/schemas/PaymentMethod"
                       }
                     },
                     "required": [
@@ -2290,8 +2199,7 @@
                     "type": "object",
                     "properties": {
                       "paymentMethod": {
-                        "const": "Draft",
-                        "type": "string"
+                        "$ref": "#/components/schemas/PaymentMethod"
                       },
                       "expirationInSeconds": {
                         "default": 3600,
@@ -2321,56 +2229,7 @@
                         "description": "Available payment methods for this order",
                         "type": "array",
                         "items": {
-                          "anyOf": [
-                            {
-                              "const": "Pix",
-                              "type": "string"
-                            },
-                            {
-                              "const": "CreditCard",
-                              "type": "string"
-                            },
-                            {
-                              "const": "DebitCard",
-                              "type": "string"
-                            },
-                            {
-                              "const": "BankSlip",
-                              "type": "string"
-                            },
-                            {
-                              "const": "Crypto",
-                              "type": "string"
-                            },
-                            {
-                              "const": "ApplePay",
-                              "type": "string"
-                            },
-                            {
-                              "const": "NuPay",
-                              "type": "string"
-                            },
-                            {
-                              "const": "PicPay",
-                              "type": "string"
-                            },
-                            {
-                              "const": "AmazonPay",
-                              "type": "string"
-                            },
-                            {
-                              "const": "SepaDebit",
-                              "type": "string"
-                            },
-                            {
-                              "const": "GooglePay",
-                              "type": "string"
-                            },
-                            {
-                              "const": "Draft",
-                              "type": "string"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/AvailablePaymentMethods"
                         }
                       }
                     },
@@ -2537,35 +2396,10 @@
                       ]
                     },
                     "status": {
-                      "type": "string",
-                      "enum": [
-                        "Generating",
-                        "Pending",
-                        "Completed",
-                        "Failed",
-                        "Canceled",
-                        "Refunding",
-                        "Refunded",
-                        "InDispute",
-                        "Chargeback"
-                      ]
+                      "$ref": "#/components/schemas/Status"
                     },
                     "paymentMethod": {
-                      "type": "string",
-                      "enum": [
-                        "Pix",
-                        "CreditCard",
-                        "DebitCard",
-                        "BankSlip",
-                        "Crypto",
-                        "ApplePay",
-                        "NuPay",
-                        "PicPay",
-                        "AmazonPay",
-                        "SepaDebit",
-                        "GooglePay",
-                        "Draft"
-                      ]
+                      "$ref": "#/components/schemas/PaymentMethod"
                     },
                     "payedAt": {
                       "anyOf": [
@@ -2729,16 +2563,7 @@
                         "type": "string"
                       },
                       "pixType": {
-                        "default": "Cnpj",
-                        "description": "PIX key type",
-                        "type": "string",
-                        "enum": [
-                          "Cnpj",
-                          "Cpf",
-                          "Email",
-                          "Phone",
-                          "Random"
-                        ]
+                        "$ref": "#/components/schemas/PixType"
                       }
                     },
                     "required": [
@@ -2819,19 +2644,7 @@
                       "type": "number"
                     },
                     "status": {
-                      "default": "Pending",
-                      "description": "Withdrawal status",
-                      "examples": [
-                        "Pending",
-                        "Completed"
-                      ],
-                      "type": "string",
-                      "enum": [
-                        "Pending",
-                        "Transferring",
-                        "Completed",
-                        "Failed"
-                      ]
+                      "$ref": "#/components/schemas/Status"
                     },
                     "errorCode": {
                       "anyOf": [
@@ -2932,20 +2745,7 @@
                           "type": "string"
                         },
                         "pixType": {
-                          "default": "Cpf",
-                          "description": "PIX key type",
-                          "examples": [
-                            "Email",
-                            "Cpf"
-                          ],
-                          "type": "string",
-                          "enum": [
-                            "Cpf",
-                            "Cnpj",
-                            "Email",
-                            "Phone",
-                            "Random"
-                          ]
+                          "$ref": "#/components/schemas/PixType"
                         }
                       },
                       "required": [
@@ -3272,11 +3072,7 @@
                     "type": "string"
                   },
                   "documentType": {
-                    "type": "string",
-                    "enum": [
-                      "Cpf",
-                      "Cnpj"
-                    ]
+                    "$ref": "#/components/schemas/DocumentType"
                   },
                   "email": {
                     "description": "Customer email",
@@ -3448,11 +3244,7 @@
                     "type": "string"
                   },
                   "documentType": {
-                    "type": "string",
-                    "enum": [
-                      "Cpf",
-                      "Cnpj"
-                    ]
+                    "$ref": "#/components/schemas/DocumentType"
                   },
                   "email": {
                     "description": "Customer email",
@@ -3668,21 +3460,7 @@
                             "type": "string"
                           },
                           "documentType": {
-                            "description": "Document type: Cpf or Cnpj",
-                            "examples": [
-                              "Cpf",
-                              "Cnpj"
-                            ],
-                            "anyOf": [
-                              {
-                                "const": "Cpf",
-                                "type": "string"
-                              },
-                              {
-                                "const": "Cnpj",
-                                "type": "string"
-                              }
-                            ]
+                            "$ref": "#/components/schemas/DocumentType"
                           },
                           "email": {
                             "description": "Customer email",

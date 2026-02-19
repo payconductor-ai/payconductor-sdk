@@ -180,10 +180,7 @@ paths:
                         - '12345678000195'
                       pattern: '^\d{11}$|^\d{14}$'
                     documentType:
-                      type: string
-                      enum:
-                        - Cpf
-                        - Cnpj
+                      $ref: '#/components/schemas/DocumentType'
                     email:
                       description: Customer email
                       type: string
@@ -303,8 +300,7 @@ paths:
                       type: object
                       properties:
                         paymentMethod:
-                          type: string
-                          const: Pix
+                          $ref: '#/components/schemas/PaymentMethod'
                         expirationInSeconds:
                           description: PIX expiration time in seconds
                           default: 3600
@@ -329,8 +325,7 @@ paths:
                       type: object
                       properties:
                         paymentMethod:
-                          type: string
-                          const: CreditCard
+                          $ref: '#/components/schemas/PaymentMethod'
                         card:
                           anyOf:
                             - title: Tokenized card
@@ -422,8 +417,7 @@ paths:
                       type: object
                       properties:
                         paymentMethod:
-                          type: string
-                          const: BankSlip
+                          $ref: '#/components/schemas/PaymentMethod'
                         expirationInDays:
                           description: Days until bank slip expires
                           default: 7
@@ -450,8 +444,7 @@ paths:
                       type: object
                       properties:
                         paymentMethod:
-                          type: string
-                          const: NuPay
+                          $ref: '#/components/schemas/PaymentMethod'
                         nuPay:
                           description: Specific data for NuPay payment
                           type: object
@@ -487,8 +480,7 @@ paths:
                       type: object
                       properties:
                         paymentMethod:
-                          type: string
-                          const: PicPay
+                          $ref: '#/components/schemas/PaymentMethod'
                       required:
                         - paymentMethod
                     - title: Draft
@@ -496,8 +488,7 @@ paths:
                       type: object
                       properties:
                         paymentMethod:
-                          type: string
-                          const: Draft
+                          $ref: '#/components/schemas/PaymentMethod'
                         expirationInSeconds:
                           description: Order expiration time in seconds
                           default: 3600
@@ -518,31 +509,7 @@ paths:
                           description: Available payment methods for this order
                           type: array
                           items:
-                            anyOf:
-                              - const: Pix
-                                type: string
-                              - const: CreditCard
-                                type: string
-                              - const: DebitCard
-                                type: string
-                              - const: BankSlip
-                                type: string
-                              - const: Crypto
-                                type: string
-                              - const: ApplePay
-                                type: string
-                              - const: NuPay
-                                type: string
-                              - const: PicPay
-                                type: string
-                              - const: AmazonPay
-                                type: string
-                              - const: SepaDebit
-                                type: string
-                              - const: GooglePay
-                                type: string
-                              - const: Draft
-                                type: string
+                            $ref: '#/components/schemas/AvailablePaymentMethods'
                       required:
                         - paymentMethod
                   noValidate: true
@@ -725,32 +692,9 @@ paths:
                         examples:
                           - '123456'
                   status:
-                    type: string
-                    enum:
-                      - Generating
-                      - Pending
-                      - Completed
-                      - Failed
-                      - Canceled
-                      - Refunding
-                      - Refunded
-                      - InDispute
-                      - Chargeback
+                    $ref: '#/components/schemas/Status'
                   paymentMethod:
-                    type: string
-                    enum:
-                      - Pix
-                      - CreditCard
-                      - DebitCard
-                      - BankSlip
-                      - Crypto
-                      - ApplePay
-                      - NuPay
-                      - PicPay
-                      - AmazonPay
-                      - SepaDebit
-                      - GooglePay
-                      - Draft
+                    $ref: '#/components/schemas/PaymentMethod'
                   payedAt:
                     anyOf:
                       - description: Date and time when the order was paid (ISO 8601)
@@ -959,8 +903,7 @@ paths:
                   type: object
                   properties:
                     paymentMethod:
-                      type: string
-                      const: Pix
+                      $ref: '#/components/schemas/PaymentMethod'
                     expirationInSeconds:
                       description: PIX expiration time in seconds
                       default: 3600
@@ -985,8 +928,7 @@ paths:
                   type: object
                   properties:
                     paymentMethod:
-                      type: string
-                      const: CreditCard
+                      $ref: '#/components/schemas/PaymentMethod'
                     card:
                       anyOf:
                         - title: Tokenized card
@@ -1078,8 +1020,7 @@ paths:
                   type: object
                   properties:
                     paymentMethod:
-                      type: string
-                      const: BankSlip
+                      $ref: '#/components/schemas/PaymentMethod'
                     expirationInDays:
                       description: Days until bank slip expires
                       default: 7
@@ -1106,8 +1047,7 @@ paths:
                   type: object
                   properties:
                     paymentMethod:
-                      type: string
-                      const: NuPay
+                      $ref: '#/components/schemas/PaymentMethod'
                     nuPay:
                       description: Specific data for NuPay payment
                       type: object
@@ -1143,8 +1083,7 @@ paths:
                   type: object
                   properties:
                     paymentMethod:
-                      type: string
-                      const: PicPay
+                      $ref: '#/components/schemas/PaymentMethod'
                   required:
                     - paymentMethod
                 - title: Draft
@@ -1152,8 +1091,7 @@ paths:
                   type: object
                   properties:
                     paymentMethod:
-                      type: string
-                      const: Draft
+                      $ref: '#/components/schemas/PaymentMethod'
                     expirationInSeconds:
                       description: Order expiration time in seconds
                       default: 3600
@@ -1174,31 +1112,7 @@ paths:
                       description: Available payment methods for this order
                       type: array
                       items:
-                        anyOf:
-                          - const: Pix
-                            type: string
-                          - const: CreditCard
-                            type: string
-                          - const: DebitCard
-                            type: string
-                          - const: BankSlip
-                            type: string
-                          - const: Crypto
-                            type: string
-                          - const: ApplePay
-                            type: string
-                          - const: NuPay
-                            type: string
-                          - const: PicPay
-                            type: string
-                          - const: AmazonPay
-                            type: string
-                          - const: SepaDebit
-                            type: string
-                          - const: GooglePay
-                            type: string
-                          - const: Draft
-                            type: string
+                        $ref: '#/components/schemas/AvailablePaymentMethods'
                   required:
                     - paymentMethod
               noValidate: true
@@ -1306,32 +1220,9 @@ paths:
                       - copyAndPasteCode
                       - qrCodeUrl
                   status:
-                    type: string
-                    enum:
-                      - Generating
-                      - Pending
-                      - Completed
-                      - Failed
-                      - Canceled
-                      - Refunding
-                      - Refunded
-                      - InDispute
-                      - Chargeback
+                    $ref: '#/components/schemas/Status'
                   paymentMethod:
-                    type: string
-                    enum:
-                      - Pix
-                      - CreditCard
-                      - DebitCard
-                      - BankSlip
-                      - Crypto
-                      - ApplePay
-                      - NuPay
-                      - PicPay
-                      - AmazonPay
-                      - SepaDebit
-                      - GooglePay
-                      - Draft
+                    $ref: '#/components/schemas/PaymentMethod'
                   payedAt:
                     anyOf:
                       - description: Date and time when the order was paid (ISO 8601)
@@ -1442,15 +1333,7 @@ paths:
                       description: PIX key for withdrawal
                       type: string
                     pixType:
-                      description: PIX key type
-                      type: string
-                      default: Cnpj
-                      enum:
-                        - Cnpj
-                        - Cpf
-                        - Email
-                        - Phone
-                        - Random
+                      $ref: '#/components/schemas/PixType'
                   required:
                     - ownerDocument
                     - ownerName
@@ -1500,17 +1383,7 @@ paths:
                     examples:
                       - 4.5
                   status:
-                    description: Withdrawal status
-                    type: string
-                    default: Pending
-                    enum:
-                      - Pending
-                      - Transferring
-                      - Completed
-                      - Failed
-                    examples:
-                      - Pending
-                      - Completed
+                    $ref: '#/components/schemas/Status'
                   errorCode:
                     anyOf:
                       - description: 'Error code, if any'
@@ -1571,18 +1444,7 @@ paths:
                           - john@example.com
                           - '11999999999'
                       pixType:
-                        description: PIX key type
-                        type: string
-                        default: Cpf
-                        enum:
-                          - Cpf
-                          - Cnpj
-                          - Email
-                          - Phone
-                          - Random
-                        examples:
-                          - Email
-                          - Cpf
+                        $ref: '#/components/schemas/PixType'
                     required:
                       - id
                       - ownerDocument
@@ -1822,10 +1684,7 @@ paths:
                     - '12345678000195'
                   pattern: '^\d{11}$|^\d{14}$'
                 documentType:
-                  type: string
-                  enum:
-                    - Cpf
-                    - Cnpj
+                  $ref: '#/components/schemas/DocumentType'
                 email:
                   description: Customer email
                   type: string
@@ -1952,10 +1811,7 @@ paths:
                     - '12345678000195'
                   pattern: '^\d{11}$|^\d{14}$'
                 documentType:
-                  type: string
-                  enum:
-                    - Cpf
-                    - Cnpj
+                  $ref: '#/components/schemas/DocumentType'
                 email:
                   description: Customer email
                   type: string
@@ -2119,15 +1975,7 @@ paths:
                             - '12345678000195'
                           pattern: '^\d{11}$|^\d{14}$'
                         documentType:
-                          description: 'Document type: Cpf or Cnpj'
-                          anyOf:
-                            - const: Cpf
-                              type: string
-                            - const: Cnpj
-                              type: string
-                          examples:
-                            - Cpf
-                            - Cnpj
+                          $ref: '#/components/schemas/DocumentType'
                         email:
                           description: Customer email
                           type: string
@@ -2189,7 +2037,133 @@ paths:
       tags:
         - Card Tokenization
 components:
-  schemas: {}
+  schemas:
+    Event:
+      type: string
+      enum:
+        - OrderCreated
+        - OrderPending
+        - OrderCompleted
+        - OrderFailed
+        - OrderRefunded
+        - OrderChargeback
+        - WithdrawCreated
+        - WithdrawCompleted
+        - WithdrawFailed
+        - WithdrawTransferring
+      x-enum-varnames:
+        - OrderCreated
+        - OrderPending
+        - OrderCompleted
+        - OrderFailed
+        - OrderRefunded
+        - OrderChargeback
+        - WithdrawCreated
+        - WithdrawCompleted
+        - WithdrawFailed
+        - WithdrawTransferring
+    Status:
+      type: string
+      enum:
+        - Generating
+        - Pending
+        - Completed
+        - Failed
+        - Canceled
+        - Refunding
+        - Refunded
+        - InDispute
+        - Chargeback
+        - Transferring
+      x-enum-varnames:
+        - Generating
+        - Pending
+        - Completed
+        - Failed
+        - Canceled
+        - Refunding
+        - Refunded
+        - InDispute
+        - Chargeback
+        - Transferring
+    PaymentMethod:
+      type: string
+      enum:
+        - Pix
+        - CreditCard
+        - DebitCard
+        - BankSlip
+        - Crypto
+        - ApplePay
+        - NuPay
+        - PicPay
+        - AmazonPay
+        - SepaDebit
+        - GooglePay
+        - Draft
+      x-enum-varnames:
+        - Pix
+        - CreditCard
+        - DebitCard
+        - BankSlip
+        - Crypto
+        - ApplePay
+        - NuPay
+        - PicPay
+        - AmazonPay
+        - SepaDebit
+        - GooglePay
+        - Draft
+    PixType:
+      type: string
+      enum:
+        - Cpf
+        - Cnpj
+        - Email
+        - Phone
+        - Random
+      x-enum-varnames:
+        - Cpf
+        - Cnpj
+        - Email
+        - Phone
+        - Random
+    DocumentType:
+      type: string
+      enum:
+        - Cpf
+        - Cnpj
+      x-enum-varnames:
+        - Cpf
+        - Cnpj
+    AvailablePaymentMethods:
+      type: string
+      enum:
+        - Pix
+        - CreditCard
+        - DebitCard
+        - BankSlip
+        - Crypto
+        - ApplePay
+        - NuPay
+        - PicPay
+        - AmazonPay
+        - SepaDebit
+        - GooglePay
+        - Draft
+      x-enum-varnames:
+        - Pix
+        - CreditCard
+        - DebitCard
+        - BankSlip
+        - Crypto
+        - ApplePay
+        - NuPay
+        - PicPay
+        - AmazonPay
+        - SepaDebit
+        - GooglePay
+        - Draft
   securitySchemes:
     basicAuth:
       description: 'Use the format Authorization: Basic base64(''client_id:client_secret'')'
@@ -2217,19 +2191,7 @@ webhooks:
               type: object
               properties:
                 event:
-                  description: Webhook event name
-                  type: string
-                  default: OrderCreated
-                  enum:
-                    - OrderCreated
-                    - OrderPending
-                    - OrderCompleted
-                    - OrderFailed
-                    - OrderRefunded
-                    - OrderChargeback
-                  examples:
-                    - OrderCreated
-                    - OrderCompleted
+                  $ref: '#/components/schemas/Event'
                 payload:
                   type: object
                   noValidate: true
@@ -2351,59 +2313,9 @@ webhooks:
                           examples:
                             - '123456'
                     status:
-                      description: Order status
-                      anyOf:
-                        - const: Generating
-                          type: string
-                        - const: Pending
-                          type: string
-                        - const: Completed
-                          type: string
-                        - const: Failed
-                          type: string
-                        - const: Canceled
-                          type: string
-                        - const: Refunding
-                          type: string
-                        - const: Refunded
-                          type: string
-                        - const: InDispute
-                          type: string
-                        - const: Chargeback
-                          type: string
-                      examples:
-                        - Pending
-                        - Completed
+                      $ref: '#/components/schemas/Status'
                     paymentMethod:
-                      description: Payment method used in the order
-                      anyOf:
-                        - const: Pix
-                          type: string
-                        - const: CreditCard
-                          type: string
-                        - const: DebitCard
-                          type: string
-                        - const: BankSlip
-                          type: string
-                        - const: Crypto
-                          type: string
-                        - const: ApplePay
-                          type: string
-                        - const: NuPay
-                          type: string
-                        - const: PicPay
-                          type: string
-                        - const: AmazonPay
-                          type: string
-                        - const: SepaDebit
-                          type: string
-                        - const: GooglePay
-                          type: string
-                        - const: Draft
-                          type: string
-                      examples:
-                        - Pix
-                        - CreditCard
+                      $ref: '#/components/schemas/PaymentMethod'
                     payedAt:
                       anyOf:
                         - description: Date and time when the order was paid (ISO 8601)
@@ -2512,17 +2424,7 @@ webhooks:
               type: object
               properties:
                 event:
-                  description: Webhook event name
-                  type: string
-                  default: WithdrawCreated
-                  enum:
-                    - WithdrawCreated
-                    - WithdrawCompleted
-                    - WithdrawFailed
-                    - WithdrawTransferring
-                  examples:
-                    - WithdrawCreated
-                    - WithdrawCompleted
+                  $ref: '#/components/schemas/Event'
                 payload:
                   type: object
                   noValidate: true
@@ -2559,17 +2461,7 @@ webhooks:
                       examples:
                         - 4.5
                     status:
-                      description: Withdrawal status
-                      type: string
-                      default: Pending
-                      enum:
-                        - Pending
-                        - Transferring
-                        - Completed
-                        - Failed
-                      examples:
-                        - Pending
-                        - Completed
+                      $ref: '#/components/schemas/Status'
                     errorCode:
                       anyOf:
                         - description: 'Error code, if any'
@@ -2630,18 +2522,7 @@ webhooks:
                             - john@example.com
                             - '11999999999'
                         pixType:
-                          description: PIX key type
-                          type: string
-                          default: Cpf
-                          enum:
-                            - Cpf
-                            - Cnpj
-                            - Email
-                            - Phone
-                            - Random
-                          examples:
-                            - Email
-                            - Cpf
+                          $ref: '#/components/schemas/PixType'
                       required:
                         - id
                         - ownerDocument
