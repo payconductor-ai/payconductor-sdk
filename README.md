@@ -96,22 +96,19 @@ const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64'
 ### TypeScript
 
 ```typescript
-import { 
-  Configuration, 
-  OrderApi, 
-  CustomerApi, 
-  CardTokenizationApi, 
+import {
+  Configuration,
+  OrderApi,
+  CustomerApi,
+  CardTokenizationApi,
   WithdrawApi,
   DocumentType,
   PaymentMethod,
   PixType,
-  OrderCreateRequest,
-  CustomerCreateRequest,
-  WithdrawCreateRequest,
-  CardTokenizationCreateRequest,
-  OrderPIXPaymentRequest,
-  OrderCreditCardPaymentRequest,
-  OrderBankSlipPaymentRequest,
+  type OrderCreateRequest,
+  type CustomerCreateRequest,
+  type WithdrawCreateRequest,
+  type CardTokenizationCreateRequest,
 } from 'payconductor-sdk';
 
 const config = new Configuration({
@@ -134,18 +131,16 @@ async function createPixOrder() {
     phoneNumber: '+55 11 999999999',
   };
 
-  const payment: OrderPIXPaymentRequest = {
-    paymentMethod: PaymentMethod.Pix,
-    expirationInSeconds: 3600,
-  };
-
-  const request = {
+  const request: OrderCreateRequest = {
     chargeAmount: 100.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 0,
     externalId: `order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: PaymentMethod.Pix,
+      expirationInSeconds: 3600,
+    },
     shippingFee: 0,
     taxFee: 0,
     items: [
@@ -173,25 +168,23 @@ async function createCreditCardOrder() {
     name: 'Joao da Silva',
   };
 
-  const payment: OrderCreditCardPaymentRequest = {
-    paymentMethod: PaymentMethod.CreditCard,
-    card: {
-      number: '4111111111111111',
-      holderName: 'JOAO DA SILVA',
-      cvv: '123',
-      expiration: { month: 12, year: 2028 },
-    },
-    installments: 1,
-    softDescriptor: 'PAYCONDUCTOR',
-  };
-
-  const request = {
+  const request: OrderCreateRequest = {
     chargeAmount: 150.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 0,
     externalId: `cc-order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: PaymentMethod.CreditCard,
+      card: {
+        number: '4111111111111111',
+        holderName: 'JOAO DA SILVA',
+        cvv: '123',
+        expiration: { month: 12, year: 2028 },
+      },
+      installments: 1,
+      softDescriptor: 'PAYCONDUCTOR',
+    },
     shippingFee: 0,
     taxFee: 0,
     items: [
@@ -205,7 +198,7 @@ async function createCreditCardOrder() {
     ],
   };
 
-  const response = await orderApi.orderCreate(request as any);
+  const response = await orderApi.orderCreate(request);
   console.log('Order ID:', response.data.id);
   console.log('Status:', response.data.status);
 }
@@ -228,18 +221,16 @@ async function createBankSlipOrder() {
     },
   };
 
-  const payment: OrderBankSlipPaymentRequest = {
-    paymentMethod: PaymentMethod.BankSlip,
-    expirationInDays: 7,
-  };
-
-  const request = {
+  const request: OrderCreateRequest = {
     chargeAmount: 200.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 0,
     externalId: `boleto-order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: PaymentMethod.BankSlip,
+      expirationInDays: 7,
+    },
     shippingFee: 0,
     taxFee: 0,
     items: [
@@ -253,7 +244,7 @@ async function createBankSlipOrder() {
     ],
   };
 
-  const response = await orderApi.orderCreate(request as any);
+  const response = await orderApi.orderCreate(request);
   console.log('Barcode:', response.data.bankSlip?.barCode);
   console.log('PDF URL:', response.data.bankSlip?.pdfUrl);
 }
