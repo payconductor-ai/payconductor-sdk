@@ -7,7 +7,7 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 |[**postCardTokenization**](#postcardtokenization) | **POST** /card-tokenization/ | Tokenize card|
 
 # **postCardTokenization**
-> PostCardTokenization200Response postCardTokenization(postCardTokenizationRequest)
+> CreateCustomerCardResponse postCardTokenization(createCustomerCard)
 
 Tokenize credit cards for future charges.
 
@@ -17,16 +17,16 @@ Tokenize credit cards for future charges.
 import {
     CardTokenizationApi,
     Configuration,
-    PostCardTokenizationRequest
+    CreateCustomerCard
 } from 'payconductor-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new CardTokenizationApi(configuration);
 
-let postCardTokenizationRequest: PostCardTokenizationRequest; //Data for creating a customer card
+let createCustomerCard: CreateCustomerCard; //Data for creating a customer card with customer information
 
 const { status, data } = await apiInstance.postCardTokenization(
-    postCardTokenizationRequest
+    createCustomerCard
 );
 ```
 
@@ -34,12 +34,12 @@ const { status, data } = await apiInstance.postCardTokenization(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **postCardTokenizationRequest** | **PostCardTokenizationRequest**| Data for creating a customer card | |
+| **createCustomerCard** | **CreateCustomerCard**| Data for creating a customer card with customer information | |
 
 
 ### Return type
 
-**PostCardTokenization200Response**
+**CreateCustomerCardResponse**
 
 ### Authorization
 
@@ -54,7 +54,7 @@ const { status, data } = await apiInstance.postCardTokenization(
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | Response for status 200 |  -  |
+|**200** | Response containing customer ID and card token |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

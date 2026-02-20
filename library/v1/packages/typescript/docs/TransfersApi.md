@@ -113,7 +113,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postWithdraws**
-> PostWithdraws200Response postWithdraws(postWithdrawsRequest)
+> PostWithdraws200Response postWithdraws(withdraw)
 
 Create a new withdrawal or transfer to the provided payment account
 
@@ -123,16 +123,16 @@ Create a new withdrawal or transfer to the provided payment account
 import {
     TransfersApi,
     Configuration,
-    PostWithdrawsRequest
+    Withdraw
 } from 'payconductor-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new TransfersApi(configuration);
 
-let postWithdrawsRequest: PostWithdrawsRequest; //
+let withdraw: Withdraw; //Withdrawal or transfer request data
 
 const { status, data } = await apiInstance.postWithdraws(
-    postWithdrawsRequest
+    withdraw
 );
 ```
 
@@ -140,7 +140,7 @@ const { status, data } = await apiInstance.postWithdraws(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **postWithdrawsRequest** | **PostWithdrawsRequest**|  | |
+| **withdraw** | **Withdraw**| Withdrawal or transfer request data | |
 
 
 ### Return type

@@ -118,7 +118,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postOrders**
-> PostOrders200Response postOrders(postOrdersRequest)
+> PostOrders200Response postOrders(order)
 
 Create a new order for payment using the provided data
 
@@ -128,16 +128,16 @@ Create a new order for payment using the provided data
 import {
     OrdersApi,
     Configuration,
-    PostOrdersRequest
+    Order
 } from 'payconductor-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrdersApi(configuration);
 
-let postOrdersRequest: PostOrdersRequest; //
+let order: Order; //Order data for payment processing
 
 const { status, data } = await apiInstance.postOrders(
-    postOrdersRequest
+    order
 );
 ```
 
@@ -145,7 +145,7 @@ const { status, data } = await apiInstance.postOrders(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **postOrdersRequest** | **PostOrdersRequest**|  | |
+| **order** | **Order**| Order data for payment processing | |
 
 
 ### Return type
@@ -170,7 +170,7 @@ const { status, data } = await apiInstance.postOrders(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **postOrdersByIdConfirm**
-> PostOrdersByIdConfirm200Response postOrdersByIdConfirm(postOrdersRequestPayment)
+> PostOrdersByIdConfirm200Response postOrdersByIdConfirm(paymentData)
 
 Confirms a Draft order, setting the payment method and processing the charges associated with the order.
 
@@ -180,18 +180,18 @@ Confirms a Draft order, setting the payment method and processing the charges as
 import {
     OrdersApi,
     Configuration,
-    PostOrdersRequestPayment
+    PaymentData
 } from 'payconductor-sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrdersApi(configuration);
 
 let id: string; // (default to undefined)
-let postOrdersRequestPayment: PostOrdersRequestPayment; //Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+let paymentData: PaymentData; //Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
 
 const { status, data } = await apiInstance.postOrdersByIdConfirm(
     id,
-    postOrdersRequestPayment
+    paymentData
 );
 ```
 
@@ -199,7 +199,7 @@ const { status, data } = await apiInstance.postOrdersByIdConfirm(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **postOrdersRequestPayment** | **PostOrdersRequestPayment**| Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...) | |
+| **paymentData** | **PaymentData**| Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...) | |
 | **id** | [**string**] |  | defaults to undefined|
 
 

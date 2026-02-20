@@ -42,33 +42,36 @@ export const AvailablePaymentMethods = {
 export type AvailablePaymentMethods = typeof AvailablePaymentMethods[keyof typeof AvailablePaymentMethods];
 
 
-export interface BankSlip {
+/**
+ * Bank slip payment data
+ */
+export interface BankSlipInfo {
+    /**
+     * Bank slip bar code
+     */
+    'barCode': string;
+    /**
+     * Bank slip digitable line
+     */
+    'digitableLine': string;
+    /**
+     * Bank slip PDF URL
+     */
+    'pdfUrl'?: string;
+}
+export interface BankSlipPayment {
     'paymentMethod': PaymentMethod;
-    'expirationInDays'?: BankSlipExpirationInDays;
+    /**
+     * Days until bank slip expires
+     */
+    'expirationInDays'?: number;
 }
 
 
 /**
- * Days until bank slip expires
+ * Card expiration date
  */
-export interface BankSlipExpirationInDays {
-}
-export interface CompleteCardData {
-    /**
-     * Card security code (CVV)
-     */
-    'cvv': string;
-    'expiration': CompleteCardDataExpiration;
-    /**
-     * Card holder name
-     */
-    'holderName': string;
-    /**
-     * Credit card number
-     */
-    'number': string;
-}
-export interface CompleteCardDataExpiration {
+export interface CardExpiration {
     /**
      * Card expiration month
      */
@@ -78,31 +81,15 @@ export interface CompleteCardDataExpiration {
      */
     'year': number;
 }
-export interface CreditCard {
-    'paymentMethod': PaymentMethod;
-    'card': CreditCardCard;
-    'installments': CreditCardInstallments;
-    /**
-     * Text that will appear on the card statement (soft descriptor)
-     */
-    'softDescriptor'?: string;
-}
-
-
-export interface CreditCardCard {
-    /**
-     * First 6 digits of the credit card
-     */
-    'firstSixCardNumber'?: string;
-    /**
-     * Previously generated credit card token
-     */
-    'token': string;
+/**
+ * Complete card data for payment processing
+ */
+export interface CreateCardData {
     /**
      * Card security code (CVV)
      */
     'cvv': string;
-    'expiration': CompleteCardDataExpiration;
+    'expiration': CardExpiration;
     /**
      * Card holder name
      */
@@ -113,10 +100,62 @@ export interface CreditCardCard {
     'number': string;
 }
 /**
- * Number of installments
+ * Data for creating a customer card with customer information
  */
-export interface CreditCardInstallments {
+export interface CreateCustomerCard {
+    'card': CreateCardData;
+    /**
+     * Indicates if the card should be saved for future use
+     */
+    'saveCard': boolean;
+    'customer': CreateCustomerCardCustomer;
 }
+/**
+ * @type CreateCustomerCardCustomer
+ */
+export type CreateCustomerCardCustomer = Customer | CustomerByID;
+
+/**
+ * Response containing customer ID and card token
+ */
+export interface CreateCustomerCardResponse {
+    /**
+     * ID of the customer associated with the created card
+     */
+    'customerId': string;
+    /**
+     * Token of the created card for future transactions
+     */
+    'token': string;
+}
+/**
+ * Credit card payment data
+ */
+export interface CreditCardInfo {
+    /**
+     * Transaction authorization code
+     */
+    'authorizationCode'?: string;
+}
+export interface CreditCardPayment {
+    'paymentMethod': PaymentMethod;
+    'card': CreditCardPaymentCard;
+    /**
+     * Number of installments
+     */
+    'installments': number;
+    /**
+     * Text that will appear on the card statement (soft descriptor)
+     */
+    'softDescriptor'?: string;
+}
+
+
+/**
+ * @type CreditCardPaymentCard
+ */
+export type CreditCardPaymentCard = CreateCardData | TokenizedCard;
+
 /**
  * Schema for creating a new customer
  */
@@ -150,16 +189,16 @@ export interface Customer1 {
     /**
      * Customer CPF or CNPJ without formatting
      */
-    'documentNumber'?: string;
-    'documentType'?: DocumentType;
+    'documentNumber': string;
+    'documentType': DocumentType;
     /**
      * Customer email
      */
-    'email'?: string;
+    'email': string;
     /**
      * Customer full name
      */
-    'name'?: string;
+    'name': string;
     /**
      * Customer phone number in +55 DD 9XXXXXXXX format
      */
@@ -200,6 +239,120 @@ export interface CustomerAddress {
      */
     'zipCode': string;
 }
+/**
+ * Customer address information
+ */
+export interface CustomerAddress1 {
+    /**
+     * Unique address identifier
+     */
+    'id': string;
+    /**
+     * Street name
+     */
+    'street': string;
+    /**
+     * Address number
+     */
+    'number': string;
+    /**
+     * Neighborhood name
+     */
+    'neighborhood': string;
+    /**
+     * City name
+     */
+    'city': string;
+    /**
+     * State code in ISO 3166-2 format
+     */
+    'state': string;
+    /**
+     * ZIP code without formatting
+     */
+    'zipCode': string;
+    /**
+     * Country code in ISO 3166-1 alpha-2 format
+     */
+    'country': string;
+}
+/**
+ * Reference to an existing customer by ID
+ */
+export interface CustomerByID {
+    /**
+     * ID of an existing customer
+     */
+    'id': string;
+}
+/**
+ * Paginated list of customers
+ */
+export interface CustomerListResponse {
+    /**
+     * List of customers
+     */
+    'data': Array<CustomerResponse>;
+    'pagination': CustomerPagination;
+}
+/**
+ * Pagination information for customer list
+ */
+export interface CustomerPagination {
+    /**
+     * Current page number
+     */
+    'currentPage': number;
+    /**
+     * Number of items per page
+     */
+    'pageSize': number;
+    /**
+     * Total number of customers
+     */
+    'totalItems': number;
+    /**
+     * Total number of pages
+     */
+    'totalPages': number;
+}
+/**
+ * Customer response with complete information
+ */
+export interface CustomerResponse {
+    /**
+     * Unique customer identifier
+     */
+    'id': string;
+    /**
+     * Customer full name
+     */
+    'name': string;
+    /**
+     * Customer email
+     */
+    'email': string;
+    'documentType': DocumentType;
+    /**
+     * Customer CPF or CNPJ without formatting
+     */
+    'documentNumber': string | null;
+    /**
+     * Customer phone number in +55 DD 9XXXXXXXX format
+     */
+    'phoneNumber': string | null;
+    'address': CustomerAddress1 | null;
+    /**
+     * Date and time when the customer was created (ISO 8601 format)
+     */
+    'createdAt': string;
+    /**
+     * Date and time when the customer was last updated (ISO 8601 format)
+     */
+    'updatedAt': string;
+}
+
+
 
 export const DocumentType = {
     Cpf: 'Cpf',
@@ -212,9 +365,12 @@ export type DocumentType = typeof DocumentType[keyof typeof DocumentType];
 /**
  * Used to create an order without generating a real payment. Use to create orders that will be paid later
  */
-export interface Draft {
+export interface DraftPayment {
     'paymentMethod': PaymentMethod;
-    'expirationInSeconds'?: DraftExpirationInSeconds;
+    /**
+     * Order expiration time in seconds
+     */
+    'expirationInSeconds'?: number;
     /**
      * Available payment methods for this order
      */
@@ -222,11 +378,6 @@ export interface Draft {
 }
 
 
-/**
- * Order expiration time in seconds
- */
-export interface DraftExpirationInSeconds {
-}
 
 export const Event = {
     OrderCreated: 'OrderCreated',
@@ -245,6 +396,15 @@ export type Event = typeof Event[keyof typeof Event];
 
 
 /**
+ * Fraud analysis fingerprint data
+ */
+export interface FraudFingerprints {
+    /**
+     * ThreatMetrix fingerprint ID for fraud analysis
+     */
+    'threatMetrixFingerprintId'?: string;
+}
+/**
  * Merchant data for order or withdrawal
  */
 export interface MerchantInput {
@@ -261,16 +421,25 @@ export interface MerchantInput {
      */
     'name': string;
 }
-export interface NuPay {
+/**
+ * NuPay payment data
+ */
+export interface NuPayInfo {
+    /**
+     * NuPay payment URL
+     */
+    'paymentUrl': string;
+}
+export interface NuPayPayment {
     'paymentMethod': PaymentMethod;
-    'nuPay': NuPayNuPay;
+    'nuPay': NuPayPaymentNuPay;
 }
 
 
 /**
  * Specific data for NuPay payment
  */
-export interface NuPayNuPay {
+export interface NuPayPaymentNuPay {
     /**
      * Payment cancellation URL
      */
@@ -288,6 +457,130 @@ export interface NuPayNuPay {
      */
     'storeName'?: string;
 }
+/**
+ * Order data for payment processing
+ */
+export interface Order {
+    /**
+     * Total amount to be charged on the order in floating point value
+     */
+    'chargeAmount': number;
+    /**
+     * Client IP address
+     */
+    'clientIp': string;
+    'customer': Customer1;
+    /**
+     * Discount amount
+     */
+    'discountAmount': number;
+    /**
+     * Order ID in your system
+     */
+    'externalId': string;
+    'fingerprints'?: FraudFingerprints;
+    /**
+     * List of products or services in the order
+     */
+    'items'?: Array<OrderItem>;
+    'merchant'?: MerchantInput;
+    'payment': PaymentData;
+    /**
+     * Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)
+     */
+    'splitAmountTotal'?: number;
+    'session'?: OrderSession;
+    /**
+     * Shipping fee
+     */
+    'shippingFee': number;
+    /**
+     * Additional fees
+     */
+    'taxFee': number;
+    /**
+     * Additional metadata for the order as key-value pairs. Keys should not contain spaces or special characters
+     */
+    'metadata'?: object;
+}
+/**
+ * Product or service item in the order
+ */
+export interface OrderItem {
+    /**
+     * Product or service ID in your system
+     */
+    'id': string;
+    /**
+     * Defines if the item is a physical product or a service
+     */
+    'isPhysical': boolean;
+    /**
+     * Product or service name
+     */
+    'name': string;
+    /**
+     * Quantity of the product or service
+     */
+    'qty': number;
+    /**
+     * Unit price
+     */
+    'unitPrice': number;
+}
+/**
+ * If externalSessionId or sessionId is provided and an existing session exists, it will be updated with the new data. Otherwise, a new session will be created.
+ */
+export interface OrderSession {
+    /**
+     * Time in minutes for checkout session expiration
+     */
+    'expiresInMinutes'?: number;
+    /**
+     * Checkout URL for redirection
+     */
+    'checkoutUrl'?: string;
+    /**
+     * ID generated by our service to identify the checkout session
+     */
+    'sessionId'?: string;
+    /**
+     * Checkout session ID generated by the client side. The ID must be unique for each cart session
+     */
+    'externalSessionId'?: string;
+}
+/**
+ * PIX payment data and QR code information
+ */
+export interface PIXInfo {
+    /**
+     * PIX copy and paste code
+     */
+    'copyAndPasteCode': string;
+    /**
+     * PIX QR Code image URL
+     */
+    'qrCodeUrl': string;
+    /**
+     * PIX E2E ID
+     */
+    'endToEndId': string | null;
+}
+export interface PIXPayment {
+    'paymentMethod': PaymentMethod;
+    /**
+     * PIX expiration time in seconds
+     */
+    'expirationInSeconds'?: number;
+}
+
+
+/**
+ * @type PaymentData
+ * Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+ */
+export type PaymentData = { paymentMethod: 'BankSlipPayment' } & BankSlipPayment | { paymentMethod: 'CreditCardPayment' } & CreditCardPayment | { paymentMethod: 'DraftPayment' } & DraftPayment | { paymentMethod: 'NuPayPayment' } & NuPayPayment | { paymentMethod: 'PIXPayment' } & PIXPayment | { paymentMethod: 'PicPayPayment' } & PicPayPayment;
+
 
 export const PaymentMethod = {
     Pix: 'Pix',
@@ -307,22 +600,44 @@ export const PaymentMethod = {
 export type PaymentMethod = typeof PaymentMethod[keyof typeof PaymentMethod];
 
 
-export interface PicPay {
-    'paymentMethod': PaymentMethod;
-}
-
-
-export interface Pix {
-    'paymentMethod': PaymentMethod;
-    'expirationInSeconds'?: PixExpirationInSeconds;
+/**
+ * Bank account information for withdrawal
+ */
+export interface PayoutAccount {
+    /**
+     * Account holder document (CPF or CNPJ)
+     */
+    'ownerDocument': string;
+    /**
+     * Account holder name
+     */
+    'ownerName': string;
+    /**
+     * PIX key for withdrawal
+     */
+    'pixKey': string;
+    'pixType': PixType;
 }
 
 
 /**
- * PIX expiration time in seconds
+ * PicPay payment data
  */
-export interface PixExpirationInSeconds {
+export interface PicPayInfo {
+    /**
+     * PicPay copy and paste code
+     */
+    'copyAndPasteCode': string;
+    /**
+     * PicPay QR Code image URL
+     */
+    'qrCodeUrl': string;
 }
+export interface PicPayPayment {
+    'paymentMethod': PaymentMethod;
+}
+
+
 
 export const PixType = {
     Cpf: 'Cpf',
@@ -335,59 +650,6 @@ export const PixType = {
 export type PixType = typeof PixType[keyof typeof PixType];
 
 
-export interface PostCardTokenization200Response {
-    /**
-     * ID of the customer associated with the created card
-     */
-    'customerId': string;
-    /**
-     * Token of the created card for future transactions
-     */
-    'token': string;
-}
-/**
- * Data for creating a customer card
- */
-export interface PostCardTokenizationRequest {
-    'card': CompleteCardData;
-    /**
-     * Indicates if the card should be saved for future use
-     */
-    'saveCard': boolean;
-    'customer': PostCardTokenizationRequestCustomer;
-}
-export interface PostCardTokenizationRequestCustomer {
-    'address'?: CustomerAddress;
-    /**
-     * Customer CPF or CNPJ without formatting
-     */
-    'documentNumber': string;
-    'documentType': DocumentType;
-    /**
-     * Customer email
-     */
-    'email': string;
-    /**
-     * Customer full name
-     */
-    'name': string;
-    /**
-     * Customer phone number in +55 DD 9XXXXXXXX format
-     */
-    'phoneNumber'?: string;
-    /**
-     * ID do cliente existente
-     */
-    'id': string;
-}
-
-
-export interface PostCardTokenizationRequestCustomerAnyOf {
-    /**
-     * ID do cliente existente
-     */
-    'id': string;
-}
 export interface PostOrders200Response {
     /**
      * Order ID in the system
@@ -413,11 +675,11 @@ export interface PostOrders200Response {
      * Cost fee applied to the order
      */
     'costFee': number;
-    'pix'?: PostOrders200ResponsePix;
-    'bankSlip'?: PostOrders200ResponseBankSlip;
-    'nuPay'?: PostOrders200ResponseNuPay;
-    'picPay'?: PostOrders200ResponsePicPay;
-    'creditCard'?: PostOrders200ResponseCreditCard;
+    'pix'?: PIXInfo;
+    'bankSlip'?: BankSlipInfo;
+    'nuPay'?: NuPayInfo;
+    'picPay'?: PicPayInfo;
+    'creditCard'?: CreditCardInfo;
     'status': Status;
     'paymentMethod': PaymentMethod;
     /**
@@ -437,32 +699,6 @@ export interface PostOrders200Response {
 }
 
 
-export interface PostOrders200ResponseBankSlip {
-    /**
-     * Bank slip bar code
-     */
-    'barCode': string;
-    /**
-     * Bank slip digitable line
-     */
-    'digitableLine': string;
-    /**
-     * Bank slip PDF URL
-     */
-    'pdfUrl'?: string;
-}
-export interface PostOrders200ResponseCreditCard {
-    /**
-     * Transaction authorization code
-     */
-    'authorizationCode'?: string;
-}
-export interface PostOrders200ResponseNuPay {
-    /**
-     * NuPay payment URL
-     */
-    'paymentUrl': string;
-}
 export interface PostOrders200ResponseOrderItemsInner {
     /**
      * External item ID
@@ -493,33 +729,6 @@ export interface PostOrders200ResponseOrderItemsInner {
      */
     'unityPrice': number;
 }
-export interface PostOrders200ResponsePicPay {
-    /**
-     * PicPay copy and paste code
-     */
-    'copyAndPasteCode': string;
-    /**
-     * PicPay QR Code image URL
-     */
-    'qrCodeUrl': string;
-}
-/**
- * PIX data
- */
-export interface PostOrders200ResponsePix {
-    /**
-     * PIX copy and paste code
-     */
-    'copyAndPasteCode': string;
-    /**
-     * PIX QR Code image URL
-     */
-    'qrCodeUrl': string;
-    /**
-     * PIX E2E ID
-     */
-    'endToEndId': string | null;
-}
 export interface PostOrders200ResponseSession {
     /**
      * ID of the checkout session associated with the order
@@ -543,10 +752,10 @@ export interface PostOrdersByIdConfirm200Response {
      * Cost fee applied to the order
      */
     'costFee': number;
-    'pix'?: PostOrders200ResponsePix;
-    'bankSlip'?: PostOrders200ResponseBankSlip;
-    'nuPay'?: PostOrders200ResponseNuPay;
-    'picPay'?: PostOrders200ResponsePicPay;
+    'pix'?: PIXInfo;
+    'bankSlip'?: BankSlipInfo;
+    'nuPay'?: NuPayInfo;
+    'picPay'?: PicPayInfo;
     'status': Status;
     'paymentMethod': PaymentMethod;
     /**
@@ -564,104 +773,6 @@ export interface PostOrdersByIdConfirm200Response {
 }
 
 
-export interface PostOrdersRequest {
-    /**
-     * Total amount to be charged on the order in floating point value
-     */
-    'chargeAmount': number;
-    /**
-     * Client IP address
-     */
-    'clientIp': string;
-    'customer': Customer;
-    /**
-     * Discount amount
-     */
-    'discountAmount': number;
-    /**
-     * Order ID in your system
-     */
-    'externalId': string;
-    'fingerprints'?: PostOrdersRequestFingerprints;
-    /**
-     * List of products or services in the order
-     */
-    'items'?: Array<PostOrdersRequestItemsInner>;
-    'merchant'?: MerchantInput;
-    'payment': PostOrdersRequestPayment;
-    /**
-     * Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)
-     */
-    'splitAmountTotal'?: number;
-    'session'?: PostOrdersRequestSession;
-    /**
-     * Shipping fee
-     */
-    'shippingFee': number;
-    /**
-     * Additional fees
-     */
-    'taxFee': number;
-    /**
-     * Additional metadata for the order as key-value pairs. Keys should not contain spaces or special characters
-     */
-    'metadata'?: object;
-}
-export interface PostOrdersRequestFingerprints {
-    /**
-     * ThreatMetrix fingerprint ID for fraud analysis
-     */
-    'threatMetrixFingerprintId'?: string;
-}
-export interface PostOrdersRequestItemsInner {
-    /**
-     * Product or service ID in your system
-     */
-    'id': string;
-    /**
-     * Defines if the item is a physical product or a service
-     */
-    'isPhysical': boolean;
-    /**
-     * Product or service name
-     */
-    'name': string;
-    /**
-     * Quantity of the product or service
-     */
-    'qty': number;
-    /**
-     * Unit price
-     */
-    'unitPrice': number;
-}
-/**
- * @type PostOrdersRequestPayment
- * Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
- */
-export type PostOrdersRequestPayment = { paymentMethod: 'BankSlip' } & BankSlip | { paymentMethod: 'CreditCard' } & CreditCard | { paymentMethod: 'Draft' } & Draft | { paymentMethod: 'NuPay' } & NuPay | { paymentMethod: 'PicPay' } & PicPay | { paymentMethod: 'Pix' } & Pix;
-
-/**
- * If externalSessionId or sessionId is provided and an existing session exists, it will be updated with the new data. Otherwise, a new session will be created.
- */
-export interface PostOrdersRequestSession {
-    /**
-     * Time in minutes for checkout session expiration
-     */
-    'expiresInMinutes'?: number;
-    /**
-     * Checkout URL for redirection
-     */
-    'checkoutUrl'?: string;
-    /**
-     * ID generated by our service to identify the checkout session
-     */
-    'sessionId'?: string;
-    /**
-     * Checkout session ID generated by the client side. The ID must be unique for each cart session
-     */
-    'externalSessionId'?: string;
-}
 export interface PostWithdraws200Response {
     /**
      * Unique withdrawal identifier
@@ -723,35 +834,6 @@ export interface PostWithdraws200ResponsePayoutAccount {
 }
 
 
-export interface PostWithdrawsRequest {
-    /**
-     * Withdrawal amount in cents
-     */
-    'amount': number;
-    /**
-     * Withdrawal ID in your system
-     */
-    'externalId'?: string;
-    'merchant'?: MerchantInput;
-    'payoutAccount': PostWithdrawsRequestPayoutAccount;
-}
-export interface PostWithdrawsRequestPayoutAccount {
-    /**
-     * Account holder document (CPF or CNPJ)
-     */
-    'ownerDocument': string;
-    /**
-     * Account holder name
-     */
-    'ownerName': string;
-    /**
-     * PIX key for withdrawal
-     */
-    'pixKey': string;
-    'pixType': PixType;
-}
-
-
 
 export const Status = {
     Generating: 'Generating',
@@ -779,6 +861,46 @@ export interface TokenizedCard {
      */
     'token': string;
 }
+/**
+ * Schema for updating customer information
+ */
+export interface UpdateCustomer {
+    'address'?: CustomerAddress;
+    /**
+     * Customer CPF or CNPJ without formatting
+     */
+    'documentNumber'?: string;
+    'documentType'?: DocumentType;
+    /**
+     * Customer email
+     */
+    'email'?: string;
+    /**
+     * Customer full name
+     */
+    'name'?: string;
+    /**
+     * Customer phone number in +55 DD 9XXXXXXXX format
+     */
+    'phoneNumber'?: string;
+}
+
+
+/**
+ * Withdrawal or transfer request data
+ */
+export interface Withdraw {
+    /**
+     * Withdrawal amount in cents
+     */
+    'amount': number;
+    /**
+     * Withdrawal ID in your system
+     */
+    'externalId'?: string;
+    'merchant'?: MerchantInput;
+    'payoutAccount': PayoutAccount;
+}
 
 /**
  * CardTokenizationApi - axios parameter creator
@@ -788,13 +910,13 @@ export const CardTokenizationApiAxiosParamCreator = function (configuration?: Co
         /**
          * Tokenize credit cards for future charges.
          * @summary Tokenize card
-         * @param {PostCardTokenizationRequest} postCardTokenizationRequest Data for creating a customer card
+         * @param {CreateCustomerCard} createCustomerCard Data for creating a customer card with customer information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCardTokenization: async (postCardTokenizationRequest: PostCardTokenizationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postCardTokenizationRequest' is not null or undefined
-            assertParamExists('postCardTokenization', 'postCardTokenizationRequest', postCardTokenizationRequest)
+        postCardTokenization: async (createCustomerCard: CreateCustomerCard, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createCustomerCard' is not null or undefined
+            assertParamExists('postCardTokenization', 'createCustomerCard', createCustomerCard)
             const localVarPath = `/card-tokenization/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -817,7 +939,7 @@ export const CardTokenizationApiAxiosParamCreator = function (configuration?: Co
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(postCardTokenizationRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createCustomerCard, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -836,12 +958,12 @@ export const CardTokenizationApiFp = function(configuration?: Configuration) {
         /**
          * Tokenize credit cards for future charges.
          * @summary Tokenize card
-         * @param {PostCardTokenizationRequest} postCardTokenizationRequest Data for creating a customer card
+         * @param {CreateCustomerCard} createCustomerCard Data for creating a customer card with customer information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postCardTokenization(postCardTokenizationRequest: PostCardTokenizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostCardTokenization200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postCardTokenization(postCardTokenizationRequest, options);
+        async postCardTokenization(createCustomerCard: CreateCustomerCard, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateCustomerCardResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postCardTokenization(createCustomerCard, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CardTokenizationApi.postCardTokenization']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -858,12 +980,12 @@ export const CardTokenizationApiFactory = function (configuration?: Configuratio
         /**
          * Tokenize credit cards for future charges.
          * @summary Tokenize card
-         * @param {PostCardTokenizationRequest} postCardTokenizationRequest Data for creating a customer card
+         * @param {CreateCustomerCard} createCustomerCard Data for creating a customer card with customer information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCardTokenization(postCardTokenizationRequest: PostCardTokenizationRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostCardTokenization200Response> {
-            return localVarFp.postCardTokenization(postCardTokenizationRequest, options).then((request) => request(axios, basePath));
+        postCardTokenization(createCustomerCard: CreateCustomerCard, options?: RawAxiosRequestConfig): AxiosPromise<CreateCustomerCardResponse> {
+            return localVarFp.postCardTokenization(createCustomerCard, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -875,12 +997,12 @@ export class CardTokenizationApi extends BaseAPI {
     /**
      * Tokenize credit cards for future charges.
      * @summary Tokenize card
-     * @param {PostCardTokenizationRequest} postCardTokenizationRequest Data for creating a customer card
+     * @param {CreateCustomerCard} createCustomerCard Data for creating a customer card with customer information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public postCardTokenization(postCardTokenizationRequest: PostCardTokenizationRequest, options?: RawAxiosRequestConfig) {
-        return CardTokenizationApiFp(this.configuration).postCardTokenization(postCardTokenizationRequest, options).then((request) => request(this.axios, this.basePath));
+    public postCardTokenization(createCustomerCard: CreateCustomerCard, options?: RawAxiosRequestConfig) {
+        return CardTokenizationApiFp(this.configuration).postCardTokenization(createCustomerCard, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -952,6 +1074,7 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
                     startDate;
             }
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -989,6 +1112,7 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
             // http basic authentication required
             setBasicAuthToObject(localVarRequestOptions, configuration)
 
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -1003,15 +1127,15 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          * Update the information of an existing customer by providing the new data in the request body.
          * @summary Update customer data
          * @param {string} id 
-         * @param {Customer1} customer1 Schema for creating a new customer
+         * @param {UpdateCustomer} updateCustomer Schema for updating customer information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        patchCustomersById: async (id: string, customer1: Customer1, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        patchCustomersById: async (id: string, updateCustomer: UpdateCustomer, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('patchCustomersById', 'id', id)
-            // verify required parameter 'customer1' is not null or undefined
-            assertParamExists('patchCustomersById', 'customer1', customer1)
+            // verify required parameter 'updateCustomer' is not null or undefined
+            assertParamExists('patchCustomersById', 'updateCustomer', updateCustomer)
             const localVarPath = `/customers/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1030,11 +1154,12 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
             setBasicAuthToObject(localVarRequestOptions, configuration)
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(customer1, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateCustomer, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1044,13 +1169,13 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
         /**
          * Create a new customer by providing the required data in the request body.
          * @summary Create new customer
-         * @param {Customer} customer Schema for creating a new customer
+         * @param {Customer1} customer1 Schema for creating a new customer
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCustomers: async (customer: Customer, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'customer' is not null or undefined
-            assertParamExists('postCustomers', 'customer', customer)
+        postCustomers: async (customer1: Customer1, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'customer1' is not null or undefined
+            assertParamExists('postCustomers', 'customer1', customer1)
             const localVarPath = `/customers/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1068,11 +1193,12 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
             setBasicAuthToObject(localVarRequestOptions, configuration)
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(customer, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(customer1, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1100,7 +1226,7 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCustomers(page: number, pageSize: number, email?: string, name?: string, endDate?: string, startDate?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getCustomers(page: number, pageSize: number, email?: string, name?: string, endDate?: string, startDate?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerListResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCustomers(page, pageSize, email, name, endDate, startDate, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CustomersApi.getCustomers']?.[localVarOperationServerIndex]?.url;
@@ -1113,7 +1239,7 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCustomersById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getCustomersById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCustomersById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CustomersApi.getCustomersById']?.[localVarOperationServerIndex]?.url;
@@ -1123,12 +1249,12 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * Update the information of an existing customer by providing the new data in the request body.
          * @summary Update customer data
          * @param {string} id 
-         * @param {Customer1} customer1 Schema for creating a new customer
+         * @param {UpdateCustomer} updateCustomer Schema for updating customer information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async patchCustomersById(id: string, customer1: Customer1, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.patchCustomersById(id, customer1, options);
+        async patchCustomersById(id: string, updateCustomer: UpdateCustomer, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.patchCustomersById(id, updateCustomer, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CustomersApi.patchCustomersById']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1136,12 +1262,12 @@ export const CustomersApiFp = function(configuration?: Configuration) {
         /**
          * Create a new customer by providing the required data in the request body.
          * @summary Create new customer
-         * @param {Customer} customer Schema for creating a new customer
+         * @param {Customer1} customer1 Schema for creating a new customer
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postCustomers(customer: Customer, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postCustomers(customer, options);
+        async postCustomers(customer1: Customer1, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postCustomers(customer1, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CustomersApi.postCustomers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1167,7 +1293,7 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCustomers(page: number, pageSize: number, email?: string, name?: string, endDate?: string, startDate?: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        getCustomers(page: number, pageSize: number, email?: string, name?: string, endDate?: string, startDate?: string, options?: RawAxiosRequestConfig): AxiosPromise<CustomerListResponse> {
             return localVarFp.getCustomers(page, pageSize, email, name, endDate, startDate, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1177,29 +1303,29 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCustomersById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        getCustomersById(id: string, options?: RawAxiosRequestConfig): AxiosPromise<CustomerResponse> {
             return localVarFp.getCustomersById(id, options).then((request) => request(axios, basePath));
         },
         /**
          * Update the information of an existing customer by providing the new data in the request body.
          * @summary Update customer data
          * @param {string} id 
-         * @param {Customer1} customer1 Schema for creating a new customer
+         * @param {UpdateCustomer} updateCustomer Schema for updating customer information
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        patchCustomersById(id: string, customer1: Customer1, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.patchCustomersById(id, customer1, options).then((request) => request(axios, basePath));
+        patchCustomersById(id: string, updateCustomer: UpdateCustomer, options?: RawAxiosRequestConfig): AxiosPromise<CustomerResponse> {
+            return localVarFp.patchCustomersById(id, updateCustomer, options).then((request) => request(axios, basePath));
         },
         /**
          * Create a new customer by providing the required data in the request body.
          * @summary Create new customer
-         * @param {Customer} customer Schema for creating a new customer
+         * @param {Customer1} customer1 Schema for creating a new customer
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCustomers(customer: Customer, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.postCustomers(customer, options).then((request) => request(axios, basePath));
+        postCustomers(customer1: Customer1, options?: RawAxiosRequestConfig): AxiosPromise<CustomerResponse> {
+            return localVarFp.postCustomers(customer1, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1239,23 +1365,23 @@ export class CustomersApi extends BaseAPI {
      * Update the information of an existing customer by providing the new data in the request body.
      * @summary Update customer data
      * @param {string} id 
-     * @param {Customer1} customer1 Schema for creating a new customer
+     * @param {UpdateCustomer} updateCustomer Schema for updating customer information
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public patchCustomersById(id: string, customer1: Customer1, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).patchCustomersById(id, customer1, options).then((request) => request(this.axios, this.basePath));
+    public patchCustomersById(id: string, updateCustomer: UpdateCustomer, options?: RawAxiosRequestConfig) {
+        return CustomersApiFp(this.configuration).patchCustomersById(id, updateCustomer, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Create a new customer by providing the required data in the request body.
      * @summary Create new customer
-     * @param {Customer} customer Schema for creating a new customer
+     * @param {Customer1} customer1 Schema for creating a new customer
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public postCustomers(customer: Customer, options?: RawAxiosRequestConfig) {
-        return CustomersApiFp(this.configuration).postCustomers(customer, options).then((request) => request(this.axios, this.basePath));
+    public postCustomers(customer1: Customer1, options?: RawAxiosRequestConfig) {
+        return CustomersApiFp(this.configuration).postCustomers(customer1, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1377,13 +1503,13 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * Create a new order for payment using the provided data
          * @summary Create order
-         * @param {PostOrdersRequest} postOrdersRequest 
+         * @param {Order} order Order data for payment processing
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postOrders: async (postOrdersRequest: PostOrdersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postOrdersRequest' is not null or undefined
-            assertParamExists('postOrders', 'postOrdersRequest', postOrdersRequest)
+        postOrders: async (order: Order, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'order' is not null or undefined
+            assertParamExists('postOrders', 'order', order)
             const localVarPath = `/orders/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1406,7 +1532,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(postOrdersRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(order, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1417,15 +1543,15 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
          * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
          * @summary Confirm order
          * @param {string} id 
-         * @param {PostOrdersRequestPayment} postOrdersRequestPayment Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+         * @param {PaymentData} paymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postOrdersByIdConfirm: async (id: string, postOrdersRequestPayment: PostOrdersRequestPayment, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postOrdersByIdConfirm: async (id: string, paymentData: PaymentData, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('postOrdersByIdConfirm', 'id', id)
-            // verify required parameter 'postOrdersRequestPayment' is not null or undefined
-            assertParamExists('postOrdersByIdConfirm', 'postOrdersRequestPayment', postOrdersRequestPayment)
+            // verify required parameter 'paymentData' is not null or undefined
+            assertParamExists('postOrdersByIdConfirm', 'paymentData', paymentData)
             const localVarPath = `/orders/{id}/confirm`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1449,7 +1575,7 @@ export const OrdersApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(postOrdersRequestPayment, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(paymentData, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1536,12 +1662,12 @@ export const OrdersApiFp = function(configuration?: Configuration) {
         /**
          * Create a new order for payment using the provided data
          * @summary Create order
-         * @param {PostOrdersRequest} postOrdersRequest 
+         * @param {Order} order Order data for payment processing
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postOrders(postOrdersRequest: PostOrdersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostOrders200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postOrders(postOrdersRequest, options);
+        async postOrders(order: Order, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostOrders200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postOrders(order, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrdersApi.postOrders']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1550,12 +1676,12 @@ export const OrdersApiFp = function(configuration?: Configuration) {
          * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
          * @summary Confirm order
          * @param {string} id 
-         * @param {PostOrdersRequestPayment} postOrdersRequestPayment Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+         * @param {PaymentData} paymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postOrdersByIdConfirm(id: string, postOrdersRequestPayment: PostOrdersRequestPayment, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostOrdersByIdConfirm200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postOrdersByIdConfirm(id, postOrdersRequestPayment, options);
+        async postOrdersByIdConfirm(id: string, paymentData: PaymentData, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostOrdersByIdConfirm200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postOrdersByIdConfirm(id, paymentData, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrdersApi.postOrdersByIdConfirm']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1610,23 +1736,23 @@ export const OrdersApiFactory = function (configuration?: Configuration, basePat
         /**
          * Create a new order for payment using the provided data
          * @summary Create order
-         * @param {PostOrdersRequest} postOrdersRequest 
+         * @param {Order} order Order data for payment processing
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postOrders(postOrdersRequest: PostOrdersRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostOrders200Response> {
-            return localVarFp.postOrders(postOrdersRequest, options).then((request) => request(axios, basePath));
+        postOrders(order: Order, options?: RawAxiosRequestConfig): AxiosPromise<PostOrders200Response> {
+            return localVarFp.postOrders(order, options).then((request) => request(axios, basePath));
         },
         /**
          * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
          * @summary Confirm order
          * @param {string} id 
-         * @param {PostOrdersRequestPayment} postOrdersRequestPayment Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+         * @param {PaymentData} paymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postOrdersByIdConfirm(id: string, postOrdersRequestPayment: PostOrdersRequestPayment, options?: RawAxiosRequestConfig): AxiosPromise<PostOrdersByIdConfirm200Response> {
-            return localVarFp.postOrdersByIdConfirm(id, postOrdersRequestPayment, options).then((request) => request(axios, basePath));
+        postOrdersByIdConfirm(id: string, paymentData: PaymentData, options?: RawAxiosRequestConfig): AxiosPromise<PostOrdersByIdConfirm200Response> {
+            return localVarFp.postOrdersByIdConfirm(id, paymentData, options).then((request) => request(axios, basePath));
         },
         /**
          * Initiate a refund for the order specified by ID.
@@ -1675,24 +1801,24 @@ export class OrdersApi extends BaseAPI {
     /**
      * Create a new order for payment using the provided data
      * @summary Create order
-     * @param {PostOrdersRequest} postOrdersRequest 
+     * @param {Order} order Order data for payment processing
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public postOrders(postOrdersRequest: PostOrdersRequest, options?: RawAxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).postOrders(postOrdersRequest, options).then((request) => request(this.axios, this.basePath));
+    public postOrders(order: Order, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).postOrders(order, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
      * @summary Confirm order
      * @param {string} id 
-     * @param {PostOrdersRequestPayment} postOrdersRequestPayment Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+     * @param {PaymentData} paymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public postOrdersByIdConfirm(id: string, postOrdersRequestPayment: PostOrdersRequestPayment, options?: RawAxiosRequestConfig) {
-        return OrdersApiFp(this.configuration).postOrdersByIdConfirm(id, postOrdersRequestPayment, options).then((request) => request(this.axios, this.basePath));
+    public postOrdersByIdConfirm(id: string, paymentData: PaymentData, options?: RawAxiosRequestConfig) {
+        return OrdersApiFp(this.configuration).postOrdersByIdConfirm(id, paymentData, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1832,13 +1958,13 @@ export const TransfersApiAxiosParamCreator = function (configuration?: Configura
         /**
          * Create a new withdrawal or transfer to the provided payment account
          * @summary Create withdrawal
-         * @param {PostWithdrawsRequest} postWithdrawsRequest 
+         * @param {Withdraw} withdraw Withdrawal or transfer request data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postWithdraws: async (postWithdrawsRequest: PostWithdrawsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postWithdrawsRequest' is not null or undefined
-            assertParamExists('postWithdraws', 'postWithdrawsRequest', postWithdrawsRequest)
+        postWithdraws: async (withdraw: Withdraw, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'withdraw' is not null or undefined
+            assertParamExists('postWithdraws', 'withdraw', withdraw)
             const localVarPath = `/withdraws/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1861,7 +1987,7 @@ export const TransfersApiAxiosParamCreator = function (configuration?: Configura
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(postWithdrawsRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(withdraw, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1910,12 +2036,12 @@ export const TransfersApiFp = function(configuration?: Configuration) {
         /**
          * Create a new withdrawal or transfer to the provided payment account
          * @summary Create withdrawal
-         * @param {PostWithdrawsRequest} postWithdrawsRequest 
+         * @param {Withdraw} withdraw Withdrawal or transfer request data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postWithdraws(postWithdrawsRequest: PostWithdrawsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostWithdraws200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postWithdraws(postWithdrawsRequest, options);
+        async postWithdraws(withdraw: Withdraw, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostWithdraws200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postWithdraws(withdraw, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TransfersApi.postWithdraws']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1956,12 +2082,12 @@ export const TransfersApiFactory = function (configuration?: Configuration, base
         /**
          * Create a new withdrawal or transfer to the provided payment account
          * @summary Create withdrawal
-         * @param {PostWithdrawsRequest} postWithdrawsRequest 
+         * @param {Withdraw} withdraw Withdrawal or transfer request data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postWithdraws(postWithdrawsRequest: PostWithdrawsRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostWithdraws200Response> {
-            return localVarFp.postWithdraws(postWithdrawsRequest, options).then((request) => request(axios, basePath));
+        postWithdraws(withdraw: Withdraw, options?: RawAxiosRequestConfig): AxiosPromise<PostWithdraws200Response> {
+            return localVarFp.postWithdraws(withdraw, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1999,12 +2125,12 @@ export class TransfersApi extends BaseAPI {
     /**
      * Create a new withdrawal or transfer to the provided payment account
      * @summary Create withdrawal
-     * @param {PostWithdrawsRequest} postWithdrawsRequest 
+     * @param {Withdraw} withdraw Withdrawal or transfer request data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public postWithdraws(postWithdrawsRequest: PostWithdrawsRequest, options?: RawAxiosRequestConfig) {
-        return TransfersApiFp(this.configuration).postWithdraws(postWithdrawsRequest, options).then((request) => request(this.axios, this.basePath));
+    public postWithdraws(withdraw: Withdraw, options?: RawAxiosRequestConfig) {
+        return TransfersApiFp(this.configuration).postWithdraws(withdraw, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

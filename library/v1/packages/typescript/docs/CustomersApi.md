@@ -10,7 +10,7 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 |[**postCustomers**](#postcustomers) | **POST** /customers/ | Create new customer|
 
 # **getCustomers**
-> getCustomers()
+> CustomerListResponse getCustomers()
 
 Retrieve a list of all customers associated with the organization, with support for filters and pagination.
 
@@ -56,7 +56,7 @@ const { status, data } = await apiInstance.getCustomers(
 
 ### Return type
 
-void (empty response body)
+**CustomerListResponse**
 
 ### Authorization
 
@@ -65,13 +65,18 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Paginated list of customers |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getCustomersById**
-> getCustomersById()
+> CustomerResponse getCustomersById()
 
 Retrieve the complete details of a specific customer using their unique ID.
 
@@ -102,7 +107,7 @@ const { status, data } = await apiInstance.getCustomersById(
 
 ### Return type
 
-void (empty response body)
+**CustomerResponse**
 
 ### Authorization
 
@@ -111,15 +116,75 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Customer response with complete information |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **patchCustomersById**
-> patchCustomersById(customer1)
+> CustomerResponse patchCustomersById(updateCustomer)
 
 Update the information of an existing customer by providing the new data in the request body.
+
+### Example
+
+```typescript
+import {
+    CustomersApi,
+    Configuration,
+    UpdateCustomer
+} from 'payconductor-sdk';
+
+const configuration = new Configuration();
+const apiInstance = new CustomersApi(configuration);
+
+let id: string; // (default to undefined)
+let updateCustomer: UpdateCustomer; //Schema for updating customer information
+
+const { status, data } = await apiInstance.patchCustomersById(
+    id,
+    updateCustomer
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **updateCustomer** | **UpdateCustomer**| Schema for updating customer information | |
+| **id** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**CustomerResponse**
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Customer response with complete information |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **postCustomers**
+> CustomerResponse postCustomers(customer1)
+
+Create a new customer by providing the required data in the request body.
 
 ### Example
 
@@ -133,11 +198,9 @@ import {
 const configuration = new Configuration();
 const apiInstance = new CustomersApi(configuration);
 
-let id: string; // (default to undefined)
 let customer1: Customer1; //Schema for creating a new customer
 
-const { status, data } = await apiInstance.patchCustomersById(
-    id,
+const { status, data } = await apiInstance.postCustomers(
     customer1
 );
 ```
@@ -147,12 +210,11 @@ const { status, data } = await apiInstance.patchCustomersById(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **customer1** | **Customer1**| Schema for creating a new customer | |
-| **id** | [**string**] |  | defaults to undefined|
 
 
 ### Return type
 
-void (empty response body)
+**CustomerResponse**
 
 ### Authorization
 
@@ -161,55 +223,13 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **postCustomers**
-> postCustomers(customer)
-
-Create a new customer by providing the required data in the request body.
-
-### Example
-
-```typescript
-import {
-    CustomersApi,
-    Configuration,
-    Customer
-} from 'payconductor-sdk';
-
-const configuration = new Configuration();
-const apiInstance = new CustomersApi(configuration);
-
-let customer: Customer; //Schema for creating a new customer
-
-const { status, data } = await apiInstance.postCustomers(
-    customer
-);
-```
-
-### Parameters
-
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **customer** | **Customer**| Schema for creating a new customer | |
-
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-[basicAuth](../README.md#basicAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: Not defined
-
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Customer response with complete information |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
