@@ -1442,6 +1442,7 @@ components:
       title: Withdraw Payout Account Data
       type: object
     Withdraw_Create_Request:
+      additionalProperties: false
       description: Withdrawal or transfer request data
       properties:
         amount:
@@ -1502,6 +1503,7 @@ components:
       - pixType
       type: object
     Withdraw_Create_Response:
+      additionalProperties: false
       description: Response after creating a withdrawal or transfer
       example:
         payedAt: ""

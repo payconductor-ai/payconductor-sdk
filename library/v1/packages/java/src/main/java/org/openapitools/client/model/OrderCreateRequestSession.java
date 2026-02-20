@@ -49,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * If externalSessionId or sessionId is provided and an existing session exists, it will be updated with the new data. Otherwise, a new session will be created.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T22:28:28.759409600-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T23:03:30.894187300-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class OrderCreateRequestSession {
   public static final String SERIALIZED_NAME_EXPIRES_IN_MINUTES = "expiresInMinutes";
   @SerializedName(SERIALIZED_NAME_EXPIRES_IN_MINUTES)

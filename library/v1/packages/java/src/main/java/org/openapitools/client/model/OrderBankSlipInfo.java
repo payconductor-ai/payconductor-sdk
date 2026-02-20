@@ -48,7 +48,7 @@ import org.openapitools.client.JSON;
 /**
  * Bank slip payment data
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T22:28:28.759409600-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-02-19T23:03:30.894187300-03:00[America/Sao_Paulo]", comments = "Generator version: 7.20.0")
 public class OrderBankSlipInfo {
   public static final String SERIALIZED_NAME_BAR_CODE = "barCode";
   @SerializedName(SERIALIZED_NAME_BAR_CODE)
