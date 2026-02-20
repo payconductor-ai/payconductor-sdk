@@ -291,6 +291,31 @@ const downloadOpenApi = async (version: string) => {
   console.log(`Formatted to ${outputYaml}`);
 };
 
+const fixPackageJson = async (outputDir: string) => {
+  const packageJsonPath = `${outputDir}/package.json`;
+  try {
+    const file = Bun.file(packageJsonPath);
+    if (!(await file.exists())) return;
+
+    const pkg = await file.json();
+
+    pkg.description = "PayConductor SDK for Node.js";
+    pkg.author = "PayConductor";
+
+    if (pkg.repository && typeof pkg.repository === "object") {
+      pkg.repository.url = "git+https://github.com/payconductor-ai/payconductor-sdk.git";
+    }
+
+    pkg.homepage = "https://github.com/payconductor-ai/payconductor-sdk#readme";
+    pkg.bugs = { url: "https://github.com/payconductor-ai/payconductor-sdk/issues" };
+
+    await Bun.write(packageJsonPath, JSON.stringify(pkg, null, 2) + "\n");
+    console.log(`Fixed package.json in ${outputDir}`);
+  } catch (e) {
+    console.log(`No package.json to fix in ${outputDir}`);
+  }
+};
+
 const generateSdk = async (version: string, languages: string[]) => {
   const config = VERSIONS[version]!;
   const openapiFile = `library/${version}/src/openapi.yaml`;
@@ -307,10 +332,15 @@ const generateSdk = async (version: string, languages: string[]) => {
       "-g", langConfig.generator,
       "-o", langConfig.outputDir,
       "--skip-validate-spec",
-      "--additional-properties=packageName=payconductor_sdk,projectName=payconductor-sdk,npmName=payconductor-sdk,npmVersion=1.0.0,licenseName=MIT,npmRepository=https://github.com/payconductor-ai/payconductor-sdk.git",
+      "--additional-properties=packageName=payconductor_sdk,projectName=payconductor-sdk,npmName=payconductor-sdk,npmVersion=1.0.0,licenseName=MIT,gitUserId=payconductor-ai,gitRepoId=payconductor-sdk,gitHost=github.com",
     ]);
 
     await proc.exited;
+
+    if (lang === "typescript" || lang === "javascript") {
+      await fixPackageJson(langConfig.outputDir);
+    }
+
     console.log(`SDK generated in ${langConfig.outputDir}/`);
   }
 };
