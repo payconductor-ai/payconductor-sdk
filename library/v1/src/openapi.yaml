@@ -703,7 +703,7 @@ paths:
     post:
       operationId: orderConfirm
       summary: Confirm Order
-      description: 'Confirms a Draft order, setting the payment method and processing the charges associated with the order.'
+      description: 'Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).'
       parameters:
         - name: id
           in: path
@@ -898,6 +898,9 @@ paths:
             type: string
       tags:
         - Order
+  /sdk/settings/payment-methods:
+    get:
+      operationId: getSdkSettingsPayment-methods
   /withdraws/:
     post:
       operationId: withdrawCreate
@@ -971,7 +974,6 @@ paths:
                     - pixKey
                     - pixType
                   title: Withdraw Payout Account Data
-              additionalProperties: false
               required:
                 - amount
                 - payoutAccount
@@ -1085,7 +1087,6 @@ paths:
                       - ownerName
                       - pixKey
                       - pixType
-                additionalProperties: false
                 noValidate: true
                 required:
                   - id

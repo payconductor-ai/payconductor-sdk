@@ -2069,7 +2069,7 @@
           "Order"
         ],
         "operationId": "orderConfirm",
-        "description": "Confirms a Draft order, setting the payment method and processing the charges associated with the order.",
+        "description": "Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).",
         "summary": "Confirm Order",
         "parameters": [
           {
@@ -2373,6 +2373,11 @@
         ]
       }
     },
+    "/sdk/settings/payment-methods": {
+      "get": {
+        "operationId": "getSdkSettingsPayment-methods"
+      }
+    },
     "/withdraws/": {
       "post": {
         "tags": [
@@ -2472,8 +2477,7 @@
                 "required": [
                   "amount",
                   "payoutAccount"
-                ],
-                "additionalProperties": false
+                ]
               }
             }
           },
@@ -2666,8 +2670,7 @@
                     "payedAt",
                     "payoutAccount"
                   ],
-                  "noValidate": true,
-                  "additionalProperties": false
+                  "noValidate": true
                 }
               }
             }
