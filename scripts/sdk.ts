@@ -80,83 +80,195 @@ const buildEnumSchema = (values: string[]) => ({
 //#endregion
 
 //#region Patcher
-const PAYMENT_METHOD_VALUES: Record<string, string> = {
-  PIX: "Pix",
-  CREDIT_CARD: "CreditCard",
-  DEBIT_CARD: "DebitCard",
-  BANK_SLIP: "BankSlip",
-  CRYPTO: "Crypto",
-  APPLE_PAY: "ApplePay",
-  NU_PAY: "NuPay",
-  PIC_PAY: "PicPay",
-  AMAZON_PAY: "AmazonPay",
-  SEPA_DEBIT: "SepaDebit",
-  GOOGLE_PAY: "GooglePay",
-  DRAFT: "Draft",
-};
-
-const inferPaymentMethodFromSchema = (schema: any): string | null => {
+const inferDiscriminatorValue = (schemaName: string, schema: any, discriminatorProp: string, enumValues?: Set<string>): string | null => {
   const props = schema.properties || {};
-  const title = (schema.title || "").toLowerCase();
+  const discriminatorField = props[discriminatorProp];
   
-  if (props.availablePaymentMethods !== undefined) return "Draft";
-  if (props.card !== undefined && props.installments !== undefined) return "CreditCard";
-  if (props.nuPay !== undefined) return "NuPay";
-  if (props.expirationInDays !== undefined) return "BankSlip";
+  if (discriminatorField?.const) {
+    return discriminatorField.const;
+  }
   
-  if (props.expirationInSeconds !== undefined && props.card === undefined && props.availablePaymentMethods === undefined) return "Pix";
+  if (discriminatorField?.enum && Array.isArray(discriminatorField.enum) && discriminatorField.enum.length === 1) {
+    return discriminatorField.enum[0];
+  }
   
-  if (Object.keys(props).length === 1 && props.paymentMethod) {
-    if (title.includes("picpay")) return "PicPay";
-    if (title.includes("pix")) return "Pix";
+  const title = (schema.title || schemaName).toLowerCase();
+  const propNames = Object.keys(props).map(p => p.toLowerCase());
+  
+  if (enumValues && enumValues.size > 0) {
+    for (const enumVal of enumValues) {
+      const enumLower = enumVal.toLowerCase();
+      if (title.includes(enumLower) || schemaName.toLowerCase().includes(enumLower)) {
+        return enumVal;
+      }
+      for (const prop of propNames) {
+        if (prop.includes(enumLower) || enumLower.includes(prop)) {
+          return enumVal;
+        }
+      }
+    }
   }
   
   return null;
 };
 
-const fixPaymentMethodDiscriminators = (data: any) => {
-  const schemas = data.components?.schemas || {};
-  const discriminatorMappings: Map<string, string> = new Map();
+const detectCommonSuffixes = (schemaNames: string[]): Set<string> => {
+  const suffixCounts = new Map<string, number>();
   
-  for (const [schemaName, schema] of Object.entries(schemas) as [string, any][]) {
-    const props = schema.properties || {};
-    if (!props.paymentMethod) continue;
-    
-    if (props.paymentMethod.$ref === "#/components/schemas/PaymentMethod" || 
-        props.paymentMethod.$ref?.includes("PaymentMethod")) {
-      const paymentValue = inferPaymentMethodFromSchema(schema);
-      if (paymentValue) {
-        props.paymentMethod = { type: "string", const: paymentValue };
-        discriminatorMappings.set(schemaName, paymentValue);
-      }
+  for (const name of schemaNames) {
+    const parts = name.split(/(?=[A-Z])/);
+    for (let i = 1; i < parts.length; i++) {
+      const suffix = parts.slice(i).join("");
+      suffixCounts.set(suffix, (suffixCounts.get(suffix) || 0) + 1);
     }
   }
   
-  const updateDiscriminatorMapping = (node: any) => {
-    if (!node || typeof node !== "object") return;
+  const commonSuffixes = new Set<string>();
+  for (const [suffix, count] of suffixCounts) {
+    if (count >= 2 && suffix.length >= 4) {
+      commonSuffixes.add(suffix);
+    }
+  }
+  
+  return commonSuffixes;
+};
+
+const stripCommonSuffixes = (name: string, suffixes: Set<string>): string => {
+  for (const suffix of suffixes) {
+    if (name.endsWith(suffix)) {
+      return name.slice(0, -suffix.length);
+    }
+  }
+  return name;
+};
+
+const fixDiscriminators = (data: any) => {
+  const schemas = data.components?.schemas || {};
+  const schemaNames = Object.keys(schemas);
+  const commonSuffixes = detectCommonSuffixes(schemaNames);
+  const discriminatorValues = new Map<string, Map<string, string>>();
+  const discriminatorEnums = new Map<string, Set<string>>();
+  
+  const collectEnumValues = (propName: string) => {
+    if (discriminatorEnums.has(propName)) return discriminatorEnums.get(propName)!;
     
-    if (node.discriminator?.mapping) {
-      const newMapping: Record<string, string> = {};
-      for (const [key, ref] of Object.entries(node.discriminator.mapping)) {
-        const schemaName = (ref as string).split("/").pop()!;
-        const paymentValue = discriminatorMappings.get(schemaName);
-        if (paymentValue) {
-          newMapping[paymentValue] = ref as string;
-        } else {
-          newMapping[key] = ref as string;
-        }
-      }
-      node.discriminator.mapping = newMapping;
+    const enumSchema = schemas[propName];
+    if (enumSchema?.enum) {
+      const values = new Set<string>(enumSchema.enum as string[]);
+      discriminatorEnums.set(propName, values);
+      return values;
     }
     
-    for (const value of Object.values(node)) {
-      if (typeof value === "object") {
-        updateDiscriminatorMapping(value);
+    const pascalName = propName.charAt(0).toUpperCase() + propName.slice(1);
+    const pascalSchema = schemas[pascalName];
+    if (pascalSchema?.enum) {
+      const values = new Set<string>(pascalSchema.enum as string[]);
+      discriminatorEnums.set(propName, values);
+      return values;
+    }
+    
+    for (const [schemaName, schema] of Object.entries(schemas) as [string, any]) {
+      if (schema.enum && schemaName.toLowerCase().includes(propName.toLowerCase())) {
+        const values = new Set<string>(schema.enum as string[]);
+        discriminatorEnums.set(propName, values);
+        return values;
+      }
+    }
+    
+    discriminatorEnums.set(propName, new Set());
+    return new Set<string>();
+  };
+  
+  const inferValue = (schemaName: string, schema: any, propName: string, enumValues?: Set<string>): string | null => {
+    const value = inferDiscriminatorValue(schemaName, schema, propName, enumValues);
+    if (value) return value;
+    
+    const stripped = stripCommonSuffixes(schemaName, commonSuffixes);
+    if (stripped && stripped !== schemaName) {
+      return stripped;
+    }
+    
+    return null;
+  };
+  
+  const findDiscriminators = (node: any, path: string[] = []) => {
+    if (!node || typeof node !== "object") return;
+    
+    if (node.discriminator?.propertyName && (node.oneOf || node.anyOf)) {
+      const propName = node.discriminator.propertyName;
+      const variants = node.oneOf || node.anyOf;
+      
+      if (!discriminatorValues.has(propName)) {
+        discriminatorValues.set(propName, new Map());
+      }
+      
+      const enumValues = collectEnumValues(propName);
+      
+      for (const variant of variants) {
+        if (variant.$ref) {
+          const schemaName = variant.$ref.split("/").pop()!;
+          const schema = schemas[schemaName];
+          if (schema) {
+            const value = inferValue(schemaName, schema, propName, enumValues);
+            if (value) {
+              discriminatorValues.get(propName)!.set(schemaName, value);
+            }
+          }
+        }
+      }
+    }
+    
+    for (const [key, value] of Object.entries(node)) {
+      if (typeof value === "object" && value !== null) {
+        findDiscriminators(value, [...path, key]);
       }
     }
   };
   
-  updateDiscriminatorMapping(data);
+  findDiscriminators(data);
+  
+  for (const [propName, schemaToValue] of discriminatorValues) {
+    for (const [schemaName, value] of schemaToValue) {
+      const schema = schemas[schemaName];
+      if (schema?.properties?.[propName]) {
+        const prop = schema.properties[propName];
+        if (prop.$ref || (prop.type === "string" && !prop.const)) {
+          schema.properties[propName] = { type: "string", const: value };
+        }
+      }
+    }
+  }
+  
+  const updateDiscriminatorMappings = (node: any) => {
+    if (!node || typeof node !== "object") return;
+    
+    if (node.discriminator?.mapping) {
+      const propName = node.discriminator.propertyName;
+      const valueMap = discriminatorValues.get(propName);
+      
+      if (valueMap) {
+        const newMapping: Record<string, string> = {};
+        for (const [key, ref] of Object.entries(node.discriminator.mapping)) {
+          const schemaName = (ref as string).split("/").pop()!;
+          const value = valueMap.get(schemaName);
+          if (value) {
+            newMapping[value] = ref as string;
+          } else {
+            newMapping[key] = ref as string;
+          }
+        }
+        node.discriminator.mapping = newMapping;
+      }
+    }
+    
+    for (const value of Object.values(node)) {
+      if (typeof value === "object") {
+        updateDiscriminatorMappings(value);
+      }
+    }
+  };
+  
+  updateDiscriminatorMappings(data);
 };
 
 const patchOpenApi = (data: any): any => {
@@ -342,7 +454,7 @@ const patchOpenApi = (data: any): any => {
   };
 
   addDiscriminators(patched);
-  fixPaymentMethodDiscriminators(patched);
+  fixDiscriminators(patched);
   return patched;
 };
 //#endregion
