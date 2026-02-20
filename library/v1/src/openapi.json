@@ -2466,7 +2466,8 @@
                 "required": [
                   "amount",
                   "payoutAccount"
-                ]
+                ],
+                "additionalProperties": false
               }
             }
           },
@@ -2659,7 +2660,8 @@
                     "payedAt",
                     "payoutAccount"
                   ],
-                  "noValidate": true
+                  "noValidate": true,
+                  "additionalProperties": false
                 }
               }
             }

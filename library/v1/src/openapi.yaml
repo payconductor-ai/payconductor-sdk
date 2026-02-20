@@ -971,6 +971,7 @@ paths:
                     - pixKey
                     - pixType
                   title: Withdraw Payout Account Data
+              additionalProperties: false
               required:
                 - amount
                 - payoutAccount
@@ -1084,6 +1085,7 @@ paths:
                       - ownerName
                       - pixKey
                       - pixType
+                additionalProperties: false
                 noValidate: true
                 required:
                   - id
