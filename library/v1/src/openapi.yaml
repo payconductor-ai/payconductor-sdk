@@ -92,10 +92,12 @@ paths:
       summary: Create order
       description: Create a new order for payment using the provided data
       requestBody:
+        description: Order data for payment processing
         required: true
         content:
           application/json:
             schema:
+              description: Order data for payment processing
               type: object
               properties:
                 chargeAmount:
@@ -171,7 +173,7 @@ paths:
                         - state
                         - street
                         - zipCode
-                      title: Customer address
+                      title: Customer Address
                     documentNumber:
                       description: Customer CPF or CNPJ without formatting
                       type: string
@@ -215,6 +217,7 @@ paths:
                   examples:
                     - your_id_12345
                 fingerprints:
+                  description: Fraud analysis fingerprint data
                   type: object
                   properties:
                     threatMetrixFingerprintId:
@@ -222,10 +225,13 @@ paths:
                       type: string
                       examples:
                         - tmx_fingerprint_abc123
+                  title: Fraud Fingerprints
                 items:
                   description: List of products or services in the order
                   type: array
                   items:
+                    title: Order Item
+                    description: Product or service item in the order
                     type: object
                     properties:
                       id:
@@ -298,20 +304,21 @@ paths:
                   discriminator:
                     propertyName: paymentMethod
                     mapping:
-                      Pix: '#/components/schemas/Pix'
-                      CreditCard: '#/components/schemas/CreditCard'
-                      BankSlip: '#/components/schemas/BankSlip'
-                      NuPay: '#/components/schemas/NuPay'
-                      PicPay: '#/components/schemas/PicPay'
-                      Draft: '#/components/schemas/Draft'
+                      PIXPayment: '#/components/schemas/PIXPayment'
+                      CreditCardPayment: '#/components/schemas/CreditCardPayment'
+                      BankSlipPayment: '#/components/schemas/BankSlipPayment'
+                      NuPayPayment: '#/components/schemas/NuPayPayment'
+                      PicPayPayment: '#/components/schemas/PicPayPayment'
+                      DraftPayment: '#/components/schemas/DraftPayment'
                   noValidate: true
                   oneOf:
-                    - $ref: '#/components/schemas/Pix'
-                    - $ref: '#/components/schemas/CreditCard'
-                    - $ref: '#/components/schemas/BankSlip'
-                    - $ref: '#/components/schemas/NuPay'
-                    - $ref: '#/components/schemas/PicPay'
-                    - $ref: '#/components/schemas/Draft'
+                    - $ref: '#/components/schemas/PIXPayment'
+                    - $ref: '#/components/schemas/CreditCardPayment'
+                    - $ref: '#/components/schemas/BankSlipPayment'
+                    - $ref: '#/components/schemas/NuPayPayment'
+                    - $ref: '#/components/schemas/PicPayPayment'
+                    - $ref: '#/components/schemas/DraftPayment'
+                  title: Payment Data
                 splitAmountTotal:
                   description: 'Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)'
                   type: number
@@ -355,6 +362,7 @@ paths:
                       examples:
                         - merchant@gmail.com
                       type: string
+                  title: Order Metadata
               additionalProperties: false
               noValidate: true
               required:
@@ -366,6 +374,7 @@ paths:
                 - payment
                 - shippingFee
                 - taxFee
+              title: Order
       responses:
         '200':
           description: Response for status 200
@@ -410,7 +419,7 @@ paths:
                     examples:
                       - 4.5
                   pix:
-                    description: PIX data
+                    description: PIX payment data and QR code information
                     type: object
                     properties:
                       copyAndPasteCode:
@@ -435,7 +444,9 @@ paths:
                       - copyAndPasteCode
                       - qrCodeUrl
                       - endToEndId
+                    title: PIX Info
                   bankSlip:
+                    description: Bank slip payment data
                     type: object
                     properties:
                       barCode:
@@ -456,7 +467,9 @@ paths:
                     required:
                       - barCode
                       - digitableLine
+                    title: Bank Slip Info
                   nuPay:
+                    description: NuPay payment data
                     type: object
                     properties:
                       paymentUrl:
@@ -466,7 +479,9 @@ paths:
                           - 'https://nupay.com.br/payment/123456'
                     required:
                       - paymentUrl
+                    title: NuPay Info
                   picPay:
+                    description: PicPay payment data
                     type: object
                     properties:
                       copyAndPasteCode:
@@ -482,7 +497,9 @@ paths:
                     required:
                       - copyAndPasteCode
                       - qrCodeUrl
+                    title: PicPay Info
                   creditCard:
+                    description: Credit card payment data
                     type: object
                     properties:
                       authorizationCode:
@@ -490,6 +507,7 @@ paths:
                         type: string
                         examples:
                           - '123456'
+                    title: Credit Card Info
                   status:
                     $ref: '#/components/schemas/Status'
                   paymentMethod:
@@ -700,20 +718,21 @@ paths:
               discriminator:
                 propertyName: paymentMethod
                 mapping:
-                  Pix: '#/components/schemas/Pix'
-                  CreditCard: '#/components/schemas/CreditCard'
-                  BankSlip: '#/components/schemas/BankSlip'
-                  NuPay: '#/components/schemas/NuPay'
-                  PicPay: '#/components/schemas/PicPay'
-                  Draft: '#/components/schemas/Draft'
+                  PIXPayment: '#/components/schemas/PIXPayment'
+                  CreditCardPayment: '#/components/schemas/CreditCardPayment'
+                  BankSlipPayment: '#/components/schemas/BankSlipPayment'
+                  NuPayPayment: '#/components/schemas/NuPayPayment'
+                  PicPayPayment: '#/components/schemas/PicPayPayment'
+                  DraftPayment: '#/components/schemas/DraftPayment'
               noValidate: true
               oneOf:
-                - $ref: '#/components/schemas/Pix'
-                - $ref: '#/components/schemas/CreditCard'
-                - $ref: '#/components/schemas/BankSlip'
-                - $ref: '#/components/schemas/NuPay'
-                - $ref: '#/components/schemas/PicPay'
-                - $ref: '#/components/schemas/Draft'
+                - $ref: '#/components/schemas/PIXPayment'
+                - $ref: '#/components/schemas/CreditCardPayment'
+                - $ref: '#/components/schemas/BankSlipPayment'
+                - $ref: '#/components/schemas/NuPayPayment'
+                - $ref: '#/components/schemas/PicPayPayment'
+                - $ref: '#/components/schemas/DraftPayment'
+              title: Payment Data
       responses:
         '200':
           description: Response for status 200
@@ -745,7 +764,7 @@ paths:
                     examples:
                       - 4.5
                   pix:
-                    description: PIX data
+                    description: PIX payment data and QR code information
                     type: object
                     properties:
                       copyAndPasteCode:
@@ -770,7 +789,9 @@ paths:
                       - copyAndPasteCode
                       - qrCodeUrl
                       - endToEndId
+                    title: PIX Info
                   bankSlip:
+                    description: Bank slip payment data
                     type: object
                     properties:
                       barCode:
@@ -791,7 +812,9 @@ paths:
                     required:
                       - barCode
                       - digitableLine
+                    title: Bank Slip Info
                   nuPay:
+                    description: NuPay payment data
                     type: object
                     properties:
                       paymentUrl:
@@ -801,7 +824,9 @@ paths:
                           - 'https://nupay.com.br/payment/123456'
                     required:
                       - paymentUrl
+                    title: NuPay Info
                   picPay:
+                    description: PicPay payment data
                     type: object
                     properties:
                       copyAndPasteCode:
@@ -817,6 +842,7 @@ paths:
                     required:
                       - copyAndPasteCode
                       - qrCodeUrl
+                    title: PicPay Info
                   status:
                     $ref: '#/components/schemas/Status'
                   paymentMethod:
@@ -874,10 +900,12 @@ paths:
       summary: Create withdrawal
       description: Create a new withdrawal or transfer to the provided payment account
       requestBody:
+        description: Withdrawal or transfer request data
         required: true
         content:
           application/json:
             schema:
+              description: Withdrawal or transfer request data
               type: object
               properties:
                 amount:
@@ -919,6 +947,7 @@ paths:
                     - name
                   title: MerchantInput
                 payoutAccount:
+                  description: Bank account information for withdrawal
                   type: object
                   properties:
                     ownerDocument:
@@ -937,10 +966,12 @@ paths:
                     - ownerName
                     - pixKey
                     - pixType
+                  title: Payout Account
               additionalProperties: false
               required:
                 - amount
                 - payoutAccount
+              title: Withdraw
       responses:
         '200':
           description: Response for status 200
@@ -1145,12 +1176,14 @@ paths:
           in: query
           required: false
           schema:
+            description: Filter by customer email
             type: string
             format: email
         - name: name
           in: query
           required: false
           schema:
+            description: Filter by customer name
             type: string
             maxLength: 255
             minLength: 1
@@ -1199,6 +1232,176 @@ paths:
             format: date-time
             examples:
               - '2025-01-01T03:00:00Z'
+      responses:
+        '200':
+          description: Paginated list of customers
+          content:
+            application/json:
+              schema:
+                description: Paginated list of customers
+                type: object
+                properties:
+                  data:
+                    description: List of customers
+                    type: array
+                    items:
+                      title: Customer Response
+                      description: Customer response with complete information
+                      type: object
+                      properties:
+                        id:
+                          description: Unique customer identifier
+                          type: string
+                          examples:
+                            - cust_1234567890
+                        name:
+                          description: Customer full name
+                          type: string
+                          examples:
+                            - John Doe
+                        email:
+                          description: Customer email
+                          type: string
+                          format: email
+                          examples:
+                            - customer@example.com
+                        documentType:
+                          $ref: '#/components/schemas/DocumentType'
+                        documentNumber:
+                          description: Customer document number (CPF or CNPJ)
+                          anyOf:
+                            - description: Customer CPF or CNPJ without formatting
+                              examples:
+                                - '12345678909'
+                                - '12345678000195'
+                              type: string
+                            - type: 'null'
+                        phoneNumber:
+                          description: Customer phone number
+                          anyOf:
+                            - description: Customer phone number in +55 DD 9XXXXXXXX format
+                              examples:
+                                - +55 11 987654321
+                              type: string
+                            - type: 'null'
+                        address:
+                          description: Customer address information
+                          anyOf:
+                            - title: Customer Address
+                              description: Customer address information
+                              type: object
+                              properties:
+                                id:
+                                  description: Unique address identifier
+                                  type: string
+                                  examples:
+                                    - addr_1234567890
+                                street:
+                                  description: Street name
+                                  type: string
+                                  examples:
+                                    - Av. Paulista
+                                    - Rua das Flores
+                                number:
+                                  description: Address number
+                                  type: string
+                                  examples:
+                                    - '1000'
+                                    - '150'
+                                neighborhood:
+                                  description: Neighborhood name
+                                  type: string
+                                  examples:
+                                    - Downtown
+                                    - Jardins
+                                city:
+                                  description: City name
+                                  type: string
+                                  examples:
+                                    - São Paulo
+                                    - Rio de Janeiro
+                                state:
+                                  description: State code in ISO 3166-2 format
+                                  type: string
+                                  examples:
+                                    - SP
+                                    - RJ
+                                zipCode:
+                                  description: ZIP code without formatting
+                                  type: string
+                                  examples:
+                                    - '01311200'
+                                    - '20040002'
+                                country:
+                                  description: Country code in ISO 3166-1 alpha-2 format
+                                  type: string
+                                  examples:
+                                    - BR
+                                    - US
+                              required:
+                                - id
+                                - street
+                                - number
+                                - neighborhood
+                                - city
+                                - state
+                                - zipCode
+                                - country
+                            - type: 'null'
+                        createdAt:
+                          description: Date and time when the customer was created (ISO 8601 format)
+                          type: string
+                          examples:
+                            - '2024-01-01T12:00:00Z'
+                        updatedAt:
+                          description: Date and time when the customer was last updated (ISO 8601 format)
+                          type: string
+                          examples:
+                            - '2024-01-01T12:00:00Z'
+                      required:
+                        - id
+                        - name
+                        - email
+                        - documentType
+                        - documentNumber
+                        - phoneNumber
+                        - address
+                        - createdAt
+                        - updatedAt
+                  pagination:
+                    description: Pagination information for customer list
+                    type: object
+                    properties:
+                      currentPage:
+                        description: Current page number
+                        type: number
+                        examples:
+                          - 1
+                      pageSize:
+                        description: Number of items per page
+                        type: number
+                        examples:
+                          - 10
+                      totalItems:
+                        description: Total number of customers
+                        type: number
+                        examples:
+                          - 100
+                      totalPages:
+                        description: Total number of pages
+                        type: number
+                        examples:
+                          - 10
+                    required:
+                      - currentPage
+                      - pageSize
+                      - totalItems
+                      - totalPages
+                    title: Customer Pagination
+                required:
+                  - data
+                  - pagination
+                title: Customer List Response
       tags:
         - Customers
     post:
@@ -1273,7 +1476,7 @@ paths:
                     - state
                     - street
                     - zipCode
-                  title: Customer address
+                  title: Customer Address
                 documentNumber:
                   description: Customer CPF or CNPJ without formatting
                   type: string
@@ -1307,6 +1510,135 @@ paths:
                 - email
                 - name
               title: Customer
+      responses:
+        '200':
+          description: Customer response with complete information
+          content:
+            application/json:
+              schema:
+                description: Customer response with complete information
+                type: object
+                properties:
+                  id:
+                    description: Unique customer identifier
+                    type: string
+                    examples:
+                      - cust_1234567890
+                  name:
+                    description: Customer full name
+                    type: string
+                    examples:
+                      - John Doe
+                  email:
+                    description: Customer email
+                    type: string
+                    format: email
+                    examples:
+                      - customer@example.com
+                  documentType:
+                    $ref: '#/components/schemas/DocumentType'
+                  documentNumber:
+                    description: Customer document number (CPF or CNPJ)
+                    anyOf:
+                      - description: Customer CPF or CNPJ without formatting
+                        examples:
+                          - '12345678909'
+                          - '12345678000195'
+                        type: string
+                      - type: 'null'
+                  phoneNumber:
+                    description: Customer phone number
+                    anyOf:
+                      - description: Customer phone number in +55 DD 9XXXXXXXX format
+                        examples:
+                          - +55 11 987654321
+                        type: string
+                      - type: 'null'
+                  address:
+                    description: Customer address information
+                    anyOf:
+                      - title: Customer Address
+                        description: Customer address information
+                        type: object
+                        properties:
+                          id:
+                            description: Unique address identifier
+                            type: string
+                            examples:
+                              - addr_1234567890
+                          street:
+                            description: Street name
+                            type: string
+                            examples:
+                              - Av. Paulista
+                              - Rua das Flores
+                          number:
+                            description: Address number
+                            type: string
+                            examples:
+                              - '1000'
+                              - '150'
+                          neighborhood:
+                            description: Neighborhood name
+                            type: string
+                            examples:
+                              - Downtown
+                              - Jardins
+                          city:
+                            description: City name
+                            type: string
+                            examples:
+                              - São Paulo
+                              - Rio de Janeiro
+                          state:
+                            description: State code in ISO 3166-2 format
+                            type: string
+                            examples:
+                              - SP
+                              - RJ
+                          zipCode:
+                            description: ZIP code without formatting
+                            type: string
+                            examples:
+                              - '01311200'
+                              - '20040002'
+                          country:
+                            description: Country code in ISO 3166-1 alpha-2 format
+                            type: string
+                            examples:
+                              - BR
+                              - US
+                        required:
+                          - id
+                          - street
+                          - number
+                          - neighborhood
+                          - city
+                          - state
+                          - zipCode
+                          - country
+                      - type: 'null'
+                  createdAt:
+                    description: Date and time when the customer was created (ISO 8601 format)
+                    type: string
+                    examples:
+                      - '2024-01-01T12:00:00Z'
+                  updatedAt:
+                    description: Date and time when the customer was last updated (ISO 8601 format)
+                    type: string
+                    examples:
+                      - '2024-01-01T12:00:00Z'
+                required:
+                  - id
+                  - name
+                  - email
+                  - documentType
+                  - documentNumber
+                  - phoneNumber
+                  - address
+                  - createdAt
+                  - updatedAt
+                title: Customer Response
       tags:
         - Customers
   '/customers/{id}':
@@ -1320,6 +1652,135 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: Customer response with complete information
+          content:
+            application/json:
+              schema:
+                description: Customer response with complete information
+                type: object
+                properties:
+                  id:
+                    description: Unique customer identifier
+                    type: string
+                    examples:
+                      - cust_1234567890
+                  name:
+                    description: Customer full name
+                    type: string
+                    examples:
+                      - John Doe
+                  email:
+                    description: Customer email
+                    type: string
+                    format: email
+                    examples:
+                      - customer@example.com
+                  documentType:
+                    $ref: '#/components/schemas/DocumentType'
+                  documentNumber:
+                    description: Customer document number (CPF or CNPJ)
+                    anyOf:
+                      - description: Customer CPF or CNPJ without formatting
+                        examples:
+                          - '12345678909'
+                          - '12345678000195'
+                        type: string
+                      - type: 'null'
+                  phoneNumber:
+                    description: Customer phone number
+                    anyOf:
+                      - description: Customer phone number in +55 DD 9XXXXXXXX format
+                        examples:
+                          - +55 11 987654321
+                        type: string
+                      - type: 'null'
+                  address:
+                    description: Customer address information
+                    anyOf:
+                      - title: Customer Address
+                        description: Customer address information
+                        type: object
+                        properties:
+                          id:
+                            description: Unique address identifier
+                            type: string
+                            examples:
+                              - addr_1234567890
+                          street:
+                            description: Street name
+                            type: string
+                            examples:
+                              - Av. Paulista
+                              - Rua das Flores
+                          number:
+                            description: Address number
+                            type: string
+                            examples:
+                              - '1000'
+                              - '150'
+                          neighborhood:
+                            description: Neighborhood name
+                            type: string
+                            examples:
+                              - Downtown
+                              - Jardins
+                          city:
+                            description: City name
+                            type: string
+                            examples:
+                              - São Paulo
+                              - Rio de Janeiro
+                          state:
+                            description: State code in ISO 3166-2 format
+                            type: string
+                            examples:
+                              - SP
+                              - RJ
+                          zipCode:
+                            description: ZIP code without formatting
+                            type: string
+                            examples:
+                              - '01311200'
+                              - '20040002'
+                          country:
+                            description: Country code in ISO 3166-1 alpha-2 format
+                            type: string
+                            examples:
+                              - BR
+                              - US
+                        required:
+                          - id
+                          - street
+                          - number
+                          - neighborhood
+                          - city
+                          - state
+                          - zipCode
+                          - country
+                      - type: 'null'
+                  createdAt:
+                    description: Date and time when the customer was created (ISO 8601 format)
+                    type: string
+                    examples:
+                      - '2024-01-01T12:00:00Z'
+                  updatedAt:
+                    description: Date and time when the customer was last updated (ISO 8601 format)
+                    type: string
+                    examples:
+                      - '2024-01-01T12:00:00Z'
+                required:
+                  - id
+                  - name
+                  - email
+                  - documentType
+                  - documentNumber
+                  - phoneNumber
+                  - address
+                  - createdAt
+                  - updatedAt
+                title: Customer Response
       tags:
         - Customers
     patch:
@@ -1333,12 +1794,12 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Schema for creating a new customer
+        description: Schema for updating customer information
         required: true
         content:
           application/json:
             schema:
-              description: Schema for creating a new customer
+              description: Schema for updating customer information
               type: object
               properties:
                 address:
@@ -1400,7 +1861,7 @@ paths:
                     - state
                     - street
                     - zipCode
-                  title: Customer address
+                  title: Customer Address
                 documentNumber:
                   description: Customer CPF or CNPJ without formatting
                   type: string
@@ -1428,7 +1889,136 @@ paths:
                   examples:
                     - +55 11 987654321
                   pattern: '^\+(\d{1,2}) (\d{2}) (\d{8,9})$'
-              title: Customer
+              title: Update Customer
+      responses:
+        '200':
+          description: Customer response with complete information
+          content:
+            application/json:
+              schema:
+                description: Customer response with complete information
+                type: object
+                properties:
+                  id:
+                    description: Unique customer identifier
+                    type: string
+                    examples:
+                      - cust_1234567890
+                  name:
+                    description: Customer full name
+                    type: string
+                    examples:
+                      - John Doe
+                  email:
+                    description: Customer email
+                    type: string
+                    format: email
+                    examples:
+                      - customer@example.com
+                  documentType:
+                    $ref: '#/components/schemas/DocumentType'
+                  documentNumber:
+                    description: Customer document number (CPF or CNPJ)
+                    anyOf:
+                      - description: Customer CPF or CNPJ without formatting
+                        examples:
+                          - '12345678909'
+                          - '12345678000195'
+                        type: string
+                      - type: 'null'
+                  phoneNumber:
+                    description: Customer phone number
+                    anyOf:
+                      - description: Customer phone number in +55 DD 9XXXXXXXX format
+                        examples:
+                          - +55 11 987654321
+                        type: string
+                      - type: 'null'
+                  address:
+                    description: Customer address information
+                    anyOf:
+                      - title: Customer Address
+                        description: Customer address information
+                        type: object
+                        properties:
+                          id:
+                            description: Unique address identifier
+                            type: string
+                            examples:
+                              - addr_1234567890
+                          street:
+                            description: Street name
+                            type: string
+                            examples:
+                              - Av. Paulista
+                              - Rua das Flores
+                          number:
+                            description: Address number
+                            type: string
+                            examples:
+                              - '1000'
+                              - '150'
+                          neighborhood:
+                            description: Neighborhood name
+                            type: string
+                            examples:
+                              - Downtown
+                              - Jardins
+                          city:
+                            description: City name
+                            type: string
+                            examples:
+                              - São Paulo
+                              - Rio de Janeiro
+                          state:
+                            description: State code in ISO 3166-2 format
+                            type: string
+                            examples:
+                              - SP
+                              - RJ
+                          zipCode:
+                            description: ZIP code without formatting
+                            type: string
+                            examples:
+                              - '01311200'
+                              - '20040002'
+                          country:
+                            description: Country code in ISO 3166-1 alpha-2 format
+                            type: string
+                            examples:
+                              - BR
+                              - US
+                        required:
+                          - id
+                          - street
+                          - number
+                          - neighborhood
+                          - city
+                          - state
+                          - zipCode
+                          - country
+                      - type: 'null'
+                  createdAt:
+                    description: Date and time when the customer was created (ISO 8601 format)
+                    type: string
+                    examples:
+                      - '2024-01-01T12:00:00Z'
+                  updatedAt:
+                    description: Date and time when the customer was last updated (ISO 8601 format)
+                    type: string
+                    examples:
+                      - '2024-01-01T12:00:00Z'
+                required:
+                  - id
+                  - name
+                  - email
+                  - documentType
+                  - documentNumber
+                  - phoneNumber
+                  - address
+                  - createdAt
+                  - updatedAt
+                title: Customer Response
       tags:
         - Customers
   /card-tokenization/:
@@ -1437,15 +2027,16 @@ paths:
       summary: Tokenize card
       description: Tokenize credit cards for future charges.
       requestBody:
-        description: Data for creating a customer card
+        description: Data for creating a customer card with customer information
         required: true
         content:
           application/json:
             schema:
-              description: Data for creating a customer card
+              description: Data for creating a customer card with customer information
               type: object
               properties:
                 card:
+                  description: Complete card data for payment processing
                   type: object
                   properties:
                     cvv:
@@ -1457,6 +2048,7 @@ paths:
                       maxLength: 4
                       minLength: 3
                     expiration:
+                      description: Card expiration date
                       type: object
                       properties:
                         month:
@@ -1477,6 +2069,7 @@ paths:
                       required:
                         - month
                         - year
+                      title: Card Expiration
                     holderName:
                       description: Card holder name
                       type: string
@@ -1492,7 +2085,7 @@ paths:
                     - expiration
                     - holderName
                     - number
-                  title: Complete card data
+                  title: Create Card Data
                 saveCard:
                   description: Indicates if the card should be saved for future use
                   type: boolean
@@ -1502,17 +2095,19 @@ paths:
                 customer:
                   oneOf:
                     - $ref: '#/components/schemas/Customer'
-                    - $ref: '#/components/schemas/CustomerVariant1'
+                    - $ref: '#/components/schemas/CustomerByID'
               required:
                 - card
                 - saveCard
                 - customer
+              title: Create Customer Card
       responses:
         '200':
-          description: Response for status 200
+          description: Response containing customer ID and card token
           content:
             application/json:
               schema:
+                description: Response containing customer ID and card token
                 type: object
                 properties:
                   customerId:
@@ -1529,6 +2124,7 @@ paths:
                 required:
                   - customerId
                   - token
+                title: Create Customer Card Response
       tags:
         - Card Tokenization
 components:
@@ -1672,8 +2268,9 @@ components:
           type: string
       required:
         - token
-      title: Tokenized card
-    CompleteCardData:
+      title: Tokenized Card
+    CreateCardData:
+      description: Complete card data for payment processing
       type: object
       properties:
         cvv:
@@ -1685,6 +2282,7 @@ components:
           maxLength: 4
           minLength: 3
         expiration:
+          description: Card expiration date
           type: object
           properties:
             month:
@@ -1705,6 +2303,7 @@ components:
           required:
             - month
             - year
+          title: Card Expiration
         holderName:
           description: Card holder name
           type: string
@@ -1720,24 +2319,25 @@ components:
         - expiration
         - holderName
         - number
-      title: Complete card data
-    Pix:
+      title: Create Card Data
+    PIXPayment:
       type: object
       properties:
         paymentMethod:
           $ref: '#/components/schemas/PaymentMethod'
         expirationInSeconds:
           description: PIX expiration time in seconds
-          type: integer
+          type: number
           default: 3600
           examples:
             - 3600
             - 86400
           minimum: 3600
+          multipleOf: 1
       required:
         - paymentMethod
-      title: Pix
-    CreditCard:
+      title: PIX Payment
+    CreditCardPayment:
       type: object
       properties:
         paymentMethod:
@@ -1745,13 +2345,14 @@ components:
         card:
           oneOf:
             - $ref: '#/components/schemas/TokenizedCard'
-            - $ref: '#/components/schemas/CompleteCardData'
+            - $ref: '#/components/schemas/CreateCardData'
         installments:
           description: Number of installments
-          type: integer
+          type: number
           default: 1
           maximum: 12
           minimum: 1
+          multipleOf: 1
         softDescriptor:
           description: Text that will appear on the card statement (soft descriptor)
           type: string
@@ -1763,25 +2364,26 @@ components:
         - paymentMethod
         - card
         - installments
-      title: Credit Card
-    BankSlip:
+      title: Credit Card Payment
+    BankSlipPayment:
       type: object
       properties:
         paymentMethod:
           $ref: '#/components/schemas/PaymentMethod'
         expirationInDays:
           description: Days until bank slip expires
-          type: integer
+          type: number
           default: 7
           examples:
             - 3
             - 7
             - 15
           minimum: 1
+          multipleOf: 1
       required:
         - paymentMethod
-      title: Bank Slip
-    NuPay:
+      title: Bank Slip Payment
+    NuPayPayment:
       type: object
       properties:
         paymentMethod:
@@ -1817,16 +2419,16 @@ components:
       required:
         - paymentMethod
         - nuPay
-      title: NuPay
-    PicPay:
+      title: NuPay Payment
+    PicPayPayment:
       type: object
       properties:
         paymentMethod:
           $ref: '#/components/schemas/PaymentMethod'
       required:
         - paymentMethod
-      title: PicPay
-    Draft:
+      title: PicPay Payment
+    DraftPayment:
       description: Used to create an order without generating a real payment. Use to create orders that will be paid later
       type: object
       properties:
@@ -1834,11 +2436,12 @@ components:
           $ref: '#/components/schemas/PaymentMethod'
         expirationInSeconds:
           description: Order expiration time in seconds
-          type: integer
+          type: number
           default: 3600
           examples:
             - 3600
             - 86400
+          multipleOf: 1
         availablePaymentMethods:
           description: Available payment methods for this order
           type: array
@@ -1846,7 +2449,7 @@ components:
             $ref: '#/components/schemas/AvailablePaymentMethods'
       required:
         - paymentMethod
-      title: Draft
+      title: Draft Payment
     Customer:
       description: Schema for creating a new customer
       type: object
@@ -1910,7 +2513,7 @@ components:
             - state
             - street
             - zipCode
-          title: Customer address
+          title: Customer Address
         documentNumber:
           description: Customer CPF or CNPJ without formatting
           type: string
@@ -1944,16 +2547,18 @@ components:
         - email
         - name
       title: Customer
-    CustomerVariant1:
+    CustomerByID:
+      description: Reference to an existing customer by ID
       type: object
       properties:
         id:
-          description: ID do cliente existente
+          description: ID of an existing customer
           type: string
           examples:
             - cmjizheco00002v6o7q72knwb
       required:
         - id
+      title: Customer By ID
   securitySchemes:
     basicAuth:
       description: 'Use the format Authorization: Basic base64(''client_id:client_secret'')'
@@ -2022,7 +2627,7 @@ webhooks:
                       examples:
                         - 4.5
                     pix:
-                      description: PIX data
+                      description: PIX payment data and QR code information
                       type: object
                       properties:
                         copyAndPasteCode:
@@ -2047,7 +2652,9 @@ webhooks:
                         - copyAndPasteCode
                         - qrCodeUrl
                         - endToEndId
+                      title: PIX Info
                     bankSlip:
+                      description: Bank slip payment data
                       type: object
                       properties:
                         barCode:
@@ -2068,7 +2675,9 @@ webhooks:
                       required:
                         - barCode
                         - digitableLine
+                      title: Bank Slip Info
                     nuPay:
+                      description: NuPay payment data
                       type: object
                       properties:
                         paymentUrl:
@@ -2078,7 +2687,9 @@ webhooks:
                             - 'https://nupay.com.br/payment/123456'
                       required:
                         - paymentUrl
+                      title: NuPay Info
                     picPay:
+                      description: PicPay payment data
                       type: object
                       properties:
                         copyAndPasteCode:
@@ -2094,7 +2705,9 @@ webhooks:
                       required:
                         - copyAndPasteCode
                         - qrCodeUrl
+                      title: PicPay Info
                     creditCard:
+                      description: Credit card payment data
                       type: object
                       properties:
                         authorizationCode:
@@ -2102,6 +2715,7 @@ webhooks:
                           type: string
                           examples:
                             - '123456'
+                      title: Credit Card Info
                     status:
                       $ref: '#/components/schemas/Status'
                     paymentMethod:

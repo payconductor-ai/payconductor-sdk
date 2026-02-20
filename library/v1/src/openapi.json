@@ -79,7 +79,8 @@
                         "type": "number"
                       },
                       "pix": {
-                        "description": "PIX data",
+                        "title": "PIX Info",
+                        "description": "PIX payment data and QR code information",
                         "type": "object",
                         "properties": {
                           "copyAndPasteCode": {
@@ -119,6 +120,8 @@
                         ]
                       },
                       "bankSlip": {
+                        "title": "Bank Slip Info",
+                        "description": "Bank slip payment data",
                         "type": "object",
                         "properties": {
                           "barCode": {
@@ -149,6 +152,8 @@
                         ]
                       },
                       "nuPay": {
+                        "title": "NuPay Info",
+                        "description": "NuPay payment data",
                         "type": "object",
                         "properties": {
                           "paymentUrl": {
@@ -164,6 +169,8 @@
                         ]
                       },
                       "picPay": {
+                        "title": "PicPay Info",
+                        "description": "PicPay payment data",
                         "type": "object",
                         "properties": {
                           "copyAndPasteCode": {
@@ -187,6 +194,8 @@
                         ]
                       },
                       "creditCard": {
+                        "title": "Credit Card Info",
+                        "description": "Credit card payment data",
                         "type": "object",
                         "properties": {
                           "authorizationCode": {
@@ -727,7 +736,7 @@
         ]
       },
       "TokenizedCard": {
-        "title": "Tokenized card",
+        "title": "Tokenized Card",
         "type": "object",
         "properties": {
           "firstSixCardNumber": {
@@ -746,8 +755,9 @@
           "token"
         ]
       },
-      "CompleteCardData": {
-        "title": "Complete card data",
+      "CreateCardData": {
+        "title": "Create Card Data",
+        "description": "Complete card data for payment processing",
         "type": "object",
         "properties": {
           "cvv": {
@@ -761,6 +771,8 @@
             "type": "string"
           },
           "expiration": {
+            "title": "Card Expiration",
+            "description": "Card expiration date",
             "type": "object",
             "properties": {
               "month": {
@@ -810,8 +822,8 @@
           "number"
         ]
       },
-      "Pix": {
-        "title": "Pix",
+      "PIXPayment": {
+        "title": "PIX Payment",
         "type": "object",
         "properties": {
           "paymentMethod": {
@@ -825,15 +837,16 @@
               86400
             ],
             "minimum": 3600,
-            "type": "integer"
+            "multipleOf": 1,
+            "type": "number"
           }
         },
         "required": [
           "paymentMethod"
         ]
       },
-      "CreditCard": {
-        "title": "Credit Card",
+      "CreditCardPayment": {
+        "title": "Credit Card Payment",
         "type": "object",
         "properties": {
           "paymentMethod": {
@@ -845,7 +858,7 @@
                 "$ref": "#/components/schemas/TokenizedCard"
               },
               {
-                "$ref": "#/components/schemas/CompleteCardData"
+                "$ref": "#/components/schemas/CreateCardData"
               }
             ]
           },
@@ -854,7 +867,8 @@
             "description": "Number of installments",
             "maximum": 12,
             "minimum": 1,
-            "type": "integer"
+            "multipleOf": 1,
+            "type": "number"
           },
           "softDescriptor": {
             "description": "Text that will appear on the card statement (soft descriptor)",
@@ -872,8 +886,8 @@
           "installments"
         ]
       },
-      "BankSlip": {
-        "title": "Bank Slip",
+      "BankSlipPayment": {
+        "title": "Bank Slip Payment",
         "type": "object",
         "properties": {
           "paymentMethod": {
@@ -888,15 +902,16 @@
               15
             ],
             "minimum": 1,
-            "type": "integer"
+            "multipleOf": 1,
+            "type": "number"
           }
         },
         "required": [
           "paymentMethod"
         ]
       },
-      "NuPay": {
-        "title": "NuPay",
+      "NuPayPayment": {
+        "title": "NuPay Payment",
         "type": "object",
         "properties": {
           "paymentMethod": {
@@ -947,8 +962,8 @@
           "nuPay"
         ]
       },
-      "PicPay": {
-        "title": "PicPay",
+      "PicPayPayment": {
+        "title": "PicPay Payment",
         "type": "object",
         "properties": {
           "paymentMethod": {
@@ -959,8 +974,8 @@
           "paymentMethod"
         ]
       },
-      "Draft": {
-        "title": "Draft",
+      "DraftPayment": {
+        "title": "Draft Payment",
         "description": "Used to create an order without generating a real payment. Use to create orders that will be paid later",
         "type": "object",
         "properties": {
@@ -974,7 +989,8 @@
               3600,
               86400
             ],
-            "type": "integer"
+            "multipleOf": 1,
+            "type": "number"
           },
           "availablePaymentMethods": {
             "description": "Available payment methods for this order",
@@ -994,8 +1010,8 @@
         "type": "object",
         "properties": {
           "address": {
+            "title": "Customer Address",
             "description": "Schema for creating a new address",
-            "title": "Customer address",
             "type": "object",
             "properties": {
               "city": {
@@ -1114,11 +1130,13 @@
           "name"
         ]
       },
-      "CustomerVariant1": {
+      "CustomerByID": {
+        "title": "Customer By ID",
+        "description": "Reference to an existing customer by ID",
         "type": "object",
         "properties": {
           "id": {
-            "description": "ID do cliente existente",
+            "description": "ID of an existing customer",
             "examples": [
               "cmjizheco00002v6o7q72knwb"
             ],
@@ -1168,9 +1186,12 @@
         "description": "Create a new order for payment using the provided data",
         "summary": "Create order",
         "requestBody": {
+          "description": "Order data for payment processing",
           "content": {
             "application/json": {
               "schema": {
+                "title": "Order",
+                "description": "Order data for payment processing",
                 "type": "object",
                 "properties": {
                   "chargeAmount": {
@@ -1193,8 +1214,8 @@
                     "type": "object",
                     "properties": {
                       "address": {
+                        "title": "Customer Address",
                         "description": "Schema for creating a new address",
-                        "title": "Customer address",
                         "type": "object",
                         "properties": {
                           "city": {
@@ -1326,6 +1347,8 @@
                     "type": "string"
                   },
                   "fingerprints": {
+                    "title": "Fraud Fingerprints",
+                    "description": "Fraud analysis fingerprint data",
                     "type": "object",
                     "properties": {
                       "threatMetrixFingerprintId": {
@@ -1342,6 +1365,8 @@
                     "maxItems": 20,
                     "type": "array",
                     "items": {
+                      "title": "Order Item",
+                      "description": "Product or service item in the order",
                       "type": "object",
                       "properties": {
                         "id": {
@@ -1432,37 +1457,38 @@
                     ]
                   },
                   "payment": {
+                    "title": "Payment Data",
                     "description": "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)",
                     "noValidate": true,
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/Pix"
+                        "$ref": "#/components/schemas/PIXPayment"
                       },
                       {
-                        "$ref": "#/components/schemas/CreditCard"
+                        "$ref": "#/components/schemas/CreditCardPayment"
                       },
                       {
-                        "$ref": "#/components/schemas/BankSlip"
+                        "$ref": "#/components/schemas/BankSlipPayment"
                       },
                       {
-                        "$ref": "#/components/schemas/NuPay"
+                        "$ref": "#/components/schemas/NuPayPayment"
                       },
                       {
-                        "$ref": "#/components/schemas/PicPay"
+                        "$ref": "#/components/schemas/PicPayPayment"
                       },
                       {
-                        "$ref": "#/components/schemas/Draft"
+                        "$ref": "#/components/schemas/DraftPayment"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "paymentMethod",
                       "mapping": {
-                        "Pix": "#/components/schemas/Pix",
-                        "CreditCard": "#/components/schemas/CreditCard",
-                        "BankSlip": "#/components/schemas/BankSlip",
-                        "NuPay": "#/components/schemas/NuPay",
-                        "PicPay": "#/components/schemas/PicPay",
-                        "Draft": "#/components/schemas/Draft"
+                        "PIXPayment": "#/components/schemas/PIXPayment",
+                        "CreditCardPayment": "#/components/schemas/CreditCardPayment",
+                        "BankSlipPayment": "#/components/schemas/BankSlipPayment",
+                        "NuPayPayment": "#/components/schemas/NuPayPayment",
+                        "PicPayPayment": "#/components/schemas/PicPayPayment",
+                        "DraftPayment": "#/components/schemas/DraftPayment"
                       }
                     }
                   },
@@ -1511,6 +1537,7 @@
                     "type": "number"
                   },
                   "metadata": {
+                    "title": "Order Metadata",
                     "description": "Additional metadata for the order as key-value pairs. Keys should not contain spaces or special characters",
                     "type": "object",
                     "patternProperties": {
@@ -1607,7 +1634,8 @@
                       "type": "number"
                     },
                     "pix": {
-                      "description": "PIX data",
+                      "title": "PIX Info",
+                      "description": "PIX payment data and QR code information",
                       "type": "object",
                       "properties": {
                         "copyAndPasteCode": {
@@ -1647,6 +1675,8 @@
                       ]
                     },
                     "bankSlip": {
+                      "title": "Bank Slip Info",
+                      "description": "Bank slip payment data",
                       "type": "object",
                       "properties": {
                         "barCode": {
@@ -1677,6 +1707,8 @@
                       ]
                     },
                     "nuPay": {
+                      "title": "NuPay Info",
+                      "description": "NuPay payment data",
                       "type": "object",
                       "properties": {
                         "paymentUrl": {
@@ -1692,6 +1724,8 @@
                       ]
                     },
                     "picPay": {
+                      "title": "PicPay Info",
+                      "description": "PicPay payment data",
                       "type": "object",
                       "properties": {
                         "copyAndPasteCode": {
@@ -1715,6 +1749,8 @@
                       ]
                     },
                     "creditCard": {
+                      "title": "Credit Card Info",
+                      "description": "Credit card payment data",
                       "type": "object",
                       "properties": {
                         "authorizationCode": {
@@ -2033,37 +2069,38 @@
           "content": {
             "application/json": {
               "schema": {
+                "title": "Payment Data",
                 "description": "Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)",
                 "noValidate": true,
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/Pix"
+                    "$ref": "#/components/schemas/PIXPayment"
                   },
                   {
-                    "$ref": "#/components/schemas/CreditCard"
+                    "$ref": "#/components/schemas/CreditCardPayment"
                   },
                   {
-                    "$ref": "#/components/schemas/BankSlip"
+                    "$ref": "#/components/schemas/BankSlipPayment"
                   },
                   {
-                    "$ref": "#/components/schemas/NuPay"
+                    "$ref": "#/components/schemas/NuPayPayment"
                   },
                   {
-                    "$ref": "#/components/schemas/PicPay"
+                    "$ref": "#/components/schemas/PicPayPayment"
                   },
                   {
-                    "$ref": "#/components/schemas/Draft"
+                    "$ref": "#/components/schemas/DraftPayment"
                   }
                 ],
                 "discriminator": {
                   "propertyName": "paymentMethod",
                   "mapping": {
-                    "Pix": "#/components/schemas/Pix",
-                    "CreditCard": "#/components/schemas/CreditCard",
-                    "BankSlip": "#/components/schemas/BankSlip",
-                    "NuPay": "#/components/schemas/NuPay",
-                    "PicPay": "#/components/schemas/PicPay",
-                    "Draft": "#/components/schemas/Draft"
+                    "PIXPayment": "#/components/schemas/PIXPayment",
+                    "CreditCardPayment": "#/components/schemas/CreditCardPayment",
+                    "BankSlipPayment": "#/components/schemas/BankSlipPayment",
+                    "NuPayPayment": "#/components/schemas/NuPayPayment",
+                    "PicPayPayment": "#/components/schemas/PicPayPayment",
+                    "DraftPayment": "#/components/schemas/DraftPayment"
                   }
                 }
               }
@@ -2115,7 +2152,8 @@
                       "type": "number"
                     },
                     "pix": {
-                      "description": "PIX data",
+                      "title": "PIX Info",
+                      "description": "PIX payment data and QR code information",
                       "type": "object",
                       "properties": {
                         "copyAndPasteCode": {
@@ -2155,6 +2193,8 @@
                       ]
                     },
                     "bankSlip": {
+                      "title": "Bank Slip Info",
+                      "description": "Bank slip payment data",
                       "type": "object",
                       "properties": {
                         "barCode": {
@@ -2185,6 +2225,8 @@
                       ]
                     },
                     "nuPay": {
+                      "title": "NuPay Info",
+                      "description": "NuPay payment data",
                       "type": "object",
                       "properties": {
                         "paymentUrl": {
@@ -2200,6 +2242,8 @@
                       ]
                     },
                     "picPay": {
+                      "title": "PicPay Info",
+                      "description": "PicPay payment data",
                       "type": "object",
                       "properties": {
                         "copyAndPasteCode": {
@@ -2319,9 +2363,12 @@
         "description": "Create a new withdrawal or transfer to the provided payment account",
         "summary": "Create withdrawal",
         "requestBody": {
+          "description": "Withdrawal or transfer request data",
           "content": {
             "application/json": {
               "schema": {
+                "title": "Withdraw",
+                "description": "Withdrawal or transfer request data",
                 "type": "object",
                 "properties": {
                   "amount": {
@@ -2375,6 +2422,8 @@
                     ]
                   },
                   "payoutAccount": {
+                    "title": "Payout Account",
+                    "description": "Bank account information for withdrawal",
                     "type": "object",
                     "properties": {
                       "ownerDocument": {
@@ -2719,6 +2768,7 @@
             "in": "query",
             "required": false,
             "schema": {
+              "description": "Filter by customer email",
               "format": "email",
               "type": "string"
             }
@@ -2728,6 +2778,7 @@
             "in": "query",
             "required": false,
             "schema": {
+              "description": "Filter by customer name",
               "maxLength": 255,
               "minLength": 1,
               "type": "string"
@@ -2795,6 +2846,247 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of customers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Customer List Response",
+                  "description": "Paginated list of customers",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "description": "List of customers",
+                      "type": "array",
+                      "items": {
+                        "title": "Customer Response",
+                        "description": "Customer response with complete information",
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "description": "Unique customer identifier",
+                            "examples": [
+                              "cust_1234567890"
+                            ],
+                            "type": "string"
+                          },
+                          "name": {
+                            "description": "Customer full name",
+                            "examples": [
+                              "John Doe"
+                            ],
+                            "type": "string"
+                          },
+                          "email": {
+                            "description": "Customer email",
+                            "examples": [
+                              "customer@example.com"
+                            ],
+                            "format": "email",
+                            "type": "string"
+                          },
+                          "documentType": {
+                            "$ref": "#/components/schemas/DocumentType"
+                          },
+                          "documentNumber": {
+                            "description": "Customer document number (CPF or CNPJ)",
+                            "anyOf": [
+                              {
+                                "description": "Customer CPF or CNPJ without formatting",
+                                "examples": [
+                                  "12345678909",
+                                  "12345678000195"
+                                ],
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "phoneNumber": {
+                            "description": "Customer phone number",
+                            "anyOf": [
+                              {
+                                "description": "Customer phone number in +55 DD 9XXXXXXXX format",
+                                "examples": [
+                                  "+55 11 987654321"
+                                ],
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "address": {
+                            "description": "Customer address information",
+                            "anyOf": [
+                              {
+                                "title": "Customer Address",
+                                "description": "Customer address information",
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "description": "Unique address identifier",
+                                    "examples": [
+                                      "addr_1234567890"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "street": {
+                                    "description": "Street name",
+                                    "examples": [
+                                      "Av. Paulista",
+                                      "Rua das Flores"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "number": {
+                                    "description": "Address number",
+                                    "examples": [
+                                      "1000",
+                                      "150"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "neighborhood": {
+                                    "description": "Neighborhood name",
+                                    "examples": [
+                                      "Downtown",
+                                      "Jardins"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "city": {
+                                    "description": "City name",
+                                    "examples": [
+                                      "São Paulo",
+                                      "Rio de Janeiro"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "state": {
+                                    "description": "State code in ISO 3166-2 format",
+                                    "examples": [
+                                      "SP",
+                                      "RJ"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "zipCode": {
+                                    "description": "ZIP code without formatting",
+                                    "examples": [
+                                      "01311200",
+                                      "20040002"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "country": {
+                                    "description": "Country code in ISO 3166-1 alpha-2 format",
+                                    "examples": [
+                                      "BR",
+                                      "US"
+                                    ],
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "street",
+                                  "number",
+                                  "neighborhood",
+                                  "city",
+                                  "state",
+                                  "zipCode",
+                                  "country"
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "createdAt": {
+                            "description": "Date and time when the customer was created (ISO 8601 format)",
+                            "examples": [
+                              "2024-01-01T12:00:00Z"
+                            ],
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "description": "Date and time when the customer was last updated (ISO 8601 format)",
+                            "examples": [
+                              "2024-01-01T12:00:00Z"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "email",
+                          "documentType",
+                          "documentNumber",
+                          "phoneNumber",
+                          "address",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    },
+                    "pagination": {
+                      "title": "Customer Pagination",
+                      "description": "Pagination information for customer list",
+                      "type": "object",
+                      "properties": {
+                        "currentPage": {
+                          "description": "Current page number",
+                          "examples": [
+                            1
+                          ],
+                          "type": "number"
+                        },
+                        "pageSize": {
+                          "description": "Number of items per page",
+                          "examples": [
+                            10
+                          ],
+                          "type": "number"
+                        },
+                        "totalItems": {
+                          "description": "Total number of customers",
+                          "examples": [
+                            100
+                          ],
+                          "type": "number"
+                        },
+                        "totalPages": {
+                          "description": "Total number of pages",
+                          "examples": [
+                            10
+                          ],
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "currentPage",
+                        "pageSize",
+                        "totalItems",
+                        "totalPages"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "pagination"
+                  ]
+                }
+              }
+            }
+          }
+        },
         "operationId": "getCustomers"
       },
       "post": {
@@ -2813,8 +3105,8 @@
                 "type": "object",
                 "properties": {
                   "address": {
+                    "title": "Customer Address",
                     "description": "Schema for creating a new address",
-                    "title": "Customer address",
                     "type": "object",
                     "properties": {
                       "city": {
@@ -2937,6 +3229,191 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "Customer response with complete information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Customer Response",
+                  "description": "Customer response with complete information",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "Unique customer identifier",
+                      "examples": [
+                        "cust_1234567890"
+                      ],
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Customer full name",
+                      "examples": [
+                        "John Doe"
+                      ],
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Customer email",
+                      "examples": [
+                        "customer@example.com"
+                      ],
+                      "format": "email",
+                      "type": "string"
+                    },
+                    "documentType": {
+                      "$ref": "#/components/schemas/DocumentType"
+                    },
+                    "documentNumber": {
+                      "description": "Customer document number (CPF or CNPJ)",
+                      "anyOf": [
+                        {
+                          "description": "Customer CPF or CNPJ without formatting",
+                          "examples": [
+                            "12345678909",
+                            "12345678000195"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "phoneNumber": {
+                      "description": "Customer phone number",
+                      "anyOf": [
+                        {
+                          "description": "Customer phone number in +55 DD 9XXXXXXXX format",
+                          "examples": [
+                            "+55 11 987654321"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "address": {
+                      "description": "Customer address information",
+                      "anyOf": [
+                        {
+                          "title": "Customer Address",
+                          "description": "Customer address information",
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "description": "Unique address identifier",
+                              "examples": [
+                                "addr_1234567890"
+                              ],
+                              "type": "string"
+                            },
+                            "street": {
+                              "description": "Street name",
+                              "examples": [
+                                "Av. Paulista",
+                                "Rua das Flores"
+                              ],
+                              "type": "string"
+                            },
+                            "number": {
+                              "description": "Address number",
+                              "examples": [
+                                "1000",
+                                "150"
+                              ],
+                              "type": "string"
+                            },
+                            "neighborhood": {
+                              "description": "Neighborhood name",
+                              "examples": [
+                                "Downtown",
+                                "Jardins"
+                              ],
+                              "type": "string"
+                            },
+                            "city": {
+                              "description": "City name",
+                              "examples": [
+                                "São Paulo",
+                                "Rio de Janeiro"
+                              ],
+                              "type": "string"
+                            },
+                            "state": {
+                              "description": "State code in ISO 3166-2 format",
+                              "examples": [
+                                "SP",
+                                "RJ"
+                              ],
+                              "type": "string"
+                            },
+                            "zipCode": {
+                              "description": "ZIP code without formatting",
+                              "examples": [
+                                "01311200",
+                                "20040002"
+                              ],
+                              "type": "string"
+                            },
+                            "country": {
+                              "description": "Country code in ISO 3166-1 alpha-2 format",
+                              "examples": [
+                                "BR",
+                                "US"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "street",
+                            "number",
+                            "neighborhood",
+                            "city",
+                            "state",
+                            "zipCode",
+                            "country"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "description": "Date and time when the customer was created (ISO 8601 format)",
+                      "examples": [
+                        "2024-01-01T12:00:00Z"
+                      ],
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "description": "Date and time when the customer was last updated (ISO 8601 format)",
+                      "examples": [
+                        "2024-01-01T12:00:00Z"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "documentType",
+                    "documentNumber",
+                    "phoneNumber",
+                    "address",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        },
         "operationId": "postCustomers"
       }
     },
@@ -2957,6 +3434,191 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Customer response with complete information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Customer Response",
+                  "description": "Customer response with complete information",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "Unique customer identifier",
+                      "examples": [
+                        "cust_1234567890"
+                      ],
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Customer full name",
+                      "examples": [
+                        "John Doe"
+                      ],
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Customer email",
+                      "examples": [
+                        "customer@example.com"
+                      ],
+                      "format": "email",
+                      "type": "string"
+                    },
+                    "documentType": {
+                      "$ref": "#/components/schemas/DocumentType"
+                    },
+                    "documentNumber": {
+                      "description": "Customer document number (CPF or CNPJ)",
+                      "anyOf": [
+                        {
+                          "description": "Customer CPF or CNPJ without formatting",
+                          "examples": [
+                            "12345678909",
+                            "12345678000195"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "phoneNumber": {
+                      "description": "Customer phone number",
+                      "anyOf": [
+                        {
+                          "description": "Customer phone number in +55 DD 9XXXXXXXX format",
+                          "examples": [
+                            "+55 11 987654321"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "address": {
+                      "description": "Customer address information",
+                      "anyOf": [
+                        {
+                          "title": "Customer Address",
+                          "description": "Customer address information",
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "description": "Unique address identifier",
+                              "examples": [
+                                "addr_1234567890"
+                              ],
+                              "type": "string"
+                            },
+                            "street": {
+                              "description": "Street name",
+                              "examples": [
+                                "Av. Paulista",
+                                "Rua das Flores"
+                              ],
+                              "type": "string"
+                            },
+                            "number": {
+                              "description": "Address number",
+                              "examples": [
+                                "1000",
+                                "150"
+                              ],
+                              "type": "string"
+                            },
+                            "neighborhood": {
+                              "description": "Neighborhood name",
+                              "examples": [
+                                "Downtown",
+                                "Jardins"
+                              ],
+                              "type": "string"
+                            },
+                            "city": {
+                              "description": "City name",
+                              "examples": [
+                                "São Paulo",
+                                "Rio de Janeiro"
+                              ],
+                              "type": "string"
+                            },
+                            "state": {
+                              "description": "State code in ISO 3166-2 format",
+                              "examples": [
+                                "SP",
+                                "RJ"
+                              ],
+                              "type": "string"
+                            },
+                            "zipCode": {
+                              "description": "ZIP code without formatting",
+                              "examples": [
+                                "01311200",
+                                "20040002"
+                              ],
+                              "type": "string"
+                            },
+                            "country": {
+                              "description": "Country code in ISO 3166-1 alpha-2 format",
+                              "examples": [
+                                "BR",
+                                "US"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "street",
+                            "number",
+                            "neighborhood",
+                            "city",
+                            "state",
+                            "zipCode",
+                            "country"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "description": "Date and time when the customer was created (ISO 8601 format)",
+                      "examples": [
+                        "2024-01-01T12:00:00Z"
+                      ],
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "description": "Date and time when the customer was last updated (ISO 8601 format)",
+                      "examples": [
+                        "2024-01-01T12:00:00Z"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "documentType",
+                    "documentNumber",
+                    "phoneNumber",
+                    "address",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        },
         "operationId": "getCustomersById"
       },
       "patch": {
@@ -2976,17 +3638,17 @@
           }
         ],
         "requestBody": {
-          "description": "Schema for creating a new customer",
+          "description": "Schema for updating customer information",
           "content": {
             "application/json": {
               "schema": {
-                "description": "Schema for creating a new customer",
-                "title": "Customer",
+                "description": "Schema for updating customer information",
+                "title": "Update Customer",
                 "type": "object",
                 "properties": {
                   "address": {
+                    "title": "Customer Address",
                     "description": "Schema for creating a new address",
-                    "title": "Customer address",
                     "type": "object",
                     "properties": {
                       "city": {
@@ -3103,6 +3765,191 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "Customer response with complete information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Customer Response",
+                  "description": "Customer response with complete information",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "Unique customer identifier",
+                      "examples": [
+                        "cust_1234567890"
+                      ],
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Customer full name",
+                      "examples": [
+                        "John Doe"
+                      ],
+                      "type": "string"
+                    },
+                    "email": {
+                      "description": "Customer email",
+                      "examples": [
+                        "customer@example.com"
+                      ],
+                      "format": "email",
+                      "type": "string"
+                    },
+                    "documentType": {
+                      "$ref": "#/components/schemas/DocumentType"
+                    },
+                    "documentNumber": {
+                      "description": "Customer document number (CPF or CNPJ)",
+                      "anyOf": [
+                        {
+                          "description": "Customer CPF or CNPJ without formatting",
+                          "examples": [
+                            "12345678909",
+                            "12345678000195"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "phoneNumber": {
+                      "description": "Customer phone number",
+                      "anyOf": [
+                        {
+                          "description": "Customer phone number in +55 DD 9XXXXXXXX format",
+                          "examples": [
+                            "+55 11 987654321"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "address": {
+                      "description": "Customer address information",
+                      "anyOf": [
+                        {
+                          "title": "Customer Address",
+                          "description": "Customer address information",
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "description": "Unique address identifier",
+                              "examples": [
+                                "addr_1234567890"
+                              ],
+                              "type": "string"
+                            },
+                            "street": {
+                              "description": "Street name",
+                              "examples": [
+                                "Av. Paulista",
+                                "Rua das Flores"
+                              ],
+                              "type": "string"
+                            },
+                            "number": {
+                              "description": "Address number",
+                              "examples": [
+                                "1000",
+                                "150"
+                              ],
+                              "type": "string"
+                            },
+                            "neighborhood": {
+                              "description": "Neighborhood name",
+                              "examples": [
+                                "Downtown",
+                                "Jardins"
+                              ],
+                              "type": "string"
+                            },
+                            "city": {
+                              "description": "City name",
+                              "examples": [
+                                "São Paulo",
+                                "Rio de Janeiro"
+                              ],
+                              "type": "string"
+                            },
+                            "state": {
+                              "description": "State code in ISO 3166-2 format",
+                              "examples": [
+                                "SP",
+                                "RJ"
+                              ],
+                              "type": "string"
+                            },
+                            "zipCode": {
+                              "description": "ZIP code without formatting",
+                              "examples": [
+                                "01311200",
+                                "20040002"
+                              ],
+                              "type": "string"
+                            },
+                            "country": {
+                              "description": "Country code in ISO 3166-1 alpha-2 format",
+                              "examples": [
+                                "BR",
+                                "US"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "street",
+                            "number",
+                            "neighborhood",
+                            "city",
+                            "state",
+                            "zipCode",
+                            "country"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "createdAt": {
+                      "description": "Date and time when the customer was created (ISO 8601 format)",
+                      "examples": [
+                        "2024-01-01T12:00:00Z"
+                      ],
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "description": "Date and time when the customer was last updated (ISO 8601 format)",
+                      "examples": [
+                        "2024-01-01T12:00:00Z"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "documentType",
+                    "documentNumber",
+                    "phoneNumber",
+                    "address",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        },
         "operationId": "patchCustomersById"
       }
     },
@@ -3114,15 +3961,17 @@
         "description": "Tokenize credit cards for future charges.",
         "summary": "Tokenize card",
         "requestBody": {
-          "description": "Data for creating a customer card",
+          "description": "Data for creating a customer card with customer information",
           "content": {
             "application/json": {
               "schema": {
-                "description": "Data for creating a customer card",
+                "title": "Create Customer Card",
+                "description": "Data for creating a customer card with customer information",
                 "type": "object",
                 "properties": {
                   "card": {
-                    "title": "Complete card data",
+                    "title": "Create Card Data",
+                    "description": "Complete card data for payment processing",
                     "type": "object",
                     "properties": {
                       "cvv": {
@@ -3136,6 +3985,8 @@
                         "type": "string"
                       },
                       "expiration": {
+                        "title": "Card Expiration",
+                        "description": "Card expiration date",
                         "type": "object",
                         "properties": {
                           "month": {
@@ -3199,7 +4050,7 @@
                         "$ref": "#/components/schemas/Customer"
                       },
                       {
-                        "$ref": "#/components/schemas/CustomerVariant1"
+                        "$ref": "#/components/schemas/CustomerByID"
                       }
                     ]
                   }
@@ -3216,10 +4067,12 @@
         },
         "responses": {
           "200": {
-            "description": "Response for status 200",
+            "description": "Response containing customer ID and card token",
             "content": {
               "application/json": {
                 "schema": {
+                  "title": "Create Customer Card Response",
+                  "description": "Response containing customer ID and card token",
                   "type": "object",
                   "properties": {
                     "customerId": {
