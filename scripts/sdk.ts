@@ -316,6 +316,24 @@ const fixPackageJson = async (outputDir: string) => {
   }
 };
 
+const fixReadme = async (outputDir: string) => {
+  const readmePath = `${outputDir}/README.md`;
+  try {
+    const file = Bun.file(readmePath);
+    if (!(await file.exists())) return;
+
+    let content = await file.text();
+    const repoPath = `https://github.com/payconductor-ai/payconductor-sdk/blob/main/${outputDir}/`;
+
+    content = content.replace(/\]\(docs\//g, `](${repoPath}docs/`);
+
+    await Bun.write(readmePath, content);
+    console.log(`Fixed README.md in ${outputDir}`);
+  } catch (e) {
+    console.log(`No README.md to fix in ${outputDir}`);
+  }
+};
+
 const generateSdk = async (version: string, languages: string[]) => {
   const config = VERSIONS[version]!;
   const openapiFile = `library/${version}/src/openapi.yaml`;
@@ -339,6 +357,7 @@ const generateSdk = async (version: string, languages: string[]) => {
 
     if (lang === "typescript" || lang === "javascript") {
       await fixPackageJson(langConfig.outputDir);
+      await fixReadme(langConfig.outputDir);
     }
 
     console.log(`SDK generated in ${langConfig.outputDir}/`);
