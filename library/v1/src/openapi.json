@@ -1170,15 +1170,15 @@
   "tags": [
     {
       "description": "Manage charges, check order status, and handle refunds.",
-      "name": "Orders"
+      "name": "Order"
     },
     {
       "description": "Initiate and monitor withdrawals and transfers to your external accounts.",
-      "name": "Transfers"
+      "name": "Transfer"
     },
     {
       "description": "Manage customers, create, update, delete and list customers.",
-      "name": "Customers"
+      "name": "Customer"
     },
     {
       "description": "Tokenize credit cards for future charges.",
@@ -1189,8 +1189,9 @@
     "/orders/": {
       "post": {
         "tags": [
-          "Orders"
+          "Order"
         ],
+        "operationId": "orderCreate",
         "description": "Create a new order for payment using the provided data",
         "summary": "Create Order",
         "requestBody": {
@@ -1934,13 +1935,13 @@
               }
             }
           }
-        },
-        "operationId": "postOrders"
+        }
       },
       "get": {
         "tags": [
-          "Orders"
+          "Order"
         ],
+        "operationId": "orderList",
         "description": "Retrieve a list of orders. Use date filter and pagination parameters to refine results as needed.",
         "summary": "List Orders",
         "parameters": [
@@ -2033,15 +2034,15 @@
               ]
             }
           }
-        ],
-        "operationId": "getOrders"
+        ]
       }
     },
     "/orders/{id}": {
       "get": {
         "tags": [
-          "Orders"
+          "Order"
         ],
+        "operationId": "orderRead",
         "description": "Retrieve the complete data of an order by our ID",
         "summary": "Get Order By ID",
         "parameters": [
@@ -2053,15 +2054,15 @@
               "type": "string"
             }
           }
-        ],
-        "operationId": "getOrdersById"
+        ]
       }
     },
     "/orders/{id}/confirm": {
       "post": {
         "tags": [
-          "Orders"
+          "Order"
         ],
+        "operationId": "orderConfirm",
         "description": "Confirms a Draft order, setting the payment method and processing the charges associated with the order.",
         "summary": "Confirm Order",
         "parameters": [
@@ -2343,15 +2344,15 @@
               }
             }
           }
-        },
-        "operationId": "postOrdersByIdConfirm"
+        }
       }
     },
     "/orders/{id}/refund": {
       "post": {
         "tags": [
-          "Orders"
+          "Order"
         ],
+        "operationId": "orderRefund",
         "description": "Initiate a refund for the order specified by ID.",
         "summary": "Refund Order",
         "parameters": [
@@ -2363,15 +2364,15 @@
               "type": "string"
             }
           }
-        ],
-        "operationId": "postOrdersByIdRefund"
+        ]
       }
     },
     "/withdraws/": {
       "post": {
         "tags": [
-          "Transfers"
+          "Withdraw"
         ],
+        "operationId": "withdrawCreate",
         "description": "Create a new withdrawal or transfer to the provided payment account",
         "summary": "Create Withdrawal",
         "requestBody": {
@@ -2663,13 +2664,13 @@
               }
             }
           }
-        },
-        "operationId": "postWithdraws"
+        }
       },
       "get": {
         "tags": [
-          "Transfers"
+          "Withdraw"
         ],
+        "operationId": "withdrawList",
         "description": "Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)",
         "summary": "List Withdrawals",
         "parameters": [
@@ -2743,15 +2744,15 @@
               "type": "string"
             }
           }
-        ],
-        "operationId": "getWithdraws"
+        ]
       }
     },
     "/withdraws/{id}": {
       "get": {
         "tags": [
-          "Transfers"
+          "Withdraw"
         ],
+        "operationId": "withdrawRead",
         "description": "Returns the details of a specific withdrawal or transfer using its ID",
         "summary": "Get Withdrawal By ID",
         "parameters": [
@@ -2763,15 +2764,15 @@
               "type": "string"
             }
           }
-        ],
-        "operationId": "getWithdrawsById"
+        ]
       }
     },
     "/customers/": {
       "get": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
+        "operationId": "customerListCustom",
         "description": "Retrieve a list of all customers associated with the organization, with support for filters and pagination.",
         "summary": "Get All Customers",
         "parameters": [
@@ -3098,13 +3099,13 @@
               }
             }
           }
-        },
-        "operationId": "getCustomers"
+        }
       },
       "post": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
+        "operationId": "customerCreate",
         "description": "Create a new customer by providing the required data in the request body.",
         "summary": "Create New Customer",
         "requestBody": {
@@ -3425,15 +3426,15 @@
               }
             }
           }
-        },
-        "operationId": "postCustomers"
+        }
       }
     },
     "/customers/{id}": {
       "get": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
+        "operationId": "customerRead",
         "description": "Retrieve the complete details of a specific customer using their unique ID.",
         "summary": "Get Customer By ID",
         "parameters": [
@@ -3630,13 +3631,13 @@
               }
             }
           }
-        },
-        "operationId": "getCustomersById"
+        }
       },
       "patch": {
         "tags": [
-          "Customers"
+          "Customer"
         ],
+        "operationId": "customerUpdate",
         "description": "Update the information of an existing customer by providing the new data in the request body.",
         "summary": "Update Customer Data",
         "parameters": [
@@ -3961,8 +3962,7 @@
               }
             }
           }
-        },
-        "operationId": "patchCustomersById"
+        }
       }
     },
     "/card-tokenization/": {
@@ -3970,6 +3970,7 @@
         "tags": [
           "Card Tokenization"
         ],
+        "operationId": "cardTokenize",
         "description": "Tokenize credit cards for future charges.",
         "summary": "Tokenize Card",
         "requestBody": {
@@ -4111,8 +4112,7 @@
               }
             }
           }
-        },
-        "operationId": "postCard-tokenization"
+        }
       }
     }
   }
