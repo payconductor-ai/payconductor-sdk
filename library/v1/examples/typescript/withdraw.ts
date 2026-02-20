@@ -2,8 +2,10 @@ import {
   Configuration,
   WithdrawApi,
   type WithdrawCreateRequest,
+  type WithdrawCreateResponse,
   PixType,
 } from 'payconductor-sdk';
+import type { AxiosError } from 'axios';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID || 'your_client_id',
@@ -12,7 +14,7 @@ const config = new Configuration({
 
 const withdrawApi = new WithdrawApi(config);
 
-export async function createWithdraw() {
+export async function createWithdraw(): Promise<WithdrawCreateResponse> {
   console.log('=== Creating PIX Withdrawal ===\n');
 
   const request: WithdrawCreateRequest = {
@@ -35,13 +37,14 @@ export async function createWithdraw() {
     console.log('Status:', data.status);
 
     return data;
-  } catch (error: any) {
-    console.error('Error creating withdrawal:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating withdrawal:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function createWithdrawWithCPF() {
+export async function createWithdrawWithCPF(): Promise<WithdrawCreateResponse> {
   console.log('=== Creating Withdrawal with CPF PIX Key ===\n');
 
   const request: WithdrawCreateRequest = {
@@ -58,13 +61,14 @@ export async function createWithdrawWithCPF() {
   try {
     const response = await withdrawApi.withdrawCreate(request);
     return response.data;
-  } catch (error: any) {
-    console.error('Error creating withdrawal:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating withdrawal:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function createWithdrawWithPhone() {
+export async function createWithdrawWithPhone(): Promise<WithdrawCreateResponse> {
   console.log('=== Creating Withdrawal with Phone PIX Key ===\n');
 
   const request: WithdrawCreateRequest = {
@@ -81,13 +85,14 @@ export async function createWithdrawWithPhone() {
   try {
     const response = await withdrawApi.withdrawCreate(request);
     return response.data;
-  } catch (error: any) {
-    console.error('Error creating withdrawal:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating withdrawal:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function createWithdrawWithRandomKey() {
+export async function createWithdrawWithRandomKey(): Promise<WithdrawCreateResponse> {
   console.log('=== Creating Withdrawal with Random PIX Key ===\n');
 
   const request: WithdrawCreateRequest = {
@@ -104,35 +109,38 @@ export async function createWithdrawWithRandomKey() {
   try {
     const response = await withdrawApi.withdrawCreate(request);
     return response.data;
-  } catch (error: any) {
-    console.error('Error creating withdrawal:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating withdrawal:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function listWithdraws() {
+export async function listWithdraws(): Promise<WithdrawCreateResponse[]> {
   console.log('=== Listing Withdrawals ===\n');
 
   try {
     const response = await withdrawApi.withdrawList(1, 10);
-    const data = response.data as any;
+    const data = response.data as unknown as WithdrawCreateResponse[];
 
     console.log('Withdrawals found:', data?.length || 0);
     return data;
-  } catch (error: any) {
-    console.error('Error listing withdrawals:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error listing withdrawals:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function getWithdrawById(withdrawId: string) {
+export async function getWithdrawById(withdrawId: string): Promise<WithdrawCreateResponse> {
   console.log('=== Getting Withdrawal by ID ===\n');
 
   try {
     const response = await withdrawApi.withdrawRead(withdrawId);
-    return response.data as any;
-  } catch (error: any) {
-    console.error('Error getting withdrawal:', error.response?.data || error.message);
+    return response.data as unknown as WithdrawCreateResponse;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error getting withdrawal:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }

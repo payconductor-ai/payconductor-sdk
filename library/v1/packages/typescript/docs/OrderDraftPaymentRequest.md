@@ -6,7 +6,7 @@ Used to create an order without generating a real payment. Use to create orders 
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [default to undefined]
+**paymentMethod** | **string** |  | [default to undefined]
 **expirationInSeconds** | **number** | Order expiration time in seconds | [optional] [default to 3600]
 **availablePaymentMethods** | [**Array&lt;AvailablePaymentMethods&gt;**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] [default to undefined]
 

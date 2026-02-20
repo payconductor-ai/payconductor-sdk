@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [default to undefined]
+**paymentMethod** | **string** |  | [default to undefined]
 **nuPay** | [**OrderNuPayPaymentRequestNuPay**](OrderNuPayPaymentRequestNuPay.md) |  | [default to undefined]
 
 ## Example

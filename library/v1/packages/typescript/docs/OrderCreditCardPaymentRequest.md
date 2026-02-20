@@ -5,7 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [default to undefined]
+**paymentMethod** | **string** |  | [default to undefined]
 **card** | [**OrderCreditCardPaymentRequestCard**](OrderCreditCardPaymentRequestCard.md) |  | [default to undefined]
 **installments** | **number** | Number of installments | [default to 1]
 **softDescriptor** | **string** | Text that will appear on the card statement (soft descriptor) | [optional] [default to undefined]

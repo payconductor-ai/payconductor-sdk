@@ -80,6 +80,85 @@ const buildEnumSchema = (values: string[]) => ({
 //#endregion
 
 //#region Patcher
+const PAYMENT_METHOD_VALUES: Record<string, string> = {
+  PIX: "Pix",
+  CREDIT_CARD: "CreditCard",
+  DEBIT_CARD: "DebitCard",
+  BANK_SLIP: "BankSlip",
+  CRYPTO: "Crypto",
+  APPLE_PAY: "ApplePay",
+  NU_PAY: "NuPay",
+  PIC_PAY: "PicPay",
+  AMAZON_PAY: "AmazonPay",
+  SEPA_DEBIT: "SepaDebit",
+  GOOGLE_PAY: "GooglePay",
+  DRAFT: "Draft",
+};
+
+const inferPaymentMethodFromSchema = (schema: any): string | null => {
+  const props = schema.properties || {};
+  const title = (schema.title || "").toLowerCase();
+  
+  if (props.availablePaymentMethods !== undefined) return "Draft";
+  if (props.card !== undefined && props.installments !== undefined) return "CreditCard";
+  if (props.nuPay !== undefined) return "NuPay";
+  if (props.expirationInDays !== undefined) return "BankSlip";
+  
+  if (props.expirationInSeconds !== undefined && props.card === undefined && props.availablePaymentMethods === undefined) return "Pix";
+  
+  if (Object.keys(props).length === 1 && props.paymentMethod) {
+    if (title.includes("picpay")) return "PicPay";
+    if (title.includes("pix")) return "Pix";
+  }
+  
+  return null;
+};
+
+const fixPaymentMethodDiscriminators = (data: any) => {
+  const schemas = data.components?.schemas || {};
+  const discriminatorMappings: Map<string, string> = new Map();
+  
+  for (const [schemaName, schema] of Object.entries(schemas) as [string, any][]) {
+    const props = schema.properties || {};
+    if (!props.paymentMethod) continue;
+    
+    if (props.paymentMethod.$ref === "#/components/schemas/PaymentMethod" || 
+        props.paymentMethod.$ref?.includes("PaymentMethod")) {
+      const paymentValue = inferPaymentMethodFromSchema(schema);
+      if (paymentValue) {
+        props.paymentMethod = { type: "string", const: paymentValue };
+        discriminatorMappings.set(schemaName, paymentValue);
+      }
+    }
+  }
+  
+  const updateDiscriminatorMapping = (node: any) => {
+    if (!node || typeof node !== "object") return;
+    
+    if (node.discriminator?.mapping) {
+      const newMapping: Record<string, string> = {};
+      for (const [key, ref] of Object.entries(node.discriminator.mapping)) {
+        const schemaName = (ref as string).split("/").pop()!;
+        const paymentValue = discriminatorMappings.get(schemaName);
+        if (paymentValue) {
+          newMapping[paymentValue] = ref as string;
+        } else {
+          newMapping[key] = ref as string;
+        }
+      }
+      node.discriminator.mapping = newMapping;
+    }
+    
+    for (const value of Object.values(node)) {
+      if (typeof value === "object") {
+        updateDiscriminatorMapping(value);
+      }
+    }
+  };
+  
+  updateDiscriminatorMapping(data);
+};
+
 const patchOpenApi = (data: any): any => {
   data.components ??= {};
   data.components.schemas ??= {};
@@ -263,6 +342,7 @@ const patchOpenApi = (data: any): any => {
   };
 
   addDiscriminators(patched);
+  fixPaymentMethodDiscriminators(patched);
   return patched;
 };
 //#endregion

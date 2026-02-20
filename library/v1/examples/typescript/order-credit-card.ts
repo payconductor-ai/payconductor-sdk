@@ -2,10 +2,11 @@ import {
   Configuration,
   OrderApi,
   type CustomerCreateRequest,
-  type OrderCreditCardPaymentRequest,
+  type OrderCreateRequest,
+  type OrderCreateResponse,
   DocumentType,
-  PaymentMethod,
 } from 'payconductor-sdk';
+import type { AxiosError } from 'axios';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID || 'your_client_id',
@@ -14,7 +15,7 @@ const config = new Configuration({
 
 const orderApi = new OrderApi(config);
 
-export async function createCreditCardOrder() {
+export async function createCreditCardOrder(): Promise<OrderCreateResponse> {
   console.log('=== Creating Credit Card Order ===\n');
 
   const customer: CustomerCreateRequest = {
@@ -25,25 +26,23 @@ export async function createCreditCardOrder() {
     phoneNumber: '+55 11 999999999',
   };
 
-  const payment: OrderCreditCardPaymentRequest = {
-    paymentMethod: PaymentMethod.CreditCard,    
-    card: {
-      number: '4111111111111111',
-      holderName: 'JOHN DOE',
-      cvv: '123',
-      expiration: { month: 12, year: 2028 },
-    },
-    installments: 1,
-    softDescriptor: 'PAYCONDUCTOR',
-  };
-
-  const orderRequest = {
+  const orderRequest: OrderCreateRequest = {
     chargeAmount: 150.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 0,
     externalId: `cc-order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: 'CreditCard',
+      card: {
+        number: '4111111111111111',
+        holderName: 'JOHN DOE',
+        cvv: '123',
+        expiration: { month: 12, year: 2028 },
+      },
+      installments: 1,
+      softDescriptor: 'PAYCONDUCTOR',
+    },
     shippingFee: 10.00,
     taxFee: 0,
     items: [
@@ -58,7 +57,7 @@ export async function createCreditCardOrder() {
   };
 
   try {
-    const response = await orderApi.orderCreate(orderRequest as any);
+    const response = await orderApi.orderCreate(orderRequest);
     const data = response.data;
 
     console.log('Credit card order created successfully!');
@@ -68,13 +67,14 @@ export async function createCreditCardOrder() {
     console.log('Authorization Code:', data.creditCard?.authorizationCode);
 
     return data;
-  } catch (error: any) {
-    console.error('Error creating credit card order:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating credit card order:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function createCreditCardOrderWithTokenizedCard(token: string) {
+export async function createCreditCardOrderWithTokenizedCard(token: string): Promise<OrderCreateResponse> {
   console.log('=== Creating Order with Tokenized Card ===\n');
 
   const customer: CustomerCreateRequest = {
@@ -84,21 +84,17 @@ export async function createCreditCardOrderWithTokenizedCard(token: string) {
     name: 'John Doe',
   };
 
-  const payment: OrderCreditCardPaymentRequest = {
-    paymentMethod: PaymentMethod.CreditCard,
-    card: {
-      token,
-    },
-    installments: 3,
-  };
-
-  const orderRequest = {
+  const orderRequest: OrderCreateRequest = {
     chargeAmount: 300.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 0,
     externalId: `cc-token-order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: 'CreditCard',
+      card: { token },
+      installments: 3,
+    },
     shippingFee: 0,
     taxFee: 0,
     items: [
@@ -113,7 +109,7 @@ export async function createCreditCardOrderWithTokenizedCard(token: string) {
   };
 
   try {
-    const response = await orderApi.orderCreate(orderRequest as any);
+    const response = await orderApi.orderCreate(orderRequest);
     const data = response.data;
 
     console.log('Tokenized card order created successfully!');
@@ -121,8 +117,9 @@ export async function createCreditCardOrderWithTokenizedCard(token: string) {
     console.log('Status:', data.status);
 
     return data;
-  } catch (error: any) {
-    console.error('Error creating tokenized card order:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating tokenized card order:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }

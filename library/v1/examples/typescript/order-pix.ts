@@ -2,10 +2,11 @@ import {
   Configuration,
   OrderApi,
   type CustomerCreateRequest,
-  type OrderPIXPaymentRequest,
+  type OrderCreateRequest,
+  type OrderCreateResponse,
   DocumentType,
-  PaymentMethod,
 } from 'payconductor-sdk';
+import type { AxiosError } from 'axios';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID || 'your_client_id',
@@ -14,7 +15,7 @@ const config = new Configuration({
 
 const orderApi = new OrderApi(config);
 
-export async function createPixOrder() {
+export async function createPixOrder(): Promise<OrderCreateResponse> {
   console.log('=== Creating PIX Order ===\n');
 
   const customer: CustomerCreateRequest = {
@@ -25,18 +26,16 @@ export async function createPixOrder() {
     phoneNumber: '+55 11 999999999',
   };
 
-  const payment: OrderPIXPaymentRequest = {
-    paymentMethod: PaymentMethod.Pix,
-    expirationInSeconds: 3600,
-  };
-
-  const orderRequest = {
+  const orderRequest: OrderCreateRequest = {
     chargeAmount: 100.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 0,
     externalId: `pix-order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: 'Pix',
+      expirationInSeconds: 3600,
+    },
     shippingFee: 0,
     taxFee: 0,
     items: [
@@ -51,7 +50,7 @@ export async function createPixOrder() {
   };
 
   try {
-    const response = await orderApi.orderCreate(orderRequest as any);
+    const response = await orderApi.orderCreate(orderRequest);
     const data = response.data;
 
     console.log('PIX order created successfully!');
@@ -61,8 +60,9 @@ export async function createPixOrder() {
     console.log('QR Code URL:', data.pix?.qrCodeUrl);
 
     return data;
-  } catch (error: any) {
-    console.error('Error creating PIX order:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating PIX order:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }

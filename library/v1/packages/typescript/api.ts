@@ -360,14 +360,12 @@ export interface OrderBankSlipInfo {
     'pdfUrl'?: string;
 }
 export interface OrderBankSlipPaymentRequest {
-    'paymentMethod': PaymentMethod;
+    'paymentMethod': string;
     /**
      * Days until bank slip expires
      */
     'expirationInDays'?: number;
 }
-
-
 /**
  * Response after confirming a draft order
  */
@@ -574,7 +572,7 @@ export interface OrderCreditCardInfo {
     'authorizationCode'?: string;
 }
 export interface OrderCreditCardPaymentRequest {
-    'paymentMethod': PaymentMethod;
+    'paymentMethod': string;
     'card': OrderCreditCardPaymentRequestCard;
     /**
      * Number of installments
@@ -585,8 +583,6 @@ export interface OrderCreditCardPaymentRequest {
      */
     'softDescriptor'?: string;
 }
-
-
 /**
  * @type OrderCreditCardPaymentRequestCard
  */
@@ -596,7 +592,7 @@ export type OrderCreditCardPaymentRequestCard = CardCreateRequest | OrderTokeniz
  * Used to create an order without generating a real payment. Use to create orders that will be paid later
  */
 export interface OrderDraftPaymentRequest {
-    'paymentMethod': PaymentMethod;
+    'paymentMethod': string;
     /**
      * Order expiration time in seconds
      */
@@ -606,8 +602,6 @@ export interface OrderDraftPaymentRequest {
      */
     'availablePaymentMethods'?: Array<AvailablePaymentMethods>;
 }
-
-
 /**
  * Fraud analysis fingerprint data
  */
@@ -652,11 +646,9 @@ export interface OrderNuPayInfo {
     'paymentUrl': string;
 }
 export interface OrderNuPayPaymentRequest {
-    'paymentMethod': PaymentMethod;
+    'paymentMethod': string;
     'nuPay': OrderNuPayPaymentRequestNuPay;
 }
-
-
 /**
  * Specific data for NuPay payment
  */
@@ -696,19 +688,17 @@ export interface OrderPIXInfo {
     'endToEndId': string | null;
 }
 export interface OrderPIXPaymentRequest {
-    'paymentMethod': PaymentMethod;
+    'paymentMethod': string;
     /**
      * PIX expiration time in seconds
      */
     'expirationInSeconds'?: number;
 }
-
-
 /**
  * @type OrderPaymentRequest
  * Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
  */
-export type OrderPaymentRequest = { paymentMethod: 'OrderBankSlipPaymentRequest' } & OrderBankSlipPaymentRequest | { paymentMethod: 'OrderCreditCardPaymentRequest' } & OrderCreditCardPaymentRequest | { paymentMethod: 'OrderDraftPaymentRequest' } & OrderDraftPaymentRequest | { paymentMethod: 'OrderNuPayPaymentRequest' } & OrderNuPayPaymentRequest | { paymentMethod: 'OrderPIXPaymentRequest' } & OrderPIXPaymentRequest | { paymentMethod: 'OrderPicPayPaymentRequest' } & OrderPicPayPaymentRequest;
+export type OrderPaymentRequest = { paymentMethod: 'BankSlip' } & OrderBankSlipPaymentRequest | { paymentMethod: 'CreditCard' } & OrderCreditCardPaymentRequest | { paymentMethod: 'Draft' } & OrderDraftPaymentRequest | { paymentMethod: 'NuPay' } & OrderNuPayPaymentRequest | { paymentMethod: 'PicPay' } & OrderPicPayPaymentRequest | { paymentMethod: 'Pix' } & OrderPIXPaymentRequest;
 
 /**
  * PicPay payment data
@@ -724,10 +714,8 @@ export interface OrderPicPayInfo {
     'qrCodeUrl': string;
 }
 export interface OrderPicPayPaymentRequest {
-    'paymentMethod': PaymentMethod;
+    'paymentMethod': string;
 }
-
-
 export interface OrderTokenizedCardData {
     /**
      * First 6 digits of the credit card

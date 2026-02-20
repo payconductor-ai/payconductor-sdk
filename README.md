@@ -157,7 +157,7 @@ async function createPixOrder() {
     ],
   };
 
-  const response = await orderApi.orderCreate(request as any);
+  const response = await orderApi.orderCreate(request);
   console.log('PIX Copy Paste:', response.data.pix?.copyAndPasteCode);
   console.log('QR Code URL:', response.data.pix?.qrCodeUrl);
 }

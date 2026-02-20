@@ -5,6 +5,7 @@ import { createCustomer } from './customer';
 import { tokenizeCard } from './card-tokenization';
 import { createWithdraw } from './withdraw';
 import { listOrders } from './order-management';
+import type { AxiosError } from 'axios';
 
 async function main() {
   try {
@@ -31,8 +32,9 @@ async function main() {
     await listOrders();
 
     console.log('\nAll examples completed!');
-  } catch (error: any) {
-    console.error('Error:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error:', axiosError.response?.data || axiosError.message);
   }
 }
 

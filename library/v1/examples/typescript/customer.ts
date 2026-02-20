@@ -4,8 +4,11 @@ import {
   type CustomerCreateRequest,
   type CustomerUpdateRequest,
   type AddressCreateRequest,
+  type CustomerReadResponse,
+  type CustomerListResponse,
   DocumentType,
 } from 'payconductor-sdk';
+import type { AxiosError } from 'axios';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID || 'your_client_id',
@@ -14,7 +17,7 @@ const config = new Configuration({
 
 const customerApi = new CustomerApi(config);
 
-export async function createCustomer() {
+export async function createCustomer(): Promise<CustomerReadResponse> {
   console.log('=== Creating Customer ===\n');
 
   const address: AddressCreateRequest = {
@@ -46,13 +49,14 @@ export async function createCustomer() {
     console.log('Email:', data.email);
 
     return data;
-  } catch (error: any) {
-    console.error('Error creating customer:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating customer:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function listCustomers() {
+export async function listCustomers(): Promise<CustomerListResponse> {
   console.log('=== Listing Customers ===\n');
 
   try {
@@ -61,13 +65,14 @@ export async function listCustomers() {
 
     console.log('Customers found:', data.data?.length || 0);
     return data;
-  } catch (error: any) {
-    console.error('Error listing customers:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error listing customers:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function getCustomerById(customerId: string) {
+export async function getCustomerById(customerId: string): Promise<CustomerReadResponse> {
   console.log('=== Getting Customer by ID ===\n');
 
   try {
@@ -80,13 +85,14 @@ export async function getCustomerById(customerId: string) {
     console.log('Email:', data.email);
 
     return data;
-  } catch (error: any) {
-    console.error('Error getting customer:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error getting customer:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function updateCustomer(customerId: string) {
+export async function updateCustomer(customerId: string): Promise<CustomerReadResponse> {
   console.log('=== Updating Customer ===\n');
 
   const updateData: CustomerUpdateRequest = {
@@ -102,8 +108,9 @@ export async function updateCustomer(customerId: string) {
     console.log('New Email:', data.email);
 
     return data;
-  } catch (error: any) {
-    console.error('Error updating customer:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error updating customer:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }

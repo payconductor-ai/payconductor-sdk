@@ -2,8 +2,10 @@ import {
   Configuration,
   CardTokenizationApi,
   type CardTokenizationCreateRequest,
+  type CardTokenizationCreateResponse,
   DocumentType,
 } from 'payconductor-sdk';
+import type { AxiosError } from 'axios';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID || 'your_client_id',
@@ -12,7 +14,7 @@ const config = new Configuration({
 
 const cardTokenizationApi = new CardTokenizationApi(config);
 
-export async function tokenizeCard() {
+export async function tokenizeCard(): Promise<CardTokenizationCreateResponse> {
   console.log('=== Tokenizing Credit Card ===\n');
 
   const request: CardTokenizationCreateRequest = {
@@ -43,13 +45,14 @@ export async function tokenizeCard() {
     console.log('Customer ID:', data.customerId);
 
     return data;
-  } catch (error: any) {
-    console.error('Error tokenizing card:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error tokenizing card:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
 
-export async function tokenizeCardWithExistingCustomer(customerId: string) {
+export async function tokenizeCardWithExistingCustomer(customerId: string): Promise<CardTokenizationCreateResponse> {
   console.log('=== Tokenizing Card for Existing Customer ===\n');
 
   const request: CardTokenizationCreateRequest = {
@@ -76,8 +79,9 @@ export async function tokenizeCardWithExistingCustomer(customerId: string) {
     console.log('Token:', data.token);
 
     return data;
-  } catch (error: any) {
-    console.error('Error tokenizing card:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error tokenizing card:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }

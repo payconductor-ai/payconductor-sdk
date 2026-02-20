@@ -835,7 +835,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "const": "Pix"
           },
           "expirationInSeconds": {
             "default": 3600,
@@ -858,7 +859,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "const": "CreditCard"
           },
           "card": {
             "oneOf": [
@@ -899,7 +901,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "const": "BankSlip"
           },
           "expirationInDays": {
             "default": 7,
@@ -923,7 +926,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "const": "NuPay"
           },
           "nuPay": {
             "description": "Specific data for NuPay payment",
@@ -975,7 +979,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "const": "PicPay"
           }
         },
         "required": [
@@ -988,7 +993,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": {
-            "$ref": "#/components/schemas/PaymentMethod"
+            "type": "string",
+            "const": "Draft"
           },
           "expirationInSeconds": {
             "default": 3600,
@@ -1492,12 +1498,12 @@
                     "discriminator": {
                       "propertyName": "paymentMethod",
                       "mapping": {
-                        "OrderPIXPaymentRequest": "#/components/schemas/OrderPIXPaymentRequest",
-                        "OrderCreditCardPaymentRequest": "#/components/schemas/OrderCreditCardPaymentRequest",
-                        "OrderBankSlipPaymentRequest": "#/components/schemas/OrderBankSlipPaymentRequest",
-                        "OrderNuPayPaymentRequest": "#/components/schemas/OrderNuPayPaymentRequest",
-                        "OrderPicPayPaymentRequest": "#/components/schemas/OrderPicPayPaymentRequest",
-                        "OrderDraftPaymentRequest": "#/components/schemas/OrderDraftPaymentRequest"
+                        "Pix": "#/components/schemas/OrderPIXPaymentRequest",
+                        "CreditCard": "#/components/schemas/OrderCreditCardPaymentRequest",
+                        "BankSlip": "#/components/schemas/OrderBankSlipPaymentRequest",
+                        "NuPay": "#/components/schemas/OrderNuPayPaymentRequest",
+                        "PicPay": "#/components/schemas/OrderPicPayPaymentRequest",
+                        "Draft": "#/components/schemas/OrderDraftPaymentRequest"
                       }
                     }
                   },
@@ -2106,12 +2112,12 @@
                 "discriminator": {
                   "propertyName": "paymentMethod",
                   "mapping": {
-                    "OrderPIXPaymentRequest": "#/components/schemas/OrderPIXPaymentRequest",
-                    "OrderCreditCardPaymentRequest": "#/components/schemas/OrderCreditCardPaymentRequest",
-                    "OrderBankSlipPaymentRequest": "#/components/schemas/OrderBankSlipPaymentRequest",
-                    "OrderNuPayPaymentRequest": "#/components/schemas/OrderNuPayPaymentRequest",
-                    "OrderPicPayPaymentRequest": "#/components/schemas/OrderPicPayPaymentRequest",
-                    "OrderDraftPaymentRequest": "#/components/schemas/OrderDraftPaymentRequest"
+                    "Pix": "#/components/schemas/OrderPIXPaymentRequest",
+                    "CreditCard": "#/components/schemas/OrderCreditCardPaymentRequest",
+                    "BankSlip": "#/components/schemas/OrderBankSlipPaymentRequest",
+                    "NuPay": "#/components/schemas/OrderNuPayPaymentRequest",
+                    "PicPay": "#/components/schemas/OrderPicPayPaymentRequest",
+                    "Draft": "#/components/schemas/OrderDraftPaymentRequest"
                   }
                 }
               }

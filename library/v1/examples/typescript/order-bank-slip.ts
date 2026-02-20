@@ -3,10 +3,11 @@ import {
   OrderApi,
   type CustomerCreateRequest,
   type AddressCreateRequest,
-  type OrderBankSlipPaymentRequest,
+  type OrderCreateRequest,
+  type OrderCreateResponse,
   DocumentType,
-  PaymentMethod,
 } from 'payconductor-sdk';
+import type { AxiosError } from 'axios';
 
 const config = new Configuration({
   username: process.env.PAYCONDUCTOR_CLIENT_ID || 'your_client_id',
@@ -15,7 +16,7 @@ const config = new Configuration({
 
 const orderApi = new OrderApi(config);
 
-export async function createBankSlipOrder() {
+export async function createBankSlipOrder(): Promise<OrderCreateResponse> {
   console.log('=== Creating Bank Slip Order ===\n');
 
   const address: AddressCreateRequest = {
@@ -37,18 +38,16 @@ export async function createBankSlipOrder() {
     address,
   };
 
-  const payment: OrderBankSlipPaymentRequest = {
-    paymentMethod: PaymentMethod.BankSlip,
-    expirationInDays: 7,
-  };
-
-  const orderRequest = {
+  const orderRequest: OrderCreateRequest = {
     chargeAmount: 200.00,
     clientIp: '192.168.1.1',
     customer,
     discountAmount: 10.00,
     externalId: `boleto-order-${Date.now()}`,
-    payment,
+    payment: {
+      paymentMethod: 'BankSlip',
+      expirationInDays: 7,
+    },
     shippingFee: 15.00,
     taxFee: 0,
     items: [
@@ -63,7 +62,7 @@ export async function createBankSlipOrder() {
   };
 
   try {
-    const response = await orderApi.orderCreate(orderRequest as any);
+    const response = await orderApi.orderCreate(orderRequest);
     const data = response.data;
 
     console.log('Bank slip order created successfully!');
@@ -74,8 +73,9 @@ export async function createBankSlipOrder() {
     console.log('PDF URL:', data.bankSlip?.pdfUrl);
 
     return data;
-  } catch (error: any) {
-    console.error('Error creating bank slip order:', error.response?.data || error.message);
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error('Error creating bank slip order:', axiosError.response?.data || axiosError.message);
     throw error;
   }
 }
