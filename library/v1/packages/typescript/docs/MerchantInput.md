@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { MerchantInput } from 'payconductor-sdk';
+import { MerchantInput } from '@payconductor/sdk';
 
 const instance: MerchantInput = {
     document,

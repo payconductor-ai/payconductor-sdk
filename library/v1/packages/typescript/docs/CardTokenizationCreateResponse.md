@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CardTokenizationCreateResponse } from 'payconductor-sdk';
+import { CardTokenizationCreateResponse } from '@payconductor/sdk';
 
 const instance: CardTokenizationCreateResponse = {
     customerId,

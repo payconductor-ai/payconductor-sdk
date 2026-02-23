@@ -13,7 +13,7 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 # **orderConfirm**
 > OrderConfirmResponse orderConfirm(orderPaymentRequest)
 
-Confirms a Draft order, setting the payment method and processing the charges associated with the order.
+Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
 
 ### Example
 
@@ -22,7 +22,7 @@ import {
     OrderApi,
     Configuration,
     OrderPaymentRequest
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrderApi(configuration);
@@ -77,7 +77,7 @@ import {
     OrderApi,
     Configuration,
     OrderCreateRequest
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrderApi(configuration);
@@ -128,7 +128,7 @@ Retrieve a list of orders. Use date filter and pagination parameters to refine r
 import {
     OrderApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrderApi(configuration);
@@ -189,7 +189,7 @@ Retrieve the complete data of an order by our ID
 import {
     OrderApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrderApi(configuration);
@@ -235,7 +235,7 @@ Initiate a refund for the order specified by ID.
 import {
     OrderApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrderApi(configuration);

@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CustomerAddressResponse } from 'payconductor-sdk';
+import { CustomerAddressResponse } from '@payconductor/sdk';
 
 const instance: CustomerAddressResponse = {
     id,

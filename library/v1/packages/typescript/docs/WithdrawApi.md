@@ -20,7 +20,7 @@ import {
     WithdrawApi,
     Configuration,
     WithdrawCreateRequest
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new WithdrawApi(configuration);
@@ -71,7 +71,7 @@ Returns a paginated list of withdrawals and transfers. Filter by creation date o
 import {
     WithdrawApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new WithdrawApi(configuration);
@@ -129,7 +129,7 @@ Returns the details of a specific withdrawal or transfer using its ID
 import {
     WithdrawApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new WithdrawApi(configuration);

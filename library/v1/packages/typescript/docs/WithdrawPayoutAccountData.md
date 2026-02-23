@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { WithdrawPayoutAccountData } from 'payconductor-sdk';
+import { WithdrawPayoutAccountData } from '@payconductor/sdk';
 
 const instance: WithdrawPayoutAccountData = {
     ownerDocument,

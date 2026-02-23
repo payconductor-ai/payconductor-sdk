@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderBankSlipInfo } from 'payconductor-sdk';
+import { OrderBankSlipInfo } from '@payconductor/sdk';
 
 const instance: OrderBankSlipInfo = {
     barCode,

@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderTokenizedCardData } from 'payconductor-sdk';
+import { OrderTokenizedCardData } from '@payconductor/sdk';
 
 const instance: OrderTokenizedCardData = {
     firstSixCardNumber,

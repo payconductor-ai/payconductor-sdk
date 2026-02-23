@@ -18,7 +18,7 @@ import {
     CardTokenizationApi,
     Configuration,
     CardTokenizationCreateRequest
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new CardTokenizationApi(configuration);

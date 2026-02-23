@@ -17,7 +17,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { AddressCreateRequest } from 'payconductor-sdk';
+import { AddressCreateRequest } from '@payconductor/sdk';
 
 const instance: AddressCreateRequest = {
     city,

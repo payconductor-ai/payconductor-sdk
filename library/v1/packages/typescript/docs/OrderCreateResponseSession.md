@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderCreateResponseSession } from 'payconductor-sdk';
+import { OrderCreateResponseSession } from '@payconductor/sdk';
 
 const instance: OrderCreateResponseSession = {
     sessionId,

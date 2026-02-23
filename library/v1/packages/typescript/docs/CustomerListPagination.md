@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CustomerListPagination } from 'payconductor-sdk';
+import { CustomerListPagination } from '@payconductor/sdk';
 
 const instance: CustomerListPagination = {
     currentPage,

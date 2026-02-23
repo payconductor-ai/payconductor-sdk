@@ -1360,12 +1360,105 @@ export class CustomerApi extends BaseAPI {
 
 
 /**
+ * DefaultApi - axios parameter creator
+ */
+export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSdkSettingsPaymentMethods: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/sdk/settings/payment-methods`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DefaultApi - functional programming interface
+ */
+export const DefaultApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSdkSettingsPaymentMethods(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSdkSettingsPaymentMethods(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getSdkSettingsPaymentMethods']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * DefaultApi - factory interface
+ */
+export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DefaultApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSdkSettingsPaymentMethods(options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.getSdkSettingsPaymentMethods(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * DefaultApi - object-oriented interface
+ */
+export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getSdkSettingsPaymentMethods(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getSdkSettingsPaymentMethods(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * OrderApi - axios parameter creator
  */
 export const OrderApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
+         * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
          * @summary Confirm Order
          * @param {string} id 
          * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
@@ -1601,7 +1694,7 @@ export const OrderApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = OrderApiAxiosParamCreator(configuration)
     return {
         /**
-         * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
+         * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
          * @summary Confirm Order
          * @param {string} id 
          * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
@@ -1681,7 +1774,7 @@ export const OrderApiFactory = function (configuration?: Configuration, basePath
     const localVarFp = OrderApiFp(configuration)
     return {
         /**
-         * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
+         * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
          * @summary Confirm Order
          * @param {string} id 
          * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
@@ -1744,7 +1837,7 @@ export const OrderApiFactory = function (configuration?: Configuration, basePath
  */
 export class OrderApi extends BaseAPI {
     /**
-     * Confirms a Draft order, setting the payment method and processing the charges associated with the order.
+     * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
      * @summary Confirm Order
      * @param {string} id 
      * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)

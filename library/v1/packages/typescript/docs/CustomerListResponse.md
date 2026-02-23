@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CustomerListResponse } from 'payconductor-sdk';
+import { CustomerListResponse } from '@payconductor/sdk';
 
 const instance: CustomerListResponse = {
     data,

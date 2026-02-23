@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { WithdrawCreateRequest } from 'payconductor-sdk';
+import { WithdrawCreateRequest } from '@payconductor/sdk';
 
 const instance: WithdrawCreateRequest = {
     amount,

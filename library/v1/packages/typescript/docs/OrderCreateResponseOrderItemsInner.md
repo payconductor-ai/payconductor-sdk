@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderCreateResponseOrderItemsInner } from 'payconductor-sdk';
+import { OrderCreateResponseOrderItemsInner } from '@payconductor/sdk';
 
 const instance: OrderCreateResponseOrderItemsInner = {
     externalId,

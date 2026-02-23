@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderCreateRequestSession } from 'payconductor-sdk';
+import { OrderCreateRequestSession } from '@payconductor/sdk';
 
 const instance: OrderCreateRequestSession = {
     expiresInMinutes,

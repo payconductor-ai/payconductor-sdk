@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderItemData } from 'payconductor-sdk';
+import { OrderItemData } from '@payconductor/sdk';
 
 const instance: OrderItemData = {
     id,

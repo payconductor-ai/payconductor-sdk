@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { WithdrawCreateResponse } from 'payconductor-sdk';
+import { WithdrawCreateResponse } from '@payconductor/sdk';
 
 const instance: WithdrawCreateResponse = {
     id,

@@ -1,6 +1,6 @@
 {
-  "name": "payconductor-sdk",
-  "version": "1.0.2",
+  "name": "@payconductor/sdk",
+  "version": "1.0.1",
   "description": "PayConductor SDK for Node.js",
   "author": "PayConductor",
   "repository": {
@@ -12,7 +12,7 @@
     "typescript",
     "openapi-client",
     "openapi-generator",
-    "payconductor-sdk"
+    "@payconductor/sdk"
   ],
   "license": "MIT",
   "main": "./dist/index.js",

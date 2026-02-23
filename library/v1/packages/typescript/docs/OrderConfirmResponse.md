@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderConfirmResponse } from 'payconductor-sdk';
+import { OrderConfirmResponse } from '@payconductor/sdk';
 
 const instance: OrderConfirmResponse = {
     id,

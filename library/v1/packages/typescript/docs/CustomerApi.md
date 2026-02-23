@@ -21,7 +21,7 @@ import {
     CustomerApi,
     Configuration,
     CustomerCreateRequest
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new CustomerApi(configuration);
@@ -72,7 +72,7 @@ Retrieve a list of all customers associated with the organization, with support 
 import {
     CustomerApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new CustomerApi(configuration);
@@ -138,7 +138,7 @@ Retrieve the complete details of a specific customer using their unique ID.
 import {
     CustomerApi,
     Configuration
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new CustomerApi(configuration);
@@ -190,7 +190,7 @@ import {
     CustomerApi,
     Configuration,
     CustomerUpdateRequest
-} from 'payconductor-sdk';
+} from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new CustomerApi(configuration);

@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderPaymentRequest } from 'payconductor-sdk';
+import { OrderPaymentRequest } from '@payconductor/sdk';
 
 const instance: OrderPaymentRequest = {
     paymentMethod,

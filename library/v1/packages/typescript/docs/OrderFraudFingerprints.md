@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderFraudFingerprints } from 'payconductor-sdk';
+import { OrderFraudFingerprints } from '@payconductor/sdk';
 
 const instance: OrderFraudFingerprints = {
     threatMetrixFingerprintId,

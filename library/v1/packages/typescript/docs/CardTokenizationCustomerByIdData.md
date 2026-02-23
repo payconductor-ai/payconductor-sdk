@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CardTokenizationCustomerByIdData } from 'payconductor-sdk';
+import { CardTokenizationCustomerByIdData } from '@payconductor/sdk';
 
 const instance: CardTokenizationCustomerByIdData = {
     id,

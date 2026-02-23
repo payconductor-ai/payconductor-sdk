@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { OrderPIXInfo } from 'payconductor-sdk';
+import { OrderPIXInfo } from '@payconductor/sdk';
 
 const instance: OrderPIXInfo = {
     copyAndPasteCode,

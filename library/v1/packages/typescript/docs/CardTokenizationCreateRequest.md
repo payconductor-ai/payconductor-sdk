@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CardTokenizationCreateRequest } from 'payconductor-sdk';
+import { CardTokenizationCreateRequest } from '@payconductor/sdk';
 
 const instance: CardTokenizationCreateRequest = {
     card,

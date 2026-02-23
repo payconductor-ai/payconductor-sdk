@@ -22,6 +22,7 @@ docs/CustomerListPagination.md
 docs/CustomerListResponse.md
 docs/CustomerReadResponse.md
 docs/CustomerUpdateRequest.md
+docs/DefaultApi.md
 docs/DocumentType.md
 docs/Event.md
 docs/MerchantInput.md

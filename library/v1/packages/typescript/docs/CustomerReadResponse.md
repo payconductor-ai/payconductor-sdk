@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { CustomerReadResponse } from 'payconductor-sdk';
+import { CustomerReadResponse } from '@payconductor/sdk';
 
 const instance: CustomerReadResponse = {
     id,
