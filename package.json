@@ -1,5 +1,5 @@
 {
-  "name": "pay.conductor-sdk-server-js",
+  "name": "@payconductor/sdk-repo",
   "module": "index.ts",
   "type": "module",
   "scripts": {
