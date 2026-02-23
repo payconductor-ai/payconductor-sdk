@@ -1,6 +1,6 @@
 {
   "name": "@payconductor/sdk",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "PayConductor SDK for Node.js",
   "author": "PayConductor",
   "repository": {
