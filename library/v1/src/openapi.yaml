@@ -2,51 +2,38 @@ openapi: 3.0.3
 info:
   title: PayConductor API
   description: |-
-    PayConductor API Documentation.
+    # Introdução
 
-    This documentation covers all available features in the PayConductor RESTful API, including authentication, resource management, and usage examples.
-
-    <br />
-
-    <br />
+    Esta documentação cobre todas as funcionalidades disponíveis na API RESTful do PayConductor, incluindo autenticação, gerenciamento de recursos e exemplos de uso.
 
     ----
 
-    <br />
+    # Autenticação
 
+    A API do PayConductor usa autenticação HTTP Basic para validar requisições. Você precisa fornecer suas credenciais (Client ID e Client Secret) no formato `client:secret` codificado em Base64.
 
-    # Authentication
+    ## Obtendo Credenciais
 
-    PayConductor API uses HTTP Basic authentication to validate requests. You need to provide your credentials (Client ID and Client Secret) in the `client:secret` format encoded in Base64.
+    1. Acesse o painel administrativo do PayConductor
+    2. Navegue para **Configurações > Chaves de API**
+    3. Gere um novo par de credenciais (Client ID e Client Secret)
+    4. Armazene o Client Secret em um local seguro - ele não será exibido novamente
 
-    <br />
+    ## Formato de Autenticação
 
-    ## Getting Credentials
-
-    1. Access the PayConductor admin panel
-    2. Navigate to **Settings > API Keys**
-    3. Generate a new credentials pair (Client ID and Client Secret)
-    4. Store the Client Secret in a secure location - it will not be displayed again
-
-    <br />
-
-    ## Authentication Format
-
-    Credentials must be sent in the `Authorization` header using the Basic scheme:
+    As credenciais devem ser enviadas no cabeçalho `Authorization` usando o esquema Basic:
 
     ```
     Authorization: Basic base64(client_id:client_secret)
     ```
 
-    <br />
-
-    ## Node.js Example
+    ## Exemplo em Node.js
 
     ```javascript
     const clientId = 'your_client_id';
     const clientSecret = 'your_client_secret';
 
-    // Encode credentials in Base64
+    // Codificar credenciais em Base64
     const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
     const response = await fetch('https://api.payconductor.com/api/v1/orders', {
@@ -61,36 +48,399 @@ info:
     console.log(data);
     ```
 
-    <br />
+    ## Erros de Autenticação
 
-    ## Authentication Errors
+    | Código | Descrição |
+    |--------|----------|
+    | `401` | Credenciais inválidas ou ausentes |
+    | `403` | Credenciais válidas mas sem permissão para o recurso |
+    | `429` | Muitas requisições (limite de taxa excedido) |
 
-    | Code | Description |
-    |------|-------------|
-    | `401` | Invalid or missing credentials |
-    | `403` | Valid credentials but no permission for the resource |
-    | `429` | Too many requests (rate limit exceeded) |
-
-    ### Error Response Example
+    ### Exemplo de Resposta de Erro
 
     ```json
     {
       "error": {
         "code": "UNAUTHORIZED",
-        "message": "Invalid credentials",
-        "details": "The provided client ID or secret is incorrect"
+        "message": "Credenciais inválidas",
+        "details": "O client ID ou secret fornecido está incorreto"
+      }
+    }
+    ```
+
+    ----
+
+    # Códigos de Erro
+
+    A API do PayConductor usa códigos de erro padronizados para comunicar problemas nas requisições. Os erros são divididos em duas categorias principais: **códigos de erro da plataforma** (`code`) e **códigos de erro do provedor de pagamento** (`acquirerErrorCode`).
+
+    ## Códigos de Erro da Plataforma
+
+    Estes são os códigos de erro retornados no campo `code` quando ocorre um problema na plataforma PayConductor:
+
+    | Código | Descrição | Status HTTP |
+    |--------|-----------|--------------|
+    | `InvalidArgument` | Erro de validação de dados de entrada | 400 |
+    | `AccountRestricted` | Conta está restrita de realizar a ação | 403 |
+    | `PermissionDenied` | Usuário não tem permissão para realizar a ação | 403 |
+    | `Unauthorized` | Usuário não está autenticado | 401 |
+    | `InvalidCredentials` | Credenciais fornecidas são inválidas | 401 |
+    | `NoCredentials` | Nenhuma credencial fornecida | 401 |
+    | `IdempotencyKeyConflict` | Conflito de chave de idempotência detectado. O hash do payload não corresponde ao registro existente. | 409 |
+    | `RoutingError` | Erro relacionado ao roteamento inteligente | 400 |
+    | `WithdrawError` | Erro relacionado ao processamento de saque | 500 |
+    | `OrganizationNotFound` | Organização não encontrada | 404 |
+    | `IntegrationNotFound` | Integração não encontrada | 404 |
+    | `IntegrationNotConfigured` | Integração não configurada | 400 |
+    | `IntegrationGenericError` | Erro genérico de integração | 500 |
+    | `MethodNotImplemented` | Método não implementado | 501 |
+    | `Unavailable` | Serviço temporariamente indisponível | 503 |
+    | `InternalServerError` | Erro interno do servidor | 500 |
+    | `GenericError` | Erro genérico para problemas não especificados | 400 |
+    | `GenericNotFound` | Recurso não encontrado | 404 |
+    | `TooManyRequests` | Muitas requisições, limite de taxa excedido | 429 |
+    | `UnknownError` | Erro desconhecido | 500 |
+
+    ## Códigos de Erro do Adquirente
+
+    Estes códigos aparecem quando há um erro específico do provedor de pagamento:
+
+    ### Erros de Fundos
+
+    | Código | Descrição |
+    |--------|----------|
+    | `InsufficientFunds` | Fundos insuficientes |
+
+    ### Erros de Cartão
+
+    | Código | Descrição |
+    |--------|----------|
+    | `CardExpired` | Cartão expirado |
+    | `RecurringStoppedByCustomer` | Cobrança recorrente cancelada pelo cliente |
+    | `InvalidCardNumber` | Número de cartão inválido |
+    | `InvalidCVV` | CVV inválido |
+    | `InvalidExpirationDate` | Data de expiração inválida |
+    | `LostOrStolenCard` | Cartão perdido ou roubado |
+
+    ### Erros de PIX
+
+    | Código | Descrição |
+    |--------|----------|
+    | `PixExpired` | PIX expirado |
+    | `PixInvalidKey` | Chave PIX inválida |
+    | `PixKeyNotFound` | Chave PIX não encontrada |
+    | `PixPaymentNotFound` | Pagamento PIX não encontrado |
+
+    ### Erros de Boleto
+
+    | Código | Descrição |
+    |--------|----------|
+    | `BoletoExpired` | Boleto expirado |
+    | `BoletoInvalidBarCode` | Código de barras do boleto inválido |
+    | `BoletoPaymentNotFound` | Pagamento de boleto não encontrado |
+
+    ### Erros de Cobrança
+
+    | Código | Descrição |
+    |--------|----------|
+    | `ChargeTimeout` | Timeout de cobrança |
+    | `ChargeDenied` | Cobrança negada |
+    | `ChargeNotFound` | Cobrança não encontrada |
+    | `ChargeCancelled` | Cobrança cancelada |
+    | `ChargeDeclined` | Cobrança recusada |
+
+    ### Erros de Segurança e Fraude
+
+    | Código | Descrição |
+    |--------|----------|
+    | `SecurityViolation` | Violação de segurança |
+    | `FraudSuspected` | Suspeita de fraude |
+    | `AcquirerAntiFraudReproved` | Reprovado pelo antifraude do adquirente |
+    | `Blocked` | Bloqueado |
+    | `CardHolderBlocked` | Titular do cartão bloqueado |
+
+    ### Erros de Validação e Limite
+
+    | Código | Descrição |
+    |--------|----------|
+    | `InvalidCharge` | Cobrança inválida |
+    | `InvalidAmount` | Valor inválido |
+    | `InvalidCurrency` | Moeda inválida |
+    | `InvalidMerchant` | Comerciante inválido |
+    | `ReenterTransaction` | Reentrar transação |
+    | `RefundNotAllowed` | Reembolso não permitido |
+    | `ExceedsAmountLimit` | Excede limite de valor |
+    | `ExceedsWithdrawalLimit` | Excede limite de saque |
+    | `PaymentMethodNotSupported` | Método de pagamento não suportado |
+
+    ### Erros Genéricos
+
+    | Código | Descrição |
+    |--------|----------|
+    | `UnknownError` | Erro desconhecido |
+
+    ## Exemplos de Resposta de Erro
+
+
+    ### Erro de Validação (InvalidArgument)
+
+    Este erro ocorre quando há problemas de validação nos dados enviados. O campo `details.errors` contém informações sobre os campos com erros:
+
+    ```json
+    {
+      "code": "InvalidArgument",
+      "message": "Missing required property customer",
+      "data": null,
+      "details": {
+        "errors": [
+          {
+            "path": "customer",
+            "message": "Missing required property customer"
+          }
+        ]
+      }
+    }
+    ```
+
+    **Campos:**
+    - `code`: Código de erro da plataforma (`InvalidArgument`)
+    - `message`: Mensagem principal do erro
+    - `data`: Dados adicionais (geralmente `null`)
+    - `details.errors`: Array com os erros de validação encontrados
+      - `path`: Caminho do campo com erro (pode ser `null` para erros na raiz do objeto)
+      - `message`: Descrição do erro de validação
+
+    ### Erro de Roteamento (RoutingError)
+
+    Este erro ocorre quando há falha no processamento da venda através do roteamento inteligente. O campo `details` contém informações sobre as tentativas feitas:
+
+    ```json
+    {
+      "code": "RoutingError",
+      "message": "Insufficient funds (test card)",
+      "details": {
+        "chargeId": "ortvwh9mvin3fxzjt4avubnv",
+        "lastErrorCode": "InsufficientFunds",
+        "attempts": [
+          {
+            "number": 1,
+            "provider": "Sandbox",
+            "errorCode": "InsufficientFunds",
+            "errorMessage": "Insufficient funds (test card)"
+          }
+        ]
+      }
+    }
+    ```
+
+    **Campos:**
+    - `code`: Código de erro da plataforma (`RoutingError`)
+    - `message`: Mensagem de erro legível
+    - `details.chargeId`: ID da cobrança que falhou
+    - `details.lastErrorCode`: Último código de erro do provedor (tipo `AcquirerErrorCode`)
+    - `details.attempts`: Array com todas as tentativas realizadas
+      - `number`: Número da tentativa
+      - `provider`: Nome do provedor utilizado
+      - `errorCode`: Código de erro retornado pelo provedor (tipo `AcquirerErrorCode`)
+      - `errorMessage`: Mensagem de erro retornada pelo provedor
+
+    ### Erro de Saque (WithdrawError)
+
+    Este erro ocorre quando há falha no processamento de um saque. O campo `details` contém informações sobre todas as tentativas de provedor realizadas:
+
+    ```json
+    {
+      "code": "WithdrawError",
+      "message": "Withdrawal failed (Simulated failure for amount R$ 50.00)",
+      "data": null,
+      "details": {
+        "withdrawId": "a39qnkcbgrspazur55h561p7",
+        "lastErrorCode": "PixInvalidKey",
+        "attempts": [
+          {
+            "status": "Failed",
+            "message": "Withdrawal failed (Simulated failure for amount R$ 50.00)",
+            "provider": "Sandbox",
+            "timestamp": "2026-02-23T19:54:30.849Z"
+          }
+        ]
+      },
+      "status": 500,
+      "timestamp": "2026-02-23T19:54:30.864Z"
+    }
+    ```
+
+    **Campos:**
+    - `code`: Código de erro da plataforma (`WithdrawError`)
+    - `message`: Mensagem de erro legível
+    - `data`: Dados adicionais (geralmente `null`)
+    - `details.withdrawId`: ID do saque que falhou
+    - `details.lastErrorCode`: Último código de erro do provedor (tipo `AcquirerErrorCode`)
+    - `details.attempts`: Array com todas as tentativas de provedor realizadas
+      - `status`: Status da tentativa (ex: `Failed`)
+      - `message`: Mensagem de erro do provedor
+      - `provider`: Nome do provedor utilizado
+      - `timestamp`: Timestamp ISO 8601 da tentativa
+    - `status`: Código de status HTTP
+    - `timestamp`: Timestamp ISO 8601 do erro
+
+    ## Tratamento de Erros
+
+    Ao integrar com a API do PayConductor, recomendamos:
+
+    1. **Verificar o campo `code`** para identificar o tipo de erro
+    2. **Para erros `RoutingError`**: Verificar `details.lastErrorCode` para obter o código específico do provedor e `details.chargeId` para a referência da cobrança
+    3. **Para erros `WithdrawError`**: Verificar `details.lastErrorCode` para o código de erro do provedor e `details.errors` para todas as tentativas de provedor
+    4. **Para erros `InvalidArgument`**: Verificar `details.errors` para identificar quais campos precisam ser corrigidos
+    5. **Implementar lógica de retry**: Alguns erros temporários (como `Unavailable` ou `ChargeTimeout`) podem ser resolvidos com novas tentativas
+    6. **Logs detalhados**: Armazenar a resposta de erro completa para análise e depuração
+
+    ----
+
+    # Sandbox
+
+    O ambiente Sandbox do PayConductor permite testar integrações de pagamento sem processar transações reais. Use dados de teste para simular diferentes cenários de pagamento e casos de erro.
+
+    ## Configuração
+
+    1. Acesse sua organização **Sandbox** no painel administrativo do PayConductor
+    2. Navegue para **Integrações** e adicione um novo provedor **Sandbox**
+    3. Configure as regras de roteamento para cada método de pagamento que deseja testar, conectando-os ao provedor Sandbox
+
+    ## Cartões de Crédito de Teste
+
+    Use estes números de cartão para simular diferentes resultados de transação:
+
+    | Número do Cartão | Resultado | Código de Erro |
+    |------------------|-----------|----------------|
+    | `4242424242424242` | Sucesso | - |
+    | `4000000000000001` | Fundos insuficientes | `InsufficientFunds` |
+    | `4000000000000069` | Cartão expirado | `CardExpired` |
+    | `4000000000000127` | CVV inválido | `InvalidCVV` |
+    | `4000000000000119` | Cartão perdido ou roubado | `LostOrStolenCard` |
+    | `4000000000000002` | Transação negada | `ChargeDenied` |
+    | `4000000000000010` | Transação recusada | `ChargeDeclined` |
+    | `4100000000000019` | Suspeita de fraude | `FraudSuspected` |
+    | `4000000000000036` | Valor inválido | `InvalidAmount` |
+    | `4000000000000044` | Excede limite de valor | `ExceedsAmountLimit` |
+    | `4000000000000101` | Titular do cartão bloqueado | `CardHolderBlocked` |
+
+    **Nota:** Você pode usar qualquer data de expiração futura e qualquer CVV de 3 dígitos para cartões de teste.
+
+    ## E-mails de Cliente de Teste
+
+    Os endereços de e-mail dos clientes afetam o comportamento da transação:
+
+    | E-mail | Comportamento |
+    |--------|---------------|
+    | `paid@sandbox.com` | Transação auto-confirma imediatamente (para métodos de pagamento assíncronos como PIX e Boleto, a confirmação é enviada via webhook) |
+    | `failed@sandbox.com` | Transação falha com erro genérico |
+    | Qualquer outro e-mail | Transação processa normalmente (pendente) |
+
+    ## Saques de Teste (PIX)
+
+    Os valores de saque acionam diferentes comportamentos:
+
+    | Valor (BRL) | Comportamento |
+    |-------------|---------------|
+    | `20.00 ~ 50.00` | Transação falha |
+    | `50.01 ~ 100.00` | Transação auto-confirma |
+    | Qualquer outro valor | Transação processa normalmente (pendente) |
+
+    ----
+
+    # Idempotência
+
+    A API do PayConductor suporta idempotência para operações críticas, garantindo que requisições duplicadas não resultem em múltiplas execuções da mesma operação. (O retorno será o mesmo para a mesma chave)
+
+    ## Como Usar
+
+    Para tornar uma requisição idempotente, inclua o header `Idempotency-Key` com um valor único (recomendamos UUID v4):
+
+    ```bash
+    curl -X POST https://api.payconductor.com/api/v1/orders \\
+      -H "Idempotency-Key: 123e4567-e89b-12d3-a456-426614174000" \\
+      -H "Content-Type: application/json" \\
+      -d '{
+        "amount": 10000,
+        "currency": "BRL",
+        "payment": {
+          "paymentMethod": "Pix"
+        }
+      }'
+    ```
+
+    ## Endpoints que Suportam Idempotência
+
+    Os seguintes endpoints suportam requisições idempotentes:
+
+    | Endpoint | Método | Descrição |
+    |----------|--------|-----------|
+    | `/api/v1/orders` | POST | Criar novo pedido |
+    | `/api/v1/withdraws` | POST | Criar novo saque |
+
+    ## Comportamento
+
+    ### Cache de 24 Horas
+
+    Os resultados de operações idempotentes são armazenados por **24 horas**. Após esse período, a chave de idempotência expira e uma nova requisição com a mesma chave será processada como uma nova operação.
+
+    ### Requisições Duplicadas
+
+    Quando você envia uma requisição com uma chave de idempotência que já foi processada:
+
+    1. **Mesma requisição**: Se o payload for idêntico, a API retorna o resultado original do cache
+    2. **Payload diferente**: Se o payload for diferente, a API retorna erro `409 Conflict` com código `IdempotencyKeyConflict`
+
+    ### Exemplo de Requisição Duplicada
+
+    **Primeira requisição (processada com sucesso):**
+    ```bash
+    curl -X POST https://api.payconductor.com/api/v1/orders \\
+      -H "Idempotency-Key: 123e4567-e89b-12d3-a456-426614174000" \\
+      -d '{"amount": 10000, "currency": "BRL"}'
+    ```
+
+    **Segunda requisição (mesmo payload - retorna resultado cacheado):**
+    ```bash
+    curl -X POST https://api.payconductor.com/api/v1/orders \\
+      -H "Idempotency-Key: 123e4567-e89b-12d3-a456-426614174000" \\
+      -d '{"amount": 10000, "currency": "BRL"}'
+    # Retorna o mesmo pedido criado na primeira requisição
+    ```
+
+    **Terceira requisição (payload diferente - retorna erro):**
+    ```bash
+    curl -X POST https://api.payconductor.com/api/v1/orders \\
+      -H "Idempotency-Key: 123e4567-e89b-12d3-a456-426614174000" \\
+      -d '{"amount": 20000, "currency": "BRL"}'  # Valor diferente!
+    # Retorna erro 409 Conflict
+    ```
+
+    ### Resposta de Conflito
+
+    Quando há conflito de hash (mesma chave, payload diferente), você receberá:
+
+    ```json
+    {
+      "code": "IdempotencyKeyConflict",
+      "message": "Idempotency key conflict detected. Hash mismatch with existing record.",
+      "status": 409,
+      "details": {
+        "expectedHash": "abc123...",
+        "actualHash": "def456..."
       }
     }
     ```
   version: 1.0.0
 servers:
-  - url: 'https://app.payconductor.ai/api/v1'
+  - url: 'http://localhost:5173/api/v1'
 paths:
   /orders/:
     post:
       operationId: orderCreate
       summary: Create Order
-      description: Create a new order for payment using the provided data
+      description: Create a new order for payment using the provided data.
       requestBody:
         description: Order data for payment processing
         required: true
@@ -291,14 +641,38 @@ paths:
                       description: Merchant name
                       type: string
                       examples:
-                        - John's Store
+                        - John Store
                       maxLength: 255
                       minLength: 2
                   required:
                     - document
                     - email
                     - name
-                  title: MerchantInput
+                  title: Merchant Data
+                splits:
+                  description: Split data for payment division between multiple receivers
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      merchantId:
+                        description: Merchant ID of the split receiver
+                        type: string
+                        examples:
+                          - ckas91kasdak
+                      amount:
+                        description: Amount to be split to the receiver
+                        type: number
+                        examples:
+                          - 50
+                      receiverType:
+                        $ref: '#/components/schemas/ReceiverType'
+                    required:
+                      - merchantId
+                      - amount
+                      - receiverType
+                  maxItems: 10
+                  title: Order Split Data
                 payment:
                   description: 'Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)'
                   discriminator:
@@ -309,6 +683,8 @@ paths:
                       BankSlip: '#/components/schemas/OrderBankSlipPaymentRequest'
                       NuPay: '#/components/schemas/OrderNuPayPaymentRequest'
                       PicPay: '#/components/schemas/OrderPicPayPaymentRequest'
+                      GooglePay: '#/components/schemas/OrderGooglePayPaymentRequest'
+                      ApplePay: '#/components/schemas/ApplePay'
                       Draft: '#/components/schemas/OrderDraftPaymentRequest'
                   noValidate: true
                   oneOf:
@@ -317,6 +693,8 @@ paths:
                     - $ref: '#/components/schemas/OrderBankSlipPaymentRequest'
                     - $ref: '#/components/schemas/OrderNuPayPaymentRequest'
                     - $ref: '#/components/schemas/OrderPicPayPaymentRequest'
+                    - $ref: '#/components/schemas/OrderGooglePayPaymentRequest'
+                    - $ref: '#/components/schemas/ApplePay'
                     - $ref: '#/components/schemas/OrderDraftPaymentRequest'
                   title: Order Payment Request
                 splitAmountTotal:
@@ -363,7 +741,16 @@ paths:
                         - merchant@gmail.com
                       type: string
                   title: Order Metadata
-              additionalProperties: false
+                routing:
+                  description: Routing data to define specific integrations to process the order
+                  type: object
+                  properties:
+                    directIntegrationId:
+                      description: 'ID of a specific integration to process the order. Used to force the order to be processed by a specific integration, bypassing the default routing configuration'
+                      type: string
+                      examples:
+                        - integration_123
+                  title: Order Routing Data
               noValidate: true
               required:
                 - chargeAmount
@@ -394,6 +781,13 @@ paths:
                       - description: External order ID (provided by your integration)
                         examples:
                           - order_123
+                        type: string
+                      - type: 'null'
+                  idempotencyKey:
+                    anyOf:
+                      - description: Order idempotency key
+                        examples:
+                          - unique-key-123
                         type: string
                       - type: 'null'
                   externalIntegrationKey:
@@ -535,6 +929,7 @@ paths:
                         type: string
                       - type: 'null'
                   orderItems:
+                    description: List of products or services included in the order
                     type: array
                     items:
                       type: object
@@ -584,6 +979,7 @@ paths:
                         - totalAmount
                         - totalNetAmount
                         - unityPrice
+                    title: Order Items
                   session:
                     anyOf:
                       - type: object
@@ -595,11 +991,36 @@ paths:
                           - sessionId
                       - type: 'null'
                     nullable: true
-                additionalProperties: false
+                  threeDSecure:
+                    type: object
+                    properties:
+                      authToken:
+                        description: '3DS authentication token, returned only when internal 3DS authentication needs to be performed'
+                        type: string
+                        examples:
+                          - BwABBylVaQAAAAFwllVpAAAAAAA=
+                      threeDsUrl:
+                        description: 'URL to execute the 3DS challenge, returned only for internal 3DS authentications'
+                        type: string
+                        examples:
+                          - 'https://www.mercadopago.com.ar/auth/card/validation/pages/remedies/019ada0a-fe1f-7a82-ba1a-1ccb4e0232e7?display_mode=self_hosted&guest_token=0661345a-e0e1-4c09-aff9-b7929ca9a24a'
+                      dsTransactionId:
+                        description: Directory server transaction identifier generated by the authentication provider
+                        type: string
+                      version:
+                        description: 3DS protocol version used in the authentication
+                        type: string
+                      status:
+                        $ref: '#/components/schemas/Status'
+                      acquirer:
+                        $ref: '#/components/schemas/Acquirer'
+                    required:
+                      - status
                 noValidate: true
                 required:
                   - id
                   - externalId
+                  - idempotencyKey
                   - externalIntegrationKey
                   - externalIntegrationId
                   - amount
@@ -690,7 +1111,7 @@ paths:
     get:
       operationId: orderRead
       summary: Get Order By ID
-      description: Retrieve the complete data of an order by our ID
+      description: Retrieve the complete data of an order by our ID.
       parameters:
         - name: id
           in: path
@@ -725,6 +1146,8 @@ paths:
                   BankSlip: '#/components/schemas/OrderBankSlipPaymentRequest'
                   NuPay: '#/components/schemas/OrderNuPayPaymentRequest'
                   PicPay: '#/components/schemas/OrderPicPayPaymentRequest'
+                  GooglePay: '#/components/schemas/OrderGooglePayPaymentRequest'
+                  ApplePay: '#/components/schemas/ApplePay'
                   Draft: '#/components/schemas/OrderDraftPaymentRequest'
               noValidate: true
               oneOf:
@@ -733,6 +1156,8 @@ paths:
                 - $ref: '#/components/schemas/OrderBankSlipPaymentRequest'
                 - $ref: '#/components/schemas/OrderNuPayPaymentRequest'
                 - $ref: '#/components/schemas/OrderPicPayPaymentRequest'
+                - $ref: '#/components/schemas/OrderGooglePayPaymentRequest'
+                - $ref: '#/components/schemas/ApplePay'
                 - $ref: '#/components/schemas/OrderDraftPaymentRequest'
               title: Order Payment Request
       responses:
@@ -754,6 +1179,13 @@ paths:
                       - description: External order ID (provided by your integration)
                         examples:
                           - order_123
+                        type: string
+                      - type: 'null'
+                  idempotencyKey:
+                    anyOf:
+                      - description: Order idempotency key
+                        examples:
+                          - unique-key-123
                         type: string
                       - type: 'null'
                   amount:
@@ -871,10 +1303,36 @@ paths:
                           - Insufficient funds
                         type: string
                       - type: 'null'
+                  threeDSecure:
+                    type: object
+                    properties:
+                      authToken:
+                        description: '3DS authentication token, returned only when internal 3DS authentication needs to be performed'
+                        type: string
+                        examples:
+                          - BwABBylVaQAAAAFwllVpAAAAAAA=
+                      threeDsUrl:
+                        description: 'URL to execute the 3DS challenge, returned only for internal 3DS authentications'
+                        type: string
+                        examples:
+                          - 'https://www.mercadopago.com.ar/auth/card/validation/pages/remedies/019ada0a-fe1f-7a82-ba1a-1ccb4e0232e7?display_mode=self_hosted&guest_token=0661345a-e0e1-4c09-aff9-b7929ca9a24a'
+                      dsTransactionId:
+                        description: Directory server transaction identifier generated by the authentication provider
+                        type: string
+                      version:
+                        description: 3DS protocol version used in the authentication
+                        type: string
+                      status:
+                        $ref: '#/components/schemas/Status'
+                      acquirer:
+                        $ref: '#/components/schemas/Acquirer'
+                    required:
+                      - status
                 noValidate: true
                 required:
                   - id
                   - externalId
+                  - idempotencyKey
                   - amount
                   - costFee
                   - status
@@ -898,14 +1356,11 @@ paths:
             type: string
       tags:
         - Order
-  /sdk/settings/payment-methods:
-    get:
-      operationId: getSdkSettingsPayment-methods
   /withdraws/:
     post:
       operationId: withdrawCreate
       summary: Create Withdrawal
-      description: Create a new withdrawal or transfer to the provided payment account
+      description: Create a new withdrawal or transfer to the provided payment account.
       requestBody:
         description: Withdrawal or transfer request data
         required: true
@@ -945,14 +1400,17 @@ paths:
                       description: Merchant name
                       type: string
                       examples:
-                        - John's Store
+                        - John Store
                       maxLength: 255
                       minLength: 2
                   required:
                     - document
                     - email
                     - name
-                  title: MerchantInput
+                  title: Merchant Data
+                merchantId:
+                  description: ID do comerciante associado ao saque
+                  type: string
                 payoutAccount:
                   description: Bank account information for withdrawal
                   type: object
@@ -992,6 +1450,13 @@ paths:
                     type: string
                     examples:
                       - wd_1234567890
+                  idempotencyKey:
+                    anyOf:
+                      - description: Withdrawal idempotency key
+                        examples:
+                          - unique-withdraw-key-123
+                        type: string
+                      - type: 'null'
                   externalId:
                     anyOf:
                       - description: Withdrawal ID in your system
@@ -1060,36 +1525,12 @@ paths:
                         type: string
                         examples:
                           - pa_1234567890
-                      ownerDocument:
-                        description: Account holder document (CPF or CNPJ)
-                        type: string
-                        examples:
-                          - '12345678909'
-                          - '12345678000195'
-                        pattern: '^\d{11}$|^\d{14}$'
-                      ownerName:
-                        description: Account holder name
-                        type: string
-                        examples:
-                          - John Doe
-                          - Company XYZ Ltda
-                      pixKey:
-                        description: PIX key used for the withdrawal
-                        type: string
-                        examples:
-                          - john@example.com
-                          - '11999999999'
-                      pixType:
-                        $ref: '#/components/schemas/PixType'
                     required:
                       - id
-                      - ownerDocument
-                      - ownerName
-                      - pixKey
-                      - pixType
                 noValidate: true
                 required:
                   - id
+                  - idempotencyKey
                   - externalId
                   - externalIntegrationKey
                   - externalIntegrationId
@@ -1105,7 +1546,7 @@ paths:
     get:
       operationId: withdrawList
       summary: List Withdrawals
-      description: 'Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)'
+      description: 'Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID).'
       parameters:
         - name: endDate
           in: query
@@ -1164,7 +1605,7 @@ paths:
     get:
       operationId: withdrawRead
       summary: Get Withdrawal By ID
-      description: Returns the details of a specific withdrawal or transfer using its ID
+      description: Returns the details of a specific withdrawal or transfer using its ID.
       parameters:
         - name: id
           in: path
@@ -1173,6 +1614,2124 @@ paths:
             type: string
       tags:
         - Withdraw
+  /merchants/:
+    post:
+      operationId: postMerchants
+      summary: Create Merchant
+      description: Create a new merchant with complete onboarding data.
+      requestBody:
+        description: Modelo para criação de merchant com todos os dados necessários
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Modelo para criação de merchant com todos os dados necessários
+              type: object
+              properties:
+                personType:
+                  $ref: '#/components/schemas/PersonType'
+                productsDescription:
+                  description: Descrição dos produtos ou serviços oferecidos
+                  type: string
+                  examples:
+                    - Venda de roupas e acessórios
+                    - Consultoria em TI
+                  maxLength: 255
+                mcc:
+                  description: Merchant Category Code
+                  type: string
+                  examples:
+                    - '5411'
+                    - '5812'
+                  maxLength: 10
+                  minLength: 4
+                website:
+                  description: URL do site do merchant
+                  type: string
+                  format: url
+                  examples:
+                    - 'https://www.oldorder.com.br'
+                  maxLength: 255
+                business:
+                  type: object
+                  properties:
+                    name:
+                      description: Razão social ou nome completo do merchant
+                      type: string
+                      examples:
+                        - Old Order Tecnologia LTDA
+                        - João da Silva
+                      maxLength: 255
+                      minLength: 2
+                    document:
+                      description: CNPJ ou CPF do merchant
+                      type: string
+                      examples:
+                        - '65800562000165'
+                        - '51102616010'
+                      maxLength: 14
+                      minLength: 11
+                    tradeName:
+                      description: Nome fantasia do merchant
+                      type: string
+                      examples:
+                        - Loja do João
+                      maxLength: 255
+                      minLength: 2
+                    email:
+                      description: Email principal do merchant
+                      type: string
+                      format: email
+                      examples:
+                        - contato@oldorder.com.br
+                      maxLength: 255
+                    phoneNumber:
+                      description: Telefone de contato do merchant
+                      type: string
+                      examples:
+                        - '31999887766'
+                        - '11987654321'
+                      maxLength: 20
+                      minLength: 10
+                    address:
+                      description: Schema for creating a new address
+                      type: object
+                      properties:
+                        city:
+                          description: City name
+                          type: string
+                          examples:
+                            - São Paulo
+                            - Rio de Janeiro
+                        country:
+                          description: Country code in ISO 3166-1 alpha-2 format
+                          type: string
+                          default: BR
+                          examples:
+                            - BR
+                            - US
+                          maxLength: 2
+                          minLength: 2
+                        neighborhood:
+                          description: Neighborhood name
+                          type: string
+                          examples:
+                            - Downtown
+                            - Jardins
+                        number:
+                          description: Address number
+                          type: string
+                          examples:
+                            - '1000'
+                            - '150'
+                        state:
+                          description: State code in ISO 3166-2 format
+                          type: string
+                          examples:
+                            - SP
+                            - RJ
+                          maxLength: 2
+                          minLength: 2
+                        street:
+                          description: Street name
+                          type: string
+                          examples:
+                            - Av. Paulista
+                            - Rua das Flores
+                        zipCode:
+                          description: ZIP code without formatting
+                          type: string
+                          examples:
+                            - '01311200'
+                            - '20040002'
+                      required:
+                        - city
+                        - country
+                        - neighborhood
+                        - number
+                        - state
+                        - street
+                        - zipCode
+                      title: Address Create Request
+                  required:
+                    - name
+                    - document
+                    - email
+                    - address
+                owner:
+                  description: Dados do proprietário/responsável legal do merchant
+                  type: object
+                  properties:
+                    name:
+                      description: Nome completo do proprietário
+                      type: string
+                      examples:
+                        - João da Silva
+                      maxLength: 255
+                      minLength: 2
+                    document:
+                      description: CPF do proprietário
+                      type: string
+                      examples:
+                        - '51102616010'
+                      maxLength: 14
+                      minLength: 11
+                    email:
+                      description: Email do proprietário
+                      type: string
+                      format: email
+                      examples:
+                        - joao@gmail.com
+                      maxLength: 255
+                    phoneNumber:
+                      description: Telefone do proprietário
+                      type: string
+                      examples:
+                        - '31999887766'
+                      maxLength: 20
+                      minLength: 10
+                    address:
+                      description: Schema for creating a new address
+                      type: object
+                      properties:
+                        city:
+                          description: City name
+                          type: string
+                          examples:
+                            - São Paulo
+                            - Rio de Janeiro
+                        country:
+                          description: Country code in ISO 3166-1 alpha-2 format
+                          type: string
+                          default: BR
+                          examples:
+                            - BR
+                            - US
+                          maxLength: 2
+                          minLength: 2
+                        neighborhood:
+                          description: Neighborhood name
+                          type: string
+                          examples:
+                            - Downtown
+                            - Jardins
+                        number:
+                          description: Address number
+                          type: string
+                          examples:
+                            - '1000'
+                            - '150'
+                        state:
+                          description: State code in ISO 3166-2 format
+                          type: string
+                          examples:
+                            - SP
+                            - RJ
+                          maxLength: 2
+                          minLength: 2
+                        street:
+                          description: Street name
+                          type: string
+                          examples:
+                            - Av. Paulista
+                            - Rua das Flores
+                        zipCode:
+                          description: ZIP code without formatting
+                          type: string
+                          examples:
+                            - '01311200'
+                            - '20040002'
+                      required:
+                        - city
+                        - country
+                        - neighborhood
+                        - number
+                        - state
+                        - street
+                        - zipCode
+                      title: Address Create Request
+                    birthdate:
+                      description: 'Data de nascimento do proprietário (formato: YYYY-MM-DD)'
+                      type: string
+                      format: date
+                      examples:
+                        - '1990-01-01'
+                  required:
+                    - name
+                    - document
+                    - address
+                    - birthdate
+                payoutAccount:
+                  description: Dados da conta bancária do merchant para recebimento (PIX e/ou conta corrente)
+                  type: object
+                  properties:
+                    pix:
+                      description: Dados da chave PIX para recebimento
+                      type: object
+                      properties:
+                        type:
+                          $ref: '#/components/schemas/Type'
+                        key:
+                          description: Chave PIX
+                          type: string
+                          examples:
+                            - '65800562000165'
+                            - joao@email.com
+                            - '31999887766'
+                          maxLength: 100
+                          minLength: 1
+                      required:
+                        - type
+                        - key
+                    checking:
+                      description: Dados da conta bancária para recebimento
+                      type: object
+                      properties:
+                        accountNumber:
+                          description: Número da conta com dígito
+                          type: string
+                          examples:
+                            - 1425-6
+                            - 12345-0
+                          maxLength: 25
+                          minLength: 1
+                        routingNumber:
+                          description: Código do banco + número da agência + dígito
+                          type: string
+                          examples:
+                            - 001-0001-1
+                          maxLength: 25
+                          minLength: 1
+                      required:
+                        - accountNumber
+                        - routingNumber
+                financialRules:
+                  type: object
+                  properties:
+                    fees:
+                      type: array
+                      items:
+                        description: Regras financeiras a serem repassadas para adquirente
+                        type: object
+                        properties:
+                          paymentMethod:
+                            $ref: '#/components/schemas/PaymentMethod'
+                          daysDelayForRedeem:
+                            description: Número de dias para liberação do valor para saque
+                            type: number
+                            examples:
+                              - 2
+                              - 60
+                            minimum: 0
+                            multipleOf: 1
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                installmentNumber:
+                                  description: Número da parcela
+                                  type: number
+                                  examples:
+                                    - 1
+                                    - 2
+                                    - 3
+                                  minimum: 1
+                                  multipleOf: 1
+                                mdrFeePercentage:
+                                  description: Percentual de taxa MDR
+                                  type: number
+                                  examples:
+                                    - 1.5
+                                    - 2
+                                  minimum: 0
+                                mdrFeeFixedAmount:
+                                  description: Valor fixo da taxa MDR
+                                  type: number
+                                  examples:
+                                    - 0.5
+                                    - 1
+                                  minimum: 0
+                                anticipationFeePercentage:
+                                  description: Percentual de taxa de antecipação
+                                  type: number
+                                  examples:
+                                    - 12.3
+                                    - 15.41
+                                  minimum: 0
+                              required:
+                                - installmentNumber
+                                - mdrFeePercentage
+                                - mdrFeeFixedAmount
+                                - anticipationFeePercentage
+                        required:
+                          - paymentMethod
+                          - daysDelayForRedeem
+                          - items
+                  required:
+                    - fees
+              required:
+                - website
+                - business
+                - owner
+                - payoutAccount
+              title: Merchant
+          application/x-www-form-urlencoded:
+            schema:
+              description: Modelo para criação de merchant com todos os dados necessários
+              type: object
+              properties:
+                personType:
+                  $ref: '#/components/schemas/PersonType'
+                productsDescription:
+                  description: Descrição dos produtos ou serviços oferecidos
+                  type: string
+                  examples:
+                    - Venda de roupas e acessórios
+                    - Consultoria em TI
+                  maxLength: 255
+                mcc:
+                  description: Merchant Category Code
+                  type: string
+                  examples:
+                    - '5411'
+                    - '5812'
+                  maxLength: 10
+                  minLength: 4
+                website:
+                  description: URL do site do merchant
+                  type: string
+                  format: url
+                  examples:
+                    - 'https://www.oldorder.com.br'
+                  maxLength: 255
+                business:
+                  type: object
+                  properties:
+                    name:
+                      description: Razão social ou nome completo do merchant
+                      type: string
+                      examples:
+                        - Old Order Tecnologia LTDA
+                        - João da Silva
+                      maxLength: 255
+                      minLength: 2
+                    document:
+                      description: CNPJ ou CPF do merchant
+                      type: string
+                      examples:
+                        - '65800562000165'
+                        - '51102616010'
+                      maxLength: 14
+                      minLength: 11
+                    tradeName:
+                      description: Nome fantasia do merchant
+                      type: string
+                      examples:
+                        - Loja do João
+                      maxLength: 255
+                      minLength: 2
+                    email:
+                      description: Email principal do merchant
+                      type: string
+                      format: email
+                      examples:
+                        - contato@oldorder.com.br
+                      maxLength: 255
+                    phoneNumber:
+                      description: Telefone de contato do merchant
+                      type: string
+                      examples:
+                        - '31999887766'
+                        - '11987654321'
+                      maxLength: 20
+                      minLength: 10
+                    address:
+                      description: Schema for creating a new address
+                      type: object
+                      properties:
+                        city:
+                          description: City name
+                          type: string
+                          examples:
+                            - São Paulo
+                            - Rio de Janeiro
+                        country:
+                          description: Country code in ISO 3166-1 alpha-2 format
+                          type: string
+                          default: BR
+                          examples:
+                            - BR
+                            - US
+                          maxLength: 2
+                          minLength: 2
+                        neighborhood:
+                          description: Neighborhood name
+                          type: string
+                          examples:
+                            - Downtown
+                            - Jardins
+                        number:
+                          description: Address number
+                          type: string
+                          examples:
+                            - '1000'
+                            - '150'
+                        state:
+                          description: State code in ISO 3166-2 format
+                          type: string
+                          examples:
+                            - SP
+                            - RJ
+                          maxLength: 2
+                          minLength: 2
+                        street:
+                          description: Street name
+                          type: string
+                          examples:
+                            - Av. Paulista
+                            - Rua das Flores
+                        zipCode:
+                          description: ZIP code without formatting
+                          type: string
+                          examples:
+                            - '01311200'
+                            - '20040002'
+                      required:
+                        - city
+                        - country
+                        - neighborhood
+                        - number
+                        - state
+                        - street
+                        - zipCode
+                      title: Address Create Request
+                  required:
+                    - name
+                    - document
+                    - email
+                    - address
+                owner:
+                  description: Dados do proprietário/responsável legal do merchant
+                  type: object
+                  properties:
+                    name:
+                      description: Nome completo do proprietário
+                      type: string
+                      examples:
+                        - João da Silva
+                      maxLength: 255
+                      minLength: 2
+                    document:
+                      description: CPF do proprietário
+                      type: string
+                      examples:
+                        - '51102616010'
+                      maxLength: 14
+                      minLength: 11
+                    email:
+                      description: Email do proprietário
+                      type: string
+                      format: email
+                      examples:
+                        - joao@gmail.com
+                      maxLength: 255
+                    phoneNumber:
+                      description: Telefone do proprietário
+                      type: string
+                      examples:
+                        - '31999887766'
+                      maxLength: 20
+                      minLength: 10
+                    address:
+                      description: Schema for creating a new address
+                      type: object
+                      properties:
+                        city:
+                          description: City name
+                          type: string
+                          examples:
+                            - São Paulo
+                            - Rio de Janeiro
+                        country:
+                          description: Country code in ISO 3166-1 alpha-2 format
+                          type: string
+                          default: BR
+                          examples:
+                            - BR
+                            - US
+                          maxLength: 2
+                          minLength: 2
+                        neighborhood:
+                          description: Neighborhood name
+                          type: string
+                          examples:
+                            - Downtown
+                            - Jardins
+                        number:
+                          description: Address number
+                          type: string
+                          examples:
+                            - '1000'
+                            - '150'
+                        state:
+                          description: State code in ISO 3166-2 format
+                          type: string
+                          examples:
+                            - SP
+                            - RJ
+                          maxLength: 2
+                          minLength: 2
+                        street:
+                          description: Street name
+                          type: string
+                          examples:
+                            - Av. Paulista
+                            - Rua das Flores
+                        zipCode:
+                          description: ZIP code without formatting
+                          type: string
+                          examples:
+                            - '01311200'
+                            - '20040002'
+                      required:
+                        - city
+                        - country
+                        - neighborhood
+                        - number
+                        - state
+                        - street
+                        - zipCode
+                      title: Address Create Request
+                    birthdate:
+                      description: 'Data de nascimento do proprietário (formato: YYYY-MM-DD)'
+                      type: string
+                      format: date
+                      examples:
+                        - '1990-01-01'
+                  required:
+                    - name
+                    - document
+                    - address
+                    - birthdate
+                payoutAccount:
+                  description: Dados da conta bancária do merchant para recebimento (PIX e/ou conta corrente)
+                  type: object
+                  properties:
+                    pix:
+                      description: Dados da chave PIX para recebimento
+                      type: object
+                      properties:
+                        type:
+                          $ref: '#/components/schemas/Type'
+                        key:
+                          description: Chave PIX
+                          type: string
+                          examples:
+                            - '65800562000165'
+                            - joao@email.com
+                            - '31999887766'
+                          maxLength: 100
+                          minLength: 1
+                      required:
+                        - type
+                        - key
+                    checking:
+                      description: Dados da conta bancária para recebimento
+                      type: object
+                      properties:
+                        accountNumber:
+                          description: Número da conta com dígito
+                          type: string
+                          examples:
+                            - 1425-6
+                            - 12345-0
+                          maxLength: 25
+                          minLength: 1
+                        routingNumber:
+                          description: Código do banco + número da agência + dígito
+                          type: string
+                          examples:
+                            - 001-0001-1
+                          maxLength: 25
+                          minLength: 1
+                      required:
+                        - accountNumber
+                        - routingNumber
+                financialRules:
+                  type: object
+                  properties:
+                    fees:
+                      type: array
+                      items:
+                        description: Regras financeiras a serem repassadas para adquirente
+                        type: object
+                        properties:
+                          paymentMethod:
+                            $ref: '#/components/schemas/PaymentMethod'
+                          daysDelayForRedeem:
+                            description: Número de dias para liberação do valor para saque
+                            type: number
+                            examples:
+                              - 2
+                              - 60
+                            minimum: 0
+                            multipleOf: 1
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                installmentNumber:
+                                  description: Número da parcela
+                                  type: number
+                                  examples:
+                                    - 1
+                                    - 2
+                                    - 3
+                                  minimum: 1
+                                  multipleOf: 1
+                                mdrFeePercentage:
+                                  description: Percentual de taxa MDR
+                                  type: number
+                                  examples:
+                                    - 1.5
+                                    - 2
+                                  minimum: 0
+                                mdrFeeFixedAmount:
+                                  description: Valor fixo da taxa MDR
+                                  type: number
+                                  examples:
+                                    - 0.5
+                                    - 1
+                                  minimum: 0
+                                anticipationFeePercentage:
+                                  description: Percentual de taxa de antecipação
+                                  type: number
+                                  examples:
+                                    - 12.3
+                                    - 15.41
+                                  minimum: 0
+                              required:
+                                - installmentNumber
+                                - mdrFeePercentage
+                                - mdrFeeFixedAmount
+                                - anticipationFeePercentage
+                        required:
+                          - paymentMethod
+                          - daysDelayForRedeem
+                          - items
+                  required:
+                    - fees
+              required:
+                - website
+                - business
+                - owner
+                - payoutAccount
+              title: Merchant
+          multipart/form-data:
+            schema:
+              description: Modelo para criação de merchant com todos os dados necessários
+              type: object
+              properties:
+                personType:
+                  $ref: '#/components/schemas/PersonType'
+                productsDescription:
+                  description: Descrição dos produtos ou serviços oferecidos
+                  type: string
+                  examples:
+                    - Venda de roupas e acessórios
+                    - Consultoria em TI
+                  maxLength: 255
+                mcc:
+                  description: Merchant Category Code
+                  type: string
+                  examples:
+                    - '5411'
+                    - '5812'
+                  maxLength: 10
+                  minLength: 4
+                website:
+                  description: URL do site do merchant
+                  type: string
+                  format: url
+                  examples:
+                    - 'https://www.oldorder.com.br'
+                  maxLength: 255
+                business:
+                  type: object
+                  properties:
+                    name:
+                      description: Razão social ou nome completo do merchant
+                      type: string
+                      examples:
+                        - Old Order Tecnologia LTDA
+                        - João da Silva
+                      maxLength: 255
+                      minLength: 2
+                    document:
+                      description: CNPJ ou CPF do merchant
+                      type: string
+                      examples:
+                        - '65800562000165'
+                        - '51102616010'
+                      maxLength: 14
+                      minLength: 11
+                    tradeName:
+                      description: Nome fantasia do merchant
+                      type: string
+                      examples:
+                        - Loja do João
+                      maxLength: 255
+                      minLength: 2
+                    email:
+                      description: Email principal do merchant
+                      type: string
+                      format: email
+                      examples:
+                        - contato@oldorder.com.br
+                      maxLength: 255
+                    phoneNumber:
+                      description: Telefone de contato do merchant
+                      type: string
+                      examples:
+                        - '31999887766'
+                        - '11987654321'
+                      maxLength: 20
+                      minLength: 10
+                    address:
+                      description: Schema for creating a new address
+                      type: object
+                      properties:
+                        city:
+                          description: City name
+                          type: string
+                          examples:
+                            - São Paulo
+                            - Rio de Janeiro
+                        country:
+                          description: Country code in ISO 3166-1 alpha-2 format
+                          type: string
+                          default: BR
+                          examples:
+                            - BR
+                            - US
+                          maxLength: 2
+                          minLength: 2
+                        neighborhood:
+                          description: Neighborhood name
+                          type: string
+                          examples:
+                            - Downtown
+                            - Jardins
+                        number:
+                          description: Address number
+                          type: string
+                          examples:
+                            - '1000'
+                            - '150'
+                        state:
+                          description: State code in ISO 3166-2 format
+                          type: string
+                          examples:
+                            - SP
+                            - RJ
+                          maxLength: 2
+                          minLength: 2
+                        street:
+                          description: Street name
+                          type: string
+                          examples:
+                            - Av. Paulista
+                            - Rua das Flores
+                        zipCode:
+                          description: ZIP code without formatting
+                          type: string
+                          examples:
+                            - '01311200'
+                            - '20040002'
+                      required:
+                        - city
+                        - country
+                        - neighborhood
+                        - number
+                        - state
+                        - street
+                        - zipCode
+                      title: Address Create Request
+                  required:
+                    - name
+                    - document
+                    - email
+                    - address
+                owner:
+                  description: Dados do proprietário/responsável legal do merchant
+                  type: object
+                  properties:
+                    name:
+                      description: Nome completo do proprietário
+                      type: string
+                      examples:
+                        - João da Silva
+                      maxLength: 255
+                      minLength: 2
+                    document:
+                      description: CPF do proprietário
+                      type: string
+                      examples:
+                        - '51102616010'
+                      maxLength: 14
+                      minLength: 11
+                    email:
+                      description: Email do proprietário
+                      type: string
+                      format: email
+                      examples:
+                        - joao@gmail.com
+                      maxLength: 255
+                    phoneNumber:
+                      description: Telefone do proprietário
+                      type: string
+                      examples:
+                        - '31999887766'
+                      maxLength: 20
+                      minLength: 10
+                    address:
+                      description: Schema for creating a new address
+                      type: object
+                      properties:
+                        city:
+                          description: City name
+                          type: string
+                          examples:
+                            - São Paulo
+                            - Rio de Janeiro
+                        country:
+                          description: Country code in ISO 3166-1 alpha-2 format
+                          type: string
+                          default: BR
+                          examples:
+                            - BR
+                            - US
+                          maxLength: 2
+                          minLength: 2
+                        neighborhood:
+                          description: Neighborhood name
+                          type: string
+                          examples:
+                            - Downtown
+                            - Jardins
+                        number:
+                          description: Address number
+                          type: string
+                          examples:
+                            - '1000'
+                            - '150'
+                        state:
+                          description: State code in ISO 3166-2 format
+                          type: string
+                          examples:
+                            - SP
+                            - RJ
+                          maxLength: 2
+                          minLength: 2
+                        street:
+                          description: Street name
+                          type: string
+                          examples:
+                            - Av. Paulista
+                            - Rua das Flores
+                        zipCode:
+                          description: ZIP code without formatting
+                          type: string
+                          examples:
+                            - '01311200'
+                            - '20040002'
+                      required:
+                        - city
+                        - country
+                        - neighborhood
+                        - number
+                        - state
+                        - street
+                        - zipCode
+                      title: Address Create Request
+                    birthdate:
+                      description: 'Data de nascimento do proprietário (formato: YYYY-MM-DD)'
+                      type: string
+                      format: date
+                      examples:
+                        - '1990-01-01'
+                  required:
+                    - name
+                    - document
+                    - address
+                    - birthdate
+                payoutAccount:
+                  description: Dados da conta bancária do merchant para recebimento (PIX e/ou conta corrente)
+                  type: object
+                  properties:
+                    pix:
+                      description: Dados da chave PIX para recebimento
+                      type: object
+                      properties:
+                        type:
+                          $ref: '#/components/schemas/Type'
+                        key:
+                          description: Chave PIX
+                          type: string
+                          examples:
+                            - '65800562000165'
+                            - joao@email.com
+                            - '31999887766'
+                          maxLength: 100
+                          minLength: 1
+                      required:
+                        - type
+                        - key
+                    checking:
+                      description: Dados da conta bancária para recebimento
+                      type: object
+                      properties:
+                        accountNumber:
+                          description: Número da conta com dígito
+                          type: string
+                          examples:
+                            - 1425-6
+                            - 12345-0
+                          maxLength: 25
+                          minLength: 1
+                        routingNumber:
+                          description: Código do banco + número da agência + dígito
+                          type: string
+                          examples:
+                            - 001-0001-1
+                          maxLength: 25
+                          minLength: 1
+                      required:
+                        - accountNumber
+                        - routingNumber
+                financialRules:
+                  type: object
+                  properties:
+                    fees:
+                      type: array
+                      items:
+                        description: Regras financeiras a serem repassadas para adquirente
+                        type: object
+                        properties:
+                          paymentMethod:
+                            $ref: '#/components/schemas/PaymentMethod'
+                          daysDelayForRedeem:
+                            description: Número de dias para liberação do valor para saque
+                            type: number
+                            examples:
+                              - 2
+                              - 60
+                            minimum: 0
+                            multipleOf: 1
+                          items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                installmentNumber:
+                                  description: Número da parcela
+                                  type: number
+                                  examples:
+                                    - 1
+                                    - 2
+                                    - 3
+                                  minimum: 1
+                                  multipleOf: 1
+                                mdrFeePercentage:
+                                  description: Percentual de taxa MDR
+                                  type: number
+                                  examples:
+                                    - 1.5
+                                    - 2
+                                  minimum: 0
+                                mdrFeeFixedAmount:
+                                  description: Valor fixo da taxa MDR
+                                  type: number
+                                  examples:
+                                    - 0.5
+                                    - 1
+                                  minimum: 0
+                                anticipationFeePercentage:
+                                  description: Percentual de taxa de antecipação
+                                  type: number
+                                  examples:
+                                    - 12.3
+                                    - 15.41
+                                  minimum: 0
+                              required:
+                                - installmentNumber
+                                - mdrFeePercentage
+                                - mdrFeeFixedAmount
+                                - anticipationFeePercentage
+                        required:
+                          - paymentMethod
+                          - daysDelayForRedeem
+                          - items
+                  required:
+                    - fees
+              required:
+                - website
+                - business
+                - owner
+                - payoutAccount
+              title: Merchant
+      responses:
+        '200':
+          description: Modelo de resposta com todos os dados do merchant
+          content:
+            application/json:
+              schema:
+                description: Modelo de resposta com todos os dados do merchant
+                type: object
+                properties:
+                  id:
+                    description: ID único do merchant
+                    type: string
+                    examples:
+                      - cm123abc456def
+                  productsDescription:
+                    anyOf:
+                      - description: Descrição dos produtos ou serviços oferecidos
+                        examples:
+                          - Venda de roupas e acessórios
+                          - Consultoria em TI
+                        type: string
+                      - type: 'null'
+                    nullable: true
+                  mcc:
+                    anyOf:
+                      - description: Merchant Category Code
+                        examples:
+                          - '5411'
+                          - '5812'
+                        type: string
+                      - type: 'null'
+                    nullable: true
+                  website:
+                    description: URL do site do merchant
+                    type: string
+                    format: url
+                    examples:
+                      - 'https://www.oldorder.com.br'
+                  status:
+                    $ref: '#/components/schemas/Status'
+                  errorMessage:
+                    anyOf:
+                      - description: Mensagem de erro caso a criação da subconta tenha falhado
+                        examples:
+                          - Invalid API key
+                          - 'Missing required field: bank_account'
+                        type: string
+                      - type: 'null'
+                    nullable: true
+                  bussiness:
+                    type: object
+                    properties:
+                      name:
+                        description: Razão social ou nome completo do merchant
+                        type: string
+                        examples:
+                          - Old Order Tecnologia LTDA
+                          - João da Silva
+                      document:
+                        description: CNPJ ou CPF do merchant
+                        type: string
+                        examples:
+                          - '65800562000165'
+                          - '51102616010'
+                      email:
+                        description: Email principal do merchant
+                        type: string
+                        format: email
+                        examples:
+                          - contato@oldorder.com.br
+                      phoneNumber:
+                        anyOf:
+                          - description: Telefone de contato do merchant
+                            examples:
+                              - '31999887766'
+                              - '11987654321'
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      tradeName:
+                        anyOf:
+                          - description: Nome fantasia do merchant
+                            examples:
+                              - Loja do João
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      address:
+                        anyOf:
+                          - title: Address Create Request
+                            description: Schema for creating a new address
+                            type: object
+                            properties:
+                              city:
+                                description: City name
+                                type: string
+                                examples:
+                                  - São Paulo
+                                  - Rio de Janeiro
+                              country:
+                                description: Country code in ISO 3166-1 alpha-2 format
+                                type: string
+                                default: BR
+                                examples:
+                                  - BR
+                                  - US
+                                maxLength: 2
+                                minLength: 2
+                              neighborhood:
+                                description: Neighborhood name
+                                type: string
+                                examples:
+                                  - Downtown
+                                  - Jardins
+                              number:
+                                description: Address number
+                                type: string
+                                examples:
+                                  - '1000'
+                                  - '150'
+                              state:
+                                description: State code in ISO 3166-2 format
+                                type: string
+                                examples:
+                                  - SP
+                                  - RJ
+                                maxLength: 2
+                                minLength: 2
+                              street:
+                                description: Street name
+                                type: string
+                                examples:
+                                  - Av. Paulista
+                                  - Rua das Flores
+                              zipCode:
+                                description: ZIP code without formatting
+                                type: string
+                                examples:
+                                  - '01311200'
+                                  - '20040002'
+                            required:
+                              - city
+                              - country
+                              - neighborhood
+                              - number
+                              - state
+                              - street
+                              - zipCode
+                          - type: 'null'
+                        nullable: true
+                    required:
+                      - name
+                      - document
+                      - email
+                      - phoneNumber
+                      - tradeName
+                      - address
+                  owner:
+                    type: object
+                    properties:
+                      name:
+                        description: Nome completo do proprietário
+                        type: string
+                        examples:
+                          - João da Silva
+                      document:
+                        description: CPF do proprietário
+                        type: string
+                        examples:
+                          - '51102616010'
+                      email:
+                        anyOf:
+                          - description: Email do proprietário
+                            examples:
+                              - joao@gmail.com
+                            format: email
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      phoneNumber:
+                        anyOf:
+                          - description: Telefone do proprietário
+                            examples:
+                              - '31999887766'
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      birthdate:
+                        description: 'Data de nascimento do proprietário (formato: YYYY-MM-DD)'
+                        type: string
+                        format: date
+                        examples:
+                          - '1990-01-01'
+                      address:
+                        anyOf:
+                          - title: Address Create Request
+                            description: Schema for creating a new address
+                            type: object
+                            properties:
+                              city:
+                                description: City name
+                                type: string
+                                examples:
+                                  - São Paulo
+                                  - Rio de Janeiro
+                              country:
+                                description: Country code in ISO 3166-1 alpha-2 format
+                                type: string
+                                default: BR
+                                examples:
+                                  - BR
+                                  - US
+                                maxLength: 2
+                                minLength: 2
+                              neighborhood:
+                                description: Neighborhood name
+                                type: string
+                                examples:
+                                  - Downtown
+                                  - Jardins
+                              number:
+                                description: Address number
+                                type: string
+                                examples:
+                                  - '1000'
+                                  - '150'
+                              state:
+                                description: State code in ISO 3166-2 format
+                                type: string
+                                examples:
+                                  - SP
+                                  - RJ
+                                maxLength: 2
+                                minLength: 2
+                              street:
+                                description: Street name
+                                type: string
+                                examples:
+                                  - Av. Paulista
+                                  - Rua das Flores
+                              zipCode:
+                                description: ZIP code without formatting
+                                type: string
+                                examples:
+                                  - '01311200'
+                                  - '20040002'
+                            required:
+                              - city
+                              - country
+                              - neighborhood
+                              - number
+                              - state
+                              - street
+                              - zipCode
+                          - type: 'null'
+                        nullable: true
+                    required:
+                      - name
+                      - document
+                      - email
+                      - phoneNumber
+                      - birthdate
+                      - address
+                  payoutAccounts:
+                    type: object
+                    properties:
+                      pix:
+                        anyOf:
+                          - type: object
+                            properties:
+                              type:
+                                $ref: '#/components/schemas/Type'
+                              key:
+                                description: Chave PIX
+                                type: string
+                                examples:
+                                  - '65800562000165'
+                                  - joao@email.com
+                                  - '31999887766'
+                            required:
+                              - type
+                              - key
+                          - type: 'null'
+                        nullable: true
+                      checking:
+                        anyOf:
+                          - type: object
+                            properties:
+                              accountNumber:
+                                description: Número da conta com dígito
+                                type: string
+                                examples:
+                                  - 1425-6
+                                  - 12345-0
+                              routingNumber:
+                                description: Código do banco + número da agência + dígito
+                                type: string
+                                examples:
+                                  - 001-0001-1
+                            required:
+                              - accountNumber
+                              - routingNumber
+                          - type: 'null'
+                        nullable: true
+                    required:
+                      - pix
+                      - checking
+                  subaccounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: ID único da subconta
+                          type: string
+                          examples:
+                            - subacc123abc456def
+                        provider:
+                          description: Nome do provedor da subconta
+                          type: string
+                          examples:
+                            - Pagar.me
+                            - Stripe
+                        status:
+                          description: Status da subconta
+                          type: string
+                          examples:
+                            - active
+                            - inactive
+                            - pending
+                        errorMessage:
+                          anyOf:
+                            - description: Mensagem de erro caso a criação da subconta tenha falhado
+                              examples:
+                                - Invalid API key
+                                - 'Missing required field: bank_account'
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                      required:
+                        - id
+                        - provider
+                        - status
+                        - errorMessage
+                  financialRules:
+                    anyOf:
+                      - type: object
+                        properties:
+                          fees:
+                            type: array
+                            items:
+                              description: Regras financeiras a serem repassadas para adquirente
+                              type: object
+                              properties:
+                                paymentMethod:
+                                  $ref: '#/components/schemas/PaymentMethod'
+                                daysDelayForRedeem:
+                                  description: Número de dias para liberação do valor para saque
+                                  type: number
+                                  examples:
+                                    - 2
+                                    - 60
+                                  minimum: 0
+                                  multipleOf: 1
+                                items:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      installmentNumber:
+                                        description: Número da parcela
+                                        type: number
+                                        examples:
+                                          - 1
+                                          - 2
+                                          - 3
+                                        minimum: 1
+                                        multipleOf: 1
+                                      mdrFeePercentage:
+                                        description: Percentual de taxa MDR
+                                        type: number
+                                        examples:
+                                          - 1.5
+                                          - 2
+                                        minimum: 0
+                                      mdrFeeFixedAmount:
+                                        description: Valor fixo da taxa MDR
+                                        type: number
+                                        examples:
+                                          - 0.5
+                                          - 1
+                                        minimum: 0
+                                      anticipationFeePercentage:
+                                        description: Percentual de taxa de antecipação
+                                        type: number
+                                        examples:
+                                          - 12.3
+                                          - 15.41
+                                        minimum: 0
+                                    required:
+                                      - installmentNumber
+                                      - mdrFeePercentage
+                                      - mdrFeeFixedAmount
+                                      - anticipationFeePercentage
+                              required:
+                                - paymentMethod
+                                - daysDelayForRedeem
+                                - items
+                        required:
+                          - fees
+                      - type: 'null'
+                    nullable: true
+                noValidate: true
+                required:
+                  - id
+                  - productsDescription
+                  - mcc
+                  - website
+                  - status
+                  - errorMessage
+                  - bussiness
+                  - owner
+                  - payoutAccounts
+                  - subaccounts
+                  - financialRules
+                title: Merchant Response
+      tags:
+        - Merchant
+    get:
+      operationId: getMerchants
+      summary: List Merchants
+      description: 'Retrieve all merchants in the organization with optional filters for email, status, name and document.'
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            description: Page number
+            type: number
+            default: 1
+            examples:
+              - 1
+              - 2
+              - 3
+            minimum: 1
+            multipleOf: 1
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            description: Number of items per page
+            type: number
+            default: 20
+            examples:
+              - 10
+              - 20
+              - 50
+            maximum: 100
+            minimum: 1
+            multipleOf: 1
+        - name: document
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 255
+            minLength: 1
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - Creating
+              - WaitingOnboarding
+              - Analysing
+              - Refused
+              - Failed
+              - Approved
+      tags:
+        - Merchant
+  '/merchants/{id}':
+    get:
+      operationId: getMerchantsById
+      summary: Get Merchant By ID
+      description: 'Retrieve a merchant by ID, returning all related data.'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Modelo de resposta com todos os dados do merchant
+          content:
+            application/json:
+              schema:
+                description: Modelo de resposta com todos os dados do merchant
+                type: object
+                properties:
+                  id:
+                    description: ID único do merchant
+                    type: string
+                    examples:
+                      - cm123abc456def
+                  productsDescription:
+                    anyOf:
+                      - description: Descrição dos produtos ou serviços oferecidos
+                        examples:
+                          - Venda de roupas e acessórios
+                          - Consultoria em TI
+                        type: string
+                      - type: 'null'
+                    nullable: true
+                  mcc:
+                    anyOf:
+                      - description: Merchant Category Code
+                        examples:
+                          - '5411'
+                          - '5812'
+                        type: string
+                      - type: 'null'
+                    nullable: true
+                  website:
+                    description: URL do site do merchant
+                    type: string
+                    format: url
+                    examples:
+                      - 'https://www.oldorder.com.br'
+                  status:
+                    $ref: '#/components/schemas/Status'
+                  errorMessage:
+                    anyOf:
+                      - description: Mensagem de erro caso a criação da subconta tenha falhado
+                        examples:
+                          - Invalid API key
+                          - 'Missing required field: bank_account'
+                        type: string
+                      - type: 'null'
+                    nullable: true
+                  bussiness:
+                    type: object
+                    properties:
+                      name:
+                        description: Razão social ou nome completo do merchant
+                        type: string
+                        examples:
+                          - Old Order Tecnologia LTDA
+                          - João da Silva
+                      document:
+                        description: CNPJ ou CPF do merchant
+                        type: string
+                        examples:
+                          - '65800562000165'
+                          - '51102616010'
+                      email:
+                        description: Email principal do merchant
+                        type: string
+                        format: email
+                        examples:
+                          - contato@oldorder.com.br
+                      phoneNumber:
+                        anyOf:
+                          - description: Telefone de contato do merchant
+                            examples:
+                              - '31999887766'
+                              - '11987654321'
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      tradeName:
+                        anyOf:
+                          - description: Nome fantasia do merchant
+                            examples:
+                              - Loja do João
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      address:
+                        anyOf:
+                          - title: Address Create Request
+                            description: Schema for creating a new address
+                            type: object
+                            properties:
+                              city:
+                                description: City name
+                                type: string
+                                examples:
+                                  - São Paulo
+                                  - Rio de Janeiro
+                              country:
+                                description: Country code in ISO 3166-1 alpha-2 format
+                                type: string
+                                default: BR
+                                examples:
+                                  - BR
+                                  - US
+                                maxLength: 2
+                                minLength: 2
+                              neighborhood:
+                                description: Neighborhood name
+                                type: string
+                                examples:
+                                  - Downtown
+                                  - Jardins
+                              number:
+                                description: Address number
+                                type: string
+                                examples:
+                                  - '1000'
+                                  - '150'
+                              state:
+                                description: State code in ISO 3166-2 format
+                                type: string
+                                examples:
+                                  - SP
+                                  - RJ
+                                maxLength: 2
+                                minLength: 2
+                              street:
+                                description: Street name
+                                type: string
+                                examples:
+                                  - Av. Paulista
+                                  - Rua das Flores
+                              zipCode:
+                                description: ZIP code without formatting
+                                type: string
+                                examples:
+                                  - '01311200'
+                                  - '20040002'
+                            required:
+                              - city
+                              - country
+                              - neighborhood
+                              - number
+                              - state
+                              - street
+                              - zipCode
+                          - type: 'null'
+                        nullable: true
+                    required:
+                      - name
+                      - document
+                      - email
+                      - phoneNumber
+                      - tradeName
+                      - address
+                  owner:
+                    type: object
+                    properties:
+                      name:
+                        description: Nome completo do proprietário
+                        type: string
+                        examples:
+                          - João da Silva
+                      document:
+                        description: CPF do proprietário
+                        type: string
+                        examples:
+                          - '51102616010'
+                      email:
+                        anyOf:
+                          - description: Email do proprietário
+                            examples:
+                              - joao@gmail.com
+                            format: email
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      phoneNumber:
+                        anyOf:
+                          - description: Telefone do proprietário
+                            examples:
+                              - '31999887766'
+                            type: string
+                          - type: 'null'
+                        nullable: true
+                      birthdate:
+                        description: 'Data de nascimento do proprietário (formato: YYYY-MM-DD)'
+                        type: string
+                        format: date
+                        examples:
+                          - '1990-01-01'
+                      address:
+                        anyOf:
+                          - title: Address Create Request
+                            description: Schema for creating a new address
+                            type: object
+                            properties:
+                              city:
+                                description: City name
+                                type: string
+                                examples:
+                                  - São Paulo
+                                  - Rio de Janeiro
+                              country:
+                                description: Country code in ISO 3166-1 alpha-2 format
+                                type: string
+                                default: BR
+                                examples:
+                                  - BR
+                                  - US
+                                maxLength: 2
+                                minLength: 2
+                              neighborhood:
+                                description: Neighborhood name
+                                type: string
+                                examples:
+                                  - Downtown
+                                  - Jardins
+                              number:
+                                description: Address number
+                                type: string
+                                examples:
+                                  - '1000'
+                                  - '150'
+                              state:
+                                description: State code in ISO 3166-2 format
+                                type: string
+                                examples:
+                                  - SP
+                                  - RJ
+                                maxLength: 2
+                                minLength: 2
+                              street:
+                                description: Street name
+                                type: string
+                                examples:
+                                  - Av. Paulista
+                                  - Rua das Flores
+                              zipCode:
+                                description: ZIP code without formatting
+                                type: string
+                                examples:
+                                  - '01311200'
+                                  - '20040002'
+                            required:
+                              - city
+                              - country
+                              - neighborhood
+                              - number
+                              - state
+                              - street
+                              - zipCode
+                          - type: 'null'
+                        nullable: true
+                    required:
+                      - name
+                      - document
+                      - email
+                      - phoneNumber
+                      - birthdate
+                      - address
+                  payoutAccounts:
+                    type: object
+                    properties:
+                      pix:
+                        anyOf:
+                          - type: object
+                            properties:
+                              type:
+                                $ref: '#/components/schemas/Type'
+                              key:
+                                description: Chave PIX
+                                type: string
+                                examples:
+                                  - '65800562000165'
+                                  - joao@email.com
+                                  - '31999887766'
+                            required:
+                              - type
+                              - key
+                          - type: 'null'
+                        nullable: true
+                      checking:
+                        anyOf:
+                          - type: object
+                            properties:
+                              accountNumber:
+                                description: Número da conta com dígito
+                                type: string
+                                examples:
+                                  - 1425-6
+                                  - 12345-0
+                              routingNumber:
+                                description: Código do banco + número da agência + dígito
+                                type: string
+                                examples:
+                                  - 001-0001-1
+                            required:
+                              - accountNumber
+                              - routingNumber
+                          - type: 'null'
+                        nullable: true
+                    required:
+                      - pix
+                      - checking
+                  subaccounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: ID único da subconta
+                          type: string
+                          examples:
+                            - subacc123abc456def
+                        provider:
+                          description: Nome do provedor da subconta
+                          type: string
+                          examples:
+                            - Pagar.me
+                            - Stripe
+                        status:
+                          description: Status da subconta
+                          type: string
+                          examples:
+                            - active
+                            - inactive
+                            - pending
+                        errorMessage:
+                          anyOf:
+                            - description: Mensagem de erro caso a criação da subconta tenha falhado
+                              examples:
+                                - Invalid API key
+                                - 'Missing required field: bank_account'
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                      required:
+                        - id
+                        - provider
+                        - status
+                        - errorMessage
+                  financialRules:
+                    anyOf:
+                      - type: object
+                        properties:
+                          fees:
+                            type: array
+                            items:
+                              description: Regras financeiras a serem repassadas para adquirente
+                              type: object
+                              properties:
+                                paymentMethod:
+                                  $ref: '#/components/schemas/PaymentMethod'
+                                daysDelayForRedeem:
+                                  description: Número de dias para liberação do valor para saque
+                                  type: number
+                                  examples:
+                                    - 2
+                                    - 60
+                                  minimum: 0
+                                  multipleOf: 1
+                                items:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      installmentNumber:
+                                        description: Número da parcela
+                                        type: number
+                                        examples:
+                                          - 1
+                                          - 2
+                                          - 3
+                                        minimum: 1
+                                        multipleOf: 1
+                                      mdrFeePercentage:
+                                        description: Percentual de taxa MDR
+                                        type: number
+                                        examples:
+                                          - 1.5
+                                          - 2
+                                        minimum: 0
+                                      mdrFeeFixedAmount:
+                                        description: Valor fixo da taxa MDR
+                                        type: number
+                                        examples:
+                                          - 0.5
+                                          - 1
+                                        minimum: 0
+                                      anticipationFeePercentage:
+                                        description: Percentual de taxa de antecipação
+                                        type: number
+                                        examples:
+                                          - 12.3
+                                          - 15.41
+                                        minimum: 0
+                                    required:
+                                      - installmentNumber
+                                      - mdrFeePercentage
+                                      - mdrFeeFixedAmount
+                                      - anticipationFeePercentage
+                              required:
+                                - paymentMethod
+                                - daysDelayForRedeem
+                                - items
+                        required:
+                          - fees
+                      - type: 'null'
+                    nullable: true
+                noValidate: true
+                required:
+                  - id
+                  - productsDescription
+                  - mcc
+                  - website
+                  - status
+                  - errorMessage
+                  - bussiness
+                  - owner
+                  - payoutAccounts
+                  - subaccounts
+                  - financialRules
+                title: Merchant Response
+      tags:
+        - Merchant
+  '/merchants/{id}/subaccounts':
+    post:
+      operationId: postMerchantsByIdSubaccounts
+      summary: Update Merchant Subaccounts
+      description: 'When subaccounts are rejected, they will be recreated by calling this endpoint.'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response for status 200
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subaccounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: ID único da subconta
+                          type: string
+                          examples:
+                            - subacc123abc456def
+                        provider:
+                          description: Nome do provedor da subconta
+                          type: string
+                          examples:
+                            - Pagar.me
+                            - Stripe
+                        status:
+                          description: Status da subconta
+                          type: string
+                          examples:
+                            - active
+                            - inactive
+                            - pending
+                        errorMessage:
+                          anyOf:
+                            - description: Mensagem de erro caso a criação da subconta tenha falhado
+                              examples:
+                                - Invalid API key
+                                - 'Missing required field: bank_account'
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                      required:
+                        - id
+                        - provider
+                        - status
+                        - errorMessage
+                noValidate: true
+                required:
+                  - subaccounts
+      tags:
+        - Merchant
+  '/merchants/{id}/flows':
+    post:
+      operationId: postMerchantsByIdFlows
+      summary: Configure Merchant Flows
+      description: 'Configure merchant flows such as order creation, confirmations and refunds.'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Schema for configuring a merchant flow
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Schema for configuring a merchant flow
+              type: object
+              properties:
+                flowId:
+                  description: Flow ID
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/PaymentMethod'
+              required:
+                - flowId
+                - paymentMethod
+              title: Merchant Flow
+          application/x-www-form-urlencoded:
+            schema:
+              description: Schema for configuring a merchant flow
+              type: object
+              properties:
+                flowId:
+                  description: Flow ID
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/PaymentMethod'
+              required:
+                - flowId
+                - paymentMethod
+              title: Merchant Flow
+          multipart/form-data:
+            schema:
+              description: Schema for configuring a merchant flow
+              type: object
+              properties:
+                flowId:
+                  description: Flow ID
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/PaymentMethod'
+              required:
+                - flowId
+                - paymentMethod
+              title: Merchant Flow
+      tags:
+        - Merchant
   /customers/:
     get:
       operationId: customerListCustom
@@ -1277,7 +3836,7 @@ paths:
                         documentNumber:
                           description: Customer document number (CPF or CNPJ)
                           anyOf:
-                            - description: Customer CPF or CNPJ without formatting
+                            - description: Customer document number (CPF or CNPJ)
                               examples:
                                 - '12345678909'
                                 - '12345678000195'
@@ -1286,7 +3845,7 @@ paths:
                         phoneNumber:
                           description: Customer phone number
                           anyOf:
-                            - description: Customer phone number in +55 DD 9XXXXXXXX format
+                            - description: Customer phone number
                               examples:
                                 - +55 11 987654321
                               type: string
@@ -1547,7 +4106,7 @@ paths:
                   documentNumber:
                     description: Customer document number (CPF or CNPJ)
                     anyOf:
-                      - description: Customer CPF or CNPJ without formatting
+                      - description: Customer document number (CPF or CNPJ)
                         examples:
                           - '12345678909'
                           - '12345678000195'
@@ -1556,7 +4115,7 @@ paths:
                   phoneNumber:
                     description: Customer phone number
                     anyOf:
-                      - description: Customer phone number in +55 DD 9XXXXXXXX format
+                      - description: Customer phone number
                         examples:
                           - +55 11 987654321
                         type: string
@@ -1689,7 +4248,7 @@ paths:
                   documentNumber:
                     description: Customer document number (CPF or CNPJ)
                     anyOf:
-                      - description: Customer CPF or CNPJ without formatting
+                      - description: Customer document number (CPF or CNPJ)
                         examples:
                           - '12345678909'
                           - '12345678000195'
@@ -1698,7 +4257,7 @@ paths:
                   phoneNumber:
                     description: Customer phone number
                     anyOf:
-                      - description: Customer phone number in +55 DD 9XXXXXXXX format
+                      - description: Customer phone number
                         examples:
                           - +55 11 987654321
                         type: string
@@ -1927,7 +4486,7 @@ paths:
                   documentNumber:
                     description: Customer document number (CPF or CNPJ)
                     anyOf:
-                      - description: Customer CPF or CNPJ without formatting
+                      - description: Customer document number (CPF or CNPJ)
                         examples:
                           - '12345678909'
                           - '12345678000195'
@@ -1936,7 +4495,7 @@ paths:
                   phoneNumber:
                     description: Customer phone number
                     anyOf:
-                      - description: Customer phone number in +55 DD 9XXXXXXXX format
+                      - description: Customer phone number
                         examples:
                           - +55 11 987654321
                         type: string
@@ -2076,7 +4635,7 @@ paths:
                       required:
                         - month
                         - year
-                      title: Card Expiration Data
+                      title: Expiration
                     holderName:
                       description: Card holder name
                       type: string
@@ -2149,6 +4708,12 @@ components:
         - WithdrawCompleted
         - WithdrawFailed
         - WithdrawTransferring
+        - MerchantCreated
+        - MerchantWaitingOnboarding
+        - MerchantAnalysing
+        - MerchantFailed
+        - MerchantRefused
+        - MerchantApproved
       x-enum-varnames:
         - OrderCreated
         - OrderPending
@@ -2160,6 +4725,12 @@ components:
         - WithdrawCompleted
         - WithdrawFailed
         - WithdrawTransferring
+        - MerchantCreated
+        - MerchantWaitingOnboarding
+        - MerchantAnalysing
+        - MerchantFailed
+        - MerchantRefused
+        - MerchantApproved
     Status:
       type: string
       enum:
@@ -2172,7 +4743,15 @@ components:
         - Refunded
         - InDispute
         - Chargeback
+        - Authenticated
+        - NotAuthenticated
+        - NeedChallenge
         - Transferring
+        - Creating
+        - WaitingOnboarding
+        - Analysing
+        - Refused
+        - Approved
       x-enum-varnames:
         - Generating
         - Pending
@@ -2183,7 +4762,15 @@ components:
         - Refunded
         - InDispute
         - Chargeback
+        - Authenticated
+        - NotAuthenticated
+        - NeedChallenge
         - Transferring
+        - Creating
+        - WaitingOnboarding
+        - Analysing
+        - Refused
+        - Approved
     PaymentMethod:
       type: string
       enum:
@@ -2212,7 +4799,93 @@ components:
         - SepaDebit
         - GooglePay
         - Draft
-    PixType:
+    Acquirer:
+      type: string
+      enum:
+        - Shield
+        - Asaas
+        - Sandbox
+        - MercadoPago
+        - NuPay
+        - PicPay
+        - Woovi
+        - N8n
+        - BrasPag
+        - PagarMe
+        - BancoDoBrasil
+        - PagSeguro
+        - Ebanx
+        - PodPay
+        - Hopy
+        - Reborn
+        - OnlyUp
+        - Barte
+        - BarteSplit
+        - MonsterGateway
+        - Unicopag
+        - EfiBank
+        - CartWave
+        - SAC
+        - Simpay
+        - Moneria
+        - PodPayV2
+        - Pluggou
+        - HunterSub
+        - ZyroPay
+        - Wappi
+        - PagNet
+        - Witetec
+        - PagLoop
+        - BluPay
+        - PagSmileA55
+        - VersellPay
+        - SandboxSplit
+        - VoltPay
+        - Avantti
+        - Cyberpay
+      x-enum-varnames:
+        - Shield
+        - Asaas
+        - Sandbox
+        - MercadoPago
+        - NuPay
+        - PicPay
+        - Woovi
+        - N8n
+        - BrasPag
+        - PagarMe
+        - BancoDoBrasil
+        - PagSeguro
+        - Ebanx
+        - PodPay
+        - Hopy
+        - Reborn
+        - OnlyUp
+        - Barte
+        - BarteSplit
+        - MonsterGateway
+        - Unicopag
+        - EfiBank
+        - CartWave
+        - SAC
+        - Simpay
+        - Moneria
+        - PodPayV2
+        - Pluggou
+        - HunterSub
+        - ZyroPay
+        - Wappi
+        - PagNet
+        - Witetec
+        - PagLoop
+        - BluPay
+        - PagSmileA55
+        - VersellPay
+        - SandboxSplit
+        - VoltPay
+        - Avantti
+        - Cyberpay
+    Type:
       type: string
       enum:
         - Cpf
@@ -2220,12 +4893,16 @@ components:
         - Email
         - Phone
         - Random
+        - internal
+        - external
       x-enum-varnames:
         - Cpf
         - Cnpj
         - Email
         - Phone
         - Random
+        - internal
+        - external
     DocumentType:
       type: string
       enum:
@@ -2234,35 +4911,38 @@ components:
       x-enum-varnames:
         - Cpf
         - Cnpj
-    AvailablePaymentMethods:
+    ReceiverType:
       type: string
       enum:
-        - Pix
-        - CreditCard
-        - DebitCard
-        - BankSlip
-        - Crypto
-        - ApplePay
-        - NuPay
-        - PicPay
-        - AmazonPay
-        - SepaDebit
-        - GooglePay
-        - Draft
+        - Owner
+        - Split
       x-enum-varnames:
-        - Pix
-        - CreditCard
-        - DebitCard
-        - BankSlip
-        - Crypto
-        - ApplePay
-        - NuPay
-        - PicPay
-        - AmazonPay
-        - SepaDebit
-        - GooglePay
-        - Draft
+        - Owner
+        - Split
+    PixType:
+      type: string
+      enum:
+        - Cnpj
+        - Cpf
+        - Email
+        - Phone
+        - Random
+      x-enum-varnames:
+        - Cnpj
+        - Cpf
+        - Email
+        - Phone
+        - Random
+    PersonType:
+      type: string
+      enum:
+        - Pf
+        - Pj
+      x-enum-varnames:
+        - Pf
+        - Pj
     OrderTokenizedCardData:
+      description: Previously generated card token
       type: object
       properties:
         firstSixCardNumber:
@@ -2310,7 +4990,7 @@ components:
           required:
             - month
             - year
-          title: Card Expiration Data
+          title: Expiration
         holderName:
           description: Card holder name
           type: string
@@ -2327,7 +5007,139 @@ components:
         - holderName
         - number
       title: Card Create Request
+    Internal3DSAuthentication:
+      description: 3DS authentication data managed by the platform
+      type: object
+      properties:
+        type:
+          type: string
+          const: internal
+        authToken:
+          description: 3DS authentication token generated by the 3DS authentication
+          type: string
+        dsTransactionId:
+          description: Directory server transaction identifier generated by the authentication provider
+          type: string
+        providerTransactionId:
+          description: 3DS transaction identifier generated by the payment service provider
+          type: string
+        browser:
+          description: Client browser information
+          type: object
+          properties:
+            ip:
+              description: Client IP address
+              type: string
+            userAgent:
+              description: Browser user agent
+              type: string
+            acceptHeader:
+              description: Browser Accept header
+              type: string
+            language:
+              description: Browser language
+              type: string
+            colorDepth:
+              description: Screen color depth
+              type: integer
+            screenHeight:
+              description: Screen height in pixels
+              type: integer
+            screenWidth:
+              description: Screen width in pixels
+              type: integer
+            timeZoneOffset:
+              description: Time zone offset
+              type: string
+            javaEnabled:
+              description: Indicates whether Java is enabled
+              type: boolean
+            javaScriptEnabled:
+              description: Indicates whether JavaScript is enabled
+              type: boolean
+          required:
+            - javaEnabled
+            - javaScriptEnabled
+          title: Browser Information
+      required:
+        - type
+      title: Internal 3DS Authentication
+    External3DSAuthentication:
+      description: 3DS authentication data performed externally by the client
+      type: object
+      properties:
+        type:
+          type: string
+          const: external
+        status:
+          description: 3DS authentication status performed by the client
+          type: string
+        eci:
+          description: 'Authentication transaction identifier. In 3DS2, it may be the same value as CAVV. Used for authentication traceability'
+          type: string
+        version:
+          description: 3DS protocol version used in the authentication
+          type: string
+          examples:
+            - 2.2.0
+        cavv:
+          description: Code generated by the card issuer that proves the validation was completed
+          type: string
+        providerTransactionId:
+          description: 3DS transaction identifier generated by the authentication provider
+          type: string
+        directoryTransactionId:
+          description: Transaction identifier in the 3DS authentication directory
+          type: string
+        browser:
+          description: Client browser information
+          type: object
+          properties:
+            ip:
+              description: Client IP address
+              type: string
+            userAgent:
+              description: Browser user agent
+              type: string
+            acceptHeader:
+              description: Browser Accept header
+              type: string
+            language:
+              description: Browser language
+              type: string
+            colorDepth:
+              description: Screen color depth
+              type: integer
+            screenHeight:
+              description: Screen height in pixels
+              type: integer
+            screenWidth:
+              description: Screen width in pixels
+              type: integer
+            timeZoneOffset:
+              description: Time zone offset
+              type: string
+            javaEnabled:
+              description: Indicates whether Java is enabled
+              type: boolean
+            javaScriptEnabled:
+              description: Indicates whether JavaScript is enabled
+              type: boolean
+          required:
+            - javaEnabled
+            - javaScriptEnabled
+          title: Browser Information
+      required:
+        - type
+        - status
+        - eci
+        - version
+        - cavv
+        - providerTransactionId
+        - directoryTransactionId
+      title: External 3DS Authentication
     OrderPIXPaymentRequest:
+      description: Specific data for PIX payment
       type: object
       properties:
         paymentMethod:
@@ -2346,6 +5158,7 @@ components:
         - paymentMethod
       title: Order PIX Payment Request
     OrderCreditCardPaymentRequest:
+      description: Specific data for credit card payment
       type: object
       properties:
         paymentMethod:
@@ -2369,12 +5182,22 @@ components:
             - PEDRO*TESTE
           maxLength: 22
           minLength: 1
+        threeDSecure:
+          discriminator:
+            propertyName: type
+            mapping:
+              internal: '#/components/schemas/Internal3DSAuthentication'
+              external: '#/components/schemas/External3DSAuthentication'
+          oneOf:
+            - $ref: '#/components/schemas/Internal3DSAuthentication'
+            - $ref: '#/components/schemas/External3DSAuthentication'
       required:
         - paymentMethod
         - card
         - installments
       title: Order Credit Card Payment Request
     OrderBankSlipPaymentRequest:
+      description: Specific data for bank slip payment
       type: object
       properties:
         paymentMethod:
@@ -2394,6 +5217,7 @@ components:
         - paymentMethod
       title: Order Bank Slip Payment Request
     OrderNuPayPaymentRequest:
+      description: Specific data for NuPay payment
       type: object
       properties:
         paymentMethod:
@@ -2432,6 +5256,7 @@ components:
         - nuPay
       title: Order NuPay Payment Request
     OrderPicPayPaymentRequest:
+      description: Specific data for PicPay payment
       type: object
       properties:
         paymentMethod:
@@ -2440,6 +5265,115 @@ components:
       required:
         - paymentMethod
       title: Order PicPay Payment Request
+    OrderGooglePayPaymentRequest:
+      description: Specific data for Google Pay payment (ECv2 Token)
+      type: object
+      properties:
+        paymentMethod:
+          type: string
+          const: GooglePay
+        googlePay:
+          description: Specific data for Google Pay payment (ECv2 Token)
+          type: object
+          properties:
+            signature:
+              description: Signature of the Google Pay payment token
+              type: string
+            intermediateSigningKey:
+              description: Google Pay intermediate signing key
+              type: object
+              properties:
+                signedKey:
+                  description: Encoded intermediate signing key
+                  type: string
+                signatures:
+                  description: List of intermediate key signatures
+                  type: array
+                  items:
+                    description: Signatures of the intermediate key
+                    type: string
+                  minItems: 1
+              required:
+                - signedKey
+                - signatures
+            protocolVersion:
+              description: Encryption protocol version
+              type: string
+              examples:
+                - ECv2
+                - ECv2SigningOnly
+            signedMessage:
+              description: 'JSON serialized string by Google Pay containing encryptedMessage, ephemeralPublicKey and tag'
+              type: string
+          required:
+            - signature
+            - intermediateSigningKey
+            - protocolVersion
+            - signedMessage
+        installments:
+          description: Number of installments
+          type: integer
+          default: 1
+          maximum: 12
+          minimum: 1
+      required:
+        - paymentMethod
+        - googlePay
+      title: Order Google Pay Payment Request
+    ApplePay:
+      description: Payment with Apple Pay digital wallet
+      type: object
+      properties:
+        paymentMethod:
+          type: string
+          const: ApplePay
+        applePay:
+          description: Apple Pay token data from the device
+          type: object
+          properties:
+            version:
+              description: Token version. The only accepted value is EC_v1
+              type: string
+              examples:
+                - EC_v1
+            data:
+              description: Encrypted payment data from Apple Pay token
+              type: string
+            signature:
+              description: Signature of the payment and header data
+              type: string
+            header:
+              description: Additional header information for payment verification
+              type: object
+              properties:
+                ephemeralPublicKey:
+                  description: 'X.509 encoded key bytes, Base64 encoded'
+                  type: string
+                publicKeyHash:
+                  description: Hash of the X.509 encoded public key bytes of the merchant certificate
+                  type: string
+                transactionId:
+                  description: Hexadecimal transaction identifier
+                  type: string
+              required:
+                - ephemeralPublicKey
+                - publicKeyHash
+                - transactionId
+          required:
+            - version
+            - data
+            - signature
+            - header
+        installments:
+          description: Number of installments for the payment
+          type: integer
+          default: 1
+          maximum: 12
+          minimum: 1
+      required:
+        - paymentMethod
+        - applePay
+      title: Apple Pay
     OrderDraftPaymentRequest:
       description: Used to create an order without generating a real payment. Use to create orders that will be paid later
       type: object
@@ -2459,7 +5393,15 @@ components:
           description: Available payment methods for this order
           type: array
           items:
-            $ref: '#/components/schemas/AvailablePaymentMethods'
+            default: Pix
+            type: string
+            enum:
+              - Pix
+              - BankSlip
+              - CreditCard
+              - NuPay
+              - PicPay
+              - GooglePay
       required:
         - paymentMethod
       title: Order Draft Payment Request
@@ -2581,7 +5523,7 @@ tags:
   - description: 'Manage charges, check order status, and handle refunds.'
     name: Order
   - description: Initiate and monitor withdrawals and transfers to your external accounts.
-    name: Transfer
+    name: Withdraw
   - description: 'Manage customers, create, update, delete and list customers.'
     name: Customer
   - description: Tokenize credit cards for future charges.
@@ -2616,6 +5558,13 @@ webhooks:
                         - description: External order ID (provided by your integration)
                           examples:
                             - order_123
+                          type: string
+                        - type: 'null'
+                    idempotencyKey:
+                      anyOf:
+                        - description: Order idempotency key
+                          examples:
+                            - unique-key-123
                           type: string
                         - type: 'null'
                     externalIntegrationKey:
@@ -2757,6 +5706,7 @@ webhooks:
                           type: string
                         - type: 'null'
                     orderItems:
+                      description: List of products or services included in the order
                       type: array
                       items:
                         type: object
@@ -2806,6 +5756,7 @@ webhooks:
                           - totalAmount
                           - totalNetAmount
                           - unityPrice
+                      title: Order Items
                     session:
                       anyOf:
                         - type: object
@@ -2817,9 +5768,35 @@ webhooks:
                             - sessionId
                         - type: 'null'
                       nullable: true
+                    threeDSecure:
+                      type: object
+                      properties:
+                        authToken:
+                          description: '3DS authentication token, returned only when internal 3DS authentication needs to be performed'
+                          type: string
+                          examples:
+                            - BwABBylVaQAAAAFwllVpAAAAAAA=
+                        threeDsUrl:
+                          description: 'URL to execute the 3DS challenge, returned only for internal 3DS authentications'
+                          type: string
+                          examples:
+                            - 'https://www.mercadopago.com.ar/auth/card/validation/pages/remedies/019ada0a-fe1f-7a82-ba1a-1ccb4e0232e7?display_mode=self_hosted&guest_token=0661345a-e0e1-4c09-aff9-b7929ca9a24a'
+                        dsTransactionId:
+                          description: Directory server transaction identifier generated by the authentication provider
+                          type: string
+                        version:
+                          description: 3DS protocol version used in the authentication
+                          type: string
+                        status:
+                          $ref: '#/components/schemas/Status'
+                        acquirer:
+                          $ref: '#/components/schemas/Acquirer'
+                      required:
+                        - status
                   required:
                     - id
                     - externalId
+                    - idempotencyKey
                     - externalIntegrationKey
                     - externalIntegrationId
                     - amount
@@ -2857,6 +5834,13 @@ webhooks:
                       type: string
                       examples:
                         - wd_1234567890
+                    idempotencyKey:
+                      anyOf:
+                        - description: Withdrawal idempotency key
+                          examples:
+                            - unique-withdraw-key-123
+                          type: string
+                        - type: 'null'
                     externalId:
                       anyOf:
                         - description: Withdrawal ID in your system
@@ -2925,35 +5909,11 @@ webhooks:
                           type: string
                           examples:
                             - pa_1234567890
-                        ownerDocument:
-                          description: Account holder document (CPF or CNPJ)
-                          type: string
-                          examples:
-                            - '12345678909'
-                            - '12345678000195'
-                          pattern: '^\d{11}$|^\d{14}$'
-                        ownerName:
-                          description: Account holder name
-                          type: string
-                          examples:
-                            - John Doe
-                            - Company XYZ Ltda
-                        pixKey:
-                          description: PIX key used for the withdrawal
-                          type: string
-                          examples:
-                            - john@example.com
-                            - '11999999999'
-                        pixType:
-                          $ref: '#/components/schemas/PixType'
                       required:
                         - id
-                        - ownerDocument
-                        - ownerName
-                        - pixKey
-                        - pixType
                   required:
                     - id
+                    - idempotencyKey
                     - externalId
                     - externalIntegrationKey
                     - externalIntegrationId
@@ -2967,4 +5927,441 @@ webhooks:
               required:
                 - event
                 - payload
-              title: Withdraw Webhook Event
+              title: Withdraw Webhook Response
+  Merchant Update:
+    post:
+      requestBody:
+        description: Triggered when the status of a merchant is changed.
+        content:
+          application/json:
+            schema:
+              description: Webhook event payload for merchant status changes
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/Event'
+                payload:
+                  description: Modelo de resposta com todos os dados do merchant
+                  type: object
+                  noValidate: true
+                  properties:
+                    id:
+                      description: ID único do merchant
+                      type: string
+                      examples:
+                        - cm123abc456def
+                    productsDescription:
+                      anyOf:
+                        - description: Descrição dos produtos ou serviços oferecidos
+                          examples:
+                            - Venda de roupas e acessórios
+                            - Consultoria em TI
+                          type: string
+                        - type: 'null'
+                      nullable: true
+                    mcc:
+                      anyOf:
+                        - description: Merchant Category Code
+                          examples:
+                            - '5411'
+                            - '5812'
+                          type: string
+                        - type: 'null'
+                      nullable: true
+                    website:
+                      description: URL do site do merchant
+                      type: string
+                      format: url
+                      examples:
+                        - 'https://www.oldorder.com.br'
+                    status:
+                      $ref: '#/components/schemas/Status'
+                    errorMessage:
+                      anyOf:
+                        - description: Mensagem de erro caso a criação da subconta tenha falhado
+                          examples:
+                            - Invalid API key
+                            - 'Missing required field: bank_account'
+                          type: string
+                        - type: 'null'
+                      nullable: true
+                    bussiness:
+                      type: object
+                      properties:
+                        name:
+                          description: Razão social ou nome completo do merchant
+                          type: string
+                          examples:
+                            - Old Order Tecnologia LTDA
+                            - João da Silva
+                        document:
+                          description: CNPJ ou CPF do merchant
+                          type: string
+                          examples:
+                            - '65800562000165'
+                            - '51102616010'
+                        email:
+                          description: Email principal do merchant
+                          type: string
+                          format: email
+                          examples:
+                            - contato@oldorder.com.br
+                        phoneNumber:
+                          anyOf:
+                            - description: Telefone de contato do merchant
+                              examples:
+                                - '31999887766'
+                                - '11987654321'
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                        tradeName:
+                          anyOf:
+                            - description: Nome fantasia do merchant
+                              examples:
+                                - Loja do João
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                        address:
+                          anyOf:
+                            - title: Address Create Request
+                              description: Schema for creating a new address
+                              type: object
+                              properties:
+                                city:
+                                  description: City name
+                                  type: string
+                                  examples:
+                                    - São Paulo
+                                    - Rio de Janeiro
+                                country:
+                                  description: Country code in ISO 3166-1 alpha-2 format
+                                  type: string
+                                  default: BR
+                                  examples:
+                                    - BR
+                                    - US
+                                  maxLength: 2
+                                  minLength: 2
+                                neighborhood:
+                                  description: Neighborhood name
+                                  type: string
+                                  examples:
+                                    - Downtown
+                                    - Jardins
+                                number:
+                                  description: Address number
+                                  type: string
+                                  examples:
+                                    - '1000'
+                                    - '150'
+                                state:
+                                  description: State code in ISO 3166-2 format
+                                  type: string
+                                  examples:
+                                    - SP
+                                    - RJ
+                                  maxLength: 2
+                                  minLength: 2
+                                street:
+                                  description: Street name
+                                  type: string
+                                  examples:
+                                    - Av. Paulista
+                                    - Rua das Flores
+                                zipCode:
+                                  description: ZIP code without formatting
+                                  type: string
+                                  examples:
+                                    - '01311200'
+                                    - '20040002'
+                              required:
+                                - city
+                                - country
+                                - neighborhood
+                                - number
+                                - state
+                                - street
+                                - zipCode
+                            - type: 'null'
+                          nullable: true
+                      required:
+                        - name
+                        - document
+                        - email
+                        - phoneNumber
+                        - tradeName
+                        - address
+                    owner:
+                      type: object
+                      properties:
+                        name:
+                          description: Nome completo do proprietário
+                          type: string
+                          examples:
+                            - João da Silva
+                        document:
+                          description: CPF do proprietário
+                          type: string
+                          examples:
+                            - '51102616010'
+                        email:
+                          anyOf:
+                            - description: Email do proprietário
+                              examples:
+                                - joao@gmail.com
+                              format: email
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                        phoneNumber:
+                          anyOf:
+                            - description: Telefone do proprietário
+                              examples:
+                                - '31999887766'
+                              type: string
+                            - type: 'null'
+                          nullable: true
+                        birthdate:
+                          description: 'Data de nascimento do proprietário (formato: YYYY-MM-DD)'
+                          type: string
+                          format: date
+                          examples:
+                            - '1990-01-01'
+                        address:
+                          anyOf:
+                            - title: Address Create Request
+                              description: Schema for creating a new address
+                              type: object
+                              properties:
+                                city:
+                                  description: City name
+                                  type: string
+                                  examples:
+                                    - São Paulo
+                                    - Rio de Janeiro
+                                country:
+                                  description: Country code in ISO 3166-1 alpha-2 format
+                                  type: string
+                                  default: BR
+                                  examples:
+                                    - BR
+                                    - US
+                                  maxLength: 2
+                                  minLength: 2
+                                neighborhood:
+                                  description: Neighborhood name
+                                  type: string
+                                  examples:
+                                    - Downtown
+                                    - Jardins
+                                number:
+                                  description: Address number
+                                  type: string
+                                  examples:
+                                    - '1000'
+                                    - '150'
+                                state:
+                                  description: State code in ISO 3166-2 format
+                                  type: string
+                                  examples:
+                                    - SP
+                                    - RJ
+                                  maxLength: 2
+                                  minLength: 2
+                                street:
+                                  description: Street name
+                                  type: string
+                                  examples:
+                                    - Av. Paulista
+                                    - Rua das Flores
+                                zipCode:
+                                  description: ZIP code without formatting
+                                  type: string
+                                  examples:
+                                    - '01311200'
+                                    - '20040002'
+                              required:
+                                - city
+                                - country
+                                - neighborhood
+                                - number
+                                - state
+                                - street
+                                - zipCode
+                            - type: 'null'
+                          nullable: true
+                      required:
+                        - name
+                        - document
+                        - email
+                        - phoneNumber
+                        - birthdate
+                        - address
+                    payoutAccounts:
+                      type: object
+                      properties:
+                        pix:
+                          anyOf:
+                            - type: object
+                              properties:
+                                type:
+                                  $ref: '#/components/schemas/Type'
+                                key:
+                                  description: Chave PIX
+                                  type: string
+                                  examples:
+                                    - '65800562000165'
+                                    - joao@email.com
+                                    - '31999887766'
+                              required:
+                                - type
+                                - key
+                            - type: 'null'
+                          nullable: true
+                        checking:
+                          anyOf:
+                            - type: object
+                              properties:
+                                accountNumber:
+                                  description: Número da conta com dígito
+                                  type: string
+                                  examples:
+                                    - 1425-6
+                                    - 12345-0
+                                routingNumber:
+                                  description: Código do banco + número da agência + dígito
+                                  type: string
+                                  examples:
+                                    - 001-0001-1
+                              required:
+                                - accountNumber
+                                - routingNumber
+                            - type: 'null'
+                          nullable: true
+                      required:
+                        - pix
+                        - checking
+                    subaccounts:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            description: ID único da subconta
+                            type: string
+                            examples:
+                              - subacc123abc456def
+                          provider:
+                            description: Nome do provedor da subconta
+                            type: string
+                            examples:
+                              - Pagar.me
+                              - Stripe
+                          status:
+                            description: Status da subconta
+                            type: string
+                            examples:
+                              - active
+                              - inactive
+                              - pending
+                          errorMessage:
+                            anyOf:
+                              - description: Mensagem de erro caso a criação da subconta tenha falhado
+                                examples:
+                                  - Invalid API key
+                                  - 'Missing required field: bank_account'
+                                type: string
+                              - type: 'null'
+                            nullable: true
+                        required:
+                          - id
+                          - provider
+                          - status
+                          - errorMessage
+                    financialRules:
+                      anyOf:
+                        - type: object
+                          properties:
+                            fees:
+                              type: array
+                              items:
+                                description: Regras financeiras a serem repassadas para adquirente
+                                type: object
+                                properties:
+                                  paymentMethod:
+                                    $ref: '#/components/schemas/PaymentMethod'
+                                  daysDelayForRedeem:
+                                    description: Número de dias para liberação do valor para saque
+                                    type: number
+                                    examples:
+                                      - 2
+                                      - 60
+                                    minimum: 0
+                                    multipleOf: 1
+                                  items:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        installmentNumber:
+                                          description: Número da parcela
+                                          type: number
+                                          examples:
+                                            - 1
+                                            - 2
+                                            - 3
+                                          minimum: 1
+                                          multipleOf: 1
+                                        mdrFeePercentage:
+                                          description: Percentual de taxa MDR
+                                          type: number
+                                          examples:
+                                            - 1.5
+                                            - 2
+                                          minimum: 0
+                                        mdrFeeFixedAmount:
+                                          description: Valor fixo da taxa MDR
+                                          type: number
+                                          examples:
+                                            - 0.5
+                                            - 1
+                                          minimum: 0
+                                        anticipationFeePercentage:
+                                          description: Percentual de taxa de antecipação
+                                          type: number
+                                          examples:
+                                            - 12.3
+                                            - 15.41
+                                          minimum: 0
+                                      required:
+                                        - installmentNumber
+                                        - mdrFeePercentage
+                                        - mdrFeeFixedAmount
+                                        - anticipationFeePercentage
+                                required:
+                                  - paymentMethod
+                                  - daysDelayForRedeem
+                                  - items
+                          required:
+                            - fees
+                        - type: 'null'
+                      nullable: true
+                  required:
+                    - id
+                    - productsDescription
+                    - mcc
+                    - website
+                    - status
+                    - errorMessage
+                    - bussiness
+                    - owner
+                    - payoutAccounts
+                    - subaccounts
+                    - financialRules
+                  title: Merchant Response
+              required:
+                - event
+                - payload
+              title: Merchant Webhook Event

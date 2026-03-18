@@ -2,7 +2,7 @@
 
 Multi-language SDKs for the PayConductor API. Generate client libraries in multiple programming languages to integrate with PayConductor payment services.
 
-![NPM Version](https://img.shields.io/npm/v/payconductor-sdk)
+![NPM Version](https://img.shields.io/npm/v/@payconductor/sdk)
 
 ## About
 

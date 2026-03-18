@@ -9,7 +9,7 @@ const VERSIONS: Record<string, {
   languages: Record<string, { generator: string; outputDir: string }>;
 }> = {
   v1: {
-    apiUrl: "https://app.payconductor.ai/api/v1/docs/json",
+    apiUrl: "http://localhost:5174/api/v1/docs/json",
     languages: {
       typescript: { generator: "typescript-axios",  outputDir: "library/v1/packages/typescript" },
       javascript: { generator: "javascript",         outputDir: "library/v1/packages/javascript" },
