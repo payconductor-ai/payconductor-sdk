@@ -1,5 +1,6 @@
 # OrderPicPayPaymentRequest
 
+Specific data for PicPay payment
 
 ## Properties
 

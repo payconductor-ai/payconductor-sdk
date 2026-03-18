@@ -1,6 +1,6 @@
 # WithdrawApi
 
-All URIs are relative to *https://app.payconductor.ai/api/v1*
+All URIs are relative to *http://localhost:5173/api/v1*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
@@ -11,7 +11,7 @@ All URIs are relative to *https://app.payconductor.ai/api/v1*
 # **withdrawCreate**
 > WithdrawCreateResponse withdrawCreate(withdrawCreateRequest)
 
-Create a new withdrawal or transfer to the provided payment account
+Create a new withdrawal or transfer to the provided payment account.
 
 ### Example
 
@@ -63,7 +63,7 @@ const { status, data } = await apiInstance.withdrawCreate(
 # **withdrawList**
 > withdrawList()
 
-Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID)
+Returns a paginated list of withdrawals and transfers. Filter by creation date or search by ID (withdrawal ID, external ID, acquirer ID, or End2EndID).
 
 ### Example
 
@@ -121,7 +121,7 @@ void (empty response body)
 # **withdrawRead**
 > withdrawRead()
 
-Returns the details of a specific withdrawal or transfer using its ID
+Returns the details of a specific withdrawal or transfer using its ID.
 
 ### Example
 

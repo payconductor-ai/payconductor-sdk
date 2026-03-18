@@ -1,5 +1,6 @@
 # OrderNuPayPaymentRequest
 
+Specific data for NuPay payment
 
 ## Properties
 

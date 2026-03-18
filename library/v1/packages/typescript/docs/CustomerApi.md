@@ -1,6 +1,6 @@
 # CustomerApi
 
-All URIs are relative to *https://app.payconductor.ai/api/v1*
+All URIs are relative to *http://localhost:5173/api/v1*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|

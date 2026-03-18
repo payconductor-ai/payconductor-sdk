@@ -13,13 +13,15 @@ Name | Type | Description | Notes
 **externalId** | **string** | Order ID in your system | [default to undefined]
 **fingerprints** | [**OrderFraudFingerprints**](OrderFraudFingerprints.md) |  | [optional] [default to undefined]
 **items** | [**Array&lt;OrderItemData&gt;**](OrderItemData.md) | List of products or services in the order | [optional] [default to undefined]
-**merchant** | [**MerchantInput**](MerchantInput.md) |  | [optional] [default to undefined]
+**merchant** | [**MerchantData**](MerchantData.md) |  | [optional] [default to undefined]
+**splits** | [**Array&lt;OrderSplitDataInner&gt;**](OrderSplitDataInner.md) | Split data for payment division between multiple receivers | [optional] [default to undefined]
 **payment** | [**OrderPaymentRequest**](OrderPaymentRequest.md) |  | [default to undefined]
 **splitAmountTotal** | **number** | Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split) | [optional] [default to undefined]
 **session** | [**OrderCreateRequestSession**](OrderCreateRequestSession.md) |  | [optional] [default to undefined]
 **shippingFee** | **number** | Shipping fee | [default to 0]
 **taxFee** | **number** | Additional fees | [default to 0]
 **metadata** | **object** | Additional metadata for the order as key-value pairs. Keys should not contain spaces or special characters | [optional] [default to undefined]
+**routing** | [**OrderRoutingData**](OrderRoutingData.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -35,12 +37,14 @@ const instance: OrderCreateRequest = {
     fingerprints,
     items,
     merchant,
+    splits,
     payment,
     splitAmountTotal,
     session,
     shippingFee,
     taxFee,
     metadata,
+    routing,
 };
 ```
 

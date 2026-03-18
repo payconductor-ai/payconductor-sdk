@@ -23,4 +23,16 @@
 
 * `WithdrawTransferring` (value: `'WithdrawTransferring'`)
 
+* `MerchantCreated` (value: `'MerchantCreated'`)
+
+* `MerchantWaitingOnboarding` (value: `'MerchantWaitingOnboarding'`)
+
+* `MerchantAnalysing` (value: `'MerchantAnalysing'`)
+
+* `MerchantFailed` (value: `'MerchantFailed'`)
+
+* `MerchantRefused` (value: `'MerchantRefused'`)
+
+* `MerchantApproved` (value: `'MerchantApproved'`)
+
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

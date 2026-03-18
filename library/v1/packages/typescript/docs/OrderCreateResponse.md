@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** | Order ID in the system | [default to undefined]
 **externalId** | **string** | External order ID (provided by your integration) | [default to undefined]
+**idempotencyKey** | **string** | Order idempotency key | [default to undefined]
 **externalIntegrationKey** | **string** | Provider used to process the order | [default to undefined]
 **externalIntegrationId** | **string** | Order ID in the payment provider | [default to undefined]
 **amount** | **number** | Total order amount | [default to undefined]
@@ -22,8 +23,9 @@ Name | Type | Description | Notes
 **payedAt** | **string** | Date and time when the order was paid (ISO 8601) | [default to undefined]
 **errorCode** | **string** | Error code, if any | [default to undefined]
 **errorMessage** | **string** | Error message, if any | [default to undefined]
-**orderItems** | [**Array&lt;OrderCreateResponseOrderItemsInner&gt;**](OrderCreateResponseOrderItemsInner.md) |  | [default to undefined]
+**orderItems** | [**Array&lt;OrderItemsInner&gt;**](OrderItemsInner.md) | List of products or services included in the order | [default to undefined]
 **session** | [**OrderCreateResponseSession**](OrderCreateResponseSession.md) |  | [optional] [default to undefined]
+**threeDSecure** | [**OrderCreateResponseThreeDSecure**](OrderCreateResponseThreeDSecure.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -33,6 +35,7 @@ import { OrderCreateResponse } from '@payconductor/sdk';
 const instance: OrderCreateResponse = {
     id,
     externalId,
+    idempotencyKey,
     externalIntegrationKey,
     externalIntegrationId,
     amount,
@@ -49,6 +52,7 @@ const instance: OrderCreateResponse = {
     errorMessage,
     orderItems,
     session,
+    threeDSecure,
 };
 ```
 

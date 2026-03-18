@@ -1,6 +1,6 @@
 # OrderApi
 
-All URIs are relative to *https://app.payconductor.ai/api/v1*
+All URIs are relative to *http://localhost:5173/api/v1*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
@@ -68,7 +68,7 @@ const { status, data } = await apiInstance.orderConfirm(
 # **orderCreate**
 > OrderCreateResponse orderCreate(orderCreateRequest)
 
-Create a new order for payment using the provided data
+Create a new order for payment using the provided data.
 
 ### Example
 
@@ -181,7 +181,7 @@ void (empty response body)
 # **orderRead**
 > orderRead()
 
-Retrieve the complete data of an order by our ID
+Retrieve the complete data of an order by our ID.
 
 ### Example
 

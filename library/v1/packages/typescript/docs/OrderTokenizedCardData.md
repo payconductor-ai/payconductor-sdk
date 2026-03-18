@@ -1,5 +1,6 @@
 # OrderTokenizedCardData
 
+Previously generated card token
 
 ## Properties
 

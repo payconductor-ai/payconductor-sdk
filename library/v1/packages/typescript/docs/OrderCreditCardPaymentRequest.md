@@ -1,5 +1,6 @@
 # OrderCreditCardPaymentRequest
 
+Specific data for credit card payment
 
 ## Properties
 
@@ -9,6 +10,7 @@ Name | Type | Description | Notes
 **card** | [**OrderCreditCardPaymentRequestCard**](OrderCreditCardPaymentRequestCard.md) |  | [default to undefined]
 **installments** | **number** | Number of installments | [default to 1]
 **softDescriptor** | **string** | Text that will appear on the card statement (soft descriptor) | [optional] [default to undefined]
+**threeDSecure** | [**OrderCreditCardPaymentRequestThreeDSecure**](OrderCreditCardPaymentRequestThreeDSecure.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -20,6 +22,7 @@ const instance: OrderCreditCardPaymentRequest = {
     card,
     installments,
     softDescriptor,
+    threeDSecure,
 };
 ```
 

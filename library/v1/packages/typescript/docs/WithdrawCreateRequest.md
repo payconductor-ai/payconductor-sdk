@@ -8,7 +8,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **amount** | **number** | Withdrawal amount in cents | [default to undefined]
 **externalId** | **string** | Withdrawal ID in your system | [optional] [default to undefined]
-**merchant** | [**MerchantInput**](MerchantInput.md) |  | [optional] [default to undefined]
+**merchant** | [**MerchantData**](MerchantData.md) |  | [optional] [default to undefined]
+**merchantId** | **string** | ID do comerciante associado ao saque | [optional] [default to undefined]
 **payoutAccount** | [**WithdrawPayoutAccountData**](WithdrawPayoutAccountData.md) |  | [default to undefined]
 
 ## Example
@@ -20,6 +21,7 @@ const instance: WithdrawCreateRequest = {
     amount,
     externalId,
     merchant,
+    merchantId,
     payoutAccount,
 };
 ```

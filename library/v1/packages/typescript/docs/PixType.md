@@ -3,9 +3,9 @@
 
 ## Enum
 
-* `Cpf` (value: `'Cpf'`)
-
 * `Cnpj` (value: `'Cnpj'`)
+
+* `Cpf` (value: `'Cpf'`)
 
 * `Email` (value: `'Email'`)
 

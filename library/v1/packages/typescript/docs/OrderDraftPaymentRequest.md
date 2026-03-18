@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **paymentMethod** | **string** |  | [default to undefined]
 **expirationInSeconds** | **number** | Order expiration time in seconds | [optional] [default to 3600]
-**availablePaymentMethods** | [**Array&lt;AvailablePaymentMethods&gt;**](AvailablePaymentMethods.md) | Available payment methods for this order | [optional] [default to undefined]
+**availablePaymentMethods** | **Array&lt;string&gt;** | Available payment methods for this order | [optional] [default to undefined]
 
 ## Example
 

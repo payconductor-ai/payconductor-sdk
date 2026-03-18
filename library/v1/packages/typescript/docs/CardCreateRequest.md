@@ -7,7 +7,7 @@ Complete card data for payment processing
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **cvv** | **string** | Card security code (CVV) | [default to undefined]
-**expiration** | [**CardExpirationData**](CardExpirationData.md) |  | [default to undefined]
+**expiration** | [**Expiration**](Expiration.md) |  | [default to undefined]
 **holderName** | **string** | Card holder name | [default to undefined]
 **number** | **string** | Credit card number | [default to undefined]
 

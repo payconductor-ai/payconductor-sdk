@@ -1,5 +1,6 @@
 # OrderPIXPaymentRequest
 
+Specific data for PIX payment
 
 ## Properties
 

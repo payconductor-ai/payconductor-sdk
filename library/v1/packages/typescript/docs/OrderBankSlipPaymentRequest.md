@@ -1,5 +1,6 @@
 # OrderBankSlipPaymentRequest
 
+Specific data for bank slip payment
 
 ## Properties
 

@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** | Order ID in the system | [default to undefined]
 **externalId** | **string** | External order ID (provided by your integration) | [default to undefined]
+**idempotencyKey** | **string** | Order idempotency key | [default to undefined]
 **amount** | **number** | Total order amount | [default to undefined]
 **costFee** | **number** | Cost fee applied to the order | [default to undefined]
 **pix** | [**OrderPIXInfo**](OrderPIXInfo.md) |  | [optional] [default to undefined]
@@ -19,6 +20,7 @@ Name | Type | Description | Notes
 **payedAt** | **string** | Date and time when the order was paid (ISO 8601) | [default to undefined]
 **errorCode** | **string** | Error code, if any | [default to undefined]
 **errorMessage** | **string** | Error message, if any | [default to undefined]
+**threeDSecure** | [**OrderCreateResponseThreeDSecure**](OrderCreateResponseThreeDSecure.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -28,6 +30,7 @@ import { OrderConfirmResponse } from '@payconductor/sdk';
 const instance: OrderConfirmResponse = {
     id,
     externalId,
+    idempotencyKey,
     amount,
     costFee,
     pix,
@@ -39,6 +42,7 @@ const instance: OrderConfirmResponse = {
     payedAt,
     errorCode,
     errorMessage,
+    threeDSecure,
 };
 ```
 
