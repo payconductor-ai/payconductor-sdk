@@ -6,14 +6,16 @@ All URIs are relative to *http://localhost:5173/api/v1*
 |------------- | ------------- | -------------|
 |[**getMerchants**](#getmerchants) | **GET** /merchants/ | List Merchants|
 |[**getMerchantsById**](#getmerchantsbyid) | **GET** /merchants/{id} | Get Merchant By ID|
+|[**getMerchantsByIdDocuments**](#getmerchantsbyiddocuments) | **GET** /merchants/{id}/documents | List Merchant Documents|
 |[**postMerchants**](#postmerchants) | **POST** /merchants/ | Create Merchant|
+|[**postMerchantsByIdDocumentsByType**](#postmerchantsbyiddocumentsbytype) | **POST** /merchants/{id}/documents/{type} | Upload Merchant Document|
 |[**postMerchantsByIdFlows**](#postmerchantsbyidflows) | **POST** /merchants/{id}/flows | Configure Merchant Flows|
 |[**postMerchantsByIdSubaccounts**](#postmerchantsbyidsubaccounts) | **POST** /merchants/{id}/subaccounts | Update Merchant Subaccounts|
 
 # **getMerchants**
 > getMerchants()
 
-Retrieve all merchants in the organization with optional filters for email, status, name and document.
+Endpoint for retrieving all merchants of the organization with optional filters for email, status, name, and document.
 
 ### Example
 
@@ -31,7 +33,7 @@ let pageSize: number; // (default to 20)
 let document: string; // (optional) (default to undefined)
 let email: string; // (optional) (default to undefined)
 let name: string; // (optional) (default to undefined)
-let status: 'Creating' | 'WaitingOnboarding' | 'Analysing' | 'Refused' | 'Failed' | 'Approved'; // (optional) (default to undefined)
+let status: 'Creating' | 'WaitingDocuments' | 'WaitingOnboarding' | 'Analysing' | 'Refused' | 'Failed' | 'Approved'; // (optional) (default to undefined)
 
 const { status, data } = await apiInstance.getMerchants(
     page,
@@ -52,7 +54,7 @@ const { status, data } = await apiInstance.getMerchants(
 | **document** | [**string**] |  | (optional) defaults to undefined|
 | **email** | [**string**] |  | (optional) defaults to undefined|
 | **name** | [**string**] |  | (optional) defaults to undefined|
-| **status** | [**&#39;Creating&#39; | &#39;WaitingOnboarding&#39; | &#39;Analysing&#39; | &#39;Refused&#39; | &#39;Failed&#39; | &#39;Approved&#39;**]**Array<&#39;Creating&#39; &#124; &#39;WaitingOnboarding&#39; &#124; &#39;Analysing&#39; &#124; &#39;Refused&#39; &#124; &#39;Failed&#39; &#124; &#39;Approved&#39;>** |  | (optional) defaults to undefined|
+| **status** | [**&#39;Creating&#39; | &#39;WaitingDocuments&#39; | &#39;WaitingOnboarding&#39; | &#39;Analysing&#39; | &#39;Refused&#39; | &#39;Failed&#39; | &#39;Approved&#39;**]**Array<&#39;Creating&#39; &#124; &#39;WaitingDocuments&#39; &#124; &#39;WaitingOnboarding&#39; &#124; &#39;Analysing&#39; &#124; &#39;Refused&#39; &#124; &#39;Failed&#39; &#124; &#39;Approved&#39;>** |  | (optional) defaults to undefined|
 
 
 ### Return type
@@ -74,7 +76,7 @@ void (empty response body)
 # **getMerchantsById**
 > MerchantResponse getMerchantsById()
 
-Retrieve a merchant by ID, returning all related data.
+Endpoint for fetching a merchant by ID, returning all related data.
 
 ### Example
 
@@ -122,10 +124,56 @@ const { status, data } = await apiInstance.getMerchantsById(
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getMerchantsByIdDocuments**
+> getMerchantsByIdDocuments()
+
+Returns all documents uploaded for a specific merchant.
+
+### Example
+
+```typescript
+import {
+    MerchantApi,
+    Configuration
+} from '@payconductor/sdk';
+
+const configuration = new Configuration();
+const apiInstance = new MerchantApi(configuration);
+
+let id: string; // (default to undefined)
+
+const { status, data } = await apiInstance.getMerchantsByIdDocuments(
+    id
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **postMerchants**
 > MerchantResponse postMerchants(merchant)
 
-Create a new merchant with complete onboarding data.
+Endpoint for full creation of a new merchant.
 
 ### Example
 
@@ -139,7 +187,7 @@ import {
 const configuration = new Configuration();
 const apiInstance = new MerchantApi(configuration);
 
-let merchant: Merchant; //Modelo para criação de merchant com todos os dados necessários
+let merchant: Merchant; //Model for merchant creation with all required data
 
 const { status, data } = await apiInstance.postMerchants(
     merchant
@@ -150,7 +198,7 @@ const { status, data } = await apiInstance.postMerchants(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **merchant** | **Merchant**| Modelo para criação de merchant com todos os dados necessários | |
+| **merchant** | **Merchant**| Model for merchant creation with all required data | |
 
 
 ### Return type
@@ -174,10 +222,62 @@ const { status, data } = await apiInstance.postMerchants(
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **postMerchantsByIdDocumentsByType**
+> postMerchantsByIdDocumentsByType()
+
+Uploads a document for the merchant.
+
+### Example
+
+```typescript
+import {
+    MerchantApi,
+    Configuration
+} from '@payconductor/sdk';
+
+const configuration = new Configuration();
+const apiInstance = new MerchantApi(configuration);
+
+let id: string; // (default to undefined)
+let type: 'selfie-id' | 'address-indicator' | 'cnpj-card' | 'social-contract' | 'identification-front' | 'identification-back' | 'activity-proof'; // (default to 'selfie-id')
+let file: File; // (default to '[B@6785786d')
+
+const { status, data } = await apiInstance.postMerchantsByIdDocumentsByType(
+    id,
+    type,
+    file
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**string**] |  | defaults to undefined|
+| **type** | [**&#39;selfie-id&#39; | &#39;address-indicator&#39; | &#39;cnpj-card&#39; | &#39;social-contract&#39; | &#39;identification-front&#39; | &#39;identification-back&#39; | &#39;activity-proof&#39;**]**Array<&#39;selfie-id&#39; &#124; &#39;address-indicator&#39; &#124; &#39;cnpj-card&#39; &#124; &#39;social-contract&#39; &#124; &#39;identification-front&#39; &#124; &#39;identification-back&#39; &#124; &#39;activity-proof&#39;>** |  | defaults to 'selfie-id'|
+| **file** | [**File**] |  | defaults to '[B@6785786d'|
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: Not defined
+
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **postMerchantsByIdFlows**
 > postMerchantsByIdFlows(merchantFlow)
 
-Configure merchant flows such as order creation, confirmations and refunds.
+Endpoint to configure the flows of a merchant, such as order creation, confirmations and refunds.
 
 ### Example
 
@@ -227,7 +327,7 @@ void (empty response body)
 # **postMerchantsByIdSubaccounts**
 > PostMerchantsByIdSubaccounts200Response postMerchantsByIdSubaccounts()
 
-When subaccounts are rejected, they will be recreated by calling this endpoint.
+When subaccounts are rejected, they will be recreated when calling this endpoint.
 
 ### Example
 

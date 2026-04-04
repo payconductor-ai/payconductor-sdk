@@ -1,17 +1,17 @@
 # MerchantOwner
 
-Dados do proprietário/responsável legal do merchant
+Merchant owner/legal representative data
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **string** | Nome completo do proprietário | [default to undefined]
-**document** | **string** | CPF do proprietário | [default to undefined]
-**email** | **string** | Email do proprietário | [optional] [default to undefined]
-**phoneNumber** | **string** | Telefone do proprietário | [optional] [default to undefined]
+**name** | **string** | Owner full name | [default to undefined]
+**document** | **string** | Owner CPF | [default to undefined]
+**email** | **string** | Owner email | [optional] [default to undefined]
+**phoneNumber** | **string** | Owner phone number | [optional] [default to undefined]
 **address** | [**AddressCreateRequest**](AddressCreateRequest.md) |  | [default to undefined]
-**birthdate** | **string** | Data de nascimento do proprietário (formato: YYYY-MM-DD) | [default to undefined]
+**birthdate** | **string** | Owner birth date (format: YYYY-MM-DD) | [default to undefined]
 
 ## Example
 

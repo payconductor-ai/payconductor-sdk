@@ -1,13 +1,13 @@
 # MerchantPayoutAccountChecking
 
-Dados da conta bancária para recebimento
+Bank account data for receiving payments
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**accountNumber** | **string** | Número da conta com dígito | [default to undefined]
-**routingNumber** | **string** | Código do banco + número da agência + dígito | [default to undefined]
+**accountNumber** | **string** | Account number with check digit | [default to undefined]
+**routingNumber** | **string** | Bank code + branch number + check digit | [default to undefined]
 
 ## Example
 

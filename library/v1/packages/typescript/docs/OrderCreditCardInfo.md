@@ -7,6 +7,7 @@ Credit card payment data
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **authorizationCode** | **string** | Transaction authorization code | [optional] [default to undefined]
+**threeDSecure** | [**OrderCreditCardInfoThreeDSecure**](OrderCreditCardInfoThreeDSecure.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -15,6 +16,7 @@ import { OrderCreditCardInfo } from '@payconductor/sdk';
 
 const instance: OrderCreditCardInfo = {
     authorizationCode,
+    threeDSecure,
 };
 ```
 

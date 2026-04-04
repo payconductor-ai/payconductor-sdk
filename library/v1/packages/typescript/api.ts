@@ -23,54 +23,6 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
-
-export const Acquirer = {
-    Shield: 'Shield',
-    Asaas: 'Asaas',
-    Sandbox: 'Sandbox',
-    MercadoPago: 'MercadoPago',
-    NuPay: 'NuPay',
-    PicPay: 'PicPay',
-    Woovi: 'Woovi',
-    N8n: 'N8n',
-    BrasPag: 'BrasPag',
-    PagarMe: 'PagarMe',
-    BancoDoBrasil: 'BancoDoBrasil',
-    PagSeguro: 'PagSeguro',
-    Ebanx: 'Ebanx',
-    PodPay: 'PodPay',
-    Hopy: 'Hopy',
-    Reborn: 'Reborn',
-    OnlyUp: 'OnlyUp',
-    Barte: 'Barte',
-    BarteSplit: 'BarteSplit',
-    MonsterGateway: 'MonsterGateway',
-    Unicopag: 'Unicopag',
-    EfiBank: 'EfiBank',
-    CartWave: 'CartWave',
-    SAC: 'SAC',
-    Simpay: 'Simpay',
-    Moneria: 'Moneria',
-    PodPayV2: 'PodPayV2',
-    Pluggou: 'Pluggou',
-    HunterSub: 'HunterSub',
-    ZyroPay: 'ZyroPay',
-    Wappi: 'Wappi',
-    PagNet: 'PagNet',
-    Witetec: 'Witetec',
-    PagLoop: 'PagLoop',
-    BluPay: 'BluPay',
-    PagSmileA55: 'PagSmileA55',
-    VersellPay: 'VersellPay',
-    SandboxSplit: 'SandboxSplit',
-    VoltPay: 'VoltPay',
-    Avantti: 'Avantti',
-    Cyberpay: 'Cyberpay'
-} as const;
-
-export type Acquirer = typeof Acquirer[keyof typeof Acquirer];
-
-
 /**
  * Schema for creating a new address
  */
@@ -144,7 +96,7 @@ export interface ApplePay {
     'paymentMethod': string;
     'applePay': ApplePayApplePay;
     /**
-     * Number of installments for the payment
+     * Number of installments
      */
     'installments'?: number;
 }
@@ -184,6 +136,16 @@ export interface ApplePayApplePayHeader {
     'transactionId': string;
 }
 /**
+ * Specific data for bank slip payment
+ */
+export interface BankSlipPayment {
+    'paymentMethod': string;
+    /**
+     * Days until bank slip expires
+     */
+    'expirationInDays'?: number;
+}
+/**
  * Client browser information
  */
 export interface BrowserInformation {
@@ -216,15 +178,15 @@ export interface BrowserInformation {
      */
     'screenWidth'?: number;
     /**
-     * Time zone offset
+     * Timezone offset
      */
     'timeZoneOffset'?: string;
     /**
-     * Indicates whether Java is enabled
+     * Indicates if Java is enabled
      */
     'javaEnabled': boolean;
     /**
-     * Indicates whether JavaScript is enabled
+     * Indicates if JavaScript is enabled
      */
     'javaScriptEnabled': boolean;
 }
@@ -285,9 +247,132 @@ export interface CardTokenizationCustomerByIdData {
     'id': string;
 }
 /**
+ * Input for creating a new recurring subscription. Uses the same format as an order with additional subscription control fields.
+ */
+export interface CreateSubscription {
+    /**
+     * Total amount to be charged on the order in floating point value
+     */
+    'chargeAmount': number;
+    /**
+     * Client IP address
+     */
+    'clientIp': string;
+    'customer': CustomerCreateRequest;
+    /**
+     * Discount amount
+     */
+    'discountAmount': number;
+    /**
+     * Order ID in your system
+     */
+    'externalId': string;
+    'fingerprints'?: OrderFraudFingerprints;
+    /**
+     * List of products or services in the order
+     */
+    'items'?: Array<OrderItemData>;
+    'merchant'?: MerchantData;
+    /**
+     * Split data for payment division among multiple recipients
+     */
+    'splits'?: Array<OrderSplitDataInner>;
+    'payment': CreditCardPayment;
+    /**
+     * Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)
+     */
+    'splitAmountTotal'?: number;
+    'session'?: OrderCreateRequestSession;
+    /**
+     * Shipping fee
+     */
+    'shippingFee': number;
+    /**
+     * Additional fees
+     */
+    'taxFee': number;
+    /**
+     * Additional metadata for the order as key-value pairs. Keys should not contain spaces or special characters
+     */
+    'metadata'?: object;
+    'routing'?: OrderRoutingData;
+    'subscription': CreateSubscriptionSubscription;
+}
+export interface CreateSubscriptionSubscription {
+    'periodicity': Periodicity;
+    /**
+     * Number of period units between each charge (e.g. 2 = every 2 months)
+     */
+    'periodicityInterval'?: number;
+    /**
+     * Maximum number of billing cycles. Leave empty for unlimited
+     */
+    'maxCycles'?: number;
+    /**
+     * Date and time to start the subscription (ISO 8601). Defaults to now
+     */
+    'startAt'?: string;
+}
+
+
+/**
+ * Specific data for credit card payment
+ */
+export interface CreditCardPayment {
+    'paymentMethod': PaymentMethod;
+    'card': CreditCardPaymentCard;
+    /**
+     * Number of installments
+     */
+    'installments': number;
+    /**
+     * Text that will appear on the card statement (soft descriptor)
+     */
+    'softDescriptor'?: string;
+    'threeDSecure'?: CreditCardPaymentThreeDSecure;
+}
+
+
+/**
+ * @type CreditCardPaymentCard
+ */
+export type CreditCardPaymentCard = CardCreateRequest | TokenizedCardData;
+
+/**
+ * @type CreditCardPaymentThreeDSecure
+ */
+export type CreditCardPaymentThreeDSecure = { type: 'external' } & External3DSAuthentication | { type: 'internal' } & Internal3DSAuthentication;
+
+
+export const Currency = {
+    USD: 'USD',
+    EUR: 'EUR',
+    BRL: 'BRL',
+    ARS: 'ARS',
+    CAD: 'CAD',
+    COP: 'COP',
+    GBP: 'GBP',
+    JPY: 'JPY',
+    MXN: 'MXN',
+    MZN: 'MZN',
+    CNY: 'CNY',
+    SAR: 'SAR',
+    ETH: 'ETH',
+    BNB: 'BNB',
+    BTC: 'BTC',
+    USDT: 'USDT',
+    USDC: 'USDC',
+    DOGE: 'DOGE',
+    SOL: 'SOL'
+} as const;
+
+export type Currency = typeof Currency[keyof typeof Currency];
+
+
+/**
  * Customer address information
  */
-export interface CustomerAddressResponse {
+export interface CustomerAddress {
     /**
      * Unique address identifier
      */
@@ -347,7 +432,7 @@ export interface CustomerCreateRequest {
 
 
 /**
- * Pagination information for customer list
+ * Pagination information for the customer list
  */
 export interface CustomerListPagination {
     /**
@@ -402,7 +487,7 @@ export interface CustomerReadResponse {
      * Customer phone number
      */
     'phoneNumber': string | null;
-    'address': CustomerAddressResponse | null;
+    'address': CustomerAddress | null;
     /**
      * Date and time when the customer was created (ISO 8601 format)
      */
@@ -448,6 +533,41 @@ export const DocumentType = {
 export type DocumentType = typeof DocumentType[keyof typeof DocumentType];
 
 
+/**
+ * Used to create an order without generating a real payment. Use to create orders that will be paid later
+ */
+export interface DraftPayment {
+    'paymentMethod': string;
+    /**
+     * Order expiration time in seconds
+     */
+    'expirationInSeconds'?: number;
+    /**
+     * Available payment methods for this order
+     */
+    'availablePaymentMethods'?: Array<DraftPaymentAvailablePaymentMethodsEnum>;
+}
+
+export const DraftPaymentAvailablePaymentMethodsEnum = {
+    Pix: 'Pix',
+    BankSlip: 'BankSlip',
+    CreditCard: 'CreditCard',
+    NuPay: 'NuPay',
+    PicPay: 'PicPay',
+    GooglePay: 'GooglePay'
+} as const;
+
+export type DraftPaymentAvailablePaymentMethodsEnum = typeof DraftPaymentAvailablePaymentMethodsEnum[keyof typeof DraftPaymentAvailablePaymentMethodsEnum];
+
+
+export const Environment = {
+    Production: 'Production',
+    Sandbox: 'Sandbox'
+} as const;
+
+export type Environment = typeof Environment[keyof typeof Environment];
+
+
 
 export const Event = {
     OrderCreated: 'OrderCreated',
@@ -465,7 +585,12 @@ export const Event = {
     MerchantAnalysing: 'MerchantAnalysing',
     MerchantFailed: 'MerchantFailed',
     MerchantRefused: 'MerchantRefused',
-    MerchantApproved: 'MerchantApproved'
+    MerchantApproved: 'MerchantApproved',
+    SubscriptionCreated: 'SubscriptionCreated',
+    SubscriptionActivated: 'SubscriptionActivated',
+    SubscriptionCanceled: 'SubscriptionCanceled',
+    SubscriptionCompleted: 'SubscriptionCompleted',
+    SubscriptionPastDue: 'SubscriptionPastDue'
 } as const;
 
 export type Event = typeof Event[keyof typeof Event];
@@ -494,15 +619,15 @@ export interface External3DSAuthentication {
      */
     'status': string;
     /**
-     * Authentication transaction identifier. In 3DS2, it may be the same value as CAVV. Used for authentication traceability
+     * Authentication transaction identifier. In 3DS2, may be the same value as CAVV. Used for authentication traceability
      */
     'eci': string;
     /**
-     * 3DS protocol version used in the authentication
+     * 3DS protocol version used in authentication
      */
     'version': string;
     /**
-     * Code generated by the card issuer that proves the validation was completed
+     * Code generated by the card issuer proving that validation was completed
      */
     'cavv': string;
     /**
@@ -516,12 +641,54 @@ export interface External3DSAuthentication {
     'browser'?: BrowserInformation;
 }
 /**
+ * Specific data for Google Pay payment (ECv2 Token)
+ */
+export interface GooglePayPayment {
+    'paymentMethod': string;
+    'googlePay': GooglePayPaymentGooglePay;
+    /**
+     * Number of installments
+     */
+    'installments'?: number;
+}
+/**
+ * Specific data for Google Pay payment (ECv2 Token)
+ */
+export interface GooglePayPaymentGooglePay {
+    /**
+     * Signature of the Google Pay payment token
+     */
+    'signature': string;
+    'intermediateSigningKey': GooglePayPaymentGooglePayIntermediateSigningKey;
+    /**
+     * Encryption protocol version
+     */
+    'protocolVersion': string;
+    /**
+     * JSON serialized string by Google Pay containing encryptedMessage, ephemeralPublicKey and tag
+     */
+    'signedMessage': string;
+}
+/**
+ * Google Pay intermediate signing key
+ */
+export interface GooglePayPaymentGooglePayIntermediateSigningKey {
+    /**
+     * Encoded intermediate signing key
+     */
+    'signedKey': string;
+    /**
+     * List of intermediate key signatures
+     */
+    'signatures': Array<string>;
+}
+/**
  * 3DS authentication data managed by the platform
  */
 export interface Internal3DSAuthentication {
     'type': string;
     /**
-     * 3DS authentication token generated by the 3DS authentication
+     * 3DS authentication token generated by 3DS authentication
      */
     'authToken'?: string;
     /**
@@ -535,12 +702,12 @@ export interface Internal3DSAuthentication {
     'browser'?: BrowserInformation;
 }
 /**
- * Modelo para criação de merchant com todos os dados necessários
+ * Model for merchant creation with all required data
  */
 export interface Merchant {
     'personType'?: PersonType;
     /**
-     * Descrição dos produtos ou serviços oferecidos
+     * Description of products or services offered
      */
     'productsDescription'?: string;
     /**
@@ -548,7 +715,7 @@ export interface Merchant {
      */
     'mcc'?: string;
     /**
-     * URL do site do merchant
+     * Merchant website URL
      */
     'website': string;
     'business': MerchantBusiness;
@@ -560,23 +727,23 @@ export interface Merchant {
 
 export interface MerchantBusiness {
     /**
-     * Razão social ou nome completo do merchant
+     * Merchant legal name or full name
      */
     'name': string;
     /**
-     * CNPJ ou CPF do merchant
+     * Merchant CNPJ or CPF
      */
     'document': string;
     /**
-     * Nome fantasia do merchant
+     * Merchant trade name
      */
     'tradeName'?: string;
     /**
-     * Email principal do merchant
+     * Merchant main email
      */
     'email': string;
     /**
-     * Telefone de contato do merchant
+     * Merchant contact phone number
      */
     'phoneNumber'?: string;
     'address': AddressCreateRequest;
@@ -645,58 +812,58 @@ export interface MerchantFlow {
 
 
 /**
- * Dados do proprietário/responsável legal do merchant
+ * Merchant owner/legal representative data
  */
 export interface MerchantOwner {
     /**
-     * Nome completo do proprietário
+     * Owner full name
      */
     'name': string;
     /**
-     * CPF do proprietário
+     * Owner CPF
      */
     'document': string;
     /**
-     * Email do proprietário
+     * Owner email
      */
     'email'?: string;
     /**
-     * Telefone do proprietário
+     * Owner phone number
      */
     'phoneNumber'?: string;
     'address': AddressCreateRequest;
     /**
-     * Data de nascimento do proprietário (formato: YYYY-MM-DD)
+     * Owner birth date (format: YYYY-MM-DD)
      */
     'birthdate': string;
 }
 /**
- * Dados da conta bancária do merchant para recebimento (PIX e/ou conta corrente)
+ * Merchant bank account for receiving payments (PIX and/or checking account)
  */
 export interface MerchantPayoutAccount {
     'pix'?: MerchantPayoutAccountPix;
     'checking'?: MerchantPayoutAccountChecking;
 }
 /**
- * Dados da conta bancária para recebimento
+ * Bank account data for receiving payments
  */
 export interface MerchantPayoutAccountChecking {
     /**
-     * Número da conta com dígito
+     * Account number with check digit
      */
     'accountNumber': string;
     /**
-     * Código do banco + número da agência + dígito
+     * Bank code + branch number + check digit
      */
     'routingNumber': string;
 }
 /**
- * Dados da chave PIX para recebimento
+ * PIX key data for receiving payments
  */
 export interface MerchantPayoutAccountPix {
     'type': Type;
     /**
-     * Chave PIX
+     * PIX key
      */
     'key': string;
 }
@@ -826,6 +993,34 @@ export interface MerchantResponseSubaccountsInner {
     'errorMessage': string | null;
 }
 /**
+ * Specific data for NuPay payment
+ */
+export interface NuPayPayment {
+    'paymentMethod': string;
+    'nuPay': NuPayPaymentNuPay;
+}
+/**
+ * Specific data for NuPay payment
+ */
+export interface NuPayPaymentNuPay {
+    /**
+     * Payment cancellation URL
+     */
+    'cancelUrl': string;
+    /**
+     * Merchant name
+     */
+    'merchantName': string;
+    /**
+     * Return URL after payment completion
+     */
+    'returnUrl': string;
+    /**
+     * Store name
+     */
+    'storeName'?: string;
+}
+/**
  * Bank slip payment data
  */
 export interface OrderBankSlipInfo {
@@ -841,16 +1036,6 @@ export interface OrderBankSlipInfo {
      * Bank slip PDF URL
      */
     'pdfUrl'?: string;
-}
-/**
- * Specific data for bank slip payment
- */
-export interface OrderBankSlipPaymentRequest {
-    'paymentMethod': string;
-    /**
-     * Days until bank slip expires
-     */
-    'expirationInDays'?: number;
 }
 /**
  * Response after confirming a draft order
@@ -872,6 +1057,7 @@ export interface OrderConfirmResponse {
      * Total order amount
      */
     'amount': number;
+    'currency': Currency;
     /**
      * Cost fee applied to the order
      */
@@ -881,6 +1067,10 @@ export interface OrderConfirmResponse {
     'nuPay'?: OrderNuPayInfo;
     'picPay'?: OrderPicPayInfo;
     'status': Status;
+    /**
+     * Status detail providing additional context (e.g. ThreeDsAwaitingChallenge when a 3DS challenge is pending)
+     */
+    'statusDetail'?: string | null;
     'paymentMethod': PaymentMethod;
     /**
      * Date and time when the order was paid (ISO 8601)
@@ -894,7 +1084,7 @@ export interface OrderConfirmResponse {
      * Error message, if any
      */
     'errorMessage': string | null;
-    'threeDSecure'?: OrderCreateResponseThreeDSecure;
+    'threeDSecure'?: OrderCreditCardInfoThreeDSecure;
 }
 
 
@@ -926,10 +1116,10 @@ export interface OrderCreateRequest {
     'items'?: Array<OrderItemData>;
     'merchant'?: MerchantData;
     /**
-     * Split data for payment division between multiple receivers
+     * Split data for payment division among multiple recipients
      */
     'splits'?: Array<OrderSplitDataInner>;
-    'payment': OrderPaymentRequest;
+    'payment': OrderPaymentData;
     /**
      * Total split amount to be paid to the merchant (Used only for reporting purposes, does not generate actual split)
      */
@@ -998,6 +1188,7 @@ export interface OrderCreateResponse {
      * Total order amount
      */
     'amount': number;
+    'currency': Currency;
     /**
      * Cost fee applied to the order
      */
@@ -1008,6 +1199,10 @@ export interface OrderCreateResponse {
     'picPay'?: OrderPicPayInfo;
     'creditCard'?: OrderCreditCardInfo;
     'status': Status;
+    /**
+     * Status detail providing additional context (e.g. ThreeDsAwaitingChallenge when a 3DS challenge is pending)
+     */
+    'statusDetail'?: string | null;
     'paymentMethod': PaymentMethod;
     /**
      * Date and time when the order was paid (ISO 8601)
@@ -1025,8 +1220,8 @@ export interface OrderCreateResponse {
      * List of products or services included in the order
      */
     'orderItems': Array<OrderItemsInner>;
-    'session'?: OrderCreateResponseSession | null;
-    'threeDSecure'?: OrderCreateResponseThreeDSecure;
+    'session': OrderCreateResponseSession | null;
+    'threeDSecure'?: OrderCreditCardInfoThreeDSecure;
 }
 
 
@@ -1036,7 +1231,17 @@ export interface OrderCreateResponseSession {
      */
     'sessionId': string;
 }
-export interface OrderCreateResponseThreeDSecure {
+/**
+ * Credit card payment data
+ */
+export interface OrderCreditCardInfo {
+    /**
+     * Transaction authorization code
+     */
+    'authorizationCode'?: string;
+    'threeDSecure'?: OrderCreditCardInfoThreeDSecure;
+}
+export interface OrderCreditCardInfoThreeDSecure {
     /**
      * 3DS authentication token, returned only when internal 3DS authentication needs to be performed
      */
@@ -1046,79 +1251,38 @@ export interface OrderCreateResponseThreeDSecure {
      */
     'threeDsUrl'?: string;
     /**
+     * 3DS challenge request payload, used by some acquirers for inline 3DS challenge flow
+     */
+    'creq'?: string;
+    /**
      * Directory server transaction identifier generated by the authentication provider
      */
     'dsTransactionId'?: string;
     /**
-     * 3DS protocol version used in the authentication
+     * 3DS protocol version used in authentication
      */
     'version'?: string;
     'status': Status;
-    'acquirer'?: Acquirer;
+    'acquirer'?: OrderCreditCardInfoThreeDSecureAcquirer;
+    /**
+     * URL for initializing the 3DS authentication session, used by the client-side authentication SDK to handle the 3DS challenge flow
+     */
+    'operationUrl'?: string;
+    /**
+     * Public key for the 3DS authentication SDK, used to initialize the client-side authentication library
+     */
+    'publicKey'?: string;
+    'environment'?: Environment;
 }
 
 
 /**
- * Credit card payment data
+ * Payment service provider identifier, returned only for 3DS authentications performed through a payment provider integrated with the platform
  */
-export interface OrderCreditCardInfo {
-    /**
-     * Transaction authorization code
-     */
-    'authorizationCode'?: string;
+export interface OrderCreditCardInfoThreeDSecureAcquirer {
 }
-/**
- * Specific data for credit card payment
- */
-export interface OrderCreditCardPaymentRequest {
-    'paymentMethod': string;
-    'card': OrderCreditCardPaymentRequestCard;
-    /**
-     * Number of installments
-     */
-    'installments': number;
-    /**
-     * Text that will appear on the card statement (soft descriptor)
-     */
-    'softDescriptor'?: string;
-    'threeDSecure'?: OrderCreditCardPaymentRequestThreeDSecure;
+export interface OrderCreditCardInfoThreeDSecureAcquirerAnyOf {
 }
-/**
- * @type OrderCreditCardPaymentRequestCard
- */
-export type OrderCreditCardPaymentRequestCard = CardCreateRequest | OrderTokenizedCardData;
-
-/**
- * @type OrderCreditCardPaymentRequestThreeDSecure
- */
-export type OrderCreditCardPaymentRequestThreeDSecure = { type: 'external' } & External3DSAuthentication | { type: 'internal' } & Internal3DSAuthentication;
-
-/**
- * Used to create an order without generating a real payment. Use to create orders that will be paid later
- */
-export interface OrderDraftPaymentRequest {
-    'paymentMethod': string;
-    /**
-     * Order expiration time in seconds
-     */
-    'expirationInSeconds'?: number;
-    /**
-     * Available payment methods for this order
-     */
-    'availablePaymentMethods'?: Array<OrderDraftPaymentRequestAvailablePaymentMethodsEnum>;
-}
-
-export const OrderDraftPaymentRequestAvailablePaymentMethodsEnum = {
-    Pix: 'Pix',
-    BankSlip: 'BankSlip',
-    CreditCard: 'CreditCard',
-    NuPay: 'NuPay',
-    PicPay: 'PicPay',
-    GooglePay: 'GooglePay'
-} as const;
-
-export type OrderDraftPaymentRequestAvailablePaymentMethodsEnum = typeof OrderDraftPaymentRequestAvailablePaymentMethodsEnum[keyof typeof OrderDraftPaymentRequestAvailablePaymentMethodsEnum];
-
 /**
  * Fraud analysis fingerprint data
  */
@@ -1127,48 +1291,6 @@ export interface OrderFraudFingerprints {
      * ThreatMetrix fingerprint ID for fraud analysis
      */
     'threatMetrixFingerprintId'?: string;
-}
-/**
- * Specific data for Google Pay payment (ECv2 Token)
- */
-export interface OrderGooglePayPaymentRequest {
-    'paymentMethod': string;
-    'googlePay': OrderGooglePayPaymentRequestGooglePay;
-    /**
-     * Number of installments
-     */
-    'installments'?: number;
-}
-/**
- * Specific data for Google Pay payment (ECv2 Token)
- */
-export interface OrderGooglePayPaymentRequestGooglePay {
-    /**
-     * Signature of the Google Pay payment token
-     */
-    'signature': string;
-    'intermediateSigningKey': OrderGooglePayPaymentRequestGooglePayIntermediateSigningKey;
-    /**
-     * Encryption protocol version
-     */
-    'protocolVersion': string;
-    /**
-     * JSON serialized string by Google Pay containing encryptedMessage, ephemeralPublicKey and tag
-     */
-    'signedMessage': string;
-}
-/**
- * Google Pay intermediate signing key
- */
-export interface OrderGooglePayPaymentRequestGooglePayIntermediateSigningKey {
-    /**
-     * Encoded intermediate signing key
-     */
-    'signedKey': string;
-    /**
-     * List of intermediate key signatures
-     */
-    'signatures': Array<string>;
 }
 /**
  * Product or service item in the order
@@ -1235,34 +1357,6 @@ export interface OrderNuPayInfo {
     'paymentUrl': string;
 }
 /**
- * Specific data for NuPay payment
- */
-export interface OrderNuPayPaymentRequest {
-    'paymentMethod': string;
-    'nuPay': OrderNuPayPaymentRequestNuPay;
-}
-/**
- * Specific data for NuPay payment
- */
-export interface OrderNuPayPaymentRequestNuPay {
-    /**
-     * Payment cancellation URL
-     */
-    'cancelUrl': string;
-    /**
-     * Merchant name
-     */
-    'merchantName': string;
-    /**
-     * Return URL after payment completion
-     */
-    'returnUrl': string;
-    /**
-     * Store name
-     */
-    'storeName'?: string;
-}
-/**
  * PIX payment data and QR code information
  */
 export interface OrderPIXInfo {
@@ -1280,20 +1374,10 @@ export interface OrderPIXInfo {
     'endToEndId': string | null;
 }
 /**
- * Specific data for PIX payment
- */
-export interface OrderPIXPaymentRequest {
-    'paymentMethod': string;
-    /**
-     * PIX expiration time in seconds
-     */
-    'expirationInSeconds'?: number;
-}
-/**
- * @type OrderPaymentRequest
+ * @type OrderPaymentData
  * Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
  */
-export type OrderPaymentRequest = { paymentMethod: 'ApplePay' } & ApplePay | { paymentMethod: 'BankSlip' } & OrderBankSlipPaymentRequest | { paymentMethod: 'CreditCard' } & OrderCreditCardPaymentRequest | { paymentMethod: 'Draft' } & OrderDraftPaymentRequest | { paymentMethod: 'GooglePay' } & OrderGooglePayPaymentRequest | { paymentMethod: 'NuPay' } & OrderNuPayPaymentRequest | { paymentMethod: 'PicPay' } & OrderPicPayPaymentRequest | { paymentMethod: 'Pix' } & OrderPIXPaymentRequest;
+export type OrderPaymentData = { paymentMethod: 'ApplePay' } & ApplePay | { paymentMethod: 'BankSlip' } & BankSlipPayment | { paymentMethod: 'CreditCard' } & CreditCardPayment | { paymentMethod: 'Draft' } & DraftPayment | { paymentMethod: 'GooglePay' } & GooglePayPayment | { paymentMethod: 'NuPay' } & NuPayPayment | { paymentMethod: 'PicPay' } & PicPayPayment | { paymentMethod: 'Pix' } & PIXPayment;
 
 /**
  * PicPay payment data
@@ -1309,27 +1393,21 @@ export interface OrderPicPayInfo {
     'qrCodeUrl': string;
 }
 /**
- * Specific data for PicPay payment
- */
-export interface OrderPicPayPaymentRequest {
-    'paymentMethod': string;
-}
-/**
- * Routing data to define specific integrations to process the order
+ * Order routing data for payment processing
  */
 export interface OrderRoutingData {
     /**
-     * ID of a specific integration to process the order. Used to force the order to be processed by a specific integration, bypassing the default routing configuration
+     * Integration ID for direct payment processing
      */
     'directIntegrationId'?: string;
 }
 export interface OrderSplitDataInner {
     /**
-     * Merchant ID of the split receiver
+     * Merchant ID of the split recipient
      */
     'merchantId': string;
     /**
-     * Amount to be split to the receiver
+     * Amount to be split to the recipient
      */
     'amount': number;
     'receiverType': ReceiverType;
@@ -1337,17 +1415,14 @@ export interface OrderSplitDataInner {
 
 
 /**
- * Previously generated card token
+ * Specific data for PIX payment
  */
-export interface OrderTokenizedCardData {
+export interface PIXPayment {
+    'paymentMethod': string;
     /**
-     * First 6 digits of the credit card
+     * PIX expiration time in seconds
      */
-    'firstSixCardNumber'?: string;
-    /**
-     * Previously generated credit card token
-     */
-    'token': string;
+    'expirationInSeconds'?: number;
 }
 
 export const PaymentMethod = {
@@ -1369,6 +1444,17 @@ export type PaymentMethod = typeof PaymentMethod[keyof typeof PaymentMethod];
 
 
 
+export const Periodicity = {
+    Months: 'Months',
+    Days: 'Days',
+    Weeks: 'Weeks',
+    Years: 'Years'
+} as const;
+
+export type Periodicity = typeof Periodicity[keyof typeof Periodicity];
+
+
+
 export const PersonType = {
     Pf: 'Pf',
     Pj: 'Pj'
@@ -1377,6 +1463,12 @@ export const PersonType = {
 export type PersonType = typeof PersonType[keyof typeof PersonType];
 
 
+/**
+ * Specific data for PicPay payment
+ */
+export interface PicPayPayment {
+    'paymentMethod': string;
+}
 
 export const PixType = {
     Cnpj: 'Cnpj',
@@ -1393,6 +1485,18 @@ export interface PostMerchantsByIdSubaccounts200Response {
     'subaccounts': Array<MerchantResponseSubaccountsInner>;
 }
 
+export const Reason = {
+    DunningExhausted: 'DunningExhausted',
+    RetryScheduled: 'RetryScheduled',
+    Manual: 'Manual',
+    CustomerRequest: 'CustomerRequest',
+    PaymentFailure: 'PaymentFailure'
+} as const;
+
+export type Reason = typeof Reason[keyof typeof Reason];
+
+
+
 export const ReceiverType = {
     Owner: 'Owner',
     Split: 'Split'
@@ -1403,6 +1507,9 @@ export type ReceiverType = typeof ReceiverType[keyof typeof ReceiverType];
 
 
 export const Status = {
+    Authenticated: 'Authenticated',
+    NotAuthenticated: 'NotAuthenticated',
+    NeedChallenge: 'NeedChallenge',
     Generating: 'Generating',
     Pending: 'Pending',
     Completed: 'Completed',
@@ -1412,20 +1519,186 @@ export const Status = {
     Refunded: 'Refunded',
     InDispute: 'InDispute',
     Chargeback: 'Chargeback',
-    Authenticated: 'Authenticated',
-    NotAuthenticated: 'NotAuthenticated',
-    NeedChallenge: 'NeedChallenge',
     Transferring: 'Transferring',
     Creating: 'Creating',
+    WaitingDocuments: 'WaitingDocuments',
     WaitingOnboarding: 'WaitingOnboarding',
     Analysing: 'Analysing',
     Refused: 'Refused',
-    Approved: 'Approved'
+    Approved: 'Approved',
+    Active: 'Active',
+    Inactive: 'Inactive',
+    PastDue: 'PastDue',
+    Processing: 'Processing',
+    Skipped: 'Skipped'
 } as const;
 
 export type Status = typeof Status[keyof typeof Status];
 
 
+/**
+ * Customer data for this subscription
+ */
+export interface SubscriptionCustomer {
+    /**
+     * Unique customer identifier
+     */
+    'id': string;
+    /**
+     * Customer full name
+     */
+    'name': string;
+    /**
+     * Customer email
+     */
+    'email': string;
+}
+/**
+ * List of billing cycles for the subscription
+ */
+export interface SubscriptionCycles {
+    /**
+     * Unique cycle identifier
+     */
+    'id': string;
+    /**
+     * Sequential cycle number
+     */
+    'cycleNumber': number;
+    'status': Status;
+    /**
+     * Date and time when the cycle was scheduled (ISO 8601)
+     */
+    'scheduledAt': string;
+    /**
+     * Date and time when the cycle was processed (ISO 8601)
+     */
+    'processedAt': string | null;
+    'order': SubscriptionCyclesOrder | null;
+}
+
+
+export interface SubscriptionCyclesOrder {
+    /**
+     * Order ID generated for this cycle
+     */
+    'id': string;
+    /**
+     * External order ID (provided by your integration)
+     */
+    'externalId': string | null;
+    'status': Status;
+    /**
+     * Provider used to process the order
+     */
+    'externalIntegrationKey': string;
+    /**
+     * Order ID in the payment provider
+     */
+    'externalIntegrationId': string | null;
+}
+
+
+export interface SubscriptionList200Response {
+    'subscriptions': Array<SubscriptionResponse>;
+    'pagination': SubscriptionList200ResponsePagination;
+}
+export interface SubscriptionList200ResponsePagination {
+    'totalItems': number;
+    'currentPage': number;
+    'pageSize': number;
+    'totalPages': number;
+    'limit': number;
+    'offset': number;
+}
+/**
+ * Response with all recurring subscription data
+ */
+export interface SubscriptionResponse {
+    /**
+     * Unique subscription identifier
+     */
+    'id': string;
+    'status': Status;
+    /**
+     * External subscription ID (provided by the merchant)
+     */
+    'externalId': string | null;
+    /**
+     * Amount charged each cycle (in the specified currency)
+     */
+    'amount': number;
+    /**
+     * Billing currency (ISO 4217)
+     */
+    'currency': string;
+    'periodicity': Periodicity;
+    /**
+     * Interval between charges (e.g. 2 = every 2 months)
+     */
+    'periodicityInterval': number;
+    /**
+     * Current cycle number
+     */
+    'currentCycle': number;
+    /**
+     * Maximum number of cycles (null = unlimited)
+     */
+    'maxCycles': number | null;
+    /**
+     * Number of failed billing attempts in the current cycle
+     */
+    'dunningAttempts': number;
+    /**
+     * Subscription start date and time (ISO 8601)
+     */
+    'startedAt': string;
+    /**
+     * Next charge date and time (ISO 8601)
+     */
+    'nextChargeAt': string;
+    /**
+     * Cancellation date and time (ISO 8601)
+     */
+    'canceledAt': string | null;
+    'reason'?: Reason;
+    /**
+     * Additional metadata provided by the merchant
+     */
+    'metadata': object;
+    /**
+     * ID of the order that originated the subscription (first charge)
+     */
+    'originOrderId': string;
+    'customer': SubscriptionCustomer;
+    /**
+     * List of billing cycles for the subscription
+     */
+    'cycles': Array<SubscriptionCycles>;
+    /**
+     * Subscription creation date and time (ISO 8601)
+     */
+    'createdAt': string;
+    /**
+     * Last update date and time (ISO 8601)
+     */
+    'updatedAt': string;
+}
+
+
+/**
+ * Previously generated card token
+ */
+export interface TokenizedCardData {
+    /**
+     * First 6 digits of the credit card
+     */
+    'firstSixCardNumber'?: string;
+    /**
+     * Previously generated credit card token
+     */
+    'token': string;
+}
 
 export const Type = {
     Cpf: 'Cpf',
@@ -1476,7 +1749,7 @@ export interface WithdrawCreateResponse {
      */
     'externalId': string | null;
     /**
-     * Provider key used for the withdrawal
+     * Provider used for the withdrawal
      */
     'externalIntegrationKey': string;
     /**
@@ -2024,7 +2297,7 @@ export class CustomerApi extends BaseAPI {
 export const MerchantApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Retrieve all merchants in the organization with optional filters for email, status, name and document.
+         * Endpoint for retrieving all merchants of the organization with optional filters for email, status, name, and document.
          * @summary List Merchants
          * @param {number} page 
          * @param {number} pageSize 
@@ -2091,7 +2364,7 @@ export const MerchantApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * Retrieve a merchant by ID, returning all related data.
+         * Endpoint for fetching a merchant by ID, returning all related data.
          * @summary Get Merchant By ID
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2129,9 +2402,46 @@ export const MerchantApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * Create a new merchant with complete onboarding data.
+         * Returns all documents uploaded for a specific merchant.
+         * @summary List Merchant Documents
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMerchantsByIdDocuments: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getMerchantsByIdDocuments', 'id', id)
+            const localVarPath = `/merchants/{id}/documents`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Endpoint for full creation of a new merchant.
          * @summary Create Merchant
-         * @param {Merchant} merchant Modelo para criação de merchant com todos os dados necessários
+         * @param {Merchant} merchant Model for merchant creation with all required data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2168,7 +2478,58 @@ export const MerchantApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * Configure merchant flows such as order creation, confirmations and refunds.
+         * Uploads a document for the merchant.
+         * @summary Upload Merchant Document
+         * @param {string} id 
+         * @param {PostMerchantsByIdDocumentsByTypeTypeEnum} type 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postMerchantsByIdDocumentsByType: async (id: string, type: PostMerchantsByIdDocumentsByTypeTypeEnum, file: File, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('postMerchantsByIdDocumentsByType', 'id', id)
+            // verify required parameter 'type' is not null or undefined
+            assertParamExists('postMerchantsByIdDocumentsByType', 'type', type)
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('postMerchantsByIdDocumentsByType', 'file', file)
+            const localVarPath = `/merchants/{id}/documents/{type}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+                .replace(`{${"type"}}`, encodeURIComponent(String(type)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Endpoint to configure the flows of a merchant, such as order creation, confirmations and refunds.
          * @summary Configure Merchant Flows
          * @param {string} id 
          * @param {MerchantFlow} merchantFlow Schema for configuring a merchant flow
@@ -2210,7 +2571,7 @@ export const MerchantApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
-         * When subaccounts are rejected, they will be recreated by calling this endpoint.
+         * When subaccounts are rejected, they will be recreated when calling this endpoint.
          * @summary Update Merchant Subaccounts
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2257,7 +2618,7 @@ export const MerchantApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = MerchantApiAxiosParamCreator(configuration)
     return {
         /**
-         * Retrieve all merchants in the organization with optional filters for email, status, name and document.
+         * Endpoint for retrieving all merchants of the organization with optional filters for email, status, name, and document.
          * @summary List Merchants
          * @param {number} page 
          * @param {number} pageSize 
@@ -2275,7 +2636,7 @@ export const MerchantApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Retrieve a merchant by ID, returning all related data.
+         * Endpoint for fetching a merchant by ID, returning all related data.
          * @summary Get Merchant By ID
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2288,9 +2649,22 @@ export const MerchantApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Create a new merchant with complete onboarding data.
+         * Returns all documents uploaded for a specific merchant.
+         * @summary List Merchant Documents
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMerchantsByIdDocuments(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMerchantsByIdDocuments(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MerchantApi.getMerchantsByIdDocuments']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Endpoint for full creation of a new merchant.
          * @summary Create Merchant
-         * @param {Merchant} merchant Modelo para criação de merchant com todos os dados necessários
+         * @param {Merchant} merchant Model for merchant creation with all required data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2301,7 +2675,22 @@ export const MerchantApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * Configure merchant flows such as order creation, confirmations and refunds.
+         * Uploads a document for the merchant.
+         * @summary Upload Merchant Document
+         * @param {string} id 
+         * @param {PostMerchantsByIdDocumentsByTypeTypeEnum} type 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postMerchantsByIdDocumentsByType(id: string, type: PostMerchantsByIdDocumentsByTypeTypeEnum, file: File, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postMerchantsByIdDocumentsByType(id, type, file, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MerchantApi.postMerchantsByIdDocumentsByType']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Endpoint to configure the flows of a merchant, such as order creation, confirmations and refunds.
          * @summary Configure Merchant Flows
          * @param {string} id 
          * @param {MerchantFlow} merchantFlow Schema for configuring a merchant flow
@@ -2315,7 +2704,7 @@ export const MerchantApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * When subaccounts are rejected, they will be recreated by calling this endpoint.
+         * When subaccounts are rejected, they will be recreated when calling this endpoint.
          * @summary Update Merchant Subaccounts
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2337,7 +2726,7 @@ export const MerchantApiFactory = function (configuration?: Configuration, baseP
     const localVarFp = MerchantApiFp(configuration)
     return {
         /**
-         * Retrieve all merchants in the organization with optional filters for email, status, name and document.
+         * Endpoint for retrieving all merchants of the organization with optional filters for email, status, name, and document.
          * @summary List Merchants
          * @param {number} page 
          * @param {number} pageSize 
@@ -2352,7 +2741,7 @@ export const MerchantApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.getMerchants(page, pageSize, document, email, name, status, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieve a merchant by ID, returning all related data.
+         * Endpoint for fetching a merchant by ID, returning all related data.
          * @summary Get Merchant By ID
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2362,9 +2751,19 @@ export const MerchantApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.getMerchantsById(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * Create a new merchant with complete onboarding data.
+         * Returns all documents uploaded for a specific merchant.
+         * @summary List Merchant Documents
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMerchantsByIdDocuments(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.getMerchantsByIdDocuments(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Endpoint for full creation of a new merchant.
          * @summary Create Merchant
-         * @param {Merchant} merchant Modelo para criação de merchant com todos os dados necessários
+         * @param {Merchant} merchant Model for merchant creation with all required data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -2372,7 +2771,19 @@ export const MerchantApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.postMerchants(merchant, options).then((request) => request(axios, basePath));
         },
         /**
-         * Configure merchant flows such as order creation, confirmations and refunds.
+         * Uploads a document for the merchant.
+         * @summary Upload Merchant Document
+         * @param {string} id 
+         * @param {PostMerchantsByIdDocumentsByTypeTypeEnum} type 
+         * @param {File} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postMerchantsByIdDocumentsByType(id: string, type: PostMerchantsByIdDocumentsByTypeTypeEnum, file: File, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.postMerchantsByIdDocumentsByType(id, type, file, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Endpoint to configure the flows of a merchant, such as order creation, confirmations and refunds.
          * @summary Configure Merchant Flows
          * @param {string} id 
          * @param {MerchantFlow} merchantFlow Schema for configuring a merchant flow
@@ -2383,7 +2794,7 @@ export const MerchantApiFactory = function (configuration?: Configuration, baseP
             return localVarFp.postMerchantsByIdFlows(id, merchantFlow, options).then((request) => request(axios, basePath));
         },
         /**
-         * When subaccounts are rejected, they will be recreated by calling this endpoint.
+         * When subaccounts are rejected, they will be recreated when calling this endpoint.
          * @summary Update Merchant Subaccounts
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -2400,7 +2811,7 @@ export const MerchantApiFactory = function (configuration?: Configuration, baseP
  */
 export class MerchantApi extends BaseAPI {
     /**
-     * Retrieve all merchants in the organization with optional filters for email, status, name and document.
+     * Endpoint for retrieving all merchants of the organization with optional filters for email, status, name, and document.
      * @summary List Merchants
      * @param {number} page 
      * @param {number} pageSize 
@@ -2416,7 +2827,7 @@ export class MerchantApi extends BaseAPI {
     }
 
     /**
-     * Retrieve a merchant by ID, returning all related data.
+     * Endpoint for fetching a merchant by ID, returning all related data.
      * @summary Get Merchant By ID
      * @param {string} id 
      * @param {*} [options] Override http request option.
@@ -2427,9 +2838,20 @@ export class MerchantApi extends BaseAPI {
     }
 
     /**
-     * Create a new merchant with complete onboarding data.
+     * Returns all documents uploaded for a specific merchant.
+     * @summary List Merchant Documents
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public getMerchantsByIdDocuments(id: string, options?: RawAxiosRequestConfig) {
+        return MerchantApiFp(this.configuration).getMerchantsByIdDocuments(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Endpoint for full creation of a new merchant.
      * @summary Create Merchant
-     * @param {Merchant} merchant Modelo para criação de merchant com todos os dados necessários
+     * @param {Merchant} merchant Model for merchant creation with all required data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
@@ -2438,7 +2860,20 @@ export class MerchantApi extends BaseAPI {
     }
 
     /**
-     * Configure merchant flows such as order creation, confirmations and refunds.
+     * Uploads a document for the merchant.
+     * @summary Upload Merchant Document
+     * @param {string} id 
+     * @param {PostMerchantsByIdDocumentsByTypeTypeEnum} type 
+     * @param {File} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public postMerchantsByIdDocumentsByType(id: string, type: PostMerchantsByIdDocumentsByTypeTypeEnum, file: File, options?: RawAxiosRequestConfig) {
+        return MerchantApiFp(this.configuration).postMerchantsByIdDocumentsByType(id, type, file, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Endpoint to configure the flows of a merchant, such as order creation, confirmations and refunds.
      * @summary Configure Merchant Flows
      * @param {string} id 
      * @param {MerchantFlow} merchantFlow Schema for configuring a merchant flow
@@ -2450,7 +2885,7 @@ export class MerchantApi extends BaseAPI {
     }
 
     /**
-     * When subaccounts are rejected, they will be recreated by calling this endpoint.
+     * When subaccounts are rejected, they will be recreated when calling this endpoint.
      * @summary Update Merchant Subaccounts
      * @param {string} id 
      * @param {*} [options] Override http request option.
@@ -2463,6 +2898,7 @@ export class MerchantApi extends BaseAPI {
 
 export const GetMerchantsStatusEnum = {
     Creating: 'Creating',
+    WaitingDocuments: 'WaitingDocuments',
     WaitingOnboarding: 'WaitingOnboarding',
     Analysing: 'Analysing',
     Refused: 'Refused',
@@ -2470,6 +2906,16 @@ export const GetMerchantsStatusEnum = {
     Approved: 'Approved'
 } as const;
 export type GetMerchantsStatusEnum = typeof GetMerchantsStatusEnum[keyof typeof GetMerchantsStatusEnum];
+export const PostMerchantsByIdDocumentsByTypeTypeEnum = {
+    SelfieId: 'selfie-id',
+    AddressIndicator: 'address-indicator',
+    CnpjCard: 'cnpj-card',
+    SocialContract: 'social-contract',
+    IdentificationFront: 'identification-front',
+    IdentificationBack: 'identification-back',
+    ActivityProof: 'activity-proof'
+} as const;
+export type PostMerchantsByIdDocumentsByTypeTypeEnum = typeof PostMerchantsByIdDocumentsByTypeTypeEnum[keyof typeof PostMerchantsByIdDocumentsByTypeTypeEnum];
 
 
 /**
@@ -2478,18 +2924,18 @@ export type GetMerchantsStatusEnum = typeof GetMerchantsStatusEnum[keyof typeof 
 export const OrderApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
+         * Confirms a Draft order or an order with a pending 3DS challenge. For Draft orders, sets the payment method and processes the charges. For orders awaiting 3DS challenge completion, retrieves the updated status after the client-side challenge flow. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
          * @summary Confirm Order
          * @param {string} id 
-         * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+         * @param {OrderPaymentData} orderPaymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orderConfirm: async (id: string, orderPaymentRequest: OrderPaymentRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        orderConfirm: async (id: string, orderPaymentData: OrderPaymentData, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('orderConfirm', 'id', id)
-            // verify required parameter 'orderPaymentRequest' is not null or undefined
-            assertParamExists('orderConfirm', 'orderPaymentRequest', orderPaymentRequest)
+            // verify required parameter 'orderPaymentData' is not null or undefined
+            assertParamExists('orderConfirm', 'orderPaymentData', orderPaymentData)
             const localVarPath = `/orders/{id}/confirm`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2513,7 +2959,7 @@ export const OrderApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orderPaymentRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(orderPaymentData, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2704,6 +3150,81 @@ export const OrderApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Retrieve basic order data by external ID provided
+         * @summary Get Order By External ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderSimpleRead: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('orderSimpleRead', 'id', id)
+            const localVarPath = `/orders/{id}/simple`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Poll the current status of an order. Use after 3DS challenge completion to retrieve the final payment result.
+         * @summary Get Order Status
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderStatus: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('orderStatus', 'id', id)
+            const localVarPath = `/orders/{id}/status`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2714,15 +3235,15 @@ export const OrderApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = OrderApiAxiosParamCreator(configuration)
     return {
         /**
-         * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
+         * Confirms a Draft order or an order with a pending 3DS challenge. For Draft orders, sets the payment method and processes the charges. For orders awaiting 3DS challenge completion, retrieves the updated status after the client-side challenge flow. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
          * @summary Confirm Order
          * @param {string} id 
-         * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+         * @param {OrderPaymentData} orderPaymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orderConfirm(id: string, orderPaymentRequest: OrderPaymentRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderConfirmResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orderConfirm(id, orderPaymentRequest, options);
+        async orderConfirm(id: string, orderPaymentData: OrderPaymentData, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderConfirmResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderConfirm(id, orderPaymentData, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrderApi.orderConfirm']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -2784,6 +3305,32 @@ export const OrderApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['OrderApi.orderRefund']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * Retrieve basic order data by external ID provided
+         * @summary Get Order By External ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orderSimpleRead(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderSimpleRead(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrderApi.orderSimpleRead']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Poll the current status of an order. Use after 3DS challenge completion to retrieve the final payment result.
+         * @summary Get Order Status
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orderStatus(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<OrderConfirmResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderStatus(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OrderApi.orderStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2794,15 +3341,15 @@ export const OrderApiFactory = function (configuration?: Configuration, basePath
     const localVarFp = OrderApiFp(configuration)
     return {
         /**
-         * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
+         * Confirms a Draft order or an order with a pending 3DS challenge. For Draft orders, sets the payment method and processes the charges. For orders awaiting 3DS challenge completion, retrieves the updated status after the client-side challenge flow. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
          * @summary Confirm Order
          * @param {string} id 
-         * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+         * @param {OrderPaymentData} orderPaymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orderConfirm(id: string, orderPaymentRequest: OrderPaymentRequest, options?: RawAxiosRequestConfig): AxiosPromise<OrderConfirmResponse> {
-            return localVarFp.orderConfirm(id, orderPaymentRequest, options).then((request) => request(axios, basePath));
+        orderConfirm(id: string, orderPaymentData: OrderPaymentData, options?: RawAxiosRequestConfig): AxiosPromise<OrderConfirmResponse> {
+            return localVarFp.orderConfirm(id, orderPaymentData, options).then((request) => request(axios, basePath));
         },
         /**
          * Create a new order for payment using the provided data.
@@ -2849,6 +3396,26 @@ export const OrderApiFactory = function (configuration?: Configuration, basePath
         orderRefund(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.orderRefund(id, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Retrieve basic order data by external ID provided
+         * @summary Get Order By External ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderSimpleRead(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.orderSimpleRead(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Poll the current status of an order. Use after 3DS challenge completion to retrieve the final payment result.
+         * @summary Get Order Status
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderStatus(id: string, options?: RawAxiosRequestConfig): AxiosPromise<OrderConfirmResponse> {
+            return localVarFp.orderStatus(id, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -2857,15 +3424,15 @@ export const OrderApiFactory = function (configuration?: Configuration, basePath
  */
 export class OrderApi extends BaseAPI {
     /**
-     * Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
+     * Confirms a Draft order or an order with a pending 3DS challenge. For Draft orders, sets the payment method and processes the charges. For orders awaiting 3DS challenge completion, retrieves the updated status after the client-side challenge flow. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
      * @summary Confirm Order
      * @param {string} id 
-     * @param {OrderPaymentRequest} orderPaymentRequest Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+     * @param {OrderPaymentData} orderPaymentData Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    public orderConfirm(id: string, orderPaymentRequest: OrderPaymentRequest, options?: RawAxiosRequestConfig) {
-        return OrderApiFp(this.configuration).orderConfirm(id, orderPaymentRequest, options).then((request) => request(this.axios, this.basePath));
+    public orderConfirm(id: string, orderPaymentData: OrderPaymentData, options?: RawAxiosRequestConfig) {
+        return OrderApiFp(this.configuration).orderConfirm(id, orderPaymentData, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2916,6 +3483,28 @@ export class OrderApi extends BaseAPI {
     public orderRefund(id: string, options?: RawAxiosRequestConfig) {
         return OrderApiFp(this.configuration).orderRefund(id, options).then((request) => request(this.axios, this.basePath));
     }
+
+    /**
+     * Retrieve basic order data by external ID provided
+     * @summary Get Order By External ID
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public orderSimpleRead(id: string, options?: RawAxiosRequestConfig) {
+        return OrderApiFp(this.configuration).orderSimpleRead(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Poll the current status of an order. Use after 3DS challenge completion to retrieve the final payment result.
+     * @summary Get Order Status
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public orderStatus(id: string, options?: RawAxiosRequestConfig) {
+        return OrderApiFp(this.configuration).orderStatus(id, options).then((request) => request(this.axios, this.basePath));
+    }
 }
 
 export const OrderListStatusEnum = {
@@ -2930,6 +3519,401 @@ export const OrderListStatusEnum = {
     Chargeback: 'Chargeback'
 } as const;
 export type OrderListStatusEnum = typeof OrderListStatusEnum[keyof typeof OrderListStatusEnum];
+
+
+/**
+ * SubscriptionApi - axios parameter creator
+ */
+export const SubscriptionApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Cancel an active subscription.
+         * @summary Cancel Subscription
+         * @param {string} id 
+         * @param {SubscriptionCancelReasonEnum} [reason] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionCancel: async (id: string, reason?: SubscriptionCancelReasonEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('subscriptionCancel', 'id', id)
+            const localVarPath = `/subscriptions/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            if (reason !== undefined) {
+                localVarQueryParameter['reason'] = reason;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Create a new recurring subscription using a saved card token.
+         * @summary Create Subscription
+         * @param {CreateSubscription} createSubscription Input for creating a new recurring subscription. Uses the same format as an order with additional subscription control fields.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionCreate: async (createSubscription: CreateSubscription, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createSubscription' is not null or undefined
+            assertParamExists('subscriptionCreate', 'createSubscription', createSubscription)
+            const localVarPath = `/subscriptions/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createSubscription, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve a list of subscriptions for the organization.
+         * @summary List Subscriptions
+         * @param {number} page 
+         * @param {number} pageSize 
+         * @param {string} [endDate] 
+         * @param {string} [startDate] 
+         * @param {string} [id] 
+         * @param {SubscriptionListStatusEnum} [status] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionList: async (page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, status?: SubscriptionListStatusEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'page' is not null or undefined
+            assertParamExists('subscriptionList', 'page', page)
+            // verify required parameter 'pageSize' is not null or undefined
+            assertParamExists('subscriptionList', 'pageSize', pageSize)
+            const localVarPath = `/subscriptions/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            if (endDate !== undefined) {
+                localVarQueryParameter['endDate'] = (endDate as any instanceof Date) ?
+                    (endDate as any).toISOString() :
+                    endDate;
+            }
+
+            if (startDate !== undefined) {
+                localVarQueryParameter['startDate'] = (startDate as any instanceof Date) ?
+                    (startDate as any).toISOString() :
+                    startDate;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+            if (id !== undefined) {
+                localVarQueryParameter['id'] = id;
+            }
+
+            if (status !== undefined) {
+                localVarQueryParameter['status'] = status;
+            }
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Retrieve the complete data of a subscription by its ID.
+         * @summary Get Subscription By ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionRead: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('subscriptionRead', 'id', id)
+            const localVarPath = `/subscriptions/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            localVarHeaderParameter['Accept'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SubscriptionApi - functional programming interface
+ */
+export const SubscriptionApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SubscriptionApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Cancel an active subscription.
+         * @summary Cancel Subscription
+         * @param {string} id 
+         * @param {SubscriptionCancelReasonEnum} [reason] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async subscriptionCancel(id: string, reason?: SubscriptionCancelReasonEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.subscriptionCancel(id, reason, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SubscriptionApi.subscriptionCancel']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Create a new recurring subscription using a saved card token.
+         * @summary Create Subscription
+         * @param {CreateSubscription} createSubscription Input for creating a new recurring subscription. Uses the same format as an order with additional subscription control fields.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async subscriptionCreate(createSubscription: CreateSubscription, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.subscriptionCreate(createSubscription, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SubscriptionApi.subscriptionCreate']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve a list of subscriptions for the organization.
+         * @summary List Subscriptions
+         * @param {number} page 
+         * @param {number} pageSize 
+         * @param {string} [endDate] 
+         * @param {string} [startDate] 
+         * @param {string} [id] 
+         * @param {SubscriptionListStatusEnum} [status] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async subscriptionList(page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, status?: SubscriptionListStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionList200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.subscriptionList(page, pageSize, endDate, startDate, id, status, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SubscriptionApi.subscriptionList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Retrieve the complete data of a subscription by its ID.
+         * @summary Get Subscription By ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async subscriptionRead(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.subscriptionRead(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SubscriptionApi.subscriptionRead']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * SubscriptionApi - factory interface
+ */
+export const SubscriptionApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SubscriptionApiFp(configuration)
+    return {
+        /**
+         * Cancel an active subscription.
+         * @summary Cancel Subscription
+         * @param {string} id 
+         * @param {SubscriptionCancelReasonEnum} [reason] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionCancel(id: string, reason?: SubscriptionCancelReasonEnum, options?: RawAxiosRequestConfig): AxiosPromise<SubscriptionResponse> {
+            return localVarFp.subscriptionCancel(id, reason, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Create a new recurring subscription using a saved card token.
+         * @summary Create Subscription
+         * @param {CreateSubscription} createSubscription Input for creating a new recurring subscription. Uses the same format as an order with additional subscription control fields.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionCreate(createSubscription: CreateSubscription, options?: RawAxiosRequestConfig): AxiosPromise<SubscriptionResponse> {
+            return localVarFp.subscriptionCreate(createSubscription, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a list of subscriptions for the organization.
+         * @summary List Subscriptions
+         * @param {number} page 
+         * @param {number} pageSize 
+         * @param {string} [endDate] 
+         * @param {string} [startDate] 
+         * @param {string} [id] 
+         * @param {SubscriptionListStatusEnum} [status] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionList(page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, status?: SubscriptionListStatusEnum, options?: RawAxiosRequestConfig): AxiosPromise<SubscriptionList200Response> {
+            return localVarFp.subscriptionList(page, pageSize, endDate, startDate, id, status, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve the complete data of a subscription by its ID.
+         * @summary Get Subscription By ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        subscriptionRead(id: string, options?: RawAxiosRequestConfig): AxiosPromise<SubscriptionResponse> {
+            return localVarFp.subscriptionRead(id, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SubscriptionApi - object-oriented interface
+ */
+export class SubscriptionApi extends BaseAPI {
+    /**
+     * Cancel an active subscription.
+     * @summary Cancel Subscription
+     * @param {string} id 
+     * @param {SubscriptionCancelReasonEnum} [reason] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public subscriptionCancel(id: string, reason?: SubscriptionCancelReasonEnum, options?: RawAxiosRequestConfig) {
+        return SubscriptionApiFp(this.configuration).subscriptionCancel(id, reason, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Create a new recurring subscription using a saved card token.
+     * @summary Create Subscription
+     * @param {CreateSubscription} createSubscription Input for creating a new recurring subscription. Uses the same format as an order with additional subscription control fields.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public subscriptionCreate(createSubscription: CreateSubscription, options?: RawAxiosRequestConfig) {
+        return SubscriptionApiFp(this.configuration).subscriptionCreate(createSubscription, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a list of subscriptions for the organization.
+     * @summary List Subscriptions
+     * @param {number} page 
+     * @param {number} pageSize 
+     * @param {string} [endDate] 
+     * @param {string} [startDate] 
+     * @param {string} [id] 
+     * @param {SubscriptionListStatusEnum} [status] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public subscriptionList(page: number, pageSize: number, endDate?: string, startDate?: string, id?: string, status?: SubscriptionListStatusEnum, options?: RawAxiosRequestConfig) {
+        return SubscriptionApiFp(this.configuration).subscriptionList(page, pageSize, endDate, startDate, id, status, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve the complete data of a subscription by its ID.
+     * @summary Get Subscription By ID
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    public subscriptionRead(id: string, options?: RawAxiosRequestConfig) {
+        return SubscriptionApiFp(this.configuration).subscriptionRead(id, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+export const SubscriptionCancelReasonEnum = {
+    DunningExhausted: 'DunningExhausted',
+    RetryScheduled: 'RetryScheduled',
+    Manual: 'Manual',
+    CustomerRequest: 'CustomerRequest',
+    PaymentFailure: 'PaymentFailure'
+} as const;
+export type SubscriptionCancelReasonEnum = typeof SubscriptionCancelReasonEnum[keyof typeof SubscriptionCancelReasonEnum];
+export const SubscriptionListStatusEnum = {
+    Active: 'Active',
+    Inactive: 'Inactive',
+    Canceled: 'Canceled',
+    PastDue: 'PastDue',
+    Completed: 'Completed'
+} as const;
+export type SubscriptionListStatusEnum = typeof SubscriptionListStatusEnum[keyof typeof SubscriptionListStatusEnum];
 
 
 /**

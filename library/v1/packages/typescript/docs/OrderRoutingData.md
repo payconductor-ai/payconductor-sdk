@@ -1,12 +1,12 @@
 # OrderRoutingData
 
-Routing data to define specific integrations to process the order
+Order routing data for payment processing
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**directIntegrationId** | **string** | ID of a specific integration to process the order. Used to force the order to be processed by a specific integration, bypassing the default routing configuration | [optional] [default to undefined]
+**directIntegrationId** | **string** | Integration ID for direct payment processing | [optional] [default to undefined]
 
 ## Example
 

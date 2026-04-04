@@ -5,11 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **string** | Razão social ou nome completo do merchant | [default to undefined]
-**document** | **string** | CNPJ ou CPF do merchant | [default to undefined]
-**tradeName** | **string** | Nome fantasia do merchant | [optional] [default to undefined]
-**email** | **string** | Email principal do merchant | [default to undefined]
-**phoneNumber** | **string** | Telefone de contato do merchant | [optional] [default to undefined]
+**name** | **string** | Merchant legal name or full name | [default to undefined]
+**document** | **string** | Merchant CNPJ or CPF | [default to undefined]
+**tradeName** | **string** | Merchant trade name | [optional] [default to undefined]
+**email** | **string** | Merchant main email | [default to undefined]
+**phoneNumber** | **string** | Merchant contact phone number | [optional] [default to undefined]
 **address** | [**AddressCreateRequest**](AddressCreateRequest.md) |  | [default to undefined]
 
 ## Example

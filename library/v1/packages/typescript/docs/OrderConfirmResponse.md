@@ -10,17 +10,19 @@ Name | Type | Description | Notes
 **externalId** | **string** | External order ID (provided by your integration) | [default to undefined]
 **idempotencyKey** | **string** | Order idempotency key | [default to undefined]
 **amount** | **number** | Total order amount | [default to undefined]
+**currency** | [**Currency**](Currency.md) |  | [default to undefined]
 **costFee** | **number** | Cost fee applied to the order | [default to undefined]
 **pix** | [**OrderPIXInfo**](OrderPIXInfo.md) |  | [optional] [default to undefined]
 **bankSlip** | [**OrderBankSlipInfo**](OrderBankSlipInfo.md) |  | [optional] [default to undefined]
 **nuPay** | [**OrderNuPayInfo**](OrderNuPayInfo.md) |  | [optional] [default to undefined]
 **picPay** | [**OrderPicPayInfo**](OrderPicPayInfo.md) |  | [optional] [default to undefined]
 **status** | [**Status**](Status.md) |  | [default to undefined]
+**statusDetail** | **string** | Status detail providing additional context (e.g. ThreeDsAwaitingChallenge when a 3DS challenge is pending) | [optional] [default to undefined]
 **paymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [default to undefined]
 **payedAt** | **string** | Date and time when the order was paid (ISO 8601) | [default to undefined]
 **errorCode** | **string** | Error code, if any | [default to undefined]
 **errorMessage** | **string** | Error message, if any | [default to undefined]
-**threeDSecure** | [**OrderCreateResponseThreeDSecure**](OrderCreateResponseThreeDSecure.md) |  | [optional] [default to undefined]
+**threeDSecure** | [**OrderCreditCardInfoThreeDSecure**](OrderCreditCardInfoThreeDSecure.md) |  | [optional] [default to undefined]
 
 ## Example
 
@@ -32,12 +34,14 @@ const instance: OrderConfirmResponse = {
     externalId,
     idempotencyKey,
     amount,
+    currency,
     costFee,
     pix,
     bankSlip,
     nuPay,
     picPay,
     status,
+    statusDetail,
     paymentMethod,
     payedAt,
     errorCode,

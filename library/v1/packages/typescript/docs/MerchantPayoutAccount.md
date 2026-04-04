@@ -1,6 +1,6 @@
 # MerchantPayoutAccount
 
-Dados da conta bancária do merchant para recebimento (PIX e/ou conta corrente)
+Merchant bank account for receiving payments (PIX and/or checking account)
 
 ## Properties
 

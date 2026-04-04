@@ -1,13 +1,13 @@
 # MerchantPayoutAccountPix
 
-Dados da chave PIX para recebimento
+PIX key data for receiving payments
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **type** | [**Type**](Type.md) |  | [default to undefined]
-**key** | **string** | Chave PIX | [default to undefined]
+**key** | **string** | PIX key | [default to undefined]
 
 ## Example
 

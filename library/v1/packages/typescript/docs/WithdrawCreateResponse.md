@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **id** | **string** | Unique withdrawal identifier | [default to undefined]
 **idempotencyKey** | **string** | Withdrawal idempotency key | [default to undefined]
 **externalId** | **string** | Withdrawal ID in your system | [default to undefined]
-**externalIntegrationKey** | **string** | Provider key used for the withdrawal | [default to undefined]
+**externalIntegrationKey** | **string** | Provider used for the withdrawal | [default to undefined]
 **externalIntegrationId** | **string** | Withdrawal ID in the payment provider | [default to undefined]
 **costFee** | **number** | Cost fee applied to the withdrawal | [default to undefined]
 **status** | [**Status**](Status.md) |  | [default to undefined]

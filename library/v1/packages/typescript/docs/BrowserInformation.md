@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 **colorDepth** | **number** | Screen color depth | [optional] [default to undefined]
 **screenHeight** | **number** | Screen height in pixels | [optional] [default to undefined]
 **screenWidth** | **number** | Screen width in pixels | [optional] [default to undefined]
-**timeZoneOffset** | **string** | Time zone offset | [optional] [default to undefined]
-**javaEnabled** | **boolean** | Indicates whether Java is enabled | [default to undefined]
-**javaScriptEnabled** | **boolean** | Indicates whether JavaScript is enabled | [default to undefined]
+**timeZoneOffset** | **string** | Timezone offset | [optional] [default to undefined]
+**javaEnabled** | **boolean** | Indicates if Java is enabled | [default to undefined]
+**javaScriptEnabled** | **boolean** | Indicates if JavaScript is enabled | [default to undefined]
 
 ## Example
 

@@ -3,6 +3,12 @@
 
 ## Enum
 
+* `Authenticated` (value: `'Authenticated'`)
+
+* `NotAuthenticated` (value: `'NotAuthenticated'`)
+
+* `NeedChallenge` (value: `'NeedChallenge'`)
+
 * `Generating` (value: `'Generating'`)
 
 * `Pending` (value: `'Pending'`)
@@ -21,15 +27,11 @@
 
 * `Chargeback` (value: `'Chargeback'`)
 
-* `Authenticated` (value: `'Authenticated'`)
-
-* `NotAuthenticated` (value: `'NotAuthenticated'`)
-
-* `NeedChallenge` (value: `'NeedChallenge'`)
-
 * `Transferring` (value: `'Transferring'`)
 
 * `Creating` (value: `'Creating'`)
+
+* `WaitingDocuments` (value: `'WaitingDocuments'`)
 
 * `WaitingOnboarding` (value: `'WaitingOnboarding'`)
 
@@ -38,5 +40,15 @@
 * `Refused` (value: `'Refused'`)
 
 * `Approved` (value: `'Approved'`)
+
+* `Active` (value: `'Active'`)
+
+* `Inactive` (value: `'Inactive'`)
+
+* `PastDue` (value: `'PastDue'`)
+
+* `Processing` (value: `'Processing'`)
+
+* `Skipped` (value: `'Skipped'`)
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

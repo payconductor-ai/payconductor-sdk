@@ -5,8 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**merchantId** | **string** | Merchant ID of the split receiver | [default to undefined]
-**amount** | **number** | Amount to be split to the receiver | [default to undefined]
+**merchantId** | **string** | Merchant ID of the split recipient | [default to undefined]
+**amount** | **number** | Amount to be split to the recipient | [default to undefined]
 **receiverType** | [**ReceiverType**](ReceiverType.md) |  | [default to undefined]
 
 ## Example

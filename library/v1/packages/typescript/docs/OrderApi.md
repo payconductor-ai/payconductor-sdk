@@ -9,11 +9,13 @@ All URIs are relative to *http://localhost:5173/api/v1*
 |[**orderList**](#orderlist) | **GET** /orders/ | List Orders|
 |[**orderRead**](#orderread) | **GET** /orders/{id} | Get Order By ID|
 |[**orderRefund**](#orderrefund) | **POST** /orders/{id}/refund | Refund Order|
+|[**orderSimpleRead**](#ordersimpleread) | **GET** /orders/{id}/simple | Get Order By External ID|
+|[**orderStatus**](#orderstatus) | **GET** /orders/{id}/status | Get Order Status|
 
 # **orderConfirm**
-> OrderConfirmResponse orderConfirm(orderPaymentRequest)
+> OrderConfirmResponse orderConfirm(orderPaymentData)
 
-Confirms a Draft order, setting the payment method and processing the charges associated with the order. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
+Confirms a Draft order or an order with a pending 3DS challenge. For Draft orders, sets the payment method and processes the charges. For orders awaiting 3DS challenge completion, retrieves the updated status after the client-side challenge flow. Accepts Basic auth (backend SDK) or intentToken query param (iframe).
 
 ### Example
 
@@ -21,18 +23,18 @@ Confirms a Draft order, setting the payment method and processing the charges as
 import {
     OrderApi,
     Configuration,
-    OrderPaymentRequest
+    OrderPaymentData
 } from '@payconductor/sdk';
 
 const configuration = new Configuration();
 const apiInstance = new OrderApi(configuration);
 
 let id: string; // (default to undefined)
-let orderPaymentRequest: OrderPaymentRequest; //Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
+let orderPaymentData: OrderPaymentData; //Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...)
 
 const { status, data } = await apiInstance.orderConfirm(
     id,
-    orderPaymentRequest
+    orderPaymentData
 );
 ```
 
@@ -40,7 +42,7 @@ const { status, data } = await apiInstance.orderConfirm(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **orderPaymentRequest** | **OrderPaymentRequest**| Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...) | |
+| **orderPaymentData** | **OrderPaymentData**| Payment data for the order (Pix, Credit Card, Bank Slip, NuPay, etc...) | |
 | **id** | [**string**] |  | defaults to undefined|
 
 
@@ -267,6 +269,103 @@ void (empty response body)
  - **Content-Type**: Not defined
  - **Accept**: Not defined
 
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **orderSimpleRead**
+> orderSimpleRead()
+
+Retrieve basic order data by external ID provided
+
+### Example
+
+```typescript
+import {
+    OrderApi,
+    Configuration
+} from '@payconductor/sdk';
+
+const configuration = new Configuration();
+const apiInstance = new OrderApi(configuration);
+
+let id: string; // (default to undefined)
+
+const { status, data } = await apiInstance.orderSimpleRead(
+    id
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **orderStatus**
+> OrderConfirmResponse orderStatus()
+
+Poll the current status of an order. Use after 3DS challenge completion to retrieve the final payment result.
+
+### Example
+
+```typescript
+import {
+    OrderApi,
+    Configuration
+} from '@payconductor/sdk';
+
+const configuration = new Configuration();
+const apiInstance = new OrderApi(configuration);
+
+let id: string; // (default to undefined)
+
+const { status, data } = await apiInstance.orderStatus(
+    id
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **id** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**OrderConfirmResponse**
+
+### Authorization
+
+[basicAuth](../README.md#basicAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | Response after confirming a draft order |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -1,6 +1,6 @@
 # CustomerListPagination
 
-Pagination information for customer list
+Pagination information for the customer list
 
 ## Properties
 

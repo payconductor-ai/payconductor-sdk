@@ -1,15 +1,15 @@
 # Merchant
 
-Modelo para criação de merchant com todos os dados necessários
+Model for merchant creation with all required data
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **personType** | [**PersonType**](PersonType.md) |  | [optional] [default to undefined]
-**productsDescription** | **string** | Descrição dos produtos ou serviços oferecidos | [optional] [default to undefined]
+**productsDescription** | **string** | Description of products or services offered | [optional] [default to undefined]
 **mcc** | **string** | Merchant Category Code | [optional] [default to undefined]
-**website** | **string** | URL do site do merchant | [default to undefined]
+**website** | **string** | Merchant website URL | [default to undefined]
 **business** | [**MerchantBusiness**](MerchantBusiness.md) |  | [default to undefined]
 **owner** | [**MerchantOwner**](MerchantOwner.md) |  | [default to undefined]
 **payoutAccount** | [**MerchantPayoutAccount**](MerchantPayoutAccount.md) |  | [default to undefined]

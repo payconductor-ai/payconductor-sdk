@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **documentType** | [**DocumentType**](DocumentType.md) |  | [default to undefined]
 **documentNumber** | **string** | Customer document number (CPF or CNPJ) | [default to undefined]
 **phoneNumber** | **string** | Customer phone number | [default to undefined]
-**address** | [**CustomerAddressResponse**](CustomerAddressResponse.md) |  | [default to undefined]
+**address** | [**CustomerAddress**](CustomerAddress.md) |  | [default to undefined]
 **createdAt** | **string** | Date and time when the customer was created (ISO 8601 format) | [default to undefined]
 **updatedAt** | **string** | Date and time when the customer was last updated (ISO 8601 format) | [default to undefined]
 

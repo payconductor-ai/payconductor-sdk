@@ -35,4 +35,14 @@
 
 * `MerchantApproved` (value: `'MerchantApproved'`)
 
+* `SubscriptionCreated` (value: `'SubscriptionCreated'`)
+
+* `SubscriptionActivated` (value: `'SubscriptionActivated'`)
+
+* `SubscriptionCanceled` (value: `'SubscriptionCanceled'`)
+
+* `SubscriptionCompleted` (value: `'SubscriptionCompleted'`)
+
+* `SubscriptionPastDue` (value: `'SubscriptionPastDue'`)
+
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

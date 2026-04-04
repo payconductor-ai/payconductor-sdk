@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **paymentMethod** | **string** |  | [default to undefined]
 **applePay** | [**ApplePayApplePay**](ApplePayApplePay.md) |  | [default to undefined]
-**installments** | **number** | Number of installments for the payment | [optional] [default to 1]
+**installments** | **number** | Number of installments | [optional] [default to 1]
 
 ## Example
 
