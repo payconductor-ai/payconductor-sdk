@@ -1,0 +1,23 @@
+# PIXPayment
+
+Specific data for PIX payment
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**paymentMethod** | **string** |  | [default to undefined]
+**expirationInSeconds** | **number** | PIX expiration time in seconds | [optional] [default to 3600]
+
+## Example
+
+```typescript
+import { PIXPayment } from '@payconductor/sdk';
+
+const instance: PIXPayment = {
+    paymentMethod,
+    expirationInSeconds,
+};
+```
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
